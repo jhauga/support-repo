@@ -1,6 +1,7 @@
 # Test Markdown File
 
-It worked
+First passing using example at bottom of instruction `update-code-from-shorthand.instructions.md`. 
+No edits as this is to show output that one prompt using instructions produces.
 
 # Header Test
 
@@ -26,13 +27,6 @@ Test rendering of bold, italic, ordered list, and unordered list.
 * This list item uses an asterick character for the list.
 - This one uses a dash.
 
-
-# Formatted Code
-
-```bash
-> echo command line example
-> echo bash specified as language
-```
 
 # Table Test
 
@@ -68,11 +62,19 @@ This is a second line.
 > [!CAUTION]
 > Advises about risks or negative outcomes of certain actions.
 
+# Formatted Code
+
+```bash
+> echo command line example
+> echo bash specified as language
+
+```
+
 # Image Test
 
 **NOTE** - image path is `/c:/Users/johnh/Batch%20Files/bin/support/printMD.jpg`
 
-![full path to 1.5 x 1.5 test image](./image.jpg)
+![full path to 1.5 x 1.5 test image](image.jpg)
 
 # Test Concluded
 

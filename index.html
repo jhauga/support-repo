@@ -2,7 +2,7 @@
 <html>
 <head>
  <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
+ <title>Test Example In Instructions</title>
  
  <!--<script src="/js/scripts.js"></script>-->
  <link rel="icon" href="/favicon.png">
@@ -12,9 +12,11 @@
    margin-left: 50px;
   }
   div, nav, ul, li, a {
-   display: inline-block;
    position: relative;
    box-sizing: border-box;
+  }
+  div, nav, a, nav ul li {
+   display: inline-block;
   }
   div, nav, footer {
    width: 100%;
@@ -79,7 +81,7 @@
 
 <body>
 
-<!--
+
  <div>
   <nav>
    <ul>
@@ -93,57 +95,16 @@
 
  <main>
   <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
+   <h1 id="pageTitle">Render Markdown</h1>
+   <div id="a"></div>
   </div>
  </main>
-
 
  <footer> 
   <p>Footer message.</p>
  </footer>
--->
 
-<h1 id="pageTitle"></h1>
-
-<p>CHANGE_TEXT</p>
-
-<pre id="a">
-CHANGE_TEXT
-</pre>
-
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
-
+ <script src="/script.js"></script>
 
 </body>
 </html>
