@@ -1,22 +1,3 @@
-# Support Repo
-
-Support branch of repositroy for [awesom-copilot pull request](https://github.com/github/awesome-copilot/pull/370).
-
-`Ctrl + click` [index.html](https://jhauga.github.io/support-repo/) to see what the results of using `update-code-from-shorthand.instructions.md` on `script.original.js` and with prompt:
-
-```bash
-[user prompt]
-UPDATE CODE FROM SHORTHAND 
-#file:script.js 
-Use #file:index.html:94-99 to see where converted
-markdown to html will be parsed `id="a"`.
-```
-
-<details>
-
-<summary>script.js original state</summary>
-
-```js
 // script.js
 // Parse markdown file, applying HTML to render output.
 
@@ -42,6 +23,3 @@ xhttp.onreadystatechange = function() {
 };
 xhttp.open("GET", file, true);
 xhttp.send();
-```
-
-</details>
