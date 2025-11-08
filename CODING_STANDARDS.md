@@ -1,6 +1,6 @@
-# html-dwt-template Coding Standards
+# TypeScript Coding Standards
 
-This document defines the coding standards and style conventions for the html-dwt-template VS Code extension project. All contributions should follow these guidelines to maintain consistency and code quality.
+This document defines the coding standards and style conventions for the [html-dwt-template](https://github.com/isocialPractice/html-dwt-template/tree/update-features/src) VS Code extension project. All contributions should follow these guidelines to maintain consistency and code quality.
 
 ## 1. Purpose and Scope
 
