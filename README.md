@@ -2,8 +2,8 @@
 
 Support branch of repositroy for:
 
-- [curl pull request](https://github.com/curl/curl/pull/CHANGE_LINK).
-- [curl-www pull request](https://github.com/curl/curl-www/pull/CHANGE_LINK).
+- [curl pull request](https://github.com/curl/curl/pull/19817).
+- [curl-www pull request](https://github.com/curl/curl-www/pull/516).
 
 Illustrates HTML rendering of `TODO` with markdown conversion.
 
