@@ -7,5 +7,7 @@ Support branch of repositroy for:
 
 Illustrates HTML rendering of `TODO` with markdown conversion.
 
-- `Ctrl + click` New [todo.html](https://jhauga.github.io/support-repo/)
+- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/support-repo/)
+- `Ctrl + click` Current [faq.html](https://curl.se/docs/faq.html)
+- `Ctrl + click` Current [knownbugs.html](https://curl.se/docs/knownbugs.html)
 - `Ctrl + click` Current [todo.html](https://curl.se/docs/todo.html)
