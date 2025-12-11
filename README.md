@@ -2,7 +2,7 @@
 
 Support branch of repositroy for [awesom-copilot pull request](https://github.com/github/awesome-copilot/pull/370).
 
-`Ctrl + click` [index.html](https://jhauga.github.io/support-repo/) to see what the results of using `update-code-from-shorthand.instructions.md` on `script.original.js` and with prompt:
+`Ctrl + click` [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/update-code-from-shorthand/index.html) to see what the results of using `update-code-from-shorthand.instructions.md` on `script.original.js` and with prompt:
 
 ```bash
 [user prompt]
