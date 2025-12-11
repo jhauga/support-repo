@@ -1,13 +1,14 @@
 # Support Repo
 
-Support branch of repositroy for:
+Support branch of repository for:
 
-- [curl pull request](https://github.com/curl/curl/pull/19817).
-- [curl-www pull request](https://github.com/curl/curl-www/pull/516).
+- [OctoPrint-CustomBackground pull request](https://github.com/jneilliii/OctoPrint-CustomBackground/pull/37).
 
-Illustrates HTML rendering of `TODO` with markdown conversion.
+This is **smoke and mirrors**, but illustrates rendering of feature request. The results are condensed and instantly applied, but after testing using `OctoPrint` in development mode the same UX procedure is followed, and the image updates similar to demo `index.html`. Additional GIF of test on `OctoPrint` development mode is below.
 
 - `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/support-repo/)
-- `Ctrl + click` Current [faq.html](https://curl.se/docs/faq.html)
-- `Ctrl + click` Current [knownbugs.html](https://curl.se/docs/knownbugs.html)
-- `Ctrl + click` Current [todo.html](https://curl.se/docs/todo.html)
+
+> [!NOTE}
+> The `index.html` GitHub page is for demo purposes.
+
+![demo.gif](/demo.gif)
