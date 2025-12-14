@@ -2,14 +2,8 @@
 
 Support branch of repository for:
 <!-- Link to PR -->
-- [REPO_NAME pull request](https://github.com/). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [vscode-awesome-copilot pull request #6](https://github.com/timheuer/vscode-awesome-copilot/pull/6). 
 
-SHORT_DESCRIPTION
+Test results:
 
-- `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
-<!-- git commit -m "undeploy: use htmlpreview for index.html" -->
-<!--
-- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/BRANCH_NAME/index.html) 
--->
-
-AS_NEEDED
+![demo.gif](/demo.gif)
