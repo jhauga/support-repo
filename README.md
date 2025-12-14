@@ -2,7 +2,7 @@
 
 Support branch of repository for:
 <!-- Link to PR -->
-- [vscode-awesome-copilot pull request #6](https://github.com/timheuer/vscode-awesome-copilot/pull/6). 
+- [vscode-awesome-copilot pull request #5](https://github.com/timheuer/vscode-awesome-copilot/pull/5).
 
 Test results:
 
