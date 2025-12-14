@@ -2,19 +2,20 @@
 
 Support branch of repository for:
 <!-- Link to PR -->
-- [REPO_NAME pull request](https://github.com/). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
-<!-- 
+- [curl-www pull request #](https://github.com/curl/curl-www/pull/).
+
 Test Results:
 
 ![demo.gif](/demo.gif)
- -->
 
-SHORT_DESCRIPTION
 
-- `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
-<!-- git commit -m "undeploy: use htmlpreview for index.html" -->
-<!--
-- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/BRANCH_NAME/index.html) 
--->
+Incorporate the symbol as an additional home page link is a bit more user friendly. And plus - all the cool kids are doing it:
 
-AS_NEEDED
+| Popular Site | Dual Home Page Link |
+| :--- | --- |
+| https://www.c-language.org/ | ![img-c-language.org.png](/img-c-language.org.png) |
+| https://www.fastly.com/ | ![img-fastly.com.png](img-fastly.com.png) |
+| https://www.linux.org/ | ![img-linux.org.png](/img-linux.org.png) |
+| https://www.redhat.com/ | ![img-redhat.com.png](/img-redhat.com.png) |
+| https://stackoverflow.com/ | ![img-stackoverflow.com.png](/img-stackoverflow.com.png) |
+| https://www.wolfssl.com/ | ![img-wolfssl.com.png](/img-wolfssl.com.png) |
