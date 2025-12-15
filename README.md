@@ -2,7 +2,7 @@
 
 Support branch of repository for:
 <!-- Link to PR -->
-- [curl-www pull request #](https://github.com/curl/curl-www/pull/).
+- [curl-www pull request #518](https://github.com/curl/curl-www/pull/518).
 
 Test Results:
 
