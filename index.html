@@ -26,9 +26,7 @@
  </head>
 
  <body>
-  <div id="markdown" class="markdown-body">
-# Title
-
+  <textarea id="markdown-source" style="display: none;">
 Lots of text using **markdown syntax.**
 
 # GitHub Markdown Test Document
@@ -183,9 +181,6 @@ So it also breaks to a new line.
 This line has an HTML break.<br/>
 So it breaks too.
 
-## HTML Comments
-<!-- This is a hidden comment that won't appear in rendered markdown -->
-
 ## Escaped Characters
 \*This text is surrounded by literal asterisks\*
 
@@ -205,14 +200,17 @@ This is a custom anchor point.
 >> Second level quote
 >>> Third level quote
 
-  </div>
+## HTML Comments
+<!-- This is a hidden comment that won't appear in rendered markdown -->
+  </textarea>
+  <div id="content" class="markdown-body"></div>
   
   <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
   <script>
-    const md = document.getElementById("markdown");
+    const source = document.getElementById('markdown-source').value;
     
-    // Parse the markdown content and render it as HTML
-    md.innerHTML = marked.parse(md.textContent);
+    // Parse the markdown and render it into the content div.
+    document.getElementById('content').innerHTML = marked.parse(source);
   </script>
  </body>
 </html>
