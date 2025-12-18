@@ -2,7 +2,7 @@
 
 Support branch of repository for:
 <!-- Link to PR -->
-- [marked pull request #3863](https://github.com/markedjs/marked/pull/3863).
+- [marked pull request #3864](https://github.com/markedjs/marked/pull/3864).
 
 Showing page that uses lots of markdown data with the proposed browser example. One addition of `<link rel="icon" href="favicon.ico">` to `head`.
 
