@@ -1,149 +1,219 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
- <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
- 
- <!--<script src="/js/scripts.js"></script>-->
- <link rel="icon" href="/favicon.png">
- 
- <style>
-  body {
-   margin-left: 50px;
-  }
-  div, nav, ul, li, a {
-   display: inline-block;
-   position: relative;
-   box-sizing: border-box;
-  }
-  div, nav, footer {
-   width: 100%;
-  }
-  nav {
-   background: black;   
-   height: 60px;
-  }
-  nav ul li a {
-   color: white;
-   padding: 10px;
-  }
-  main {
-   margin: 30px;
-  }
-  button {
-   background: darkslategray;
-   color: white;     
-   margin: 10px;
-   padding: 15px;
-   cursor: pointer;
-   border-radius: 10px;
-  }
-  button.showHide {
-   display: block; 
-   background: black;
-   color: white;
-  }
-  button.showHide.black {
-   display: block; 
-   padding: 2px;
-  }  
-  button.showHide.gray {
-   display: block; 
-   background: darkslategray;
-   padding: 2px;
-  }    
-  span.key {
-   color: #0073e6;
-  }  
-  span.str {
-   color: orange;
-  }
-  span.int {
-   color: green;
-  }
-  span.mthd {
-   color: purple;
-  }
-  em {
-   color: dimgray;
-  }  
-  footer {
-   bottom: 0px;   
-   background: black;
-   color: white;
-   margin-left: -50px; 
-   padding: 50px;
-  }
- </style>
-</head>
+ <head>
+   <link rel="icon" href="favicon.ico">
+   <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+   
+   <style>
+    body {
+     box-sizing: border-box;
+     min-width: 200px;
+     max-width: 980px;
+     margin: 0 auto;
+     padding: 45px;
+    }
 
-<body>
+    @media (prefers-color-scheme: dark) {
+     body {
+      background-color: #0d1117;
+     }
+    }
+   </style>
 
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
-   </ul>
-  </nav>
- </div>
+   <title>Browser Page</title>
+ </head>
 
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
+ <body>
+  <div id="markdown" class="markdown-body">
+# Title
+
+Lots of text using **markdown syntax.**
+
+# GitHub Markdown Test Document
+
+## Headings Demo
+# H1 Heading
+## H2 Heading
+### H3 Heading
+#### H4 Heading
+##### H5 Heading
+###### H6 Heading
+
+## Text Styling
+This is **bold text** using asterisks.
+This is __bold text__ using underscores.
+This is *italic text* using asterisks.
+This is _italic text_ using underscores.
+This is ~~strikethrough text~~.
+This is **bold and _nested italic_ text**.
+This is ***bold and italic*** text.
+This is <sub>subscript</sub> text.
+This is <sup>superscript</sup> text.
+This is <ins>underlined</ins> text.
+
+## Quoting Text
+Normal text that is not a quote.
+
+> This is a blockquote.
+> It can span multiple lines.
+
+## Code Examples
+
+Inline code: Use `git status` to list all new or modified files.
+
+Code block without syntax highlighting:
+```
+Some basic Git commands are:
+git status
+git add
+git commit
+```
+
+Code block with syntax highlighting:
+```javascript
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
+```
+
+```python
+def calculate(x, y):
+    return x + y
+```
+
+## Color Examples
+The background color is `#ffffff` for light mode and `#000000` for dark mode.
+Blue color: `#0969DA`
+RGB color: `rgb(9, 105, 218)`
+HSL color: `hsl(212, 92%, 45%)`
+
+## Links
+This site was built using [GitHub Pages](https://pages.github.com/).
+
+Autolinked URL: https://github.com
+
+[Link to a section](#task-lists)
+
+## Images
+![Alt text for image](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)
+
+## Lists
+
+### Unordered List
+- Item one
+- Item two
+- Item three
+* Alternative bullet
++ Another alternative
+
+### Ordered List
+1. First item
+2. Second item
+3. Third item
+
+### Nested List
+1. First list item
+   - First nested item
+     - Second nested item
+   - Another nested item
+2. Second list item
+
+## Task Lists
+- [x] Completed task
+- [x] Another completed task with #739
+- [ ] Incomplete task
+- [ ] \(Optional) Task with escaped parenthesis
+
+## Tables
+| Column 1 | Column 2 | Column 3 |
+| -------- | -------- | -------- |
+| Row 1 Col 1 | Row 1 Col 2 | Row 1 Col 3 |
+| Row 2 Col 1 | Row 2 Col 2 | Row 2 Col 3 |
+
+### Aligned Tables
+| Left Aligned | Center Aligned | Right Aligned |
+| :----------- | :------------: | ------------: |
+| Left | Center | Right |
+| Text | More text | Even more |
+
+## Mentions and References
+Mention a user: @octocat
+Reference an issue: #123
+Reference a pull request: #456
+
+## Emojis
+:sparkles: :rocket: :tada: :+1: :heart: :smile:
+
+## Footnotes
+Here is a simple footnote[^1].
+
+A footnote can also have multiple lines[^2].
+
+[^1]: This is the first footnote.
+[^2]: This is the second footnote.  
+It has multiple lines.
+
+## Alerts
+
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!TIP]
+> Helpful advice for doing things better or more easily.
+
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal.
+
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.
+
+## Line Breaks
+
+This line has two spaces at the end.  
+So it breaks to a new line.
+
+This line has a backslash at the end.\
+So it also breaks to a new line.
+
+This line has an HTML break.<br/>
+So it breaks too.
+
+## HTML Comments
+<!-- This is a hidden comment that won't appear in rendered markdown -->
+
+## Escaped Characters
+\*This text is surrounded by literal asterisks\*
+
+\# This is not a heading
+
+## Horizontal Rule
+---
+
+## Custom Anchor
+<a name="custom-anchor-point"></a>
+This is a custom anchor point.
+
+[Link to custom anchor](#custom-anchor-point)
+
+## Nested Blockquote
+> First level quote
+>> Second level quote
+>>> Third level quote
+
   </div>
- </main>
-
-
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
-
-<h1 id="pageTitle"></h1>
-
-<p>CHANGE_TEXT</p>
-
-<pre id="a">
-CHANGE_TEXT
-</pre>
-
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
-
-
-</body>
+  
+  <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+  <script>
+    const md = document.getElementById("markdown");
+    
+    // Parse the markdown content and render it as HTML
+    md.innerHTML = marked.parse(md.textContent);
+  </script>
+ </body>
 </html>
+
