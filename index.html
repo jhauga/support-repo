@@ -2,148 +2,4314 @@
 <html>
 <head>
  <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
- 
- <!--<script src="/js/scripts.js"></script>-->
+ <title>6502 Breadboard Circuit Simulator</title>
  <link rel="icon" href="/favicon.png">
- 
  <style>
-  body {
-   margin-left: 50px;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { 
+    font-family: 'Consolas', 'Monaco', monospace; 
+    background: #1a1a1a; 
+    color: #e0e0e0; 
+    overflow: hidden;
   }
-  div, nav, ul, li, a {
-   display: inline-block;
-   position: relative;
-   box-sizing: border-box;
+  
+  #app { 
+    display: grid; 
+    grid-template-columns: 250px 1fr 480px; 
+    grid-template-rows: 60px 1fr 250px; 
+    height: 100vh; 
+    gap: 2px; 
+    background: #000;
   }
-  div, nav, footer {
-   width: 100%;
+  
+  /* Header */
+  #header { 
+    grid-column: 1 / -1; 
+    background: #2d2d2d; 
+    padding: 10px 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    border-bottom: 2px solid #4a9eff;
   }
-  nav {
-   background: black;   
-   height: 60px;
+  
+  #header h1 { 
+    font-size: 20px; 
+    color: #4a9eff; 
+    font-weight: bold;
   }
-  nav ul li a {
-   color: white;
-   padding: 10px;
+  
+  #controls { 
+    display: flex; 
+    gap: 10px;
+    align-items: center;
   }
-  main {
-   margin: 30px;
+  
+  #controls .divider {
+    color: #555;
+    margin: 0 5px;
   }
-  button {
-   background: darkslategray;
-   color: white;     
-   margin: 10px;
-   padding: 15px;
-   cursor: pointer;
-   border-radius: 10px;
+  
+  #zoom-level {
+    font-size: 12px;
+    color: #4a9eff;
+    min-width: 45px;
+    text-align: center;
   }
-  button.showHide {
-   display: block; 
-   background: black;
-   color: white;
+  
+  button { 
+    background: #3a3a3a; 
+    border: 1px solid #555; 
+    color: #e0e0e0; 
+    padding: 8px 16px; 
+    cursor: pointer; 
+    border-radius: 4px; 
+    font-family: inherit;
+    font-size: 12px;
+    transition: all 0.2s;
   }
-  button.showHide.black {
-   display: block; 
-   padding: 2px;
-  }  
-  button.showHide.gray {
-   display: block; 
-   background: darkslategray;
-   padding: 2px;
-  }    
-  span.key {
-   color: #0073e6;
-  }  
-  span.str {
-   color: orange;
+  
+  button:hover { 
+    background: #4a4a4a; 
+    border-color: #4a9eff;
   }
-  span.int {
-   color: green;
+  
+  button:active { 
+    background: #2a2a2a; 
   }
-  span.mthd {
-   color: purple;
+  
+  button.active { 
+    background: #4a9eff; 
+    color: #000;
+    font-weight: bold;
   }
-  em {
-   color: dimgray;
-  }  
-  footer {
-   bottom: 0px;   
-   background: black;
-   color: white;
-   margin-left: -50px; 
-   padding: 50px;
+  
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Toolbox */
+  #toolbox { 
+    background: #252525; 
+    padding: 10px; 
+    overflow-y: auto;
+    border-right: 1px solid #333;
+  }
+  
+  #toolbox h3 { 
+    color: #4a9eff; 
+    margin-bottom: 10px; 
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .component-list { 
+    list-style: none; 
+    margin-bottom: 20px;
+  }
+  
+  .component-list li { 
+    padding: 8px; 
+    margin-bottom: 4px; 
+    background: #2d2d2d; 
+    cursor: pointer; 
+    border-radius: 3px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  
+  .component-list li:hover { 
+    background: #3a3a3a; 
+    border-left-color: #4a9eff;
+  }
+  
+  .component-list li.selected {
+    background: #4a9eff;
+    color: #000;
+    font-weight: bold;
+  }
+  
+  /* Component dropdowns */
+  .component-select {
+    background: #2d2d2d;
+    margin-bottom: 4px;
+    border-radius: 3px;
+    border-left: 3px solid transparent;
+  }
+  
+  .component-select:hover {
+    border-left-color: #4a9eff;
+  }
+  
+  .component-select label {
+    display: block;
+    padding: 8px;
+    font-size: 12px;
+    color: #e0e0e0;
+    cursor: pointer;
+  }
+  
+  .component-select select {
+    width: calc(100% - 16px);
+    margin: 0 8px 8px 8px;
+    padding: 6px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    color: #e0e0e0;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  
+  .component-select select:hover {
+    border-color: #4a9eff;
+  }
+  
+  .component-select select:focus {
+    outline: none;
+    border-color: #4a9eff;
+    box-shadow: 0 0 3px rgba(74, 158, 255, 0.5);
+  }
+  
+  .component-select.selected {
+    background: #4a9eff;
+    border-left-color: #4a9eff;
+  }
+  
+  .component-select.selected label {
+    color: #000;
+    font-weight: bold;
+  }
+  
+  .component-select.selected select {
+    background: #2a6daa;
+    border-color: #2a6daa;
+    color: #fff;
+  }
+  
+  /* Circuit Examples */
+  .example-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .example-list li {
+    padding: 10px 12px;
+    margin-bottom: 4px;
+    background: #3a7d3a;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #ffffff;
+    transition: all 0.15s;
+    border-left: 3px solid #2d5a2d;
+  }
+  
+  .example-list li:hover {
+    background: #4a9d4a;
+    transform: translateX(2px);
+  }
+  
+  .example-list li:active {
+    background: #2d5a2d;
+  }
+  
+  /* Canvas Area */
+  #canvas-container { 
+    position: relative; 
+    background: #1a1a1a; 
+    overflow: auto;
+  }
+  
+  #breadboard { 
+    display: block; 
+    background: #f4e4c8;
+    cursor: crosshair;
+  }
+  
+  /* Properties Panel (nested inside wire-options-panel) */
+  #properties-panel {
+    background: #252525;
+    padding: 10px 0;
+    margin-top: 15px;
+    border-top: 1px solid #333;
+    display: none;
+  }
+  
+  #properties-panel.active {
+    display: block;
+  }
+  
+  .property-section {
+    margin-bottom: 20px;
+  }
+  
+  .property-section h3 {
+    color: #4a9eff;
+    font-size: 13px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .property-actions {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .property-actions button {
+    flex: 1;
+    padding: 10px;
+    font-size: 11px;
+  }
+  
+  .tips-content {
+    background: #1e1e1e;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #b5b5b5;
+  }
+  
+  .tips-content strong {
+    color: #4a9eff;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .tips-content ul {
+    margin: 8px 0;
+    padding-left: 20px;
+  }
+  
+  .tips-content li {
+    margin-bottom: 4px;
+  }
+  
+  .selected-component {
+    outline: 3px solid #4a9eff;
+    outline-offset: 2px;
+  }
+  
+  .drag-preview {
+    position: fixed;
+    pointer-events: none;
+    opacity: 0.25;
+    z-index: 10000;
+  }
+  
+  .component-list li {
+    cursor: grab;
+  }
+  
+  .component-list li:active {
+    cursor: grabbing;
+  }
+  
+  /* Right Panel Container */
+  #right-panel {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background: #252525;
+    border-left: 1px solid #333;
+    gap: 8px;
+    padding: 8px;
+    overflow: hidden;
+  }
+  
+  /* Output Panel */
+  #output-panel { 
+    background: #252525; 
+    display: flex; 
+    flex-direction: column;
+    padding: 8px 10px;
+    width: 230px;
+    flex: 0 0 230px;
+    border: 1px solid #111;
+    border-radius: 4px;
+  }
+  
+  /* Wire Options Panel */
+  #wire-options-panel {
+    background: #252525;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    border: 1px solid #111;
+    border-radius: 4px;
+    min-width: 220px;
+  }
+  
+  #wire-options-panel h3 {
+    color: #4a9eff;
+    font-size: 13px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .wire-option-section {
+    margin-bottom: 15px;
+  }
+  
+  .wire-option-section label {
+    display: block;
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 5px;
+  }
+  
+  .wire-option-section select {
+    width: 100%;
+    padding: 8px;
+    background: #333;
+    border: 1px solid #444;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  
+  .wire-option-section select:hover {
+    border-color: #555;
+  }
+  
+  .wire-info {
+    background: #1e1e1e;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #b5b5b5;
+    margin-top: 10px;
+  }
+  
+  .wire-info p {
+    margin-bottom: 8px;
+  }
+  
+  #output-tabs {
+    display: flex;
+    background: #2d2d2d;
+    border-bottom: 1px solid #333;
+  }
+  
+  .tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 12px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  
+  .tab:hover {
+    background: #3a3a3a;
+  }
+  
+  .tab.active {
+    border-bottom-color: #4a9eff;
+    background: #252525;
+    color: #4a9eff;
+  }
+  
+  .output-content {
+    display: none;
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  .output-content.active {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #lcd-display {
+    background: #1a472a;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    color: #8fce00;
+    line-height: 1.3;
+    letter-spacing: 1px;
+    border: 2px solid #0d3318;
+    margin: 0 0 10px 0;
+  }
+  
+  .lcd-line {
+    white-space: pre;
+    font-weight: bold;
+  }
+  
+  #led-panel {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .led {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #2d2d2d;
+    border: 2px solid #555;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+    transition: all 0.2s;
+  }
+  
+  .led.on {
+    box-shadow: 0 0 20px currentColor, inset 0 0 10px currentColor;
+    border-color: currentColor;
+  }
+  
+  .led.red { color: #ff0000; }
+  .led.green { color: #00ff00; }
+  .led.yellow { color: #ffff00; }
+  .led.blue { color: #0080ff; }
+  
+  /* Editor & Console */
+  #editor-console { 
+    grid-column: 1 / -1; 
+    background: #252525; 
+    display: flex; 
+    gap: 2px;
+    border-top: 1px solid #333;
+  }
+  
+  #editor-section, #console-section { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column;
+  }
+  
+  .section-header {
+    background: #2d2d2d;
+    padding: 8px 15px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #4a9eff;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  #code-editor, #system-console, #runtime-console {
+    flex: 1;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+    padding: 10px;
+    overflow-y: auto;
+    border: none;
+    resize: none;
+    line-height: 1.5;
+  }
+  
+  #code-editor {
+    tab-size: 4;
+  }
+  
+  #system-console, #runtime-console {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  
+  .console-line {
+    margin-bottom: 4px;
+    white-space: pre-wrap;
+  }
+  
+  .console-line.error { color: #f48771; }
+  .console-line.success { color: #89d185; }
+  .console-line.info { color: #75beff; }
+  .console-line.debug { color: #b5b5b5; }
+  
+  .editor-actions {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .editor-actions button {
+    padding: 4px 12px;
+    font-size: 11px;
+  }
+  
+  /* Scrollbars */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #1a1a1a; }
+  ::-webkit-scrollbar-thumb { background: #4a4a4a; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #5a5a5a; }
+  
+  /* Status indicators */
+  .status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 10px;
+  }
+  
+  .status.on { background: #89d185; box-shadow: 0 0 5px #89d185; }
+  .status.off { background: #444; }
+  
+  .clock-speed {
+    font-size: 11px;
+    color: #999;
+    margin-left: 15px;
   }
  </style>
 </head>
 
 <body>
-
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
+ <div id="app">
+  <!-- Header -->
+  <div id="header">
+   <h1>🖥️ 6502 Breadboard Circuit Simulator</h1>
+   <div id="controls">
+    <button id="btn-power" title="Power On/Off">⚡ Power</button>
+    <button id="btn-reset" title="Reset CPU">🔄 Reset</button>
+    <button id="btn-step" title="Single Step">⏭️ Step</button>
+    <button id="btn-run" title="Run/Pause">▶️ Run</button>
+    <span class="divider">|</span>
+    <button id="btn-zoom-in" title="Zoom In (Mouse wheel up)">🔍+</button>
+    <button id="btn-zoom-out" title="Zoom Out (Mouse wheel down)">🔍−</button>
+    <span id="zoom-level">100%</span>
+    <button id="btn-zoom-reset" title="Reset Zoom">⟲</button>
+    <span class="divider">|</span>
+    <span class="status off" id="power-status"></span>
+    <span class="clock-speed" id="clock-display">1 MHz</span>
+   </div>
+  </div>
+  
+  <!-- Toolbox -->
+  <div id="toolbox">
+   <h3>Components</h3>
+   <ul class="component-list" id="chip-list">
+    <li data-type="6502">W65C02S CPU</li>
+    <li data-type="6522">W65C22 VIA</li>
+    <li data-type="28256">28C256 EEPROM</li>
+    <li data-type="62256">62256 SRAM</li>
+    <li data-type="555">NE555 Timer</li>
+    <li data-type="lcd">LCD Panel</li>
    </ul>
-  </nav>
+   
+   <div class="component-select" id="select-7400">
+    <label>7400-series</label>
+    <select id="chip-7400-select">
+     <option value="74HC00">74HC00 Quad NAND</option>
+     <option value="7402">7402 NOR Gate</option>
+     <option value="74LS04">74LS04 Hex Inverter</option>
+     <option value="74LS08">74LS08 Quad AND</option>
+     <option value="74LS32">74LS32 Quad OR</option>
+    </select>
+   </div>
+   
+   <h3>Passive Components</h3>
+   <div class="component-select" id="select-resistor">
+    <label>Resistor</label>
+    <select id="resistor-select">
+     <option value="220">220Ω</option>
+     <option value="1000">1KΩ</option>
+     <option value="10000">10KΩ</option>
+     <option value="100000">100KΩ</option>
+     <option value="1000000">1MΩ</option>
+    </select>
+   </div>
+   
+   <div class="component-select" id="select-capacitor">
+    <label>Capacitor</label>
+    <select id="capacitor-select">
+     <option value="0.01">0.01µF</option>
+     <option value="0.1">0.1µF</option>
+     <option value="1">1µF</option>
+     <option value="10">10µF</option>
+     <option value="100">100µF</option>
+    </select>
+   </div>
+   
+   <div class="component-select" id="select-led">
+    <label>LED</label>
+    <select id="led-select">
+     <option value="#ff0000">Red</option>
+     <option value="#ffdd00">Yellow</option>
+     <option value="#0088ff">Blue</option>
+     <option value="#00ff00">Green</option>
+    </select>
+   </div>
+   
+   <ul class="component-list" id="passive-list">
+    <li data-type="potentiometer">Potentiometer (1MΩ)</li>
+    <li data-type="crystal">Crystal</li>
+    <li data-type="button">Push Button</li>
+    <li data-type="switch">Toggle Switch</li>
+   </ul>
+   
+   <h3>Tools</h3>
+   <ul class="component-list" id="tool-list">
+    <li data-type="select">Select (V)</li>
+    <li data-type="wire">Wire (W)</li>
+   </ul>
+   
+   <h3>Circuit Examples</h3>
+   <ul class="example-list" id="example-list">
+    <li data-example="555-clock">555 Astable Mode</li>
+    <li data-example="6502-blink">Blinking LED's</li>
+   </ul>
+  </div>
+  
+  <!-- Canvas -->
+  <div id="canvas-container">
+   <canvas id="breadboard" width="1200" height="800"></canvas>
+  </div>
+  
+  <!-- Right Panel Container -->
+  <div id="right-panel">
+   <!-- Output Panel -->
+   <div id="output-panel">
+    <div id="output-tabs">
+     <div class="tab active" data-tab="lcd">LCD Display</div>
+     <div class="tab" data-tab="leds">LEDs</div>
+    </div>
+    <div class="output-content active" id="lcd-content">
+     <div id="lcd-display">
+      <div class="lcd-line" id="lcd-line1">                </div>
+      <div class="lcd-line" id="lcd-line2">                </div>
+     </div>
+    </div>
+    <div class="output-content" id="leds-content">
+     <div id="led-panel">
+      <div class="led red" data-led="0"></div>
+      <div class="led green" data-led="1"></div>
+      <div class="led yellow" data-led="2"></div>
+      <div class="led blue" data-led="3"></div>
+      <div class="led red" data-led="4"></div>
+      <div class="led green" data-led="5"></div>
+      <div class="led yellow" data-led="6"></div>
+      <div class="led blue" data-led="7"></div>
+     </div>
+    </div>
+   </div>
+  
+  <!-- Wire Options Panel -->
+  <div id="wire-options-panel">
+   <h3>Wire Options</h3>
+   <div class="wire-option-section">
+    <label for="wire-color-select">Wire Color</label>
+    <select id="wire-color-select">
+     <option value="#ff0000">Red</option>
+     <option value="#ff8800">Orange</option>
+     <option value="#ffff00">Yellow</option>
+     <option value="#00ff00">Green</option>
+     <option value="#0088ff">Blue</option>
+     <option value="#aa00ff">Purple</option>
+     <option value="#000000">Black</option>
+     <option value="#ffffff">White</option>
+    </select>
+   </div>
+   
+   <!-- Properties Panel (nested inside wire-options) -->
+   <div id="properties-panel">
+    <div class="property-section">
+     <h3>Selection</h3>
+     <div id="selection-info">No component selected</div>
+    </div>
+    
+    <div class="property-section">
+     <h3>Actions</h3>
+     <div class="property-actions">
+      <button id="btn-rotate" title="Rotate 90°">🔄 Rotate</button>
+      <button id="btn-delete-comp" title="Delete Component">🗑️ Delete</button>
+     </div>
+    </div>
+    
+    <div class="property-section">
+     <h3>Tips</h3>
+     <div class="tips-content" id="component-tips">
+      <strong>Select Tool</strong>
+      Click any component on the breadboard to select it. Use the actions above to modify or delete it.
+      <ul>
+       <li>Press <strong>Delete</strong> key to remove selection</li>
+       <li>Click empty space to deselect</li>
+      </ul>
+     </div>
+    </div>
+   </div>
+   
+   <div class="wire-info" id="wire-info">
+    <p>Click and drag to draw wires.</p>
+    <p>Connected wires form a circuit path.</p>
+   </div>
+  </div>
+  </div><!-- end right-panel -->
+  
+  <!-- Editor & Console -->
+  <div id="editor-console">
+   <div id="editor-section">
+    <div class="section-header">
+     <span>📝 Assembly Editor</span>
+     <div class="editor-actions">
+      <button id="btn-assemble">Assemble</button>
+      <button id="btn-upload">Upload to ROM</button>
+      <button id="btn-load-example">Load Example</button>
+     </div>
+    </div>
+    <textarea id="code-editor" spellcheck="false">; 6502 Assembly Program
+; Blink LED Example
+
+.org $9000
+
+RESET:
+    sei              ; Disable interrupts
+    cld              ; Clear decimal mode
+    ldx #$FF
+    txs              ; Initialize stack
+    
+    lda #$FF
+    sta $8002        ; Set VIA Port A as output
+    
+MAIN:
+    lda #$01
+    sta $8001        ; Turn LED on
+    jsr DELAY
+    
+    lda #$00
+    sta $8001        ; Turn LED off
+    jsr DELAY
+    
+    jmp MAIN
+
+DELAY:
+    ldx #$FF
+DELAY_LOOP:
+    dex
+    bne DELAY_LOOP
+    rts
+
+; Interrupt vectors
+.org $FFFA
+.word $0000        ; NMI
+.word RESET        ; RESET
+.word $0000        ; IRQ</textarea>
+   </div>
+   
+   <div id="console-section">
+    <div class="section-header">
+     <span>🖥️ System Console</span>
+    </div>
+    <div id="system-console"></div>
+   </div>
+  </div>
  </div>
 
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
-  </div>
- </main>
-
-
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
-
-<h1 id="pageTitle"></h1>
-
-<p>CHANGE_TEXT</p>
-
-<pre id="a">
-CHANGE_TEXT
-</pre>
-
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
+ <script>
+  // ============================================================================
+  // 6502 BREADBOARD CIRCUIT SIMULATOR
+  // Complete interactive retro computer simulator
+  // ============================================================================
+  
+  const canvas = document.getElementById('breadboard');
+  const ctx = canvas.getContext('2d');
+  const systemConsole = document.getElementById('system-console');
+  const codeEditor = document.getElementById('code-editor');
+  
+  // Grid configuration
+  const GRID_SIZE = 20;
+  const BREADBOARD_COLS = 60;
+  const BREADBOARD_ROWS = 40;
+  
+  // System state
+  let isPowered = false;
+  let isRunning = false;
+  let selectedTool = null;
+  let selectedComponent = null;
+  let selectedWire = null;
+  let components = [];
+  let wires = [];
+  let wireStart = null;
+  let wirePreview = null;
+  let wireColor = '#ff0000';
+  let isDragging = false;
+  let dragComponent = null;
+  let draggedComponent = null;
+  let dragOffset = { x: 0, y: 0 };
+  let ctrlPressed = false;
+  let wireDragMode = null; // 'line', 'start', 'end'
+  let wireDragOffset = null;
+  
+  // Zoom state
+  let zoomLevel = 1.0;
+  const ZOOM_MIN = 0.25;
+  const ZOOM_MAX = 3.0;
+  const ZOOM_STEP = 0.1;
+  
+  // Pan state
+  let panOffsetX = 0;
+  let panOffsetY = 0;
+  let isPanning = false;
+  let panStartX = 0;
+  let panStartY = 0;
+  let spacePressed = false;
+  
+  // Area selection state
+  let isAreaSelecting = false;
+  let areaSelectStart = { x: 0, y: 0 };
+  let areaSelectEnd = { x: 0, y: 0 };
+  let selectedComponents = [];  // Multiple selection
+  let selectedWires = [];  // Multiple wire selection
+  let justFinishedAreaSelect = false;  // Prevent click from clearing selection
+  let dragStartPositions = new Map();  // Store initial positions when drag starts
+  
+  // Undo/Redo state
+  let undoStack = [];
+  let redoStack = [];
+  const MAX_UNDO_STATES = 50;
+  
+  // Save current state for undo
+  function saveStateForUndo() {
+    const state = {
+      components: JSON.parse(JSON.stringify(components)),
+      wires: JSON.parse(JSON.stringify(wires))
+    };
+    undoStack.push(state);
+    if (undoStack.length > MAX_UNDO_STATES) {
+      undoStack.shift();
+    }
+    redoStack = [];  // Clear redo stack on new action
   }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
+  
+  // Undo last action
+  function undo() {
+    if (undoStack.length === 0) {
+      log('Nothing to undo', 'info');
+      return;
+    }
+    // Save current state to redo stack
+    const currentState = {
+      components: JSON.parse(JSON.stringify(components)),
+      wires: JSON.parse(JSON.stringify(wires))
+    };
+    redoStack.push(currentState);
+    
+    // Restore previous state
+    const prevState = undoStack.pop();
+    components = prevState.components;
+    wires = prevState.wires;
+    
+    // Clear selections
+    selectedComponent = null;
+    selectedWire = null;
+    selectedComponents = [];
+    selectedWires = [];
+    
+    drawBreadboard();
+    log('Undo successful', 'info');
+  }
+  
+  // Redo last undone action
+  function redo() {
+    if (redoStack.length === 0) {
+      log('Nothing to redo', 'info');
+      return;
+    }
+    // Save current state to undo stack
+    const currentState = {
+      components: JSON.parse(JSON.stringify(components)),
+      wires: JSON.parse(JSON.stringify(wires))
+    };
+    undoStack.push(currentState);
+    
+    // Restore redo state
+    const redoState = redoStack.pop();
+    components = redoState.components;
+    wires = redoState.wires;
+    
+    // Clear selections
+    selectedComponent = null;
+    selectedWire = null;
+    selectedComponents = [];
+    selectedWires = [];
+    
+    drawBreadboard();
+    log('Redo successful', 'info');
+  }
+
+  // ============================================================================
+  // 6502 CPU EMULATOR
+  // ============================================================================
+  
+  class CPU6502 {
+    constructor() {
+      this.A = 0;      // Accumulator
+      this.X = 0;      // X register
+      this.Y = 0;      // Y register
+      this.SP = 0xFF;  // Stack pointer
+      this.PC = 0;     // Program counter
+      this.P = 0x20;   // Status flags
+      
+      this.cycles = 0;
+      this.halted = false;
+    }
+    
+    reset() {
+      this.A = 0;
+      this.X = 0;
+      this.Y = 0;
+      this.SP = 0xFD;
+      this.P = 0x24;
+      
+      // Load reset vector
+      const lo = memory.read(0xFFFC);
+      const hi = memory.read(0xFFFD);
+      this.PC = (hi << 8) | lo;
+      
+      this.cycles = 0;
+      this.halted = false;
+      
+      log('CPU Reset - PC: $' + this.PC.toString(16).toUpperCase().padStart(4, '0'), 'success');
+    }
+    
+    step() {
+      if (this.halted) return;
+      
+      const opcode = memory.read(this.PC);
+      this.PC = (this.PC + 1) & 0xFFFF;
+      
+      this.executeOpcode(opcode);
+      this.cycles++;
+    }
+    
+    executeOpcode(opcode) {
+      // Enhanced instruction set for hello-world support
+      switch(opcode) {
+        // Status flag operations
+        case 0x78: // SEI
+          this.P |= 0x04;
+          break;
+        case 0x58: // CLI
+          this.P &= ~0x04;
+          break;
+        case 0xD8: // CLD
+          this.P &= ~0x08;
+          break;
+        case 0xF8: // SED
+          this.P |= 0x08;
+          break;
+        case 0x18: // CLC
+          this.P &= ~0x01;
+          break;
+        case 0x38: // SEC
+          this.P |= 0x01;
+          break;
+          
+        // Load immediate
+        case 0xA9: // LDA immediate
+          this.A = memory.read(this.PC++);
+          this.updateNZ(this.A);
+          break;
+        case 0xA2: // LDX immediate
+          this.X = memory.read(this.PC++);
+          this.updateNZ(this.X);
+          break;
+        case 0xA0: // LDY immediate
+          this.Y = memory.read(this.PC++);
+          this.updateNZ(this.Y);
+          break;
+          
+        // Load absolute
+        case 0xAD: // LDA absolute
+          {
+            const addr = this.readWord();
+            this.A = memory.read(addr);
+            this.updateNZ(this.A);
+          }
+          break;
+        case 0xAE: // LDX absolute
+          {
+            const addr = this.readWord();
+            this.X = memory.read(addr);
+            this.updateNZ(this.X);
+          }
+          break;
+        case 0xAC: // LDY absolute
+          {
+            const addr = this.readWord();
+            this.Y = memory.read(addr);
+            this.updateNZ(this.Y);
+          }
+          break;
+          
+        // Load absolute,X
+        case 0xBD: // LDA absolute,X
+          {
+            const addr = (this.readWord() + this.X) & 0xFFFF;
+            this.A = memory.read(addr);
+            this.updateNZ(this.A);
+          }
+          break;
+          
+        // Store absolute
+        case 0x8D: // STA absolute
+          {
+            const addr = this.readWord();
+            memory.write(addr, this.A);
+          }
+          break;
+        case 0x8E: // STX absolute
+          {
+            const addr = this.readWord();
+            memory.write(addr, this.X);
+          }
+          break;
+        case 0x8C: // STY absolute
+          {
+            const addr = this.readWord();
+            memory.write(addr, this.Y);
+          }
+          break;
+          
+        // Transfer operations
+        case 0x9A: // TXS
+          this.SP = this.X;
+          break;
+        case 0xBA: // TSX
+          this.X = this.SP;
+          this.updateNZ(this.X);
+          break;
+        case 0xAA: // TAX
+          this.X = this.A;
+          this.updateNZ(this.X);
+          break;
+        case 0xA8: // TAY
+          this.Y = this.A;
+          this.updateNZ(this.Y);
+          break;
+        case 0x8A: // TXA
+          this.A = this.X;
+          this.updateNZ(this.A);
+          break;
+        case 0x98: // TYA
+          this.A = this.Y;
+          this.updateNZ(this.A);
+          break;
+          
+        // Stack operations
+        case 0x48: // PHA
+          memory.write(0x0100 + this.SP, this.A);
+          this.SP = (this.SP - 1) & 0xFF;
+          break;
+        case 0x68: // PLA
+          this.SP = (this.SP + 1) & 0xFF;
+          this.A = memory.read(0x0100 + this.SP);
+          this.updateNZ(this.A);
+          break;
+        case 0x08: // PHP
+          memory.write(0x0100 + this.SP, this.P | 0x30);
+          this.SP = (this.SP - 1) & 0xFF;
+          break;
+        case 0x28: // PLP
+          this.SP = (this.SP + 1) & 0xFF;
+          this.P = (memory.read(0x0100 + this.SP) & 0xEF) | 0x20;
+          break;
+          
+        // Inc/Dec operations
+        case 0xCA: // DEX
+          this.X = (this.X - 1) & 0xFF;
+          this.updateNZ(this.X);
+          break;
+        case 0xE8: // INX
+          this.X = (this.X + 1) & 0xFF;
+          this.updateNZ(this.X);
+          break;
+        case 0x88: // DEY
+          this.Y = (this.Y - 1) & 0xFF;
+          this.updateNZ(this.Y);
+          break;
+        case 0xC8: // INY
+          this.Y = (this.Y + 1) & 0xFF;
+          this.updateNZ(this.Y);
+          break;
+          
+        // Logic operations - immediate
+        case 0x29: // AND immediate
+          this.A &= memory.read(this.PC++);
+          this.updateNZ(this.A);
+          break;
+        case 0x09: // ORA immediate
+          this.A |= memory.read(this.PC++);
+          this.updateNZ(this.A);
+          break;
+        case 0x49: // EOR immediate
+          this.A ^= memory.read(this.PC++);
+          this.updateNZ(this.A);
+          break;
+          
+        // Logic operations - absolute
+        case 0x2D: // AND absolute
+          {
+            const addr = this.readWord();
+            this.A &= memory.read(addr);
+            this.updateNZ(this.A);
+          }
+          break;
+        case 0x0D: // ORA absolute
+          {
+            const addr = this.readWord();
+            this.A |= memory.read(addr);
+            this.updateNZ(this.A);
+          }
+          break;
+          
+        // Compare
+        case 0xC9: // CMP immediate
+          {
+            const val = memory.read(this.PC++);
+            const result = this.A - val;
+            this.updateNZ(result & 0xFF);
+            if (this.A >= val) this.P |= 0x01;
+            else this.P &= ~0x01;
+          }
+          break;
+        case 0xE0: // CPX immediate
+          {
+            const val = memory.read(this.PC++);
+            const result = this.X - val;
+            this.updateNZ(result & 0xFF);
+            if (this.X >= val) this.P |= 0x01;
+            else this.P &= ~0x01;
+          }
+          break;
+        case 0xC0: // CPY immediate
+          {
+            const val = memory.read(this.PC++);
+            const result = this.Y - val;
+            this.updateNZ(result & 0xFF);
+            if (this.Y >= val) this.P |= 0x01;
+            else this.P &= ~0x01;
+          }
+          break;
+          
+        // Branches
+        case 0xD0: // BNE
+          {
+            const offset = memory.read(this.PC++);
+            if (!(this.P & 0x02)) {
+              this.PC = (this.PC + (offset < 128 ? offset : offset - 256)) & 0xFFFF;
+            }
+          }
+          break;
+        case 0xF0: // BEQ
+          {
+            const offset = memory.read(this.PC++);
+            if (this.P & 0x02) {
+              this.PC = (this.PC + (offset < 128 ? offset : offset - 256)) & 0xFFFF;
+            }
+          }
+          break;
+        case 0xB0: // BCS
+          {
+            const offset = memory.read(this.PC++);
+            if (this.P & 0x01) {
+              this.PC = (this.PC + (offset < 128 ? offset : offset - 256)) & 0xFFFF;
+            }
+          }
+          break;
+        case 0x90: // BCC
+          {
+            const offset = memory.read(this.PC++);
+            if (!(this.P & 0x01)) {
+              this.PC = (this.PC + (offset < 128 ? offset : offset - 256)) & 0xFFFF;
+            }
+          }
+          break;
+        case 0x30: // BMI
+          {
+            const offset = memory.read(this.PC++);
+            if (this.P & 0x80) {
+              this.PC = (this.PC + (offset < 128 ? offset : offset - 256)) & 0xFFFF;
+            }
+          }
+          break;
+        case 0x10: // BPL
+          {
+            const offset = memory.read(this.PC++);
+            if (!(this.P & 0x80)) {
+              this.PC = (this.PC + (offset < 128 ? offset : offset - 256)) & 0xFFFF;
+            }
+          }
+          break;
+          
+        // Jumps and subroutines
+        case 0x4C: // JMP absolute
+          this.PC = this.readWord();
+          break;
+        case 0x6C: // JMP indirect
+          {
+            const ptr = this.readWord();
+            // 6502 bug: doesn't cross page boundary
+            const lo = memory.read(ptr);
+            const hi = memory.read((ptr & 0xFF00) | ((ptr + 1) & 0x00FF));
+            this.PC = (hi << 8) | lo;
+          }
+          break;
+        case 0x20: // JSR
+          {
+            const addr = this.readWord();
+            const ret = (this.PC - 1) & 0xFFFF;
+            memory.write(0x0100 + this.SP, (ret >> 8) & 0xFF);
+            this.SP = (this.SP - 1) & 0xFF;
+            memory.write(0x0100 + this.SP, ret & 0xFF);
+            this.SP = (this.SP - 1) & 0xFF;
+            this.PC = addr;
+          }
+          break;
+        case 0x60: // RTS
+          this.SP = (this.SP + 1) & 0xFF;
+          const rtsLo = memory.read(0x0100 + this.SP);
+          this.SP = (this.SP + 1) & 0xFF;
+          const rtsHi = memory.read(0x0100 + this.SP);
+          this.PC = (((rtsHi << 8) | rtsLo) + 1) & 0xFFFF;
+          break;
+        case 0x40: // RTI
+          this.SP = (this.SP + 1) & 0xFF;
+          this.P = (memory.read(0x0100 + this.SP) & 0xEF) | 0x20;
+          this.SP = (this.SP + 1) & 0xFF;
+          const rtiLo = memory.read(0x0100 + this.SP);
+          this.SP = (this.SP + 1) & 0xFF;
+          const rtiHi = memory.read(0x0100 + this.SP);
+          this.PC = (rtiHi << 8) | rtiLo;
+          break;
+          
+        case 0xEA: // NOP
+          break;
+          
+        default:
+          // Silently ignore unknown opcodes to keep simulation running
+          break;
+      }
+    }
+    
+    readWord() {
+      const lo = memory.read(this.PC++);
+      const hi = memory.read(this.PC++);
+      return (hi << 8) | lo;
+    }
+    
+    updateNZ(value) {
+      if (value === 0) this.P |= 0x02;
+      else this.P &= ~0x02;
+      
+      if (value & 0x80) this.P |= 0x80;
+      else this.P &= ~0x80;
+    }
+  }
+  
+  // ============================================================================
+  // MEMORY MANAGER
+  // ============================================================================
+  
+  class MemoryManager {
+    constructor() {
+      this.ram = new Uint8Array(32768);  // $0000-$7FFF
+      this.rom = new Uint8Array(32768);  // $8000-$FFFF (includes VIA mirror)
+    }
+    
+    read(addr) {
+      addr = addr & 0xFFFF;
+      
+      // RAM: $0000-$5FFF
+      if (addr < 0x6000) {
+        return this.ram[addr];
+      }
+      
+      // VIA: $6000-$600F (W65C22 - matches schematic)
+      if (addr >= 0x6000 && addr < 0x6010) {
+        return via.read(addr & 0x0F);
+      }
+      
+      // RAM: $6010-$7FFF
+      if (addr < 0x8000) {
+        return this.ram[addr];
+      }
+      
+      // ROM: $8000-$FFFF
+      return this.rom[addr - 0x8000];
+    }
+    
+    write(addr, value) {
+      addr = addr & 0xFFFF;
+      value = value & 0xFF;
+      
+      // RAM: $0000-$5FFF
+      if (addr < 0x6000) {
+        this.ram[addr] = value;
+        return;
+      }
+      
+      // VIA: $6000-$600F (W65C22 - matches schematic)
+      if (addr >= 0x6000 && addr < 0x6010) {
+        via.write(addr & 0x0F, value);
+        return;
+      }
+      
+      // RAM: $6010-$7FFF
+      if (addr < 0x8000) {
+        this.ram[addr] = value;
+        return;
+      }
+      
+      // ROM is read-only
+    }
+    
+    loadROM(data, offset = 0x8000) {
+      const baseOffset = offset - 0x8000;
+      for (let i = 0; i < data.length; i++) {
+        if (baseOffset + i >= 0 && baseOffset + i < this.rom.length) {
+          this.rom[baseOffset + i] = data[i];
+        }
+      }
+      log('ROM loaded: ' + data.length + ' bytes at $' + offset.toString(16).toUpperCase(), 'success');
+    }
+  }
+  
+  // ============================================================================
+  // 6522 VIA EMULATOR
+  // ============================================================================
+  
+  class VIA6522 {
+    constructor() {
+      this.ORB = 0;    // Output Register B
+      this.ORA = 0;    // Output Register A
+      this.DDRB = 0;   // Data Direction B
+      this.DDRA = 0;   // Data Direction A
+      this.T1C = 0;    // Timer 1 Counter
+      this.T1L = 0;    // Timer 1 Latch
+      this.ACR = 0;    // Auxiliary Control
+      this.PCR = 0;    // Peripheral Control
+      this.IFR = 0;    // Interrupt Flag
+      this.IER = 0;    // Interrupt Enable
+    }
+    
+    read(reg) {
+      switch(reg) {
+        case 0: // Port B read
+          // When DDRB bits are 0 (input), read from external device
+          // For LCD busy flag check: if Port B is input and RW is set, return busy flag
+          if (this.DDRB === 0) {
+            // Port B is configured as input - LCD busy flag check
+            // Return 0x00 (not busy) to allow the program to proceed
+            return lcd.getBusyFlag();
+          }
+          return this.ORB;
+        case 1: return this.ORA;
+        case 2: return this.DDRB;
+        case 3: return this.DDRA;
+        case 11: return this.ACR;
+        case 12: return this.PCR;
+        case 13: return this.IFR;
+        case 14: return this.IER;
+        default: return 0;
+      }
+    }
+    
+    write(reg, value) {
+      switch(reg) {
+        case 0:
+          this.ORB = value;
+          this.updateOutputs();
+          break;
+        case 1:
+          this.ORA = value;
+          this.updateOutputs();
+          break;
+        case 2:
+          this.DDRB = value;
+          break;
+        case 3:
+          this.DDRA = value;
+          break;
+        case 11:
+          this.ACR = value;
+          break;
+        case 12:
+          this.PCR = value;
+          break;
+      }
+    }
+    
+    updateOutputs() {
+      // Update LED outputs (Port A bits 0-4)
+      const portA = this.ORA & this.DDRA;
+      for (let i = 0; i < 8; i++) {
+        const led = document.querySelector(`[data-led="${i}"]`);
+        if (led) {
+          if (portA & (1 << i)) {
+            led.classList.add('on');
+          } else {
+            led.classList.remove('on');
+          }
+        }
+      }
+      
+      // Port B is used for LCD data bus, Port A top 3 bits for LCD control
+      lcd.updateFromVIA();
+    }
+  }
+  
+  // ============================================================================
+  // LCD HD44780 EMULATOR
+  // ============================================================================
+  
+  class LCD {
+    constructor() {
+      this.ddram = new Uint8Array(80);
+      this.cgram = new Uint8Array(64);
+      this.cursorPos = 0;
+      this.displayOn = true;
+      this.cursorOn = false;
+      this.blinkOn = false;
+      
+      this.rs = 0;   // Register select
+      this.rw = 0;   // Read/Write
+      this.e = 0;    // Enable
+      this.data = 0;
+      
+      this.lastE = 0;
+      this.busyCounter = 0;  // Simulates busy flag timing
+    }
+    
+    // Called when VIA Port B is read (for busy flag checking)
+    getBusyFlag() {
+      // In our simplified emulation, LCD is always ready
+      // Return 0 (not busy) so the program proceeds
+      return 0x00;
+    }
+    
+    updateFromVIA() {
+      // LCD connected to VIA Port B (data) and Port A (control)
+      // Matches schematic: E = PA7 (bit 7), RW = PA6 (bit 6), RS = PA5 (bit 5)
+      const portA = via.ORA & via.DDRA;
+      const portB = via.ORB & via.DDRB;
+      
+      this.rs = (portA & 0x20) >> 5;   // RS = bit 5
+      this.rw = (portA & 0x40) >> 6;   // RW = bit 6  
+      this.e = (portA & 0x80) >> 7;    // E  = bit 7
+      this.data = portB;
+      
+      // Detect falling edge of E (write operation)
+      if (this.lastE === 1 && this.e === 0) {
+        if (this.rw === 0) {
+          // Write operation
+          this.latchData();
+        }
+      }
+      
+      this.lastE = this.e;
+    }
+    
+    latchData() {
+      if (this.rs === 0) {
+        // Command
+        this.executeCommand(this.data);
+      } else {
+        // Data write - write character to DDRAM
+        this.ddram[this.cursorPos] = this.data;
+        this.cursorPos = (this.cursorPos + 1) % 80;
+        this.updateDisplay();
+      }
+    }
+    
+    executeCommand(cmd) {
+      if (cmd === 0x01) {
+        // Clear display
+        this.ddram.fill(0x20);
+        this.cursorPos = 0;
+        this.updateDisplay();
+      } else if (cmd === 0x02) {
+        // Return home
+        this.cursorPos = 0;
+      } else if ((cmd & 0x80) === 0x80) {
+        // Set DDRAM address
+        this.cursorPos = cmd & 0x7F;
+      } else if ((cmd & 0xF8) === 0x38) {
+        // Function set: 8-bit, 2-line, 5x8 font
+        // This is initialization - nothing special needed
+      } else if ((cmd & 0xF8) === 0x08 || (cmd & 0xF0) === 0x00) {
+        // Display control
+        this.displayOn = !!(cmd & 0x04);
+        this.cursorOn = !!(cmd & 0x02);
+        this.blinkOn = !!(cmd & 0x01);
+      } else if ((cmd & 0xFC) === 0x04) {
+        // Entry mode set - increment cursor
+        // Nothing special needed for emulation
+      }
+    }
+    
+    updateDisplay() {
+      const line1 = document.getElementById('lcd-line1');
+      const line2 = document.getElementById('lcd-line2');
+      
+      if (!line1 || !line2) return;
+      
+      let text1 = '';
+      let text2 = '';
+      
+      for (let i = 0; i < 16; i++) {
+        const char = this.ddram[i] || 0x20;
+        text1 += String.fromCharCode(char >= 0x20 && char <= 0x7E ? char : 0x20);
+      }
+      
+      for (let i = 0; i < 16; i++) {
+        const char = this.ddram[0x40 + i] || 0x20;
+        text2 += String.fromCharCode(char >= 0x20 && char <= 0x7E ? char : 0x20);
+      }
+      
+      line1.textContent = text1;
+      line2.textContent = text2;
+    }
+  }
+  
+  // ============================================================================
+  // ASSEMBLER - Enhanced for full hello-world support
+  // ============================================================================
+  
+  class Assembler {
+    constructor() {
+      this.opcodes = {
+        // Implied/Accumulator
+        'SEI': 0x78, 'CLD': 0xD8, 'TXS': 0x9A, 'DEX': 0xCA, 'INX': 0xE8,
+        'DEY': 0x88, 'INY': 0xC8, 'NOP': 0xEA, 'RTS': 0x60, 'RTI': 0x40,
+        'PHA': 0x48, 'PLA': 0x68, 'PHP': 0x08, 'PLP': 0x28,
+        'TAX': 0xAA, 'TAY': 0xA8, 'TXA': 0x8A, 'TYA': 0x98, 'TSX': 0xBA,
+        'SEC': 0x38, 'CLC': 0x18, 'SED': 0xF8, 'CLI': 0x58,
+        // Load/Store
+        'LDA': { imm: 0xA9, abs: 0xAD, zpg: 0xA5, abx: 0xBD, aby: 0xB9, idx: 0xA1, idy: 0xB1 },
+        'LDX': { imm: 0xA2, abs: 0xAE, zpg: 0xA6, aby: 0xBE },
+        'LDY': { imm: 0xA0, abs: 0xAC, zpg: 0xA4, abx: 0xBC },
+        'STA': { abs: 0x8D, zpg: 0x85, abx: 0x9D, aby: 0x99, idx: 0x81, idy: 0x91 },
+        'STX': { abs: 0x8E, zpg: 0x86 },
+        'STY': { abs: 0x8C, zpg: 0x84 },
+        // Branches
+        'BNE': { rel: 0xD0 }, 'BEQ': { rel: 0xF0 }, 'BCS': { rel: 0xB0 },
+        'BCC': { rel: 0x90 }, 'BMI': { rel: 0x30 }, 'BPL': { rel: 0x10 },
+        'BVS': { rel: 0x70 }, 'BVC': { rel: 0x50 },
+        // Jumps
+        'JSR': { abs: 0x20 }, 'JMP': { abs: 0x4C, ind: 0x6C },
+        // Logic/Arithmetic
+        'AND': { imm: 0x29, abs: 0x2D, zpg: 0x25 },
+        'ORA': { imm: 0x09, abs: 0x0D, zpg: 0x05 },
+        'EOR': { imm: 0x49, abs: 0x4D, zpg: 0x45 },
+        'ADC': { imm: 0x69, abs: 0x6D, zpg: 0x65 },
+        'SBC': { imm: 0xE9, abs: 0xED, zpg: 0xE5 },
+        'CMP': { imm: 0xC9, abs: 0xCD, zpg: 0xC5 },
+        'CPX': { imm: 0xE0, abs: 0xEC, zpg: 0xE4 },
+        'CPY': { imm: 0xC0, abs: 0xCC, zpg: 0xC4 },
+        // Inc/Dec
+        'INC': { abs: 0xEE, zpg: 0xE6 },
+        'DEC': { abs: 0xCE, zpg: 0xC6 },
+        // Shifts
+        'ASL': { acc: 0x0A, abs: 0x0E, zpg: 0x06 },
+        'LSR': { acc: 0x4A, abs: 0x4E, zpg: 0x46 },
+        'ROL': { acc: 0x2A, abs: 0x2E, zpg: 0x26 },
+        'ROR': { acc: 0x6A, abs: 0x6E, zpg: 0x66 },
+        // Bit test
+        'BIT': { abs: 0x2C, zpg: 0x24 }
+      };
+      this.symbols = {};
+    }
+    
+    assemble(source) {
+      log('Assembling...', 'info');
+      
+      const lines = source.split('\n');
+      const binary = new Uint8Array(32768);
+      binary.fill(0xEA);  // Fill with NOPs initially
+      const labels = {};
+      this.symbols = {};
+      let pc = 0x8000;
+      let errors = [];
+      
+      // Pre-process: extract symbol definitions (NAME = VALUE)
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].split(';')[0].trim();
+        if (!line) continue;
+        
+        const symbolMatch = line.match(/^(\w+)\s*=\s*[\$%]?(.+)$/);
+        if (symbolMatch) {
+          const name = symbolMatch[1];
+          let value = symbolMatch[2].trim();
+          
+          if (value.startsWith('$')) {
+            this.symbols[name] = parseInt(value.slice(1), 16);
+          } else if (value.startsWith('%')) {
+            this.symbols[name] = parseInt(value.slice(1), 2);
+          } else {
+            this.symbols[name] = parseInt(value);
+          }
+        }
+      }
+      
+      // First pass - collect labels and calculate sizes
+      pc = 0x8000;
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].split(';')[0].trim();
+        if (!line || line.match(/^\w+\s*=/)) continue;
+        
+        if (line.startsWith('.org')) {
+          const orgVal = line.split(/\s+/)[1];
+          pc = orgVal.startsWith('$') ? parseInt(orgVal.slice(1), 16) : parseInt(orgVal, 16);
+          continue;
+        }
+        
+        if (line.includes(':')) {
+          const labelPart = line.split(':')[0].trim();
+          labels[labelPart] = pc;
+          continue;
+        }
+        
+        // Calculate instruction sizes for first pass
+        const afterLabel = line.includes(':') ? line.split(':')[1].trim() : line;
+        if (!afterLabel) continue;
+        
+        const parts = afterLabel.split(/\s+/);
+        const mnemonic = parts[0].toUpperCase();
+        
+        if (mnemonic.startsWith('.')) {
+          if (mnemonic === '.ASCIIZ') {
+            const strMatch = line.match(/"([^"]*)"/);
+            if (strMatch) pc += strMatch[1].length + 1;
+          } else if (mnemonic === '.WORD') {
+            pc += 2;
+          }
+          continue;
+        }
+        
+        if (!this.opcodes[mnemonic]) continue;
+        
+        if (typeof this.opcodes[mnemonic] === 'number') {
+          pc += 1;
+        } else {
+          const operand = parts[1] || '';
+          if (operand.startsWith('#')) pc += 2;
+          else if (this.opcodes[mnemonic].rel) pc += 2;
+          else pc += 3;
+        }
+      }
+      
+      // Second pass - assemble
+      pc = 0x8000;
+      
+      for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].split(';')[0].trim();
+        if (!line || line.match(/^\w+\s*=/)) continue;
+        
+        if (line.startsWith('.org')) {
+          const orgVal = line.split(/\s+/)[1];
+          pc = orgVal.startsWith('$') ? parseInt(orgVal.slice(1), 16) : parseInt(orgVal, 16);
+          continue;
+        }
+        
+        // Handle .word directive
+        if (line.toLowerCase().includes('.word')) {
+          const wordMatch = line.match(/\.word\s+(\S+)/i);
+          if (wordMatch) {
+            let value = wordMatch[1];
+            let addr;
+            if (labels[value] !== undefined) {
+              addr = labels[value];
+            } else if (value.startsWith('$')) {
+              addr = parseInt(value.slice(1), 16);
+            } else {
+              addr = parseInt(value, 16) || 0;
+            }
+            binary[pc - 0x8000] = addr & 0xFF;
+            binary[pc - 0x8000 + 1] = (addr >> 8) & 0xFF;
+            pc += 2;
+          }
+          continue;
+        }
+        
+        // Handle .asciiz directive
+        if (line.toLowerCase().includes('.asciiz')) {
+          const strMatch = line.match(/"([^"]*)"/);
+          if (strMatch) {
+            const str = strMatch[1];
+            for (let c = 0; c < str.length; c++) {
+              binary[pc - 0x8000] = str.charCodeAt(c);
+              pc++;
+            }
+            binary[pc - 0x8000] = 0;  // Null terminator
+            pc++;
+          }
+          continue;
+        }
+        
+        // Skip label-only lines, extract instruction after label
+        if (line.includes(':')) {
+          line = line.split(':')[1].trim();
+          if (!line) continue;
+        }
+        
+        const parts = line.split(/\s+/);
+        const mnemonic = parts[0].toUpperCase();
+        
+        if (!this.opcodes[mnemonic]) {
+          continue;  // Skip unknown (could be pseudo-op handled above)
+        }
+        
+        // Handle implied/accumulator mode instructions
+        if (typeof this.opcodes[mnemonic] === 'number') {
+          binary[pc - 0x8000] = this.opcodes[mnemonic];
+          pc++;
+          continue;
+        }
+        
+        const operand = parts[1] || '';
+        
+        // Parse operand and determine addressing mode
+        if (operand.startsWith('#')) {
+          // Immediate mode: #$xx, #%xxxxxxxx, or #SYMBOL
+          let value;
+          const valPart = operand.slice(1);
+          
+          if (valPart.startsWith('$')) {
+            value = parseInt(valPart.slice(1), 16);
+          } else if (valPart.startsWith('%')) {
+            value = parseInt(valPart.slice(1), 2);
+          } else if (valPart.startsWith("'") && valPart.endsWith("'")) {
+            value = valPart.charCodeAt(1);
+          } else if (this.symbols[valPart] !== undefined) {
+            value = this.symbols[valPart];
+          } else if (valPart.match(/^\(.*\)$/)) {
+            // Handle expressions like #(RW | E)
+            const expr = valPart.slice(1, -1);
+            value = this.evalExpression(expr);
+          } else {
+            value = parseInt(valPart);
+          }
+          
+          if (this.opcodes[mnemonic].imm !== undefined) {
+            binary[pc - 0x8000] = this.opcodes[mnemonic].imm;
+            binary[pc - 0x8000 + 1] = value & 0xFF;
+            pc += 2;
+          }
+        } else if (this.opcodes[mnemonic].rel !== undefined) {
+          // Relative addressing (branches)
+          const target = labels[operand];
+          if (target !== undefined) {
+            binary[pc - 0x8000] = this.opcodes[mnemonic].rel;
+            const offset = target - (pc + 2);
+            binary[pc - 0x8000 + 1] = offset & 0xFF;
+            pc += 2;
+          } else {
+            errors.push(`Line ${i+1}: Undefined label ${operand}`);
+          }
+        } else {
+          // Absolute or zero page addressing
+          let addr;
+          let addrStr = operand;
+          
+          // Check for indexed modes (,X or ,Y)
+          let indexed = null;
+          if (addrStr.endsWith(',X') || addrStr.endsWith(',x')) {
+            indexed = 'X';
+            addrStr = addrStr.slice(0, -2);
+          } else if (addrStr.endsWith(',Y') || addrStr.endsWith(',y')) {
+            indexed = 'Y';
+            addrStr = addrStr.slice(0, -2);
+          }
+          
+          // Get the address value
+          if (addrStr.startsWith('$')) {
+            addr = parseInt(addrStr.slice(1), 16);
+          } else if (labels[addrStr] !== undefined) {
+            addr = labels[addrStr];
+          } else if (this.symbols[addrStr] !== undefined) {
+            addr = this.symbols[addrStr];
+          } else {
+            addr = parseInt(addrStr, 16);
+          }
+          
+          // Determine if zero page or absolute
+          const isZeroPage = addr < 0x100 && !indexed;
+          
+          let opcode;
+          if (indexed === 'X' && this.opcodes[mnemonic].abx) {
+            opcode = this.opcodes[mnemonic].abx;
+          } else if (indexed === 'Y' && this.opcodes[mnemonic].aby) {
+            opcode = this.opcodes[mnemonic].aby;
+          } else if (isZeroPage && this.opcodes[mnemonic].zpg) {
+            opcode = this.opcodes[mnemonic].zpg;
+            binary[pc - 0x8000] = opcode;
+            binary[pc - 0x8000 + 1] = addr & 0xFF;
+            pc += 2;
+            continue;
+          } else {
+            opcode = this.opcodes[mnemonic].abs;
+          }
+          
+          if (opcode !== undefined) {
+            binary[pc - 0x8000] = opcode;
+            binary[pc - 0x8000 + 1] = addr & 0xFF;
+            binary[pc - 0x8000 + 2] = (addr >> 8) & 0xFF;
+            pc += 3;
+          } else {
+            errors.push(`Line ${i+1}: Invalid addressing mode for ${mnemonic}`);
+          }
+        }
+      }
+      
+      if (errors.length > 0) {
+        errors.forEach(err => log(err, 'error'));
+        return null;
+      }
+      
+      log('Assembly successful! ' + (pc - 0x8000) + ' bytes generated', 'success');
+      return binary;
+    }
+    
+    evalExpression(expr) {
+      // Simple expression evaluator for things like (RW | E)
+      const tokens = expr.split(/\s*\|\s*/);
+      let result = 0;
+      for (const token of tokens) {
+        const trimmed = token.trim();
+        if (this.symbols[trimmed] !== undefined) {
+          result |= this.symbols[trimmed];
+        } else if (trimmed.startsWith('%')) {
+          result |= parseInt(trimmed.slice(1), 2);
+        } else if (trimmed.startsWith('$')) {
+          result |= parseInt(trimmed.slice(1), 16);
+        }
+      }
+      return result;
+    }
+  }
+  
+  // ============================================================================
+  // RENDERING
+  // ============================================================================
+  
+  function drawBreadboard() {
+    // Clear and apply zoom transform
+    ctx.setTransform(1, 0, 0, 1, 0, 0);  // Reset transform
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Apply zoom and pan
+    ctx.setTransform(zoomLevel, 0, 0, zoomLevel, panOffsetX, panOffsetY);
+    
+    // Calculate visible area in world coordinates
+    const visibleWidth = canvas.width / zoomLevel;
+    const visibleHeight = canvas.height / zoomLevel;
+    
+    ctx.fillStyle = '#f4e4c8';
+    ctx.fillRect(0, 0, visibleWidth, visibleHeight);
+    
+    // Draw grid - calculate how many grid lines are visible
+    ctx.strokeStyle = '#d4c4a8';
+    ctx.lineWidth = 0.5 / zoomLevel;  // Keep line width consistent regardless of zoom
+    
+    const gridCols = Math.ceil(visibleWidth / GRID_SIZE) + 1;
+    const gridRows = Math.ceil(visibleHeight / GRID_SIZE) + 1;
+    
+    for (let x = 0; x <= gridCols; x++) {
+      ctx.beginPath();
+      ctx.moveTo(x * GRID_SIZE, 0);
+      ctx.lineTo(x * GRID_SIZE, visibleHeight);
+      ctx.stroke();
+    }
+    
+    for (let y = 0; y <= gridRows; y++) {
+      ctx.beginPath();
+      ctx.moveTo(0, y * GRID_SIZE);
+      ctx.lineTo(visibleWidth, y * GRID_SIZE);
+      ctx.stroke();
+    }
+    
+    // Draw power rails
+    ctx.fillStyle = '#c44';
+    ctx.fillRect(0, 0, visibleWidth, GRID_SIZE);
+    ctx.fillStyle = '#333';
+    ctx.fillRect(0, GRID_SIZE, visibleWidth, GRID_SIZE);
+    
+    // Draw power rail indicators
+    ctx.font = 'bold 14px monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    // + indicator on red rail
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('+', 5, GRID_SIZE / 2);
+    // - indicator on black rail
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('−', 5, GRID_SIZE * 1.5);
+    
+    // Draw wires
+    wires.forEach(wire => drawWire(wire));
+    
+    // Draw wire preview (dashed line)
+    if (wirePreview) {
+      ctx.strokeStyle = wireColor;
+      ctx.lineWidth = 3;
+      ctx.setLineDash([10, 5]);
+      ctx.beginPath();
+      ctx.moveTo(wirePreview.start.x, wirePreview.start.y);
+      ctx.lineTo(wirePreview.end.x, wirePreview.end.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      
+      // Draw preview endpoint
+      ctx.fillStyle = wireColor;
+      ctx.beginPath();
+      ctx.arc(wirePreview.end.x, wirePreview.end.y, 6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    // Draw components
+    components.forEach(comp => drawComponent(comp));
+    
+    // Draw area selection rectangle
+    if (isAreaSelecting) {
+      const selX = Math.min(areaSelectStart.x, areaSelectEnd.x);
+      const selY = Math.min(areaSelectStart.y, areaSelectEnd.y);
+      const selW = Math.abs(areaSelectEnd.x - areaSelectStart.x);
+      const selH = Math.abs(areaSelectEnd.y - areaSelectStart.y);
+      
+      ctx.strokeStyle = '#4a9eff';
+      ctx.lineWidth = 2 / zoomLevel;
+      ctx.setLineDash([5 / zoomLevel, 5 / zoomLevel]);
+      ctx.strokeRect(selX, selY, selW, selH);
+      ctx.setLineDash([]);
+      
+      ctx.fillStyle = 'rgba(74, 158, 255, 0.1)';
+      ctx.fillRect(selX, selY, selW, selH);
+    }
+  }
+  
+  function drawComponent(comp) {
+    ctx.save();
+    
+    // Get component bounds for rotation pivot
+    const bounds = getComponentBounds(comp);
+    const rotation = comp.rotation || 0;
+    
+    // Translate to component position, then rotate around center
+    ctx.translate(comp.x + bounds.width / 2, comp.y + bounds.height / 2);
+    ctx.rotate(rotation * Math.PI / 180);
+    ctx.translate(-bounds.width / 2, -bounds.height / 2);
+    
+    // Highlight if selected (single or multi-selection)
+    if (comp === selectedComponent || selectedComponents.includes(comp)) {
+      ctx.strokeStyle = '#4a9eff';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([5, 5]);
+      const bounds = getComponentBounds(comp);
+      ctx.strokeRect(-4, -4, bounds.width + 8, bounds.height + 8);
+      ctx.setLineDash([]);
+    }
+    
+    switch(comp.type) {
+      case '6502':
+        drawChip(comp, 40, '#2a2a2a', 'W65C02S');
+        break;
+      case '6522':
+        drawChip(comp, 40, '#3a3a3a', 'W65C22');
+        break;
+      case '28256':
+        drawChip(comp, 28, '#2a4a2a', '28C256');
+        break;
+      case '62256':
+        drawChip(comp, 28, '#2a3a4a', '62256');
+        break;
+      case '7400':
+        drawChip(comp, 14, '#3a2a4a', comp.variant || '74HC00');
+        break;
+      case '555':
+        drawChip(comp, 8, '#4a2a2a', 'NE555');
+        break;
+      case 'lcd':
+        drawLCDPanel(comp);
+        break;
+      case 'led':
+        drawLED(comp);
+        break;
+      case 'resistor':
+        drawResistor(comp);
+        break;
+      case 'capacitor':
+        drawCapacitor(comp);
+        break;
+      case 'potentiometer':
+        drawPotentiometer(comp);
+        break;
+      case 'crystal':
+        drawCrystal(comp);
+        break;
+      case 'button':
+        drawButton(comp);
+        break;
+      case 'switch':
+        drawSwitch(comp);
+        break;
+    }
+    
+    ctx.restore();
+  }
+  
+  function getComponentBounds(comp) {
+    switch(comp.type) {
+      case '6502': return { width: GRID_SIZE * 6, height: 20 * GRID_SIZE };
+      case '6522': return { width: GRID_SIZE * 6, height: 20 * GRID_SIZE };
+      case '28256': return { width: GRID_SIZE * 6, height: 14 * GRID_SIZE };
+      case '62256': return { width: GRID_SIZE * 6, height: 14 * GRID_SIZE };
+      case '7400': return { width: GRID_SIZE * 6, height: 7 * GRID_SIZE };
+      case '555': return { width: GRID_SIZE * 6, height: 4 * GRID_SIZE };
+      case 'lcd': return { width: GRID_SIZE * 16, height: GRID_SIZE * 4 };
+      case 'led': return { width: GRID_SIZE, height: GRID_SIZE };
+      case 'resistor': return { width: GRID_SIZE, height: GRID_SIZE * 1.2 };
+      case 'capacitor': return { width: GRID_SIZE, height: GRID_SIZE * 1.5 };
+      case 'potentiometer': return { width: GRID_SIZE * 2, height: GRID_SIZE * 2 };
+      case 'crystal': return { width: GRID_SIZE * 2, height: GRID_SIZE * 1.5 };
+      case 'button': return { width: GRID_SIZE * 2, height: GRID_SIZE * 2 };
+      case 'switch': return { width: GRID_SIZE * 2, height: GRID_SIZE * 1.5 };
+      default: return { width: GRID_SIZE, height: GRID_SIZE };
+    }
+  }
+  
+  function drawChip(comp, pins, color, label) {
+    const width = GRID_SIZE * 6;
+    const height = Math.ceil(pins / 2) * GRID_SIZE;
+    
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, width, height);
+    
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(0, 0, width, height);
+    
+    // Notch
+    ctx.fillStyle = '#555';
+    ctx.fillRect(width / 2 - GRID_SIZE / 2, 0, GRID_SIZE, GRID_SIZE / 4);
+    
+    // Label
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 12px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, width / 2, height / 2);
+    
+    // Pins
+    ctx.fillStyle = '#888';
+    for (let i = 0; i < pins / 2; i++) {
+      ctx.fillRect(-GRID_SIZE / 4, i * GRID_SIZE + GRID_SIZE / 3, GRID_SIZE / 4, GRID_SIZE / 3);
+      ctx.fillRect(width, i * GRID_SIZE + GRID_SIZE / 3, GRID_SIZE / 4, GRID_SIZE / 3);
+    }
+  }
+  
+  function drawLED(comp) {
+    const color = comp.color || '#ff0000';
+    const isLit = comp.lit || false;
+    
+    // Glow effect when LED is lit
+    if (isLit) {
+      ctx.save();
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 20;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(GRID_SIZE / 2, GRID_SIZE / 2, GRID_SIZE / 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      
+      // Bright center glow
+      const gradient = ctx.createRadialGradient(
+        GRID_SIZE / 2, GRID_SIZE / 2, 0,
+        GRID_SIZE / 2, GRID_SIZE / 2, GRID_SIZE / 3
+      );
+      gradient.addColorStop(0, '#ffffff');
+      gradient.addColorStop(0.3, color);
+      gradient.addColorStop(1, color);
+      ctx.fillStyle = gradient;
+    } else {
+      // Darker unlit color
+      ctx.fillStyle = color + '66';  // 40% opacity
+    }
+    
+    ctx.beginPath();
+    ctx.arc(GRID_SIZE / 2, GRID_SIZE / 2, GRID_SIZE / 3, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    
+    // Pins (75% of grid size)
+    const pinWidth = GRID_SIZE * 0.15;
+    const pinLength = GRID_SIZE * 0.75;
+    ctx.fillStyle = '#888';
+    // Anode (longer pin, top)
+    ctx.fillRect(GRID_SIZE / 2 - pinWidth / 2, -pinLength, pinWidth, pinLength);
+    // Cathode (shorter pin, bottom)
+    ctx.fillRect(GRID_SIZE / 2 - pinWidth / 2, GRID_SIZE, pinWidth, pinLength);
+    
+    // Polarity indicators
+    ctx.font = 'bold 10px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    // Anode (+) indicator - top
+    ctx.fillStyle = '#ff4444';
+    ctx.fillText('+', GRID_SIZE / 2 + GRID_SIZE * 0.4, -pinLength / 2);
+    
+    // Cathode (-) indicator - bottom
+    ctx.fillStyle = '#4444ff';
+    ctx.fillText('−', GRID_SIZE / 2 + GRID_SIZE * 0.4, GRID_SIZE + pinLength / 2);
+  }
+  
+  function drawLCDPanel(comp) {
+    const width = GRID_SIZE * 16;
+    const height = GRID_SIZE * 4;
+    
+    // PCB backing (green)
+    ctx.fillStyle = '#1a5c1a';
+    ctx.fillRect(-GRID_SIZE * 0.5, -GRID_SIZE * 0.5, width + GRID_SIZE, height + GRID_SIZE);
+    
+    // LCD bezel (dark gray)
+    ctx.fillStyle = '#2a2a2a';
+    ctx.fillRect(0, 0, width, height);
+    
+    // LCD screen area (yellow-green backlight)
+    ctx.fillStyle = '#9eb23b';
+    ctx.fillRect(GRID_SIZE * 0.5, GRID_SIZE * 0.5, width - GRID_SIZE, height - GRID_SIZE);
+    
+    // Text area grid hint
+    ctx.strokeStyle = '#8ca32a';
+    ctx.lineWidth = 0.5;
+    for (let col = 0; col < 16; col++) {
+      for (let row = 0; row < 2; row++) {
+        ctx.strokeRect(
+          GRID_SIZE * 0.8 + col * (GRID_SIZE * 0.9),
+          GRID_SIZE * 0.8 + row * (GRID_SIZE * 1.2),
+          GRID_SIZE * 0.7,
+          GRID_SIZE * 1.0
+        );
+      }
+    }
+    
+    // Label
+    ctx.fillStyle = '#ccc';
+    ctx.font = 'bold 9px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('16x2 LCD', GRID_SIZE * 0.3, height + GRID_SIZE * 0.3);
+    
+    // Pre-soldered header pins (16 pins along bottom)
+    ctx.fillStyle = '#888';
+    const pinWidth = GRID_SIZE * 0.2;
+    const pinLength = GRID_SIZE * 0.5;
+    for (let i = 0; i < 16; i++) {
+      ctx.fillRect(GRID_SIZE * 0.5 + i * GRID_SIZE - pinWidth / 2, height, pinWidth, pinLength);
+    }
+  }
+  
+  function drawPotentiometer(comp) {
+    const size = GRID_SIZE * 2;
+    const value = comp.value || 500000;  // Default 500K (middle of 1M pot)
+    
+    // Body (blue rectangular)
+    ctx.fillStyle = '#2255aa';
+    ctx.fillRect(0, 0, size, size);
+    
+    // Border
+    ctx.strokeStyle = '#1a3a7a';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(0, 0, size, size);
+    
+    // Adjustment slot/dial
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(size / 2, size / 2, GRID_SIZE * 0.4, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Position indicator (rotates based on value)
+    const angle = (value / 1000000) * Math.PI * 1.5 - Math.PI * 0.75;
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(size / 2, size / 2);
+    ctx.lineTo(
+      size / 2 + Math.cos(angle) * GRID_SIZE * 0.3,
+      size / 2 + Math.sin(angle) * GRID_SIZE * 0.3
+    );
+    ctx.stroke();
+    
+    // 3 pins (left, center, right on bottom)
+    ctx.fillStyle = '#888';
+    const pinWidth = GRID_SIZE * 0.2;
+    const pinLength = GRID_SIZE * 0.4;
+    ctx.fillRect(GRID_SIZE * 0.3 - pinWidth / 2, size, pinWidth, pinLength);  // Pin 1
+    ctx.fillRect(GRID_SIZE * 1.0 - pinWidth / 2, size, pinWidth, pinLength);  // Pin 2 (wiper)
+    ctx.fillRect(GRID_SIZE * 1.7 - pinWidth / 2, size, pinWidth, pinLength);  // Pin 3
+    
+    // Label
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 8px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('1MΩ', size / 2, GRID_SIZE * 0.4);
+  }
+  
+  function drawResistor(comp) {
+    const pinWidth = GRID_SIZE * 0.2;
+    const bodyHeight = GRID_SIZE * 1.2;
+    const bodyWidth = GRID_SIZE * 0.6;
+    
+    // Draw pins (top and bottom)
+    ctx.fillStyle = '#888';
+    ctx.fillRect(GRID_SIZE / 2 - pinWidth / 2, -GRID_SIZE * 0.3, pinWidth, GRID_SIZE * 0.3);
+    ctx.fillRect(GRID_SIZE / 2 - pinWidth / 2, GRID_SIZE, pinWidth, GRID_SIZE * 0.3);
+    
+    // Draw resistor body (beige cylinder)
+    ctx.fillStyle = '#d2b48c';
+    ctx.fillRect(GRID_SIZE / 2 - bodyWidth / 2, 0, bodyWidth, bodyHeight);
+    
+    // Draw color bands
+    const bandColors = ['#f4d03f', '#dc143c'];
+    const bandY = [GRID_SIZE * 0.3, GRID_SIZE * 0.6];
+    bandY.forEach((y, i) => {
+      ctx.fillStyle = bandColors[i];
+      ctx.fillRect(GRID_SIZE / 2 - bodyWidth / 2, y, bodyWidth, GRID_SIZE * 0.15);
+    });
+  }
+  
+  function drawCapacitor(comp) {
+    const pinWidth = GRID_SIZE * 0.2;
+    const bodyRadius = GRID_SIZE * 0.45;
+    
+    // Draw pins (top and bottom)
+    ctx.fillStyle = '#888';
+    ctx.fillRect(GRID_SIZE / 2 - pinWidth / 2, -GRID_SIZE * 0.3, pinWidth, GRID_SIZE * 0.3);
+    ctx.fillRect(GRID_SIZE / 2 - pinWidth / 2, GRID_SIZE, pinWidth, GRID_SIZE * 0.3);
+    
+    // Draw capacitor body (gray circle)
+    ctx.fillStyle = '#999';
+    ctx.beginPath();
+    ctx.arc(GRID_SIZE / 2, GRID_SIZE / 2, bodyRadius, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Draw curved black line on left side
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(GRID_SIZE / 2, GRID_SIZE / 2, bodyRadius * 0.7, Math.PI * 0.6, Math.PI * 1.4);
+    ctx.stroke();
+  }
+  
+  function drawCrystal(comp) {
+    const pinWidth = GRID_SIZE * 0.25;
+    const pinLength = GRID_SIZE * 0.4;
+    const bodyWidth = GRID_SIZE * 1.8;
+    const bodyHeight = GRID_SIZE * 1.2;
+    
+    // Draw 2 horizontal pins
+    ctx.fillStyle = '#888';
+    ctx.fillRect(-pinLength, GRID_SIZE * 0.6 - pinWidth / 2, pinLength, pinWidth);
+    ctx.fillRect(bodyWidth, GRID_SIZE * 0.6 - pinWidth / 2, pinLength, pinWidth);
+    
+    // Draw crystal body (silver/gray rounded rectangle)
+    ctx.fillStyle = '#b8b8b8';
+    const cornerRadius = GRID_SIZE * 0.2;
+    ctx.beginPath();
+    ctx.moveTo(cornerRadius, GRID_SIZE * 0.1);
+    ctx.lineTo(bodyWidth - cornerRadius, GRID_SIZE * 0.1);
+    ctx.quadraticCurveTo(bodyWidth, GRID_SIZE * 0.1, bodyWidth, GRID_SIZE * 0.1 + cornerRadius);
+    ctx.lineTo(bodyWidth, bodyHeight - cornerRadius);
+    ctx.quadraticCurveTo(bodyWidth, bodyHeight, bodyWidth - cornerRadius, bodyHeight);
+    ctx.lineTo(cornerRadius, bodyHeight);
+    ctx.quadraticCurveTo(0, bodyHeight, 0, bodyHeight - cornerRadius);
+    ctx.lineTo(0, GRID_SIZE * 0.1 + cornerRadius);
+    ctx.quadraticCurveTo(0, GRID_SIZE * 0.1, cornerRadius, GRID_SIZE * 0.1);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Darker border
+    ctx.strokeStyle = '#808080';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+  
+  function drawButton(comp) {
+    const pinWidth = GRID_SIZE * 0.25;
+    const pinLength = GRID_SIZE * 0.4;
+    const bodySize = GRID_SIZE * 1.6;
+    
+    // Draw 4 pins
+    ctx.fillStyle = '#888';
+    // Top pins
+    ctx.fillRect(GRID_SIZE * 0.4 - pinWidth / 2, -pinLength, pinWidth, pinLength);
+    ctx.fillRect(GRID_SIZE * 1.6 - pinWidth / 2, -pinLength, pinWidth, pinLength);
+    // Bottom pins
+    ctx.fillRect(GRID_SIZE * 0.4 - pinWidth / 2, GRID_SIZE * 2, pinWidth, pinLength);
+    ctx.fillRect(GRID_SIZE * 1.6 - pinWidth / 2, GRID_SIZE * 2, pinWidth, pinLength);
+    
+    // Button body (black border, gray fill)
+    ctx.fillStyle = '#888';
+    ctx.fillRect(GRID_SIZE * 0.2, 0, bodySize, bodySize);
+    
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(GRID_SIZE * 0.2, 0, bodySize, bodySize);
+    
+    // Central button (large black circle)
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.arc(GRID_SIZE, GRID_SIZE, GRID_SIZE * 0.5, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Small screw holes in corners
+    ctx.fillStyle = '#333';
+    const screwRadius = GRID_SIZE * 0.08;
+    const screwOffset = GRID_SIZE * 0.35;
+    ctx.beginPath();
+    ctx.arc(screwOffset, screwOffset, screwRadius, 0, Math.PI * 2);
+    ctx.arc(GRID_SIZE * 2 - screwOffset, screwOffset, screwRadius, 0, Math.PI * 2);
+    ctx.arc(screwOffset, GRID_SIZE * 2 - screwOffset, screwRadius, 0, Math.PI * 2);
+    ctx.arc(GRID_SIZE * 2 - screwOffset, GRID_SIZE * 2 - screwOffset, screwRadius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  
+  function drawSwitch(comp) {
+    const pinWidth = GRID_SIZE * 0.25;
+    const pinLength = GRID_SIZE * 0.4;
+    const bodyWidth = GRID_SIZE * 1.6;
+    const bodyHeight = GRID_SIZE * 1.2;
+    
+    // Draw 4 pins
+    ctx.fillStyle = '#888';
+    // Left pins
+    ctx.fillRect(-pinLength, GRID_SIZE * 0.4 - pinWidth / 2, pinLength, pinWidth);
+    ctx.fillRect(-pinLength, GRID_SIZE * 1.2 - pinWidth / 2, pinLength, pinWidth);
+    // Right pins
+    ctx.fillRect(bodyWidth, GRID_SIZE * 0.4 - pinWidth / 2, pinLength, pinWidth);
+    ctx.fillRect(bodyWidth, GRID_SIZE * 1.2 - pinWidth / 2, pinLength, pinWidth);
+    
+    // Switch body (white/light gray with rounded corners)
+    ctx.fillStyle = '#e8e8e8';
+    const cornerRadius = GRID_SIZE * 0.15;
+    ctx.beginPath();
+    ctx.moveTo(cornerRadius, GRID_SIZE * 0.2);
+    ctx.lineTo(bodyWidth - cornerRadius, GRID_SIZE * 0.2);
+    ctx.quadraticCurveTo(bodyWidth, GRID_SIZE * 0.2, bodyWidth, GRID_SIZE * 0.2 + cornerRadius);
+    ctx.lineTo(bodyWidth, bodyHeight - cornerRadius);
+    ctx.quadraticCurveTo(bodyWidth, bodyHeight, bodyWidth - cornerRadius, bodyHeight);
+    ctx.lineTo(cornerRadius, bodyHeight);
+    ctx.quadraticCurveTo(0, bodyHeight, 0, bodyHeight - cornerRadius);
+    ctx.lineTo(0, GRID_SIZE * 0.2 + cornerRadius);
+    ctx.quadraticCurveTo(0, GRID_SIZE * 0.2, cornerRadius, GRID_SIZE * 0.2);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Inner blue toggle area
+    ctx.fillStyle = '#4a90e2';
+    ctx.fillRect(GRID_SIZE * 0.5, GRID_SIZE * 0.45, GRID_SIZE * 0.6, GRID_SIZE * 0.5);
+    
+    ctx.strokeStyle = '#2563eb';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(GRID_SIZE * 0.5, GRID_SIZE * 0.45, GRID_SIZE * 0.6, GRID_SIZE * 0.5);
+  }
+  
+  function drawWire(wire) {
+    const isSelected = wire === selectedWire || selectedWires.includes(wire);
+    
+    ctx.strokeStyle = isSelected ? '#4a9eff' : (wire.color || '#ff0000');
+    ctx.lineWidth = isSelected ? 5 : 3;
+    ctx.beginPath();
+    ctx.moveTo(wire.start.x, wire.start.y);
+    ctx.lineTo(wire.end.x, wire.end.y);
+    ctx.stroke();
+    
+    // Wire ends
+    ctx.fillStyle = isSelected ? '#4a9eff' : (wire.color || '#ff0000');
+    ctx.beginPath();
+    ctx.arc(wire.start.x, wire.start.y, isSelected ? 7 : 5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(wire.end.x, wire.end.y, isSelected ? 7 : 5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  
+  // ============================================================================
+  // LOGGING
+  // ============================================================================
+  
+  function log(message, type = 'info') {
+    const line = document.createElement('div');
+    line.className = `console-line ${type}`;
+    line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+    systemConsole.appendChild(line);
+    systemConsole.scrollTop = systemConsole.scrollHeight;
+  }
+  
+  // ============================================================================
+  // INITIALIZATION
+  // ============================================================================
+  
+  const cpu = new CPU6502();
+  const memory = new MemoryManager();
+  const via = new VIA6522();
+  const lcd = new LCD();
+  const assembler = new Assembler();
+  
+  // Event Listeners
+  document.getElementById('btn-power').addEventListener('click', () => {
+    isPowered = !isPowered;
+    const btn = document.getElementById('btn-power');
+    const status = document.getElementById('power-status');
+    
+    if (isPowered) {
+      btn.classList.add('active');
+      status.classList.add('on');
+      log('System powered ON', 'success');
+      cpu.reset();
+    } else {
+      btn.classList.remove('active');
+      status.classList.remove('on');
+      isRunning = false;
+      document.getElementById('btn-run').classList.remove('active');
+      log('System powered OFF', 'info');
+    }
+  });
+  
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    if (isPowered) {
+      cpu.reset();
+      via = new VIA6522();
+      lcd = new LCD();
+      lcd.updateDisplay();
+    }
+  });
+  
+  document.getElementById('btn-step').addEventListener('click', () => {
+    if (isPowered && !isRunning) {
+      cpu.step();
+    }
+  });
+  
+  document.getElementById('btn-run').addEventListener('click', () => {
+    if (!isPowered) return;
+    
+    isRunning = !isRunning;
+    const btn = document.getElementById('btn-run');
+    
+    if (isRunning) {
+      btn.classList.add('active');
+      btn.textContent = '⏸️ Pause';
+      runLoop();
+    } else {
+      btn.classList.remove('active');
+      btn.textContent = '▶️ Run';
+    }
+  });
+  
+  document.getElementById('btn-assemble').addEventListener('click', () => {
+    const source = codeEditor.value;
+    const binary = assembler.assemble(source);
+    
+    if (binary) {
+      window.compiledROM = binary;
+      log('Ready to upload to EEPROM', 'success');
+    }
+  });
+  
+  document.getElementById('btn-upload').addEventListener('click', () => {
+    if (window.compiledROM) {
+      memory.loadROM(window.compiledROM);
+      log('ROM uploaded successfully', 'success');
+    } else {
+      log('Please assemble code first', 'error');
+    }
+  });
+  
+  document.getElementById('btn-load-example').addEventListener('click', () => {
+    // Load the Hello World assembly code matching the schematic
+    codeEditor.value = `; ============================================
+; 6502 "Hello, World!" LCD Example
+; Based on Ben Eater's breadboard computer
+; Memory map matches schematic (VIA @ $6000)
+; ============================================
+
+PORTB = $6000      ; VIA Port B - LCD Data Bus (D0-D7)
+PORTA = $6001      ; VIA Port A - LCD Control
+DDRB = $6002       ; Data Direction Register B
+DDRA = $6003       ; Data Direction Register A
+
+; LCD Control Pins on Port A (accent schematic)
+E  = %10000000     ; Enable (PA7)
+RW = %01000000     ; Read/Write (PA6)
+RS = %00100000     ; Register Select (PA5)
+
+  .org $8000
+
+reset:
+  ldx #$ff
+  txs
+
+  lda #%11111111   ; Set all pins on port B to output
+  sta DDRB
+  lda #%11100000   ; Set top 3 pins on port A to output
+  sta DDRA
+
+  lda #%00111000   ; Set 8-bit mode; 2-line display; 5x8 font
+  jsr lcd_instruction
+  lda #%00001110   ; Display on; cursor on; blink off
+  jsr lcd_instruction
+  lda #%00000110   ; Increment and shift cursor; don't shift display
+  jsr lcd_instruction
+  lda #$00000001   ; Clear display
+  jsr lcd_instruction
+
+  ldx #0
+print:
+  lda message,x
+  beq loop
+  jsr print_char
+  inx
+  jmp print
+
+loop:
+  jmp loop
+
+message: .asciiz "Hello, world!"
+
+lcd_wait:
+  pha
+  lda #%00000000   ; Port B is input
+  sta DDRB
+lcdbusy:
+  lda #RW
+  sta PORTA
+  lda #(RW | E)
+  sta PORTA
+  lda PORTB
+  and #%10000000
+  bne lcdbusy
+
+  lda #RW
+  sta PORTA
+  lda #%11111111   ; Port B is output
+  sta DDRB
+  pla
+  rts
+
+lcd_instruction:
+  jsr lcd_wait
+  sta PORTB
+  lda #0           ; Clear RS/RW/E bits
+  sta PORTA
+  lda #E           ; Set E bit to send instruction
+  sta PORTA
+  lda #0           ; Clear RS/RW/E bits
+  sta PORTA
+  rts
+
+print_char:
+  jsr lcd_wait
+  sta PORTB
+  lda #RS          ; Set RS; Clear RW/E bits
+  sta PORTA
+  lda #(RS | E)    ; Set E bit to send instruction
+  sta PORTA
+  lda #RS          ; Clear E bits
+  sta PORTA
+  rts
+
+  .org $fffc
+  .word reset
+  .word $0000`;
+
+    log('📋 Hello World example code loaded!', 'success');
+    log('Click Assemble → Upload to ROM → Power On → Run', 'info');
+  });
+  
+  // Circuit Examples click handlers
+  document.querySelectorAll('#example-list li').forEach(item => {
+    item.addEventListener('click', () => {
+      const example = item.dataset.example;
+      
+      if (example === '555-clock') {
+        load555ClockModule();
+      } else if (example === '6502-blink') {
+        load6502BlinkingLEDs();
+      }
+    });
+  });
+
+  // ============================================================================
+  // CIRCUIT EXAMPLE LOADERS
+  // ============================================================================
+  
+  // 555 Astable Mode - Classic blinking LED circuit
+  // The 555 timer in astable mode produces continuous square wave output
+  function load555ClockModule() {
+    // Clear existing components and wires
+    components = [];
+    wires = [];
+    
+    const G = GRID_SIZE;  // Grid shorthand (20px)
+    let idCounter = Date.now();
+    
+    // ===========================================
+    // 555 ASTABLE OSCILLATOR
+    // Classic blinking LED circuit
+    // ===========================================
+    
+    // U1: 555 Timer in astable mode
+    components.push({
+      id: idCounter++,
+      type: '555',
+      x: 10 * G,
+      y: 6 * G,
+      rotation: 0
+    });
+    
+    // R1: 1KΩ resistor (Vcc to Pin 7)
+    components.push({
+      id: idCounter++,
+      type: 'resistor',
+      x: 8 * G,
+      y: 3 * G,
+      value: 1000,
+      rotation: 0
+    });
+    
+    // R2: 10KΩ resistor (Pin 7 to Pin 6/2)
+    components.push({
+      id: idCounter++,
+      type: 'resistor',
+      x: 10 * G,
+      y: 3 * G,
+      value: 10000,
+      rotation: 0
+    });
+    
+    // C1: Timing capacitor (Pin 6/2 to GND)
+    components.push({
+      id: idCounter++,
+      type: 'capacitor',
+      x: 12 * G,
+      y: 12 * G,
+      value: 10,
+      rotation: 0
+    });
+    
+    // C2: Decoupling capacitor (Pin 5 to GND)
+    components.push({
+      id: idCounter++,
+      type: 'capacitor',
+      x: 14 * G,
+      y: 12 * G,
+      value: 0.01,
+      rotation: 0
+    });
+    
+    // LED: Output indicator (connected to Pin 3)
+    components.push({
+      id: idCounter++,
+      type: 'led',
+      x: 18 * G,
+      y: 7 * G,
+      color: '#ff0000',
+      rotation: 0
+    });
+    
+    // R3: LED current limiting resistor (330Ω)
+    components.push({
+      id: idCounter++,
+      type: 'resistor',
+      x: 18 * G,
+      y: 10 * G,
+      value: 330,
+      rotation: 0
+    });
+    
+    // ===========================================
+    // WIRING - 555 Astable Configuration
+    // ===========================================
+    
+    // --- POWER CONNECTIONS ---
+    // Pin 8 (Vcc) to power rail
+    wires.push({ start: { x: 16*G, y: 6*G }, end: { x: 16*G, y: G }, color: '#ff0000' });
+    
+    // Pin 4 (Reset) to power rail (keep high)
+    wires.push({ start: { x: 16*G, y: 7*G }, end: { x: 17*G, y: 7*G }, color: '#ff0000' });
+    wires.push({ start: { x: 17*G, y: 7*G }, end: { x: 17*G, y: G }, color: '#ff0000' });
+    
+    // Pin 1 (GND) to ground rail
+    wires.push({ start: { x: 10*G, y: 10*G }, end: { x: 10*G, y: G + G/2 }, color: '#000000' });
+    
+    // --- TIMING RESISTORS ---
+    // R1: Power rail to top of R1
+    wires.push({ start: { x: 8*G + G/2, y: G }, end: { x: 8*G + G/2, y: 3*G - G*0.3 }, color: '#ff0000' });
+    
+    // R1 bottom to Pin 7 (Discharge)
+    wires.push({ start: { x: 8*G + G/2, y: 3*G + G*1.2 + G*0.3 }, end: { x: 8*G + G/2, y: 5*G }, color: '#ff8800' });
+    wires.push({ start: { x: 8*G + G/2, y: 5*G }, end: { x: 10*G, y: 7*G }, color: '#ff8800' });
+    
+    // R2 top connected to R1/Pin 7 junction
+    wires.push({ start: { x: 8*G + G/2, y: 5*G }, end: { x: 10*G + G/2, y: 3*G - G*0.3 }, color: '#ff8800' });
+    
+    // R2 bottom to Pin 6 (Threshold) and Pin 2 (Trigger) - they're tied together
+    wires.push({ start: { x: 10*G + G/2, y: 3*G + G*1.2 + G*0.3 }, end: { x: 10*G + G/2, y: 5*G }, color: '#ffff00' });
+    wires.push({ start: { x: 10*G + G/2, y: 5*G }, end: { x: 10*G, y: 8*G }, color: '#ffff00' });  // To Pin 6
+    wires.push({ start: { x: 10*G + G/2, y: 5*G }, end: { x: 10*G, y: 9*G }, color: '#ffff00' });  // To Pin 2
+    
+    // --- TIMING CAPACITOR ---
+    // Pin 6/2 junction to C1 top
+    wires.push({ start: { x: 10*G + G/2, y: 5*G }, end: { x: 12*G + G/2, y: 12*G - G*0.3 }, color: '#ffff00' });
+    
+    // C1 bottom to ground rail
+    wires.push({ start: { x: 12*G + G/2, y: 12*G + G + G*0.3 }, end: { x: 12*G + G/2, y: G + G/2 }, color: '#000000' });
+    
+    // --- DECOUPLING CAPACITOR ---
+    // Pin 5 (Control) to C2 top
+    wires.push({ start: { x: 16*G, y: 8*G }, end: { x: 14*G + G/2, y: 12*G - G*0.3 }, color: '#0088ff' });
+    
+    // C2 bottom to ground rail
+    wires.push({ start: { x: 14*G + G/2, y: 12*G + G + G*0.3 }, end: { x: 14*G + G/2, y: G + G/2 }, color: '#000000' });
+    
+    // --- OUTPUT TO LED ---
+    // Pin 3 (Output) to LED anode
+    wires.push({ start: { x: 16*G, y: 9*G }, end: { x: 18*G + G/2, y: 9*G }, color: '#00ff00' });
+    wires.push({ start: { x: 18*G + G/2, y: 9*G }, end: { x: 18*G + G/2, y: 7*G - G*0.75/2 }, color: '#00ff00' });
+    
+    // LED cathode to R3 top
+    wires.push({ start: { x: 18*G + G/2, y: 7*G + G + G*0.75/2 }, end: { x: 18*G + G/2, y: 10*G - G*0.3 }, color: '#aa00ff' });
+    
+    // R3 bottom to ground rail
+    wires.push({ start: { x: 18*G + G/2, y: 10*G + G*1.2 + G*0.3 }, end: { x: 18*G + G/2, y: G + G/2 }, color: '#000000' });
+    
+    // Turn on power automatically so LED blinks
+    isPowered = true;
+    document.getElementById('btn-power').classList.add('active');
+    
+    drawBreadboard();
+    log('555 Astable Mode loaded', 'success');
+    log('LED will blink when power is on', 'info');
+    log('R1 + R2 and C1 control the blink rate', 'info');
+  }
+  
+  // 6502 Blinking LEDs - Ben Eater style 6502 breadboard computer
+  // Complete system with CPU, VIA, EEPROM, SRAM, and 8 blinking LEDs
+  // Pin connections based on actual datasheets
+  function load6502BlinkingLEDs() {
+    // Clear existing components and wires
+    components = [];
+    wires = [];
+    
+    const G = GRID_SIZE;  // Grid shorthand (20px)
+    let idCounter = Date.now();
+    
+    // ===========================================
+    // 6502 COMPUTER SYSTEM
+    // Based on Ben Eater's breadboard computer
+    // Memory Map:
+    //   $0000-$3FFF: RAM (62256, directly addressed by A14 low)
+    //   $6000-$600F: VIA (selected when A15=0, A14=1, A13=1)
+    //   $8000-$FFFF: ROM (28C256, selected by A15 high)
+    // ===========================================
+    
+    // U1: W65C02S CPU (40-pin DIP)
+    // Pin layout (left side top to bottom): VSS(1), RDY(2), PHI1O(3), IRQ#(4), MLB(5), NMI#(6), SYNC(7), VCC(8), A0(9)...A11(20)
+    // Pin layout (right side bottom to top): A12(21)...A15(25), D7(26)...D0(33), R/W#(34), NC(35), BE(36), PHI2(37), SOB(38), PHI2O(39), RES#(40)
+    components.push({
+      id: idCounter++,
+      type: '6502',
+      x: 2 * G,
+      y: 3 * G,
+      rotation: 0
+    });
+    
+    // U2: W65C22 VIA (40-pin DIP) - Versatile Interface Adapter
+    // Pin layout similar to 6502: VSS(1), PA0-PA7(2-9), PB0-PB7(10-17), CB1(18), CB2(19), VCC(20)
+    // Right side: CA1(21), CA2(22), RS0-RS3(23-26), RES#(27), D0-D7(28-35), PHI2(36), CS1(37), CS2#(38), R/W#(39), IRQ#(40)
+    components.push({
+      id: idCounter++,
+      type: '6522',
+      x: 11 * G,
+      y: 3 * G,
+      rotation: 0
+    });
+    
+    // U3: 28C256 EEPROM (28-pin DIP) - Program storage at $8000-$FFFF
+    // Pin layout: A14(1), A12(2), A7(3), A6(4), A5(5), A4(6), A3(7), A2(8), A1(9), A0(10), I/O0(11), I/O1(12), I/O2(13), GND(14)
+    // Right side: I/O3(15), I/O4(16), I/O5(17), I/O6(18), I/O7(19), CE#(20), A10(21), OE#(22), A11(23), A9(24), A8(25), A13(26), WE#(27), VCC(28)
+    components.push({
+      id: idCounter++,
+      type: '28256',
+      x: 20 * G,
+      y: 6 * G,
+      rotation: 0
+    });
+    
+    // U4: 62256 SRAM (28-pin DIP) - RAM at $0000-$3FFF
+    // Same pinout as 28C256
+    components.push({
+      id: idCounter++,
+      type: '62256',
+      x: 29 * G,
+      y: 6 * G,
+      rotation: 0
+    });
+    
+    // Crystal oscillator (1 MHz) - provides clock to CPU PHI2 input
+    components.push({
+      id: idCounter++,
+      type: 'crystal',
+      x: 2 * G,
+      y: 25 * G,
+      rotation: 0
+    });
+    
+    // 8 LEDs for VIA Port A output (PA0-PA7)
+    const ledColors = ['#ff0000', '#ff0000', '#ff0000', '#ff0000', '#00ff00', '#00ff00', '#00ff00', '#00ff00'];
+    for (let i = 0; i < 8; i++) {
+      components.push({
+        id: idCounter++,
+        type: 'led',
+        x: (38 + i * 2) * G,
+        y: 6 * G,
+        color: ledColors[i],
+        rotation: 0
+      });
+    }
+    
+    // 8 Current limiting resistors for LEDs (220Ω)
+    for (let i = 0; i < 8; i++) {
+      components.push({
+        id: idCounter++,
+        type: 'resistor',
+        x: (38 + i * 2) * G,
+        y: 9 * G,
+        value: 220,
+        rotation: 0
+      });
+    }
+    
+    // ===========================================
+    // WIRING - Based on actual chip pinouts
+    // ===========================================
+    
+    // --- POWER RAILS (Red = VCC, Black = GND) ---
+    // CPU VCC (pin 8 and pin 21 area) to power rail
+    wires.push({ start: { x: 8*G, y: 3*G }, end: { x: 8*G, y: G }, color: '#ff0000' });
+    // CPU VSS/GND (pin 1 and pin 21) to ground rail
+    wires.push({ start: { x: 2*G, y: 23*G }, end: { x: 2*G, y: G + G/2 }, color: '#000000' });
+    
+    // VIA VCC (pin 20) to power rail
+    wires.push({ start: { x: 17*G, y: 3*G }, end: { x: 17*G, y: G }, color: '#ff0000' });
+    // VIA VSS/GND (pin 1) to ground rail
+    wires.push({ start: { x: 11*G, y: 23*G }, end: { x: 11*G, y: G + G/2 }, color: '#000000' });
+    
+    // EEPROM VCC (pin 28) to power rail
+    wires.push({ start: { x: 26*G, y: 6*G }, end: { x: 26*G, y: G }, color: '#ff0000' });
+    // EEPROM GND (pin 14) to ground rail
+    wires.push({ start: { x: 20*G, y: 20*G }, end: { x: 20*G, y: G + G/2 }, color: '#000000' });
+    
+    // SRAM VCC (pin 28) to power rail
+    wires.push({ start: { x: 35*G, y: 6*G }, end: { x: 35*G, y: G }, color: '#ff0000' });
+    // SRAM GND (pin 14) to ground rail
+    wires.push({ start: { x: 29*G, y: 20*G }, end: { x: 29*G, y: G + G/2 }, color: '#000000' });
+    
+    // --- CLOCK (from Crystal to CPU PHI2) ---
+    // Crystal output to CPU PHI2 (pin 37)
+    wires.push({ start: { x: 2*G + G, y: 25*G + G*0.6 }, end: { x: 2*G + G, y: 24*G }, color: '#ff8800' });
+    wires.push({ start: { x: 2*G + G, y: 24*G }, end: { x: 8*G, y: 17*G }, color: '#ff8800' });
+    
+    // --- CPU ACTIVE HIGH ACTIVE ACCENT (White) ---
+    // CPU RES# (pin 40) tied high through resistor to VCC
+    wires.push({ start: { x: 8*G, y: 23*G }, end: { x: 9*G, y: 23*G }, color: '#ffffff' });
+    wires.push({ start: { x: 9*G, y: 23*G }, end: { x: 9*G, y: G }, color: '#ffffff' });
+    
+    // CPU IRQ# (pin 4) tied high
+    wires.push({ start: { x: 2*G, y: 6*G }, end: { x: G, y: 6*G }, color: '#ffffff' });
+    wires.push({ start: { x: G, y: 6*G }, end: { x: G, y: G }, color: '#ffffff' });
+    
+    // CPU NMI# (pin 6) tied high
+    wires.push({ start: { x: 2*G, y: 8*G }, end: { x: G, y: 8*G }, color: '#ffffff' });
+    wires.push({ start: { x: G, y: 8*G }, end: { x: G, y: G }, color: '#ffffff' });
+    
+    // --- ADDRESS BUS (Yellow) - CPU A0-A14 to EEPROM/SRAM ---
+    // CPU A0-A14 pins are on left side (pins 9-20) and right side (pins 22-25)
+    // Route to EEPROM A0-A14 and SRAM A0-A14
+    
+    // A0-A7 (lower address byte) - CPU to both EEPROM and SRAM
+    for (let i = 0; i < 8; i++) {
+      const cpuY = (11 + i) * G;  // CPU A0 starts around pin 9
+      const romY = (16 - i) * G;  // EEPROM A0 at pin 10
+      const ramY = (16 - i) * G;  // SRAM A0 at pin 10
+      
+      // CPU to EEPROM
+      wires.push({ 
+        start: { x: 2*G, y: cpuY }, 
+        end: { x: 20*G, y: romY }, 
+        color: '#ffff00' 
+      });
+      // Tap to SRAM
+      wires.push({ 
+        start: { x: 20*G, y: romY }, 
+        end: { x: 29*G, y: ramY }, 
+        color: '#ffff00' 
+      });
+    }
+    
+    // A8-A14 (upper address bits)
+    for (let i = 0; i < 7; i++) {
+      const cpuY = (19 + i) * G;  // CPU A8-A14 on right side
+      const romY = (7 + i) * G;   // EEPROM A8-A14
+      
+      wires.push({ 
+        start: { x: 8*G, y: cpuY }, 
+        end: { x: 26*G, y: romY }, 
+        color: '#ffff00' 
+      });
+      // Tap to SRAM
+      wires.push({ 
+        start: { x: 26*G, y: romY }, 
+        end: { x: 35*G, y: romY }, 
+        color: '#ffff00' 
+      });
+    }
+    
+    // --- DATA BUS (Green) - CPU D0-D7 to all chips ---
+    // CPU D0-D7 on right side pins 26-33
+    for (let i = 0; i < 8; i++) {
+      const cpuY = (6 + i) * G;   // CPU D0-D7
+      const viaY = (5 + i) * G;   // VIA D0-D7 on right side
+      const romY = (7 + i) * G;   // EEPROM I/O0-I/O7
+      
+      // CPU to VIA data bus
+      wires.push({ 
+        start: { x: 8*G, y: cpuY }, 
+        end: { x: 17*G, y: viaY }, 
+        color: '#00ff00' 
+      });
+      // VIA to EEPROM data bus
+      wires.push({ 
+        start: { x: 17*G, y: viaY }, 
+        end: { x: 20*G + (i < 4 ? 0 : 6*G), y: (i < 4 ? 11 + i : 15 + (i-4)) * G }, 
+        color: '#00ff00' 
+      });
+      // EEPROM to SRAM data bus
+      wires.push({ 
+        start: { x: 26*G, y: (11 + i) * G }, 
+        end: { x: 29*G, y: (11 + i) * G }, 
+        color: '#00ff00' 
+      });
+    }
+    
+    // --- CONTROL SIGNALS (Orange) ---
+    // CPU R/W# (pin 34) to VIA R/W (pin 39)
+    wires.push({ start: { x: 8*G, y: 14*G }, end: { x: 17*G, y: 21*G }, color: '#ff8800' });
+    
+    // CPU PHI2 (pin 37) to VIA PHI2 (pin 36)
+    wires.push({ start: { x: 8*G, y: 17*G }, end: { x: 17*G, y: 18*G }, color: '#ff8800' });
+    
+    // CPU R/W# to EEPROM OE# (directly for read enable)
+    wires.push({ start: { x: 8*G, y: 14*G }, end: { x: 26*G, y: 8*G }, color: '#ff8800' });
+    
+    // CPU R/W# to SRAM OE#
+    wires.push({ start: { x: 26*G, y: 8*G }, end: { x: 35*G, y: 8*G }, color: '#ff8800' });
+    
+    // --- CHIP SELECT (Purple) ---
+    // A15 to EEPROM CE# (directly - ROM at $8000-$FFFF)
+    wires.push({ start: { x: 8*G, y: 22*G }, end: { x: 26*G, y: 6*G }, color: '#aa00ff' });
+    
+    // A15 inverted to SRAM CE# (RAM at $0000-$7FFF when A15=0)
+    // (In real circuit would need inverter, shown as direct for simplicity)
+    wires.push({ start: { x: 8*G, y: 22*G }, end: { x: 35*G, y: 6*G }, color: '#aa00ff' });
+    
+    // --- VIA ADDRESSING (Blue) ---
+    // CPU A0-A3 to VIA RS0-RS3 (register select pins 35-38)
+    for (let i = 0; i < 4; i++) {
+      wires.push({ 
+        start: { x: 2*G, y: (11 + i) * G }, 
+        end: { x: 17*G, y: (15 + i) * G }, 
+        color: '#0088ff' 
+      });
+    }
+    
+    // --- VIA PORT A TO LEDs (Blue) ---
+    // VIA PA0-PA7 (pins 2-9 on left side) to LED anodes
+    for (let i = 0; i < 8; i++) {
+      const viaY = (4 + i) * G;   // VIA PA0 starts at pin 2
+      const ledX = (38 + i * 2) * G + G/2;
+      
+      wires.push({ 
+        start: { x: 11*G, y: viaY }, 
+        end: { x: ledX, y: 6*G - G*0.75/2 }, 
+        color: '#0088ff' 
+      });
+    }
+    
+    // --- LED TO RESISTOR TO GROUND ---
+    for (let i = 0; i < 8; i++) {
+      const ledX = (38 + i * 2) * G + G/2;
+      // LED cathode to resistor (purple)
+      wires.push({ 
+        start: { x: ledX, y: 6*G + G + G*0.75/2 }, 
+        end: { x: ledX, y: 9*G - G*0.3 }, 
+        color: '#aa00ff' 
+      });
+      // Resistor to ground (black)
+      wires.push({ 
+        start: { x: ledX, y: 9*G + G*1.2 + G*0.3 }, 
+        end: { x: ledX, y: G + G/2 }, 
+        color: '#000000' 
+      });
+    }
+    
+    // Load the assembly code into the editor
+    const codeEditor = document.getElementById('code-editor');
+    codeEditor.value = `; 6502 Blinking LEDs Example
+; 8 LEDs connected to VIA Port A (PA0-PA7)
+; Based on Ben Eater's 6502 breadboard computer
+;
+; Memory Map:
+;   $0000-$3FFF: RAM (62256 SRAM)
+;   $6000-$600F: VIA (W65C22) 
+;   $8000-$FFFF: ROM (28C256 EEPROM)
+
+.org $8000          ; Start of ROM
+
+; VIA Register Addresses (directly mapped)
+; VIA base address = $6000
+PORTB = $6000       ; Port B data register
+PORTA = $6001       ; Port A data register  
+DDRB  = $6002       ; Data Direction Register B
+DDRA  = $6003       ; Data Direction Register A
+
+; Zero page variables
+DELAY_LO = $00
+DELAY_HI = $01
+PATTERN  = $02
+
+RESET:
+    sei             ; Disable interrupts
+    cld             ; Clear decimal mode
+    ldx #$FF
+    txs             ; Initialize stack to $01FF
+    
+    ; Configure VIA Port A as all outputs
+    ; DDRA: 1 = output, 0 = input
+    lda #$FF        ; All 8 bits as outputs
+    sta DDRA
+    
+    ; Initialize LED pattern to 1 (first LED on)
+    lda #$01
+    sta PATTERN
+
+MAIN_LOOP:
+    ; Output current pattern to LEDs
+    lda PATTERN
+    sta PORTA       ; Write to Port A
+    
+    ; Delay so we can see the blink
+    jsr DELAY
+    
+    ; Rotate pattern left (shift left)
+    asl PATTERN
+    bne MAIN_LOOP   ; If pattern != 0, continue
+    
+    ; Pattern shifted out, reset to bit 0
+    lda #$01
+    sta PATTERN
+    jmp MAIN_LOOP
+
+; Delay subroutine - nested loop delay
+; Approximately 250ms at 1MHz
+DELAY:
+    lda #$FF
+    sta DELAY_HI
+DELAY_OUTER:
+    lda #$FF
+    sta DELAY_LO
+DELAY_INNER:
+    dec DELAY_LO
+    bne DELAY_INNER
+    dec DELAY_HI
+    bne DELAY_OUTER
+    rts
+
+; 6502 Interrupt Vectors at $FFFA-$FFFF
+.org $FFFA
+.word RESET         ; NMI vector   ($FFFA-$FFFB)
+.word RESET         ; RESET vector ($FFFC-$FFFD)
+.word RESET         ; IRQ vector   ($FFFE-$FFFF)
+`;
+
+    // Turn on power
+    isPowered = true;
+    document.getElementById('btn-power').classList.add('active');
+    
+    drawBreadboard();
+    log('🖥️ 6502 Blinking LEDs loaded!', 'success');
+    log('W65C02S + W65C22 VIA + 28C256 EEPROM + 62256 SRAM', 'info');
+    log('Crystal provides 1MHz clock to CPU PHI2', 'info');
+    log('Address bus (yellow), Data bus (green), Control (orange)', 'info');
+    log('VIA Port A (PA0-PA7) drives 8 LEDs', 'info');
+    log('Click Assemble → Upload to ROM → Run', 'info');
+  }
+  
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabName = tab.dataset.tab;
+      
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.output-content').forEach(c => c.classList.remove('active'));
+      
+      tab.classList.add('active');
+      document.getElementById(tabName + '-content').classList.add('active');
+    });
+  });
+  
+  // Clear all selections helper
+  function clearAllSelections() {
+    document.querySelectorAll('.component-list li').forEach(i => i.classList.remove('selected'));
+    document.querySelectorAll('.component-select').forEach(s => s.classList.remove('selected'));
+  }
+  
+  // Dropdown component selects
+  const dropdownSelects = {
+    '7400': document.getElementById('chip-7400-select'),
+    'resistor': document.getElementById('resistor-select'),
+    'capacitor': document.getElementById('capacitor-select'),
+    'led': document.getElementById('led-select')
   };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
+  
+  // Setup dropdown select handlers
+  Object.keys(dropdownSelects).forEach(compType => {
+    const select = dropdownSelects[compType];
+    const container = select.closest('.component-select');
+    
+    // Click on label/container selects the component type
+    container.querySelector('label').addEventListener('click', () => {
+      clearAllSelections();
+      container.classList.add('selected');
+      selectedTool = compType;
+      
+      const propsPanel = document.getElementById('properties-panel');
+      propsPanel.classList.remove('active');
+      selectedComponent = null;
+      
+      drawBreadboard();
+    });
+    
+    // Selecting from dropdown also activates the component
+    select.addEventListener('change', () => {
+      clearAllSelections();
+      container.classList.add('selected');
+      selectedTool = compType;
+      drawBreadboard();
+    });
+    
+    // Make container draggable
+    container.setAttribute('draggable', 'true');
+    container.addEventListener('dragstart', (e) => {
+      e.dataTransfer.effectAllowed = 'copy';
+      e.dataTransfer.setData('componentType', compType);
+      e.dataTransfer.setData('componentVariant', select.value);
+      dragComponent = compType;
+    });
+  });
+  
+  // Wire color selector handler
+  const wireColorSelect = document.getElementById('wire-color-select');
+  wireColorSelect.addEventListener('change', () => {
+    const newColor = wireColorSelect.value;
+    wireColor = newColor;
+    
+    // If a wire is selected (in any mode), change its color
+    if (selectedWire) {
+      saveStateForUndo();
+      selectedWire.color = newColor;
+      drawBreadboard();
+    }
+    
+    // If multiple wires selected, change all their colors
+    if (selectedWires.length > 0) {
+      saveStateForUndo();
+      selectedWires.forEach(wire => {
+        wire.color = newColor;
+      });
+      drawBreadboard();
+    }
+  });
+  
+  // Component selection and drag initiation
+  document.querySelectorAll('.component-list li').forEach(item => {
+    item.addEventListener('click', () => {
+      clearAllSelections();
+      item.classList.add('selected');
+      selectedTool = item.dataset.type;
+      
+      // Show/hide properties panel based on tool
+      const propsPanel = document.getElementById('properties-panel');
+      if (selectedTool === 'select') {
+        propsPanel.classList.add('active');
+      } else {
+        propsPanel.classList.remove('active');
+        selectedComponent = null;
+      }
+      
+      drawBreadboard();
+    });
+    
+    // Drag and drop from toolbox
+    item.addEventListener('dragstart', (e) => {
+      const compType = item.dataset.type;
+      if (compType !== 'select' && compType !== 'wire') {
+        e.dataTransfer.effectAllowed = 'copy';
+        e.dataTransfer.setData('componentType', compType);
+        dragComponent = compType;
+      } else {
+        e.preventDefault();
+      }
+    });
+    
+    item.setAttribute('draggable', 'true');
+  });
+  
+  // Canvas interaction
+  canvas.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  });
+  
+  canvas.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const compType = e.dataTransfer.getData('componentType');
+    const variant = e.dataTransfer.getData('componentVariant');
+    
+    if (compType) {
+      saveStateForUndo();  // Save state before adding component
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor(((e.clientX - rect.left - panOffsetX) / zoomLevel) / GRID_SIZE) * GRID_SIZE;
+      const y = Math.floor(((e.clientY - rect.top - panOffsetY) / zoomLevel) / GRID_SIZE) * GRID_SIZE;
+      
+      const newComp = {
+        id: Date.now(),
+        type: compType,
+        x: x,
+        y: y,
+        rotation: 0
+      };
+      
+      // Add variant-specific properties
+      if (compType === '7400' && variant) {
+        newComp.variant = variant;
+      } else if (compType === 'resistor' && variant) {
+        newComp.value = parseInt(variant);
+      } else if (compType === 'capacitor' && variant) {
+        newComp.value = parseFloat(variant);
+      } else if (compType === 'led' && variant) {
+        newComp.color = variant;
+      }
+      
+      components.push(newComp);
+      drawBreadboard();
+    }
+  });
+  
+  // Canvas mousemove for component dragging and panning
+  canvas.addEventListener('mousemove', (e) => {
+    // Handle panning
+    if (isPanning && spacePressed) {
+      panOffsetX = e.clientX - panStartX;
+      panOffsetY = e.clientY - panStartY;
+      drawBreadboard();
+      return;
+    }
+    
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = (e.clientX - rect.left - panOffsetX) / zoomLevel;
+    const mouseY = (e.clientY - rect.top - panOffsetY) / zoomLevel;
+    
+    // Handle area selection
+    if (isAreaSelecting) {
+      areaSelectEnd = { x: mouseX, y: mouseY };
+      drawBreadboard();
+      return;
+    }
+    
+    // Component dragging in select mode
+    if (selectedTool === 'select' && isDragging && draggedComponent) {
+      // Calculate new position with grid snapping
+      const newX = Math.floor((mouseX - dragOffset.x) / GRID_SIZE) * GRID_SIZE;
+      const newY = Math.floor((mouseY - dragOffset.y) / GRID_SIZE) * GRID_SIZE;
+      
+      // Get initial position from stored map
+      const initialPos = dragStartPositions.get(draggedComponent);
+      if (initialPos) {
+        const deltaX = newX - initialPos.x;
+        const deltaY = newY - initialPos.y;
+        
+        // Apply delta to all selected components from their initial positions
+        dragStartPositions.forEach((startPos, item) => {
+          // Check if it's a component (has x, y properties) or wire (has start, end)
+          if (item.start && item.end) {
+            // It's a wire
+            item.start.x = startPos.start.x + deltaX;
+            item.start.y = startPos.start.y + deltaY;
+            item.end.x = startPos.end.x + deltaX;
+            item.end.y = startPos.end.y + deltaY;
+          } else {
+            // It's a component
+            item.x = startPos.x + deltaX;
+            item.y = startPos.y + deltaY;
+          }
+        });
+      }
+      
+      drawBreadboard();
+      return;
+    }
+    
+    // Wire dragging in select mode
+    if (selectedTool === 'select' && isDragging && !draggedComponent && dragStartPositions.size > 0) {
+      const deltaX = mouseX - dragOffset.x;
+      const deltaY = mouseY - dragOffset.y;
+      
+      // Apply delta to all selected wires from their initial positions
+      dragStartPositions.forEach((startPos, wire) => {
+        wire.start.x = startPos.start.x + deltaX;
+        wire.start.y = startPos.start.y + deltaY;
+        wire.end.x = startPos.end.x + deltaX;
+        wire.end.y = startPos.end.y + deltaY;
+      });
+      
+      drawBreadboard();
+      return;
+    }
+    
+    // Wire preview and dragging
+    if (selectedTool === 'wire' && wireStart && !ctrlPressed) {
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor(((e.clientX - rect.left - panOffsetX) / zoomLevel) / GRID_SIZE) * GRID_SIZE + GRID_SIZE / 2;
+      const y = Math.floor(((e.clientY - rect.top - panOffsetY) / zoomLevel) / GRID_SIZE) * GRID_SIZE + GRID_SIZE / 2;
+      
+      wirePreview = {
+        start: wireStart,
+        end: { x, y }
+      };
+      drawBreadboard();
+    } else if (selectedTool === 'wire' && ctrlPressed && selectedWire && e.buttons === 1) {
+      // Dragging wire or endpoint
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor(((e.clientX - rect.left - panOffsetX) / zoomLevel) / GRID_SIZE) * GRID_SIZE + GRID_SIZE / 2;
+      const y = Math.floor(((e.clientY - rect.top - panOffsetY) / zoomLevel) / GRID_SIZE) * GRID_SIZE + GRID_SIZE / 2;
+      
+      if (wireDragMode === 'start') {
+        selectedWire.start.x = x;
+        selectedWire.start.y = y;
+      } else if (wireDragMode === 'end') {
+        selectedWire.end.x = x;
+        selectedWire.end.y = y;
+      } else if (wireDragMode === 'line' && wireDragOffset) {
+        const dx = x - selectedWire.start.x - wireDragOffset.x;
+        const dy = y - selectedWire.start.y - wireDragOffset.y;
+        selectedWire.start.x += dx;
+        selectedWire.start.y += dy;
+        selectedWire.end.x += dx;
+        selectedWire.end.y += dy;
+        wireDragOffset.x += dx;
+        wireDragOffset.y += dy;
+      }
+      drawBreadboard();
+    }
+  });
+  
+  // Helper function: point to line distance
+  function pointToLineDistance(px, py, start, end) {
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const lenSq = dx * dx + dy * dy;
+    if (lenSq === 0) return Math.hypot(px - start.x, py - start.y);
+    
+    const t = Math.max(0, Math.min(1, ((px - start.x) * dx + (py - start.y) * dy) / lenSq));
+    const projX = start.x + t * dx;
+    const projY = start.y + t * dy;
+    return Math.hypot(px - projX, py - projY);
+  }
+  
+  // Canvas mousedown for component dragging and panning
+  canvas.addEventListener('mousedown', (e) => {
+    // Pan mode when Space is held
+    if (spacePressed) {
+      isPanning = true;
+      panStartX = e.clientX - panOffsetX;
+      panStartY = e.clientY - panOffsetY;
+      canvas.style.cursor = 'grabbing';
+      e.preventDefault();
+      return;
+    }
+    
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = (e.clientX - rect.left - panOffsetX) / zoomLevel;
+    const mouseY = (e.clientY - rect.top - panOffsetY) / zoomLevel;
+    
+    // Check if clicking on any component
+    let clickedOnComponent = false;
+    for (let i = components.length - 1; i >= 0; i--) {
+      const comp = components[i];
+      const bounds = getComponentBounds(comp);
+      if (mouseX >= comp.x && mouseX <= comp.x + bounds.width &&
+          mouseY >= comp.y && mouseY <= comp.y + bounds.height) {
+        clickedOnComponent = true;
+        break;
+      }
+    }
+    
+    // Start area selection if in select mode and not clicking on a component
+    if (selectedTool === 'select' && !clickedOnComponent) {
+      // Check if clicking on a wire
+      let clickedOnWire = false;
+      for (let wire of wires) {
+        const dist = pointToLineDistance(mouseX, mouseY, wire.start, wire.end);
+        if (dist < 10) {
+          clickedOnWire = true;
+          break;
+        }
+      }
+      
+      if (!clickedOnWire) {
+        isAreaSelecting = true;
+        areaSelectStart = { x: mouseX, y: mouseY };
+        areaSelectEnd = { x: mouseX, y: mouseY };
+        selectedComponents = [];  // Clear multi-selection
+        selectedWires = [];
+        selectedComponent = null;
+        selectedWire = null;
+        e.preventDefault();
+        return;
+      }
+    }
+    
+    // Handle dragging wires when clicking on selected wire
+    if (selectedTool === 'select' && (selectedWire || selectedWires.length > 0) && !isDragging) {
+      let clickedWire = null;
+      
+      for (let wire of selectedWires) {
+        const dist = pointToLineDistance(mouseX, mouseY, wire.start, wire.end);
+        if (dist < 10) {
+          clickedWire = wire;
+          break;
+        }
+      }
+      
+      if (!clickedWire && selectedWire) {
+        const dist = pointToLineDistance(mouseX, mouseY, selectedWire.start, selectedWire.end);
+        if (dist < 10) {
+          clickedWire = selectedWire;
+        }
+      }
+      
+      if (clickedWire) {
+        saveStateForUndo();  // Save state before moving
+        isDragging = true;
+        draggedComponent = null;
+        dragOffset = { x: mouseX, y: mouseY };
+        
+        // Store initial positions of all wires being dragged
+        dragStartPositions.clear();
+        if (selectedWires.length > 0) {
+          selectedWires.forEach(wire => {
+            dragStartPositions.set(wire, {
+              start: { x: wire.start.x, y: wire.start.y },
+              end: { x: wire.end.x, y: wire.end.y }
+            });
+          });
+        } else {
+          dragStartPositions.set(clickedWire, {
+            start: { x: clickedWire.start.x, y: clickedWire.start.y },
+            end: { x: clickedWire.end.x, y: clickedWire.end.y }
+          });
+        }
+        
+        canvas.style.cursor = 'grabbing';
+        e.preventDefault();
+        return;
+      }
+    }
+    
+    // Handle dragging when clicking on a selected component
+    if (selectedTool === 'select' && (selectedComponent || selectedComponents.length > 0) && !isDragging) {
+      // Check if clicking on any selected component
+      let clickedOnSelected = false;
+      let clickedComp = null;
+      
+      // Check multi-selected components first
+      for (let comp of selectedComponents) {
+        const bounds = getComponentBounds(comp);
+        if (mouseX >= comp.x && mouseX <= comp.x + bounds.width &&
+            mouseY >= comp.y && mouseY <= comp.y + bounds.height) {
+          clickedOnSelected = true;
+          clickedComp = comp;
+          break;
+        }
+      }
+      
+      // Check single selected component if not found in multi-selection
+      if (!clickedOnSelected && selectedComponent) {
+        const bounds = getComponentBounds(selectedComponent);
+        if (mouseX >= selectedComponent.x && mouseX <= selectedComponent.x + bounds.width &&
+            mouseY >= selectedComponent.y && mouseY <= selectedComponent.y + bounds.height) {
+          clickedOnSelected = true;
+          clickedComp = selectedComponent;
+        }
+      }
+      
+      if (clickedOnSelected) {
+        saveStateForUndo();  // Save state before moving
+        draggedComponent = clickedComp;
+        dragOffset = {
+          x: mouseX - clickedComp.x,
+          y: mouseY - clickedComp.y
+        };
+        
+        // Store initial positions of all components being dragged
+        dragStartPositions.clear();
+        if (selectedComponents.length > 0) {
+          selectedComponents.forEach(comp => {
+            dragStartPositions.set(comp, { x: comp.x, y: comp.y });
+          });
+        } else {
+          dragStartPositions.set(clickedComp, { x: clickedComp.x, y: clickedComp.y });
+        }
+        
+        // Also store initial positions of any selected wires
+        if (selectedWires.length > 0) {
+          selectedWires.forEach(wire => {
+            dragStartPositions.set(wire, {
+              start: { x: wire.start.x, y: wire.start.y },
+              end: { x: wire.end.x, y: wire.end.y }
+            });
+          });
+        }
+        
+        isDragging = true;
+        canvas.style.cursor = 'grabbing';
+        e.preventDefault();
+      }
+    }
+  });
+  
+  // Canvas mouseup to end component dragging, panning, and area selection
+  canvas.addEventListener('mouseup', () => {
+    if (isPanning) {
+      isPanning = false;
+      canvas.style.cursor = spacePressed ? 'grab' : 'crosshair';
+    }
+    
+    // Complete area selection
+    if (isAreaSelecting) {
+      const selX = Math.min(areaSelectStart.x, areaSelectEnd.x);
+      const selY = Math.min(areaSelectStart.y, areaSelectEnd.y);
+      const selW = Math.abs(areaSelectEnd.x - areaSelectStart.x);
+      const selH = Math.abs(areaSelectEnd.y - areaSelectStart.y);
+      
+      // Only select if area is meaningful (not just a click)
+      if (selW > 5 && selH > 5) {
+        selectedComponents = [];
+        selectedWires = [];
+        
+        // Select components in area
+        components.forEach(comp => {
+          const bounds = getComponentBounds(comp);
+          // Check if component intersects selection area
+          if (comp.x + bounds.width >= selX && comp.x <= selX + selW &&
+              comp.y + bounds.height >= selY && comp.y <= selY + selH) {
+            selectedComponents.push(comp);
+          }
+        });
+        
+        // Select wires in area
+        wires.forEach(wire => {
+          // Check if either endpoint is in selection area
+          const startInArea = wire.start.x >= selX && wire.start.x <= selX + selW &&
+                              wire.start.y >= selY && wire.start.y <= selY + selH;
+          const endInArea = wire.end.x >= selX && wire.end.x <= selX + selW &&
+                            wire.end.y >= selY && wire.end.y <= selY + selH;
+          
+          if (startInArea || endInArea) {
+            selectedWires.push(wire);
+          }
+        });
+        
+        // Update UI to show selection count
+        const totalSelected = selectedComponents.length + selectedWires.length;
+        if (totalSelected > 0) {
+          document.getElementById('selection-info').textContent = 
+            totalSelected + ' item' + (totalSelected > 1 ? 's' : '') + ' selected';
+          selectedComponent = selectedComponents[0];  // Set first as primary
+        }
+        
+        // Set flag to prevent click handler from clearing selection
+        justFinishedAreaSelect = true;
+      }
+      
+      isAreaSelecting = false;
+      drawBreadboard();
+    }
+    
+    if (isDragging) {
+      isDragging = false;
+      draggedComponent = null;
+      canvas.style.cursor = 'crosshair';
+    }
+  });
+  
+  // Mouse wheel zoom on breadboard
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    
+    if (e.deltaY < 0) {
+      // Wheel up = zoom in
+      zoomIn();
+    } else {
+      // Wheel down = zoom out
+      zoomOut();
+    }
+  }, { passive: false });
+  
+  // Zoom helper functions
+  function zoomIn() {
+    zoomLevel = Math.min(ZOOM_MAX, zoomLevel + ZOOM_STEP);
+    updateZoomDisplay();
+    drawBreadboard();
+  }
+  
+  function zoomOut() {
+    zoomLevel = Math.max(ZOOM_MIN, zoomLevel - ZOOM_STEP);
+    updateZoomDisplay();
+    drawBreadboard();
+  }
+  
+  function zoomReset() {
+    zoomLevel = 1.0;
+    panOffsetX = 0;
+    panOffsetY = 0;
+    updateZoomDisplay();
+    drawBreadboard();
+  }
+  
+  function updateZoomDisplay() {
+    document.getElementById('zoom-level').textContent = Math.round(zoomLevel * 100) + '%';
+  }
+  
+  // Zoom button event listeners
+  document.getElementById('btn-zoom-in').addEventListener('click', zoomIn);
+  document.getElementById('btn-zoom-out').addEventListener('click', zoomOut);
+  document.getElementById('btn-zoom-reset').addEventListener('click', zoomReset);
+  
+  canvas.addEventListener('click', (e) => {
+    // Don't process clicks while panning or right after area selection
+    if (isPanning || spacePressed) return;
+    
+    if (justFinishedAreaSelect) {
+      justFinishedAreaSelect = false;
+      return;
+    }
+    
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.floor(((e.clientX - rect.left - panOffsetX) / zoomLevel) / GRID_SIZE) * GRID_SIZE;
+    const y = Math.floor(((e.clientY - rect.top - panOffsetY) / zoomLevel) / GRID_SIZE) * GRID_SIZE;
+    const centerX = x + GRID_SIZE / 2;
+    const centerY = y + GRID_SIZE / 2;
+    
+    // Calculate zoomed mouse position for hit testing
+    const mouseX = (e.clientX - rect.left - panOffsetX) / zoomLevel;
+    const mouseY = (e.clientY - rect.top - panOffsetY) / zoomLevel;
+    
+    if (selectedTool === 'select') {
+      // Clear multi-selection when clicking
+      selectedComponents = [];
+      selectedWires = [];
+      
+      // Find component at click position
+      selectedComponent = null;
+      selectedWire = null;
+      
+      for (let i = components.length - 1; i >= 0; i--) {
+        const comp = components[i];
+        const bounds = getComponentBounds(comp);
+        if (mouseX >= comp.x && mouseX <= comp.x + bounds.width &&
+            mouseY >= comp.y && mouseY <= comp.y + bounds.height) {
+          selectedComponent = comp;
+          updatePropertiesPanel(comp);
+          break;
+        }
+      }
+      
+      // If no component clicked, check for wire
+      if (!selectedComponent) {
+        for (let wire of wires) {
+          const dist = pointToLineDistance(mouseX, mouseY, wire.start, wire.end);
+          if (dist < 10) {
+            selectedWire = wire;
+            selectedWires = [wire];
+            document.getElementById('selection-info').textContent = 'Wire selected';
+            break;
+          }
+        }
+      }
+      
+      if (!selectedComponent && !selectedWire) {
+        document.getElementById('selection-info').textContent = 'No component selected';
+        updateComponentTips(null);
+      }
+      
+      drawBreadboard();
+    } else if (selectedTool === 'wire') {
+      // Wire mode - snap to grid center
+      if (ctrlPressed) {
+        // Select wire or wire endpoint
+        selectedWire = null;
+        const clickX = mouseX;
+        const clickY = mouseY;
+        
+        for (let wire of wires) {
+          // Check endpoints
+          const distStart = Math.hypot(clickX - wire.start.x, clickY - wire.start.y);
+          const distEnd = Math.hypot(clickX - wire.end.x, clickY - wire.end.y);
+          
+          if (distStart < 10) {
+            selectedWire = wire;
+            wireDragMode = 'start';
+            break;
+          } else if (distEnd < 10) {
+            selectedWire = wire;
+            wireDragMode = 'end';
+            break;
+          } else {
+            // Check if click is on wire line
+            const dist = pointToLineDistance(clickX, clickY, wire.start, wire.end);
+            if (dist < 10) {
+              selectedWire = wire;
+              wireDragMode = 'line';
+              wireDragOffset = {
+                x: clickX - wire.start.x,
+                y: clickY - wire.start.y
+              };
+              break;
+            }
+          }
+        }
+        drawBreadboard();
+      } else {
+        if (!wireStart) {
+          wireStart = { x: centerX, y: centerY };
+        } else {
+          saveStateForUndo();  // Save state before creating wire
+          wires.push({
+            start: wireStart,
+            end: { x: centerX, y: centerY },
+            color: wireColor
+          });
+          wireStart = null;
+          wirePreview = null;
+          drawBreadboard();
+        }
+      }
+    } else if (selectedTool && selectedTool !== 'select' && selectedTool !== 'wire') {
+      // Place component with variant properties
+      saveStateForUndo();  // Save state before adding component
+      const newComp = {
+        id: Date.now(),
+        type: selectedTool,
+        x: x,
+        y: y,
+        rotation: 0
+      };
+      
+      // Add variant-specific properties from dropdowns
+      if (selectedTool === '7400' && dropdownSelects['7400']) {
+        newComp.variant = dropdownSelects['7400'].value;
+      } else if (selectedTool === 'resistor' && dropdownSelects['resistor']) {
+        newComp.value = parseInt(dropdownSelects['resistor'].value);
+      } else if (selectedTool === 'capacitor' && dropdownSelects['capacitor']) {
+        newComp.value = parseFloat(dropdownSelects['capacitor'].value);
+      } else if (selectedTool === 'led' && dropdownSelects['led']) {
+        newComp.color = dropdownSelects['led'].value;
+      }
+      
+      components.push(newComp);
+      drawBreadboard();
+    }
+  });
+  
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Control') {
+      ctrlPressed = true;
+    }
+    
+    if (e.code === 'Space' && !spacePressed) {
+      spacePressed = true;
+      canvas.style.cursor = 'grab';
+      e.preventDefault();
+    }
+    
+    // Ctrl+Z for undo
+    if (e.ctrlKey && (e.key === 'z' || e.key === 'Z') && !e.shiftKey) {
+      e.preventDefault();
+      undo();
+      return;
+    }
+    
+    // Ctrl+Y for redo
+    if (e.ctrlKey && (e.key === 'y' || e.key === 'Y')) {
+      e.preventDefault();
+      redo();
+      return;
+    }
+    
+    // V key activates select mode
+    if (e.key === 'v' || e.key === 'V') {
+      clearAllSelections();
+      document.querySelector('[data-type="select"]').classList.add('selected');
+      selectedTool = 'select';
+      document.getElementById('properties-panel').classList.add('active');
+      drawBreadboard();
+    }
+    
+    // W key activates wire mode
+    if (e.key === 'w' || e.key === 'W') {
+      clearAllSelections();
+      document.querySelector('[data-type="wire"]').classList.add('selected');
+      selectedTool = 'wire';
+      document.getElementById('properties-panel').classList.remove('active');
+      selectedComponent = null;
+      drawBreadboard();
+    }
+    
+    if (e.key === 'Delete') {
+      // Delete multi-selected wires
+      if (selectedWires.length > 0) {
+        saveStateForUndo();  // Save state before deleting
+        selectedWires.forEach(wire => {
+          const index = wires.indexOf(wire);
+          if (index > -1) {
+            wires.splice(index, 1);
+          }
+        });
+        selectedWires = [];
+        selectedWire = null;
+        drawBreadboard();
+      }
+      // Delete multi-selected components
+      else if (selectedComponents.length > 0) {
+        saveStateForUndo();  // Save state before deleting
+        selectedComponents.forEach(comp => {
+          const index = components.indexOf(comp);
+          if (index > -1) {
+            components.splice(index, 1);
+          }
+        });
+        selectedComponents = [];
+        selectedComponent = null;
+        document.getElementById('selection-info').textContent = 'No component selected';
+        updateComponentTips(null);
+        drawBreadboard();
+      } else if (selectedComponent) {
+        saveStateForUndo();  // Save state before deleting
+        const index = components.indexOf(selectedComponent);
+        if (index > -1) {
+          components.splice(index, 1);
+          selectedComponent = null;
+          document.getElementById('selection-info').textContent = 'No component selected';
+          updateComponentTips(null);
+          drawBreadboard();
+        }
+      } else if (selectedWire) {
+        saveStateForUndo();  // Save state before deleting
+        const index = wires.indexOf(selectedWire);
+        if (index > -1) {
+          wires.splice(index, 1);
+          selectedWire = null;
+          drawBreadboard();
+        }
+      }
+    }
+  });
+  
+  document.addEventListener('keyup', (e) => {
+    if (e.key === 'Control') {
+      ctrlPressed = false;
+      wireDragMode = null;
+          document.getElementById('selection-info').textContent = 'No component selected';
+          updateComponentTips(null);
+          drawBreadboard();
+      } else if (selectedWire) {
+        const index = wires.indexOf(selectedWire);
+        if (index > -1) {
+          wires.splice(index, 1);
+          selectedWire = null;
+          drawBreadboard();
+        }
+      }
+  });
+  
+  document.addEventListener('keyup', (e) => {
+    if (e.key === 'Control') {
+      ctrlPressed = false;
+      wireDragMode = null;
+    }
+    
+    if (e.code === 'Space') {
+      spacePressed = false;
+      isPanning = false;
+      canvas.style.cursor = 'crosshair';
+    }
+  });
+  
+  // Rotate button
+  document.getElementById('btn-rotate').addEventListener('click', () => {
+    // Handle multi-selected components
+    if (selectedComponents.length > 0) {
+      saveStateForUndo();
+      selectedComponents.forEach(comp => {
+        comp.rotation = (comp.rotation || 0) + 90;
+        if (comp.rotation >= 360) comp.rotation = 0;
+      });
+      drawBreadboard();
+    } else if (selectedComponent) {
+      saveStateForUndo();
+      selectedComponent.rotation = (selectedComponent.rotation || 0) + 90;
+      if (selectedComponent.rotation >= 360) selectedComponent.rotation = 0;
+      drawBreadboard();
+    }
+  });
+  
+  // Delete button
+  document.getElementById('btn-delete-comp').addEventListener('click', () => {
+    if (selectedComponent) {
+      saveStateForUndo();  // Save state before deleting
+      const index = components.indexOf(selectedComponent);
+      if (index > -1) {
+        components.splice(index, 1);
+        selectedComponent = null;
+        document.getElementById('selection-info').textContent = 'No component selected';
+        updateComponentTips(null);
+        drawBreadboard();
+      }
+    }
+  });
+  
+  function updatePropertiesPanel(comp) {
+    const info = document.getElementById('selection-info');
+    const typeNames = {
+      '6502': 'W65C02S CPU (40-pin)',
+      '6522': 'W65C22 VIA (40-pin)',
+      '28256': '28C256 EEPROM (28-pin)',
+      '62256': '62256 SRAM (28-pin)',
+      '7400': comp.variant ? `${comp.variant} (14-pin)` : '7400-Series Logic (14-pin)',
+      '555': 'NE555 Timer (8-pin)',
+      'lcd': '16x2 LCD Panel (16-pin)',
+      'led': comp.color === '#ff0000' ? 'Red LED' : 
+             comp.color === '#ffdd00' ? 'Yellow LED' :
+             comp.color === '#0088ff' ? 'Blue LED' :
+             comp.color === '#00ff00' ? 'Green LED' : 'LED',
+      'resistor': comp.value ? `${comp.value >= 1000000 ? (comp.value/1000000) + 'MΩ' : comp.value >= 1000 ? (comp.value/1000) + 'KΩ' : comp.value + 'Ω'} Resistor` : 'Resistor',
+      'capacitor': comp.value ? `${comp.value}µF Capacitor` : 'Capacitor',
+      'potentiometer': 'Potentiometer (1MΩ)',
+      'crystal': 'Crystal Oscillator',
+      'button': 'Push Button',
+      'switch': 'Toggle Switch'
+    };
+    
+    info.textContent = typeNames[comp.type] || comp.type;
+    updateComponentTips(comp);
+  }
+  
+  function updateComponentTips(comp) {
+    const tips = document.getElementById('component-tips');
+    
+    if (!comp) {
+      tips.innerHTML = `<strong>Select Tool</strong>
+        Click any component on the breadboard to select it. Use the actions above to modify or delete it.
+        <ul>
+          <li>Press <strong>Delete</strong> key to remove selection</li>
+          <li>Click empty space to deselect</li>
+        </ul>`;
+      return;
+    }
+    
+    const tipsData = {
+      '6502': `<strong>W65C02S CPU</strong>
+        <ul>
+          <li>40-pin DIP package</li>
+          <li>Pin 8: VDD (+5V power)</li>
+          <li>Pin 21: VSS (Ground)</li>
+          <li>Pin 37: PHI2 (Clock input)</li>
+          <li>Pin 40: RESB (Reset, active low)</li>
+          <li>Pins 9-25: Address bus A0-A15</li>
+          <li>Pins 26-33: Data bus D0-D7</li>
+        </ul>
+        Place straddling center of breadboard for proper pin access.`,
+      '6522': `<strong>W65C22 VIA</strong>
+        <ul>
+          <li>40-pin versatile I/O chip</li>
+          <li>Port A: 8-bit I/O (PA0-PA7)</li>
+          <li>Port B: 8-bit I/O (PB0-PB7)</li>
+          <li>Base address typically $8000-$800F</li>
+          <li>Register 0: ORB/IRB</li>
+          <li>Register 1: ORA/IRA</li>
+          <li>Register 2: DDRB</li>
+          <li>Register 3: DDRA</li>
+        </ul>
+        Used for LEDs, LCD, and peripheral control.`,
+      '28256': `<strong>28C256 EEPROM</strong>
+        <ul>
+          <li>32KB non-volatile memory</li>
+          <li>28-pin DIP package</li>
+          <li>Pin 14: GND, Pin 28: VCC</li>
+          <li>Pins 1-14: Address lines A0-A14</li>
+          <li>Pins 11-19: Data I/O (D0-D7)</li>
+          <li>Pin 20: CE (Chip Enable)</li>
+          <li>Pin 22: OE (Output Enable)</li>
+        </ul>
+        Contains firmware and reset vectors at $FFFA-$FFFF.`,
+      '7400': `<strong>7400-Series Logic</strong>
+        <ul>
+          <li>14-pin DIP package</li>
+          <li>Pin 7: GND, Pin 14: VCC (+5V)</li>
+          <li>74HC00: Quad 2-input NAND</li>
+          <li>7402: Quad 2-input NOR</li>
+          <li>74LS04: Hex Inverter (NOT)</li>
+          <li>74LS08: Quad 2-input AND</li>
+          <li>74LS32: Quad 2-input OR</li>
+        </ul>
+        Used for address decoding and control logic.`,
+      '555': `<strong>NE555 Timer</strong>
+        <ul>
+          <li>8-pin DIP package</li>
+          <li>Pin 1: GND, Pin 8: VCC</li>
+          <li>Pin 3: Output</li>
+          <li>Pin 2: Trigger, Pin 6: Threshold</li>
+          <li>Astable mode: Continuous oscillation</li>
+          <li>Monostable mode: One-shot pulse</li>
+        </ul>
+        Great for LED blinker circuits.`,
+      'lcd': `<strong>16x2 LCD Panel</strong>
+        <ul>
+          <li>16-pin interface (HD44780 compatible)</li>
+          <li>Pin 1: VSS (GND), Pin 2: VDD (+5V)</li>
+          <li>Pin 3: V0 (Contrast adjust)</li>
+          <li>Pin 4: RS, Pin 5: R/W, Pin 6: E</li>
+          <li>Pins 7-14: Data D0-D7</li>
+          <li>Pins 15-16: Backlight LED</li>
+        </ul>
+        Connect to VIA Port A for data, Port B for control.`,
+      'led': `<strong>LED</strong>
+        <ul>
+          <li>Connect anode (+) to VIA output</li>
+          <li>Connect cathode (-) to GND via resistor</li>
+          <li>Typical current: 10-20mA</li>
+          <li>Use 220Ω-470Ω resistor for 5V</li>
+          <li>Forward voltage: Red 1.8-2.2V, Blue/White 3.0-3.5V</li>
+        </ul>
+        LED will glow when circuit is valid!`,
+      'resistor': `<strong>Resistor</strong>
+        <ul>
+          <li>Current limiting for LEDs</li>
+          <li>Pull-up/pull-down for buttons</li>
+          <li>Common values: 220Ω, 1kΩ, 10kΩ, 1MΩ</li>
+          <li>Formula: R = (Vsupply - Vled) / I</li>
+        </ul>`,
+      'capacitor': `<strong>Capacitor</strong>
+        <ul>
+          <li>Power supply filtering</li>
+          <li>Timing circuits (with 555)</li>
+          <li>Common values: 0.01µF, 0.1µF, 10µF</li>
+          <li>Electrolytic: observe polarity!</li>
+        </ul>`,
+      'potentiometer': `<strong>Potentiometer (1MΩ)</strong>
+        <ul>
+          <li>Variable resistor</li>
+          <li>3 pins: ends and wiper</li>
+          <li>LCD contrast adjustment</li>
+          <li>Analog input for ADC</li>
+          <li>555 timer frequency control</li>
+        </ul>`,
+      'crystal': `<strong>Crystal Oscillator</strong>
+        <ul>
+          <li>Provides clock signal to CPU</li>
+          <li>Common: 1MHz, 2MHz, 4MHz</li>
+          <li>Connect to PHI2 (pin 37) of 6502</li>
+          <li>May need load capacitors (22pF)</li>
+        </ul>`,
+      'button': `<strong>Push Button</strong>
+        <ul>
+          <li>Momentary contact switch</li>
+          <li>Use pull-up resistor (1KΩ-10KΩ)</li>
+          <li>Connect to VIA input pins</li>
+          <li>Reset button: connect to RESB</li>
+        </ul>`,
+      'switch': `<strong>Toggle Switch</strong>
+        <ul>
+          <li>Latching on/off switch</li>
+          <li>Use for power or mode selection</li>
+          <li>Input to VIA for status</li>
+        </ul>`
+    };
+    
+    tips.innerHTML = tipsData[comp.type] || `<strong>${comp.type}</strong>
+      <p>Component placed on breadboard.</p>`;
+  }
+  
+  function runLoop() {
+    if (!isRunning || !isPowered) return;
+    
+    for (let i = 0; i < 1000; i++) {
+      cpu.step();
+    }
+    
+    // Update LED states based on circuit validity
+    updateLEDStates();
+    
+    requestAnimationFrame(runLoop);
+  }
+  
+  // Wire tracing - finds all points reachable from a starting point through connected wires
+  function traceWirePath(startX, startY, visited = new Set()) {
+    const reachablePoints = [];
+    const key = `${Math.round(startX)},${Math.round(startY)}`;
+    
+    if (visited.has(key)) return reachablePoints;
+    visited.add(key);
+    
+    reachablePoints.push({ x: startX, y: startY });
+    
+    // Find all wires that connect to this point
+    wires.forEach(wire => {
+      const startConnected = isNearPoint(wire.start, startX, startY, GRID_SIZE * 0.6);
+      const endConnected = isNearPoint(wire.end, startX, startY, GRID_SIZE * 0.6);
+      
+      if (startConnected) {
+        // This wire connects at its start, trace from its end
+        reachablePoints.push({ x: wire.end.x, y: wire.end.y });
+        const morePoints = traceWirePath(wire.end.x, wire.end.y, visited);
+        reachablePoints.push(...morePoints);
+      }
+      
+      if (endConnected) {
+        // This wire connects at its end, trace from its start
+        reachablePoints.push({ x: wire.start.x, y: wire.start.y });
+        const morePoints = traceWirePath(wire.start.x, wire.start.y, visited);
+        reachablePoints.push(...morePoints);
+      }
+    });
+    
+    return reachablePoints;
+  }
+  
+  // Check if a traced path reaches a specific region
+  function pathReachesRegion(points, minY, maxY) {
+    return points.some(p => p.y >= minY && p.y <= maxY);
+  }
+  
+  // LED lighting effect - checks if LED circuit is valid using wire tracing
+  function updateLEDStates() {
+    const leds = components.filter(c => c.type === 'led');
+    const resistors = components.filter(c => c.type === 'resistor');
+    const timers555 = components.filter(c => c.type === '555');
+    
+    // Power rail bounds
+    const POWER_RAIL_MIN_Y = 0;
+    const POWER_RAIL_MAX_Y = GRID_SIZE;       // Red (+) rail: y = 0 to GRID_SIZE
+    const GROUND_RAIL_MIN_Y = GRID_SIZE;      // Black (-) rail: y = GRID_SIZE to GRID_SIZE*2
+    const GROUND_RAIL_MAX_Y = GRID_SIZE * 2;
+    
+    leds.forEach(led => {
+      let isLit = false;
+      
+      // LED pin positions (anode at top, cathode at bottom)
+      const anodeX = led.x + GRID_SIZE / 2;
+      const anodeY = led.y - GRID_SIZE * 0.75 / 2;  // Top pin
+      const cathodeX = led.x + GRID_SIZE / 2;
+      const cathodeY = led.y + GRID_SIZE + GRID_SIZE * 0.75 / 2;  // Bottom pin
+      
+      // Trace wire paths from LED pins
+      const anodePath = traceWirePath(anodeX, anodeY);
+      const cathodePath = traceWirePath(cathodeX, cathodeY);
+      
+      // Check if anode path reaches power rail (+)
+      const hasPowerToAnode = pathReachesRegion(anodePath, POWER_RAIL_MIN_Y, POWER_RAIL_MAX_Y);
+      
+      // Check if cathode path reaches ground rail (-)
+      const hasGroundToCathode = pathReachesRegion(cathodePath, GROUND_RAIL_MIN_Y, GROUND_RAIL_MAX_Y);
+      
+      // Check for resistor in series (within 5 grid units of LED)
+      let hasResistorInPath = false;
+      resistors.forEach(res => {
+        const dist = Math.hypot(res.x - led.x, res.y - led.y);
+        if (dist < GRID_SIZE * 5) {
+          hasResistorInPath = true;
+        }
+      });
+      
+      // Check if 555 timer is driving this LED (astable blink mode)
+      let is555Driven = false;
+      timers555.forEach(timer => {
+        const dist = Math.hypot(timer.x - led.x, timer.y - led.y);
+        if (dist < GRID_SIZE * 15) {
+          is555Driven = true;
+        }
+      });
+      
+      // LED lights if:
+      // 1. Has power to anode, ground to cathode (traced through connected wires)
+      // 2. OR is driven by 555 timer when powered
+      if (hasPowerToAnode && hasGroundToCathode) {
+        isLit = true;
+      } else if (is555Driven && isPowered) {
+        // 555 timer creates blinking effect
+        isLit = Math.floor(Date.now() / 500) % 2 === 0;
+      }
+      
+      // Update LED lit state
+      if (led.lit !== isLit) {
+        led.lit = isLit;
+        drawBreadboard();
+      }
+    });
+  }
 
-
+  // Initialize
+  
+  // Helper to check if a point is near another point
+  function isNearPoint(point, x, y, threshold = GRID_SIZE) {
+    return Math.hypot(point.x - x, point.y - y) < threshold;
+  }
+  
+  // Update LEDs periodically (always check, not just when powered)
+  setInterval(() => {
+    updateLEDStates();
+  }, 100);
+  
+  // Initial render
+  drawBreadboard();
+  log('6502 Breadboard Simulator Ready', 'success');
+  log('Load example code and click "Assemble" to get started', 'info');
+  
+ </script>
 </body>
 </html>
