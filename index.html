@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html>
- <head></head>
- <body>
-  <script>
-     setTimeout(()=> {
-      document.write(`
-     
+ <head>
    <link rel="icon" href="favicon.ico">
    <link rel="stylesheet" 
-    href="https:\/\/cdnjs.cloudflare.com\/ajax\/libs\/github-markdown-css\/5.8.1\/github-markdown.min.css"
-    crossorigin="anonymous" referrerpolicy="no-referrer" \/>
+    href="https://jhauga.github.io/htmlpreview.github.com/?https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
    
    <style>
     body {
@@ -25,12 +20,14 @@
       background-color: #0d1117;
      }
     }
-   <\/style>
+   </style>
 
-   <title>Browser Page<\/title>
-     
+   <title>Browser Page</title>
+ </head>
 
-  <textarea id="markdown-source" style="display: none;">Lots of text using **markdown syntax.**
+ <body>
+  <textarea id="markdown-source" style="display: none;">
+Lots of text using **markdown syntax.**
 
 # GitHub Markdown Test Document
 
@@ -50,55 +47,55 @@ This is _italic text_ using underscores.
 This is ~~strikethrough text~~.
 This is **bold and _nested italic_ text**.
 This is ***bold and italic*** text.
-This is &lt;sub&gt;subscript&lt;\/sub&gt; text.
-This is &lt;sup&gt;superscript&lt;\/sup&gt; text.
-This is &lt;ins&gt;underlined&lt;\/ins&gt; text.
+This is <sub>subscript</sub> text.
+This is <sup>superscript</sup> text.
+This is <ins>underlined</ins> text.
 
 ## Quoting Text
 Normal text that is not a quote.
 
-&gt; This is a blockquote.
-&gt; It can span multiple lines.
+> This is a blockquote.
+> It can span multiple lines.
 
 ## Code Examples
 
-Inline code: Use \`git status\` to list all new or modified files.
+Inline code: Use `git status` to list all new or modified files.
 
 Code block without syntax highlighting:
-\`\`\`
+```
 Some basic Git commands are:
 git status
 git add
 git commit
-\`\`\`
+```
 
 Code block with syntax highlighting:
-\`\`\`javascript
+```javascript
 function greet(name) {
-  console.log(\`Hello, ${name}!\`);
+  console.log(`Hello, ${name}!`);
 }
-\`\`\`
+```
 
-\`\`\`python
+```python
 def calculate(x, y):
     return x + y
-\`\`\`
+```
 
 ## Color Examples
-The background color is \`#ffffff\` for light mode and \`#000000\` for dark mode.
-Blue color: \`#0969DA\`
-RGB color: \`rgb(9, 105, 218)\`
-HSL color: \`hsl(212, 92%, 45%)\`
+The background color is `#ffffff` for light mode and `#000000` for dark mode.
+Blue color: `#0969DA`
+RGB color: `rgb(9, 105, 218)`
+HSL color: `hsl(212, 92%, 45%)`
 
 ## Links
-This site was built using [GitHub Pages](https:\/\/pages.github.com\/).
+This site was built using [GitHub Pages](https://pages.github.com/).
 
-Autolinked URL: https:\/\/github.com
+Autolinked URL: https://github.com
 
 [Link to a section](#task-lists)
 
 ## Images
-![Alt text for image](https:\/\/github.githubassets.com\/images\/modules\/logos_page\/GitHub-Mark.png)
+![Alt text for image](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)
 
 ## Lists
 
@@ -158,20 +155,20 @@ It has multiple lines.
 
 ## Alerts
 
-&gt; [!NOTE]
-&gt; Useful information that users should know, even when skimming content.
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
 
-&gt; [!TIP]
-&gt; Helpful advice for doing things better or more easily.
+> [!TIP]
+> Helpful advice for doing things better or more easily.
 
-&gt; [!IMPORTANT]
-&gt; Key information users need to know to achieve their goal.
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal.
 
-&gt; [!WARNING]
-&gt; Urgent info that needs immediate user attention to avoid problems.
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
 
-&gt; [!CAUTION]
-&gt; Advises about risks or negative outcomes of certain actions.
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.
 
 ## Line Breaks
 
@@ -181,7 +178,7 @@ So it breaks to a new line.
 This line has a backslash at the end.\
 So it also breaks to a new line.
 
-This line has an HTML break.&lt;br\/&gt;
+This line has an HTML break.<br/>
 So it breaks too.
 
 ## Escaped Characters
@@ -193,41 +190,28 @@ So it breaks too.
 ---
 
 ## Custom Anchor
-&lt;a name="custom-anchor-point"&gt;&lt;\/a&gt;
+<a name="custom-anchor-point"></a>
 This is a custom anchor point.
 
 [Link to custom anchor](#custom-anchor-point)
 
 ## Nested Blockquote
-&gt; First level quote
-&gt;&gt; Second level quote
-&gt;&gt;&gt; Third level quote
+> First level quote
+>> Second level quote
+>>> Third level quote
 
 ## HTML Comments
-&lt;!-- This is a hidden comment that won't appear in rendered markdown --&gt;
-  <\/textarea>
-  <div id="content" class="markdown-body"><\/div>
-  <script src="https:\/\/cdn.jsdelivr.net\/npm\/marked\/lib\/marked.umd.js"><\/script>
+<!-- This is a hidden comment that won't appear in rendered markdown -->
+  </textarea>
+  <div id="content" class="markdown-body"></div>
+  
+  <script src="https://jhauga.github.io/htmlpreview.github.com/?https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
   <script>
-   setTimeout(() => {
-     const doc = document.getElementsByTagName("body");
-     const source = document.getElementById('markdown-source').value;
-     \/\/ Parse the markdown and render it into the content div.
-     document.getElementById('content').innerHTML = marked.parse(source);
-     
-    }, 100);
-  <\/script>
- 
-
-<script>
-   setTimeout(() => {
-     const doc = document.getElementsByTagName("body");
-     const source = document.getElementById('markdown-source').value;
-     \/\/ Parse the markdown and render it into the content div.
-     document.getElementById('content').innerHTML = marked.parse(source);
-     
-    }, 1000);
-  <\/script>`); }, 1000);
-    </script>
+    const source = document.getElementById('markdown-source').value;
+    
+    // Parse the markdown and render it into the content div.
+    document.getElementById('content').innerHTML = marked.parse(source);
+  </script>
  </body>
 </html>
+
