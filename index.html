@@ -204,14 +204,15 @@ This is a custom anchor point.
 <!-- This is a hidden comment that won't appear in rendered markdown -->
   </textarea>
   <div id="content" class="markdown-body"></div>
-  
   <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
   <script>
-    const source = document.getElementById('markdown-source').value;
-    
-    // Parse the markdown and render it into the content div.
-    document.getElementById('content').innerHTML = marked.parse(source);
+   setTimeout(() => {
+     const doc = document.getElementsByTagName("body");
+     const source = document.getElementById('markdown-source').value;
+     // Parse the markdown and render it into the content div.
+     document.getElementById('content').innerHTML = marked.parse(source);
+     
+    }, 100);
   </script>
  </body>
 </html>
-
