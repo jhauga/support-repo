@@ -2,7 +2,13 @@
 
 Support branch of repository for:
 <!-- Link to PR -->
-    - [awesome-copilot pull request #592]https://github.com/github/awesome-copilot/pull/592).
+- [awesome-copilot pull request #592](https://github.com/github/awesome-copilot/pull/592).
+
+- `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/index.html)
+<!-- git commit -m "undeploy: use htmlpreview for index.html" -->
+<!--
+- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/BRANCH_NAME/index.html)
+-->
 
 Could have been better if I'd maybe tried to do one thing at a time. I feel like the end results of the test would have gotten a C in a college level Computer Science course.
 
@@ -218,9 +224,3 @@ Then ended the build with a frustrated - eh maybe good enough prompt of:
 ```text
 Ok use your skill to build a 6502 example - call it `Blinking LED's` that loads with the correct chips, components, and wiring; along with the correct assembly that allows for 8 led to blink on the circuit board.
 ```
-
-- `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/index.html)
-<!-- git commit -m "undeploy: use htmlpreview for index.html" -->
-<!--
-- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/BRANCH_NAME/index.html)
--->
