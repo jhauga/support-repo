@@ -4,6 +4,7 @@ Control branch of repository for:
 <!-- Link to PR -->
 - [awesome-copilot pull request #592](https://github.com/github/awesome-copilot/pull/592).
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/negative-legacy-circuit-mockups/index.html)
+- `Ctrl + click` [**Positive Test Branch**](https://github.com/jhauga/support-repo/tree/legacy-circuit-mockups?tab=readme-ov-file)
 
 The results from this branch did not use the skill, but kept the reference files for the initial prompt.
 
