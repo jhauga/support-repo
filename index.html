@@ -1,149 +1,2266 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
- <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
- 
- <!--<script src="/js/scripts.js"></script>-->
- <link rel="icon" href="/favicon.png">
- 
- <style>
-  body {
-   margin-left: 50px;
-  }
-  div, nav, ul, li, a {
-   display: inline-block;
-   position: relative;
-   box-sizing: border-box;
-  }
-  div, nav, footer {
-   width: 100%;
-  }
-  nav {
-   background: black;   
-   height: 60px;
-  }
-  nav ul li a {
-   color: white;
-   padding: 10px;
-  }
-  main {
-   margin: 30px;
-  }
-  button {
-   background: darkslategray;
-   color: white;     
-   margin: 10px;
-   padding: 15px;
-   cursor: pointer;
-   border-radius: 10px;
-  }
-  button.showHide {
-   display: block; 
-   background: black;
-   color: white;
-  }
-  button.showHide.black {
-   display: block; 
-   padding: 2px;
-  }  
-  button.showHide.gray {
-   display: block; 
-   background: darkslategray;
-   padding: 2px;
-  }    
-  span.key {
-   color: #0073e6;
-  }  
-  span.str {
-   color: orange;
-  }
-  span.int {
-   color: green;
-  }
-  span.mthd {
-   color: purple;
-  }
-  em {
-   color: dimgray;
-  }  
-  footer {
-   bottom: 0px;   
-   background: black;
-   color: white;
-   margin-left: -50px; 
-   padding: 50px;
-  }
- </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6502 Breadboard Computer Simulator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            overflow: hidden;
+        }
+
+        #app {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            grid-template-rows: 60px 1fr 200px;
+            height: 100vh;
+            gap: 2px;
+            background: #000;
+        }
+
+        #toolbar {
+            grid-column: 1 / -1;
+            background: #2d2d30;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 2px solid #007acc;
+        }
+
+        #toolbar h1 {
+            font-size: 18px;
+            color: #007acc;
+            margin-right: auto;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background: #0e639c;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #1177bb;
+        }
+
+        .btn:active {
+            background: #0d5a91;
+        }
+
+        .btn.danger {
+            background: #c5402f;
+        }
+
+        .btn.danger:hover {
+            background: #d84a37;
+        }
+
+        .btn.success {
+            background: #0e7d31;
+        }
+
+        .btn.success:hover {
+            background: #16883e;
+        }
+
+        .btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        #main-area {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 2px;
+            background: #000;
+            overflow: hidden;
+        }
+
+        #breadboard-container {
+            background: #252526;
+            position: relative;
+            overflow: auto;
+        }
+
+        #breadboard {
+            display: block;
+            cursor: crosshair;
+        }
+
+        #editor-container {
+            background: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #editor-header {
+            background: #2d2d30;
+            padding: 8px 15px;
+            border-bottom: 1px solid #3e3e42;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #editor-header h3 {
+            font-size: 13px;
+            color: #cccccc;
+        }
+
+        #code-editor {
+            flex: 1;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            padding: 10px;
+            border: none;
+            resize: none;
+            outline: none;
+            line-height: 1.5;
+            tab-size: 4;
+        }
+
+        #side-panel {
+            background: #252526;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #3e3e42;
+        }
+
+        .panel-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid #3e3e42;
+        }
+
+        .panel-section:last-child {
+            border-bottom: none;
+        }
+
+        .panel-header {
+            background: #2d2d30;
+            padding: 8px 15px;
+            border-bottom: 1px solid #3e3e42;
+            font-size: 12px;
+            font-weight: bold;
+            color: #cccccc;
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow: auto;
+            padding: 10px;
+        }
+
+        #lcd-display {
+            background: #4a7a4a;
+            border: 3px solid #333;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 18px;
+            color: #000;
+            line-height: 1.4;
+            white-space: pre;
+            margin-bottom: 10px;
+        }
+
+        #led-panel {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .led {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #444;
+            border: 2px solid #666;
+            transition: all 0.1s;
+        }
+
+        .led.on {
+            box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+        }
+
+        .led.red.on {
+            background: #ff0000;
+            border-color: #ff6666;
+        }
+
+        .led.green.on {
+            background: #00ff00;
+            border-color: #66ff66;
+        }
+
+        .led.yellow.on {
+            background: #ffff00;
+            border-color: #ffff66;
+        }
+
+        .led.blue.on {
+            background: #0000ff;
+            border-color: #6666ff;
+        }
+
+        #console-area {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background: #000;
+        }
+
+        .console {
+            background: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console-header {
+            background: #2d2d30;
+            padding: 8px 15px;
+            border-bottom: 1px solid #3e3e42;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .console-output {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .console-line {
+            margin-bottom: 2px;
+        }
+
+        .console-line.error {
+            color: #f48771;
+        }
+
+        .console-line.success {
+            color: #4ec9b0;
+        }
+
+        .console-line.warning {
+            color: #dcdcaa;
+        }
+
+        .console-line.info {
+            color: #9cdcfe;
+        }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .speed-control label {
+            font-size: 11px;
+            color: #cccccc;
+        }
+
+        .speed-control input {
+            width: 100px;
+        }
+
+        #status-indicator {
+            padding: 4px 12px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        #status-indicator.powered-off {
+            background: #555;
+            color: #aaa;
+        }
+
+        #status-indicator.running {
+            background: #0e7d31;
+            color: white;
+        }
+
+        #status-indicator.paused {
+            background: #c5402f;
+            color: white;
+        }
+
+        .component-info {
+            background: #2d2d30;
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        .component-info .label {
+            color: #9cdcfe;
+            font-weight: bold;
+        }
+
+        .component-info .value {
+            color: #ce9178;
+        }
+    </style>
 </head>
-
 <body>
+    <div id="app">
+        <div id="toolbar">
+            <h1>🔌 6502 Breadboard Computer Simulator</h1>
+            <button class="btn success" id="power-btn">⚡ Power On</button>
+            <button class="btn" id="reset-btn" disabled>🔄 Reset</button>
+            <button class="btn" id="step-btn" disabled>⏯ Step</button>
+            <button class="btn" id="run-btn" disabled>▶ Run</button>
+            <button class="btn" id="pause-btn" disabled>⏸ Pause</button>
+            <div class="speed-control">
+                <label>Speed:</label>
+                <input type="range" id="speed-slider" min="1" max="100" value="50">
+                <span id="speed-value">50 Hz</span>
+            </div>
+            <span id="status-indicator" class="powered-off">POWERED OFF</span>
+        </div>
 
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
-   </ul>
-  </nav>
- </div>
+        <div id="main-area">
+            <div id="breadboard-container">
+                <canvas id="breadboard" width="1200" height="800"></canvas>
+            </div>
+            <div id="editor-container">
+                <div id="editor-header">
+                    <h3>📝 Assembly Code Editor</h3>
+                    <button class="btn" id="compile-btn">🔨 Compile & Upload</button>
+                </div>
+                <textarea id="code-editor" spellcheck="false">; 6502 Breadboard Computer - LCD Hello World
+; Target: AT28C256 EEPROM
 
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
-  </div>
- </main>
+VIA_BASE = $8000
+VIA_PORTB = VIA_BASE + 0
+VIA_PORTA = VIA_BASE + 1
+VIA_DDRB = VIA_BASE + 2
+VIA_DDRA = VIA_BASE + 3
 
+E  = %10000000  ; Enable bit
+RW = %01000000  ; Read/Write bit
+RS = %00100000  ; Register Select bit
 
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
+        .org $9000
 
-<h1 id="pageTitle"></h1>
+reset:
+        sei             ; Disable interrupts
+        cld             ; Clear decimal mode
+        ldx #$FF        ; Initialize stack pointer
+        txs
+        
+        jsr lcd_init    ; Initialize LCD
+        jsr display_message
+        
+loop:
+        jmp loop        ; Infinite loop
 
-<p>CHANGE_TEXT</p>
+lcd_init:
+        lda #%11111111  ; Set all PORTB as output
+        sta VIA_DDRB
+        lda #%11100000  ; Set top 3 PORTA as output
+        sta VIA_DDRA
+        
+        lda #%00111000  ; 8-bit mode, 2-line, 5x8
+        jsr lcd_command
+        lda #%00001110  ; Display on, cursor on
+        jsr lcd_command
+        lda #%00000110  ; Increment, no shift
+        jsr lcd_command
+        lda #%00000001  ; Clear display
+        jsr lcd_command
+        rts
 
-<pre id="a">
-CHANGE_TEXT
-</pre>
+lcd_command:
+        jsr lcd_wait
+        sta VIA_PORTB
+        lda #0          ; RS=0, RW=0
+        sta VIA_PORTA
+        lda #E          ; Toggle E
+        sta VIA_PORTA
+        lda #0
+        sta VIA_PORTA
+        rts
 
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
+lcd_data:
+        jsr lcd_wait
+        sta VIA_PORTB
+        lda #RS         ; RS=1, RW=0
+        sta VIA_PORTA
+        lda #(RS | E)   ; Toggle E
+        sta VIA_PORTA
+        lda #RS
+        sta VIA_PORTA
+        rts
 
+lcd_wait:
+        pha
+        lda #%00000000  ; PORTB as input
+        sta VIA_DDRB
+wait_loop:
+        lda #RW
+        sta VIA_PORTA
+        lda #(RW | E)
+        sta VIA_PORTA
+        lda VIA_PORTB
+        and #%10000000  ; Check busy flag
+        bne wait_loop
+        lda #RW
+        sta VIA_PORTA
+        lda #%11111111  ; PORTB as output
+        sta VIA_DDRB
+        pla
+        rts
 
+display_message:
+        ldx #0
+msg_loop:
+        lda message,x
+        beq msg_done
+        jsr lcd_data
+        inx
+        jmp msg_loop
+msg_done:
+        rts
+
+message:
+        .byte "Hello, 6502!", 0
+
+nmi:
+irq:
+        rti
+
+        .org $FFFA
+        .word nmi
+        .word reset
+        .word irq
+</textarea>
+            </div>
+        </div>
+
+        <div id="side-panel">
+            <div class="panel-section">
+                <div class="panel-header">🖥 LCD Display (FIT0127)</div>
+                <div class="panel-content">
+                    <div id="lcd-display">                
+                </div>
+                    <div class="component-info">
+                        <span class="label">Mode:</span> <span id="lcd-mode" class="value">Initialized</span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-section">
+                <div class="panel-header">💡 LED Outputs</div>
+                <div class="panel-content">
+                    <div id="led-panel">
+                        <div class="led red" id="led0" title="PB0"></div>
+                        <div class="led red" id="led1" title="PB1"></div>
+                        <div class="led green" id="led2" title="PB2"></div>
+                        <div class="led green" id="led3" title="PB3"></div>
+                        <div class="led yellow" id="led4" title="PB4"></div>
+                        <div class="led yellow" id="led5" title="PB5"></div>
+                        <div class="led blue" id="led6" title="PB6"></div>
+                        <div class="led blue" id="led7" title="PB7"></div>
+                    </div>
+                    <div class="component-info">
+                        <span class="label">VIA Port B:</span> <span id="portb-value" class="value">$00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-section">
+                <div class="panel-header">📊 System Info</div>
+                <div class="panel-content">
+                    <div class="component-info">
+                        <span class="label">PC:</span> <span id="reg-pc" class="value">$0000</span>
+                    </div>
+                    <div class="component-info">
+                        <span class="label">A:</span> <span id="reg-a" class="value">$00</span>
+                        <span class="label">X:</span> <span id="reg-x" class="value">$00</span>
+                        <span class="label">Y:</span> <span id="reg-y" class="value">$00</span>
+                    </div>
+                    <div class="component-info">
+                        <span class="label">SP:</span> <span id="reg-sp" class="value">$FF</span>
+                        <span class="label">Flags:</span> <span id="reg-flags" class="value">NV-BDIZC</span>
+                    </div>
+                    <div class="component-info">
+                        <span class="label">Cycles:</span> <span id="cycle-count" class="value">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="console-area">
+            <div class="console">
+                <div class="console-header">🖥 System Terminal</div>
+                <div class="console-output" id="system-console"></div>
+            </div>
+            <div class="console">
+                <div class="console-header">🐛 Runtime Console</div>
+                <div class="console-output" id="runtime-console"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 6502 CPU EMULATOR
+        // ============================================================
+        class CPU6502 {
+            constructor(memory) {
+                this.memory = memory;
+                this.reset();
+            }
+
+            reset() {
+                this.A = 0;
+                this.X = 0;
+                this.Y = 0;
+                this.SP = 0xFD;
+                this.P = 0x24; // I flag set
+                this.PC = this.memory.read(0xFFFC) | (this.memory.read(0xFFFD) << 8);
+                this.cycles = 0;
+                this.halted = false;
+            }
+
+            // Flag helpers
+            getFlag(flag) {
+                const flags = { C: 0, Z: 1, I: 2, D: 3, B: 4, V: 6, N: 7 };
+                return (this.P & (1 << flags[flag])) !== 0;
+            }
+
+            setFlag(flag, value) {
+                const flags = { C: 0, Z: 1, I: 2, D: 3, B: 4, V: 6, N: 7 };
+                if (value) {
+                    this.P |= (1 << flags[flag]);
+                } else {
+                    this.P &= ~(1 << flags[flag]);
+                }
+            }
+
+            setZN(value) {
+                this.setFlag('Z', (value & 0xFF) === 0);
+                this.setFlag('N', (value & 0x80) !== 0);
+            }
+
+            push(value) {
+                this.memory.write(0x0100 + this.SP, value);
+                this.SP = (this.SP - 1) & 0xFF;
+            }
+
+            pull() {
+                this.SP = (this.SP + 1) & 0xFF;
+                return this.memory.read(0x0100 + this.SP);
+            }
+
+            step() {
+                if (this.halted) return;
+
+                const opcode = this.memory.read(this.PC);
+                this.PC = (this.PC + 1) & 0xFFFF;
+
+                this.executeOpcode(opcode);
+                this.cycles++;
+            }
+
+            executeOpcode(opcode) {
+                // Comprehensive opcode implementation
+                switch (opcode) {
+                    // LDA - Load Accumulator
+                    case 0xA9: this.A = this.readImmediate(); this.setZN(this.A); break;
+                    case 0xA5: this.A = this.readZeroPage(); this.setZN(this.A); break;
+                    case 0xB5: this.A = this.readZeroPageX(); this.setZN(this.A); break;
+                    case 0xAD: this.A = this.readAbsolute(); this.setZN(this.A); break;
+                    case 0xBD: this.A = this.readAbsoluteX(); this.setZN(this.A); break;
+                    case 0xB9: this.A = this.readAbsoluteY(); this.setZN(this.A); break;
+                    case 0xA1: this.A = this.readIndexedIndirect(); this.setZN(this.A); break;
+                    case 0xB1: this.A = this.readIndirectIndexed(); this.setZN(this.A); break;
+
+                    // LDX - Load X
+                    case 0xA2: this.X = this.readImmediate(); this.setZN(this.X); break;
+                    case 0xA6: this.X = this.readZeroPage(); this.setZN(this.X); break;
+                    case 0xB6: this.X = this.readZeroPageY(); this.setZN(this.X); break;
+                    case 0xAE: this.X = this.readAbsolute(); this.setZN(this.X); break;
+                    case 0xBE: this.X = this.readAbsoluteY(); this.setZN(this.X); break;
+
+                    // LDY - Load Y
+                    case 0xA0: this.Y = this.readImmediate(); this.setZN(this.Y); break;
+                    case 0xA4: this.Y = this.readZeroPage(); this.setZN(this.Y); break;
+                    case 0xB4: this.Y = this.readZeroPageX(); this.setZN(this.Y); break;
+                    case 0xAC: this.Y = this.readAbsolute(); this.setZN(this.Y); break;
+                    case 0xBC: this.Y = this.readAbsoluteX(); this.setZN(this.Y); break;
+
+                    // STA - Store Accumulator
+                    case 0x85: this.writeZeroPage(this.A); break;
+                    case 0x95: this.writeZeroPageX(this.A); break;
+                    case 0x8D: this.writeAbsolute(this.A); break;
+                    case 0x9D: this.writeAbsoluteX(this.A); break;
+                    case 0x99: this.writeAbsoluteY(this.A); break;
+                    case 0x81: this.writeIndexedIndirect(this.A); break;
+                    case 0x91: this.writeIndirectIndexed(this.A); break;
+
+                    // STX - Store X
+                    case 0x86: this.writeZeroPage(this.X); break;
+                    case 0x96: this.writeZeroPageY(this.X); break;
+                    case 0x8E: this.writeAbsolute(this.X); break;
+
+                    // STY - Store Y
+                    case 0x84: this.writeZeroPage(this.Y); break;
+                    case 0x94: this.writeZeroPageX(this.Y); break;
+                    case 0x8C: this.writeAbsolute(this.Y); break;
+
+                    // Transfer instructions
+                    case 0xAA: this.X = this.A; this.setZN(this.X); break; // TAX
+                    case 0x8A: this.A = this.X; this.setZN(this.A); break; // TXA
+                    case 0xA8: this.Y = this.A; this.setZN(this.Y); break; // TAY
+                    case 0x98: this.A = this.Y; this.setZN(this.A); break; // TYA
+                    case 0xBA: this.X = this.SP; this.setZN(this.X); break; // TSX
+                    case 0x9A: this.SP = this.X; break; // TXS
+
+                    // Stack operations
+                    case 0x48: this.push(this.A); break; // PHA
+                    case 0x68: this.A = this.pull(); this.setZN(this.A); break; // PLA
+                    case 0x08: this.push(this.P | 0x30); break; // PHP
+                    case 0x28: this.P = this.pull() | 0x20; break; // PLP
+
+                    // Logical operations
+                    case 0x29: this.A &= this.readImmediate(); this.setZN(this.A); break; // AND imm
+                    case 0x25: this.A &= this.readZeroPage(); this.setZN(this.A); break; // AND zp
+                    case 0x2D: this.A &= this.readAbsolute(); this.setZN(this.A); break; // AND abs
+
+                    case 0x09: this.A |= this.readImmediate(); this.setZN(this.A); break; // ORA imm
+                    case 0x05: this.A |= this.readZeroPage(); this.setZN(this.A); break; // ORA zp
+                    case 0x0D: this.A |= this.readAbsolute(); this.setZN(this.A); break; // ORA abs
+
+                    case 0x49: this.A ^= this.readImmediate(); this.setZN(this.A); break; // EOR imm
+                    case 0x45: this.A ^= this.readZeroPage(); this.setZN(this.A); break; // EOR zp
+                    case 0x4D: this.A ^= this.readAbsolute(); this.setZN(this.A); break; // EOR abs
+
+                    // Arithmetic
+                    case 0x69: this.ADC(this.readImmediate()); break; // ADC imm
+                    case 0x65: this.ADC(this.readZeroPage()); break; // ADC zp
+                    case 0x6D: this.ADC(this.readAbsolute()); break; // ADC abs
+
+                    case 0xE9: this.SBC(this.readImmediate()); break; // SBC imm
+                    case 0xE5: this.SBC(this.readZeroPage()); break; // SBC zp
+                    case 0xED: this.SBC(this.readAbsolute()); break; // SBC abs
+
+                    case 0xC9: this.CMP(this.A, this.readImmediate()); break; // CMP imm
+                    case 0xC5: this.CMP(this.A, this.readZeroPage()); break; // CMP zp
+                    case 0xCD: this.CMP(this.A, this.readAbsolute()); break; // CMP abs
+
+                    case 0xE0: this.CMP(this.X, this.readImmediate()); break; // CPX imm
+                    case 0xE4: this.CMP(this.X, this.readZeroPage()); break; // CPX zp
+                    case 0xEC: this.CMP(this.X, this.readAbsolute()); break; // CPX abs
+
+                    case 0xC0: this.CMP(this.Y, this.readImmediate()); break; // CPY imm
+                    case 0xC4: this.CMP(this.Y, this.readZeroPage()); break; // CPY zp
+                    case 0xCC: this.CMP(this.Y, this.readAbsolute()); break; // CPY abs
+
+                    // Increment/Decrement
+                    case 0xE6: this.INC_ZP(); break; // INC zp
+                    case 0xEE: this.INC_ABS(); break; // INC abs
+                    case 0xE8: this.X = (this.X + 1) & 0xFF; this.setZN(this.X); break; // INX
+                    case 0xC8: this.Y = (this.Y + 1) & 0xFF; this.setZN(this.Y); break; // INY
+
+                    case 0xC6: this.DEC_ZP(); break; // DEC zp
+                    case 0xCE: this.DEC_ABS(); break; // DEC abs
+                    case 0xCA: this.X = (this.X - 1) & 0xFF; this.setZN(this.X); break; // DEX
+                    case 0x88: this.Y = (this.Y - 1) & 0xFF; this.setZN(this.Y); break; // DEY
+
+                    // Shifts and rotates
+                    case 0x0A: this.A = this.ASL(this.A); break; // ASL A
+                    case 0x06: this.ASL_ZP(); break; // ASL zp
+                    case 0x0E: this.ASL_ABS(); break; // ASL abs
+
+                    case 0x4A: this.A = this.LSR(this.A); break; // LSR A
+                    case 0x46: this.LSR_ZP(); break; // LSR zp
+                    case 0x4E: this.LSR_ABS(); break; // LSR abs
+
+                    case 0x2A: this.A = this.ROL(this.A); break; // ROL A
+                    case 0x26: this.ROL_ZP(); break; // ROL zp
+                    case 0x2E: this.ROL_ABS(); break; // ROL abs
+
+                    case 0x6A: this.A = this.ROR(this.A); break; // ROR A
+                    case 0x66: this.ROR_ZP(); break; // ROR zp
+                    case 0x6E: this.ROR_ABS(); break; // ROR abs
+
+                    // Jumps and branches
+                    case 0x4C: this.JMP_ABS(); break; // JMP abs
+                    case 0x6C: this.JMP_IND(); break; // JMP ind
+                    case 0x20: this.JSR(); break; // JSR
+                    case 0x60: this.RTS(); break; // RTS
+                    case 0x40: this.RTI(); break; // RTI
+
+                    case 0x90: this.BCC(); break; // BCC
+                    case 0xB0: this.BCS(); break; // BCS
+                    case 0xF0: this.BEQ(); break; // BEQ
+                    case 0x30: this.BMI(); break; // BMI
+                    case 0xD0: this.BNE(); break; // BNE
+                    case 0x10: this.BPL(); break; // BPL
+                    case 0x50: this.BVC(); break; // BVC
+                    case 0x70: this.BVS(); break; // BVS
+
+                    // Flag operations
+                    case 0x18: this.setFlag('C', false); break; // CLC
+                    case 0x38: this.setFlag('C', true); break; // SEC
+                    case 0x58: this.setFlag('I', false); break; // CLI
+                    case 0x78: this.setFlag('I', true); break; // SEI
+                    case 0xD8: this.setFlag('D', false); break; // CLD
+                    case 0xF8: this.setFlag('D', true); break; // SED
+                    case 0xB8: this.setFlag('V', false); break; // CLV
+
+                    // Misc
+                    case 0x24: this.BIT_ZP(); break; // BIT zp
+                    case 0x2C: this.BIT_ABS(); break; // BIT abs
+                    case 0xEA: break; // NOP
+                    case 0x00: this.BRK(); break; // BRK
+
+                    default:
+                        console.warn(`Unknown opcode: $${opcode.toString(16).toUpperCase().padStart(2, '0')}`);
+                        break;
+                }
+            }
+
+            // Addressing modes
+            readImmediate() {
+                const value = this.memory.read(this.PC);
+                this.PC = (this.PC + 1) & 0xFFFF;
+                return value;
+            }
+
+            readZeroPage() {
+                const addr = this.readImmediate();
+                return this.memory.read(addr);
+            }
+
+            readZeroPageX() {
+                const addr = (this.readImmediate() + this.X) & 0xFF;
+                return this.memory.read(addr);
+            }
+
+            readZeroPageY() {
+                const addr = (this.readImmediate() + this.Y) & 0xFF;
+                return this.memory.read(addr);
+            }
+
+            readAbsolute() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                return this.memory.read((hi << 8) | lo);
+            }
+
+            readAbsoluteX() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const addr = ((hi << 8) | lo) + this.X;
+                return this.memory.read(addr & 0xFFFF);
+            }
+
+            readAbsoluteY() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const addr = ((hi << 8) | lo) + this.Y;
+                return this.memory.read(addr & 0xFFFF);
+            }
+
+            readIndexedIndirect() {
+                const zp = (this.readImmediate() + this.X) & 0xFF;
+                const lo = this.memory.read(zp);
+                const hi = this.memory.read((zp + 1) & 0xFF);
+                return this.memory.read((hi << 8) | lo);
+            }
+
+            readIndirectIndexed() {
+                const zp = this.readImmediate();
+                const lo = this.memory.read(zp);
+                const hi = this.memory.read((zp + 1) & 0xFF);
+                const addr = ((hi << 8) | lo) + this.Y;
+                return this.memory.read(addr & 0xFFFF);
+            }
+
+            // Write addressing modes
+            writeZeroPage(value) {
+                const addr = this.readImmediate();
+                this.memory.write(addr, value);
+            }
+
+            writeZeroPageX(value) {
+                const addr = (this.readImmediate() + this.X) & 0xFF;
+                this.memory.write(addr, value);
+            }
+
+            writeZeroPageY(value) {
+                const addr = (this.readImmediate() + this.Y) & 0xFF;
+                this.memory.write(addr, value);
+            }
+
+            writeAbsolute(value) {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                this.memory.write((hi << 8) | lo, value);
+            }
+
+            writeAbsoluteX(value) {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const addr = ((hi << 8) | lo) + this.X;
+                this.memory.write(addr & 0xFFFF, value);
+            }
+
+            writeAbsoluteY(value) {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const addr = ((hi << 8) | lo) + this.Y;
+                this.memory.write(addr & 0xFFFF, value);
+            }
+
+            writeIndexedIndirect(value) {
+                const zp = (this.readImmediate() + this.X) & 0xFF;
+                const lo = this.memory.read(zp);
+                const hi = this.memory.read((zp + 1) & 0xFF);
+                this.memory.write((hi << 8) | lo, value);
+            }
+
+            writeIndirectIndexed(value) {
+                const zp = this.readImmediate();
+                const lo = this.memory.read(zp);
+                const hi = this.memory.read((zp + 1) & 0xFF);
+                const addr = ((hi << 8) | lo) + this.Y;
+                this.memory.write(addr & 0xFFFF, value);
+            }
+
+            // ALU operations
+            ADC(value) {
+                const sum = this.A + value + (this.getFlag('C') ? 1 : 0);
+                this.setFlag('C', sum > 0xFF);
+                this.setFlag('V', ((this.A ^ sum) & (value ^ sum) & 0x80) !== 0);
+                this.A = sum & 0xFF;
+                this.setZN(this.A);
+            }
+
+            SBC(value) {
+                this.ADC(value ^ 0xFF);
+            }
+
+            CMP(reg, value) {
+                const result = reg - value;
+                this.setFlag('C', reg >= value);
+                this.setZN(result);
+            }
+
+            // Shift/Rotate
+            ASL(value) {
+                this.setFlag('C', (value & 0x80) !== 0);
+                const result = (value << 1) & 0xFF;
+                this.setZN(result);
+                return result;
+            }
+
+            LSR(value) {
+                this.setFlag('C', (value & 0x01) !== 0);
+                const result = value >> 1;
+                this.setZN(result);
+                return result;
+            }
+
+            ROL(value) {
+                const carry = this.getFlag('C') ? 1 : 0;
+                this.setFlag('C', (value & 0x80) !== 0);
+                const result = ((value << 1) | carry) & 0xFF;
+                this.setZN(result);
+                return result;
+            }
+
+            ROR(value) {
+                const carry = this.getFlag('C') ? 0x80 : 0;
+                this.setFlag('C', (value & 0x01) !== 0);
+                const result = (value >> 1) | carry;
+                this.setZN(result);
+                return result;
+            }
+
+            // Memory operations
+            INC_ZP() {
+                const addr = this.readImmediate();
+                const value = (this.memory.read(addr) + 1) & 0xFF;
+                this.memory.write(addr, value);
+                this.setZN(value);
+            }
+
+            INC_ABS() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const addr = (hi << 8) | lo;
+                const value = (this.memory.read(addr) + 1) & 0xFF;
+                this.memory.write(addr, value);
+                this.setZN(value);
+            }
+
+            DEC_ZP() {
+                const addr = this.readImmediate();
+                const value = (this.memory.read(addr) - 1) & 0xFF;
+                this.memory.write(addr, value);
+                this.setZN(value);
+            }
+
+            DEC_ABS() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const addr = (hi << 8) | lo;
+                const value = (this.memory.read(addr) - 1) & 0xFF;
+                this.memory.write(addr, value);
+                this.setZN(value);
+            }
+
+            ASL_ZP() {
+                const addr = this.readImmediate();
+                const value = this.ASL(this.memory.read(addr));
+                this.memory.write(addr, value);
+            }
+
+            ASL_ABS() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const addr = (hi << 8) | lo;
+                const value = this.ASL(this.memory.read(addr));
+                this.memory.write(addr, value);
+            }
+
+            LSR_ZP() {
+                const addr = this.readImmediate();
+                const value = this.LSR(this.memory.read(addr));
+                this.memory.write(addr, value);
+            }
+
+            LSR_ABS() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const addr = (hi << 8) | lo;
+                const value = this.LSR(this.memory.read(addr));
+                this.memory.write(addr, value);
+            }
+
+            ROL_ZP() {
+                const addr = this.readImmediate();
+                const value = this.ROL(this.memory.read(addr));
+                this.memory.write(addr, value);
+            }
+
+            ROL_ABS() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const addr = (hi << 8) | lo;
+                const value = this.ROL(this.memory.read(addr));
+                this.memory.write(addr, value);
+            }
+
+            ROR_ZP() {
+                const addr = this.readImmediate();
+                const value = this.ROR(this.memory.read(addr));
+                this.memory.write(addr, value);
+            }
+
+            ROR_ABS() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const addr = (hi << 8) | lo;
+                const value = this.ROR(this.memory.read(addr));
+                this.memory.write(addr, value);
+            }
+
+            BIT_ZP() {
+                const value = this.readZeroPage();
+                this.setFlag('Z', (this.A & value) === 0);
+                this.setFlag('V', (value & 0x40) !== 0);
+                this.setFlag('N', (value & 0x80) !== 0);
+            }
+
+            BIT_ABS() {
+                const value = this.readAbsolute();
+                this.setFlag('Z', (this.A & value) === 0);
+                this.setFlag('V', (value & 0x40) !== 0);
+                this.setFlag('N', (value & 0x80) !== 0);
+            }
+
+            // Control flow
+            JMP_ABS() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                this.PC = (hi << 8) | lo;
+            }
+
+            JMP_IND() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const ptr = (hi << 8) | lo;
+                // 6502 bug: doesn't cross page boundary
+                const newLo = this.memory.read(ptr);
+                const newHi = this.memory.read((ptr & 0xFF00) | ((ptr + 1) & 0xFF));
+                this.PC = (newHi << 8) | newLo;
+            }
+
+            JSR() {
+                const lo = this.readImmediate();
+                const hi = this.readImmediate();
+                const returnAddr = (this.PC - 1) & 0xFFFF;
+                this.push((returnAddr >> 8) & 0xFF);
+                this.push(returnAddr & 0xFF);
+                this.PC = (hi << 8) | lo;
+            }
+
+            RTS() {
+                const lo = this.pull();
+                const hi = this.pull();
+                this.PC = ((hi << 8) | lo) + 1;
+            }
+
+            RTI() {
+                this.P = this.pull() | 0x20;
+                const lo = this.pull();
+                const hi = this.pull();
+                this.PC = (hi << 8) | lo;
+            }
+
+            BRK() {
+                this.PC = (this.PC + 1) & 0xFFFF;
+                this.push((this.PC >> 8) & 0xFF);
+                this.push(this.PC & 0xFF);
+                this.push(this.P | 0x30);
+                this.setFlag('I', true);
+                this.PC = this.memory.read(0xFFFE) | (this.memory.read(0xFFFF) << 8);
+            }
+
+            branch(condition) {
+                const offset = this.readImmediate();
+                if (condition) {
+                    const signed = offset < 128 ? offset : offset - 256;
+                    this.PC = (this.PC + signed) & 0xFFFF;
+                }
+            }
+
+            BCC() { this.branch(!this.getFlag('C')); }
+            BCS() { this.branch(this.getFlag('C')); }
+            BEQ() { this.branch(this.getFlag('Z')); }
+            BMI() { this.branch(this.getFlag('N')); }
+            BNE() { this.branch(!this.getFlag('Z')); }
+            BPL() { this.branch(!this.getFlag('N')); }
+            BVC() { this.branch(!this.getFlag('V')); }
+            BVS() { this.branch(this.getFlag('V')); }
+
+            getFlagsString() {
+                const flags = ['N', 'V', '-', 'B', 'D', 'I', 'Z', 'C'];
+                return flags.map((f, i) => {
+                    if (f === '-') return '-';
+                    return (this.P & (1 << (7 - i))) ? f : f.toLowerCase();
+                }).join('');
+            }
+        }
+
+        // ============================================================
+        // 6522 VIA EMULATOR
+        // ============================================================
+        class VIA6522 {
+            constructor(baseAddr) {
+                this.baseAddr = baseAddr;
+                this.reset();
+            }
+
+            reset() {
+                this.ORB = 0;
+                this.ORA = 0;
+                this.DDRB = 0;
+                this.DDRA = 0;
+                this.T1C = 0;
+                this.T1L = 0;
+                this.T2C = 0;
+                this.SR = 0;
+                this.ACR = 0;
+                this.PCR = 0;
+                this.IFR = 0;
+                this.IER = 0;
+                
+                this.externalPinsB = 0xFF;
+                this.externalPinsA = 0xFF;
+            }
+
+            read(addr) {
+                const reg = addr & 0x0F;
+                switch (reg) {
+                    case 0: // ORB/IRB
+                        return (this.ORB & this.DDRB) | (this.externalPinsB & ~this.DDRB);
+                    case 1: // ORA/IRA
+                        return (this.ORA & this.DDRA) | (this.externalPinsA & ~this.DDRA);
+                    case 2: return this.DDRB;
+                    case 3: return this.DDRA;
+                    case 4: return this.T1C & 0xFF;
+                    case 5: return (this.T1C >> 8) & 0xFF;
+                    case 8: return this.T2C & 0xFF;
+                    case 9: return (this.T2C >> 8) & 0xFF;
+                    case 10: return this.SR;
+                    case 11: return this.ACR;
+                    case 12: return this.PCR;
+                    case 13: return this.IFR;
+                    case 14: return this.IER | 0x80;
+                    case 15: // ORA no handshake
+                        return (this.ORA & this.DDRA) | (this.externalPinsA & ~this.DDRA);
+                    default: return 0;
+                }
+            }
+
+            write(addr, value) {
+                const reg = addr & 0x0F;
+                switch (reg) {
+                    case 0: // ORB
+                        this.ORB = value;
+                        break;
+                    case 1: // ORA
+                        this.ORA = value;
+                        break;
+                    case 2: this.DDRB = value; break;
+                    case 3: this.DDRA = value; break;
+                    case 4: this.T1C = (this.T1C & 0xFF00) | value; break;
+                    case 5: 
+                        this.T1C = (value << 8) | (this.T1C & 0xFF);
+                        this.T1L = this.T1C;
+                        break;
+                    case 6: this.T1L = (this.T1L & 0xFF00) | value; break;
+                    case 7: this.T1L = (value << 8) | (this.T1L & 0xFF); break;
+                    case 8: this.T2C = (this.T2C & 0xFF00) | value; break;
+                    case 9: this.T2C = (value << 8) | (this.T2C & 0xFF); break;
+                    case 10: this.SR = value; break;
+                    case 11: this.ACR = value; break;
+                    case 12: this.PCR = value; break;
+                    case 13: this.IFR = value; break;
+                    case 14: 
+                        if (value & 0x80) {
+                            this.IER |= (value & 0x7F);
+                        } else {
+                            this.IER &= ~(value & 0x7F);
+                        }
+                        break;
+                    case 15: this.ORA = value; break;
+                }
+            }
+
+            getPortBOutput() {
+                return this.ORB & this.DDRB;
+            }
+
+            getPortAOutput() {
+                return this.ORA & this.DDRA;
+            }
+
+            setExternalPinsB(value) {
+                this.externalPinsB = value;
+            }
+
+            setExternalPinsA(value) {
+                this.externalPinsA = value;
+            }
+
+            tick() {
+                // Simple timer countdown
+                if (this.T1C > 0) {
+                    this.T1C--;
+                }
+                if (this.T2C > 0) {
+                    this.T2C--;
+                }
+            }
+        }
+
+        // ============================================================
+        // EEPROM EMULATOR (AT28C256)
+        // ============================================================
+        class EEPROM28C256 {
+            constructor(baseAddr, size = 32768) {
+                this.baseAddr = baseAddr;
+                this.size = size;
+                this.data = new Uint8Array(size);
+                this.writeProtect = false;
+            }
+
+            read(addr) {
+                const offset = addr - this.baseAddr;
+                if (offset >= 0 && offset < this.size) {
+                    return this.data[offset];
+                }
+                return 0xFF;
+            }
+
+            write(addr, value) {
+                if (this.writeProtect) return;
+                const offset = addr - this.baseAddr;
+                if (offset >= 0 && offset < this.size) {
+                    this.data[offset] = value & 0xFF;
+                }
+            }
+
+            loadROM(romData) {
+                for (let i = 0; i < romData.length && i < this.size; i++) {
+                    this.data[i] = romData[i];
+                }
+            }
+
+            setWriteProtect(enabled) {
+                this.writeProtect = enabled;
+            }
+        }
+
+        // ============================================================
+        // SRAM EMULATOR (AS6C62256)
+        // ============================================================
+        class SRAM62256 {
+            constructor(baseAddr, size = 32768) {
+                this.baseAddr = baseAddr;
+                this.size = size;
+                this.data = new Uint8Array(size);
+            }
+
+            read(addr) {
+                const offset = addr - this.baseAddr;
+                if (offset >= 0 && offset < this.size) {
+                    return this.data[offset];
+                }
+                return 0xFF;
+            }
+
+            write(addr, value) {
+                const offset = addr - this.baseAddr;
+                if (offset >= 0 && offset < this.size) {
+                    this.data[offset] = value & 0xFF;
+                }
+            }
+
+            reset() {
+                this.data.fill(0);
+            }
+        }
+
+        // ============================================================
+        // LCD EMULATOR (HD44780 / FIT0127)
+        // ============================================================
+        class LCD_HD44780 {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.DDRAM = new Uint8Array(80);
+                this.CGRAM = new Uint8Array(64);
+                this.AC = 0; // Address counter
+                this.displayOn = false;
+                this.cursorOn = false;
+                this.blinkOn = false;
+                this.entryMode = 0x06;
+                this.functionSet = 0x38;
+                this.busy = false;
+                this.dataMode = false; // false = command, true = data
+                this.lines = 2;
+                this.cols = 16;
+            }
+
+            command(cmd) {
+                // Clear Display
+                if (cmd === 0x01) {
+                    this.DDRAM.fill(0x20);
+                    this.AC = 0;
+                }
+                // Return Home
+                else if (cmd === 0x02) {
+                    this.AC = 0;
+                }
+                // Entry Mode Set
+                else if ((cmd & 0xFC) === 0x04) {
+                    this.entryMode = cmd;
+                }
+                // Display Control
+                else if ((cmd & 0xF8) === 0x08) {
+                    this.displayOn = (cmd & 0x04) !== 0;
+                    this.cursorOn = (cmd & 0x02) !== 0;
+                    this.blinkOn = (cmd & 0x01) !== 0;
+                }
+                // Cursor/Display Shift
+                else if ((cmd & 0xF0) === 0x10) {
+                    // Simplified - just increment/decrement AC
+                    if (cmd & 0x04) {
+                        this.AC = (this.AC + 1) % 80;
+                    } else {
+                        this.AC = (this.AC - 1 + 80) % 80;
+                    }
+                }
+                // Function Set
+                else if ((cmd & 0xE0) === 0x20) {
+                    this.functionSet = cmd;
+                    this.lines = (cmd & 0x08) ? 2 : 1;
+                }
+                // Set CGRAM Address
+                else if ((cmd & 0xC0) === 0x40) {
+                    this.AC = cmd & 0x3F;
+                    this.dataMode = false;
+                }
+                // Set DDRAM Address
+                else if ((cmd & 0x80) === 0x80) {
+                    this.AC = cmd & 0x7F;
+                    this.dataMode = true;
+                }
+            }
+
+            writeData(data) {
+                if (this.dataMode) {
+                    // Write to DDRAM
+                    this.DDRAM[this.AC] = data;
+                    // Auto-increment/decrement
+                    if (this.entryMode & 0x02) {
+                        this.AC = (this.AC + 1) % 80;
+                    } else {
+                        this.AC = (this.AC - 1 + 80) % 80;
+                    }
+                } else {
+                    // Write to CGRAM
+                    this.CGRAM[this.AC] = data;
+                    this.AC = (this.AC + 1) % 64;
+                }
+            }
+
+            readBusy() {
+                return this.busy ? 0x80 : 0x00;
+            }
+
+            getDisplayText() {
+                let line1 = '';
+                let line2 = '';
+                
+                for (let i = 0; i < 16; i++) {
+                    const char = this.DDRAM[i];
+                    line1 += char >= 0x20 && char < 0x7F ? String.fromCharCode(char) : ' ';
+                }
+                
+                for (let i = 0; i < 16; i++) {
+                    const char = this.DDRAM[0x40 + i];
+                    line2 += char >= 0x20 && char < 0x7F ? String.fromCharCode(char) : ' ';
+                }
+                
+                return line1 + '\n' + line2;
+            }
+        }
+
+        // ============================================================
+        // MEMORY BUS
+        // ============================================================
+        class MemoryBus {
+            constructor() {
+                this.devices = [];
+                this.via = null;
+                this.lcd = null;
+            }
+
+            addDevice(device) {
+                this.devices.push(device);
+            }
+
+            setVIA(via) {
+                this.via = via;
+            }
+
+            setLCD(lcd) {
+                this.lcd = lcd;
+            }
+
+            read(addr) {
+                // Check VIA
+                if (this.via && addr >= this.via.baseAddr && addr < this.via.baseAddr + 16) {
+                    return this.via.read(addr);
+                }
+
+                // Check other devices
+                for (const device of this.devices) {
+                    if (addr >= device.baseAddr && addr < device.baseAddr + device.size) {
+                        return device.read(addr);
+                    }
+                }
+
+                return 0xFF;
+            }
+
+            write(addr, value) {
+                // Check VIA
+                if (this.via && addr >= this.via.baseAddr && addr < this.via.baseAddr + 16) {
+                    this.via.write(addr, value);
+                    
+                    // LCD interface through VIA
+                    if (this.lcd) {
+                        this.updateLCD();
+                    }
+                    return;
+                }
+
+                // Check other devices
+                for (const device of this.devices) {
+                    if (addr >= device.baseAddr && addr < device.baseAddr + device.size) {
+                        device.write(addr, value);
+                        return;
+                    }
+                }
+            }
+
+            updateLCD() {
+                const portB = this.via.getPortBOutput();
+                const portA = this.via.getPortAOutput();
+                
+                const E = (portA & 0x80) !== 0;
+                const RW = (portA & 0x40) !== 0;
+                const RS = (portA & 0x20) !== 0;
+
+                // On falling edge of E
+                if (!E && this.lastE) {
+                    if (!RW) {
+                        if (RS) {
+                            this.lcd.writeData(portB);
+                        } else {
+                            this.lcd.command(portB);
+                        }
+                    }
+                }
+
+                this.lastE = E;
+            }
+        }
+
+        // ============================================================
+        // 6502 ASSEMBLER
+        // ============================================================
+        class Assembler6502 {
+            constructor() {
+                this.opcodes = this.initOpcodes();
+            }
+
+            initOpcodes() {
+                return {
+                    'ADC': { imm: 0x69, zp: 0x65, zpx: 0x75, abs: 0x6D, absx: 0x7D, absy: 0x79, indx: 0x61, indy: 0x71 },
+                    'AND': { imm: 0x29, zp: 0x25, zpx: 0x35, abs: 0x2D, absx: 0x3D, absy: 0x39, indx: 0x21, indy: 0x31 },
+                    'ASL': { acc: 0x0A, zp: 0x06, zpx: 0x16, abs: 0x0E, absx: 0x1E },
+                    'BCC': { rel: 0x90 },
+                    'BCS': { rel: 0xB0 },
+                    'BEQ': { rel: 0xF0 },
+                    'BIT': { zp: 0x24, abs: 0x2C },
+                    'BMI': { rel: 0x30 },
+                    'BNE': { rel: 0xD0 },
+                    'BPL': { rel: 0x10 },
+                    'BRK': { imp: 0x00 },
+                    'BVC': { rel: 0x50 },
+                    'BVS': { rel: 0x70 },
+                    'CLC': { imp: 0x18 },
+                    'CLD': { imp: 0xD8 },
+                    'CLI': { imp: 0x58 },
+                    'CLV': { imp: 0xB8 },
+                    'CMP': { imm: 0xC9, zp: 0xC5, zpx: 0xD5, abs: 0xCD, absx: 0xDD, absy: 0xD9, indx: 0xC1, indy: 0xD1 },
+                    'CPX': { imm: 0xE0, zp: 0xE4, abs: 0xEC },
+                    'CPY': { imm: 0xC0, zp: 0xC4, abs: 0xCC },
+                    'DEC': { zp: 0xC6, zpx: 0xD6, abs: 0xCE, absx: 0xDE },
+                    'DEX': { imp: 0xCA },
+                    'DEY': { imp: 0x88 },
+                    'EOR': { imm: 0x49, zp: 0x45, zpx: 0x55, abs: 0x4D, absx: 0x5D, absy: 0x59, indx: 0x41, indy: 0x51 },
+                    'INC': { zp: 0xE6, zpx: 0xF6, abs: 0xEE, absx: 0xFE },
+                    'INX': { imp: 0xE8 },
+                    'INY': { imp: 0xC8 },
+                    'JMP': { abs: 0x4C, ind: 0x6C },
+                    'JSR': { abs: 0x20 },
+                    'LDA': { imm: 0xA9, zp: 0xA5, zpx: 0xB5, abs: 0xAD, absx: 0xBD, absy: 0xB9, indx: 0xA1, indy: 0xB1 },
+                    'LDX': { imm: 0xA2, zp: 0xA6, zpy: 0xB6, abs: 0xAE, absy: 0xBE },
+                    'LDY': { imm: 0xA0, zp: 0xA4, zpx: 0xB4, abs: 0xAC, absx: 0xBC },
+                    'LSR': { acc: 0x4A, zp: 0x46, zpx: 0x56, abs: 0x4E, absx: 0x5E },
+                    'NOP': { imp: 0xEA },
+                    'ORA': { imm: 0x09, zp: 0x05, zpx: 0x15, abs: 0x0D, absx: 0x1D, absy: 0x19, indx: 0x01, indy: 0x11 },
+                    'PHA': { imp: 0x48 },
+                    'PHP': { imp: 0x08 },
+                    'PLA': { imp: 0x68 },
+                    'PLP': { imp: 0x28 },
+                    'ROL': { acc: 0x2A, zp: 0x26, zpx: 0x36, abs: 0x2E, absx: 0x3E },
+                    'ROR': { acc: 0x6A, zp: 0x66, zpx: 0x76, abs: 0x6E, absx: 0x7E },
+                    'RTI': { imp: 0x40 },
+                    'RTS': { imp: 0x60 },
+                    'SBC': { imm: 0xE9, zp: 0xE5, zpx: 0xF5, abs: 0xED, absx: 0xFD, absy: 0xF9, indx: 0xE1, indy: 0xF1 },
+                    'SEC': { imp: 0x38 },
+                    'SED': { imp: 0xF8 },
+                    'SEI': { imp: 0x78 },
+                    'STA': { zp: 0x85, zpx: 0x95, abs: 0x8D, absx: 0x9D, absy: 0x99, indx: 0x81, indy: 0x91 },
+                    'STX': { zp: 0x86, zpy: 0x96, abs: 0x8E },
+                    'STY': { zp: 0x84, zpx: 0x94, abs: 0x8C },
+                    'TAX': { imp: 0xAA },
+                    'TAY': { imp: 0xA8 },
+                    'TSX': { imp: 0xBA },
+                    'TXA': { imp: 0x8A },
+                    'TXS': { imp: 0x9A },
+                    'TYA': { imp: 0x98 }
+                };
+            }
+
+            assemble(source) {
+                const lines = source.split('\n');
+                const symbols = {};
+                const output = new Uint8Array(32768);
+                let pc = 0;
+                let startAddress = 0x9000;
+                const errors = [];
+
+                // First pass - collect labels and constants
+                let currentAddress = startAddress;
+                for (let lineNum = 0; lineNum < lines.length; lineNum++) {
+                    let line = lines[lineNum].trim();
+                    
+                    // Remove comments
+                    const commentPos = line.indexOf(';');
+                    if (commentPos !== -1) {
+                        line = line.substring(0, commentPos).trim();
+                    }
+
+                    if (!line) continue;
+
+                    // Check for label
+                    if (line.includes(':')) {
+                        const label = line.split(':')[0].trim();
+                        symbols[label] = currentAddress;
+                        line = line.split(':')[1].trim();
+                    }
+
+                    // Check for constant definition
+                    if (line.includes('=')) {
+                        const parts = line.split('=');
+                        const name = parts[0].trim();
+                        const value = this.parseValue(parts[1].trim(), symbols);
+                        symbols[name] = value;
+                        continue;
+                    }
+
+                    // Check for .org directive
+                    if (line.startsWith('.org')) {
+                        const addr = this.parseValue(line.split(/\s+/)[1], symbols);
+                        currentAddress = addr;
+                        continue;
+                    }
+
+                    // Check for .byte directive
+                    if (line.startsWith('.byte')) {
+                        const values = line.substring(5).split(',');
+                        currentAddress += values.length;
+                        continue;
+                    }
+
+                    // Check for .word directive
+                    if (line.startsWith('.word')) {
+                        const values = line.substring(5).split(',');
+                        currentAddress += values.length * 2;
+                        continue;
+                    }
+
+                    // Estimate instruction size
+                    const parts = line.split(/\s+/);
+                    if (parts[0]) {
+                        const mnemonic = parts[0].toUpperCase();
+                        if (this.opcodes[mnemonic]) {
+                            currentAddress += this.estimateInstructionSize(mnemonic, parts[1]);
+                        }
+                    }
+                }
+
+                // Second pass - generate code
+                pc = 0;
+                currentAddress = startAddress;
+                
+                for (let lineNum = 0; lineNum < lines.length; lineNum++) {
+                    let line = lines[lineNum].trim();
+                    
+                    // Remove comments
+                    const commentPos = line.indexOf(';');
+                    if (commentPos !== -1) {
+                        line = line.substring(0, commentPos).trim();
+                    }
+
+                    if (!line) continue;
+
+                    // Skip labels
+                    if (line.includes(':')) {
+                        line = line.split(':')[1].trim();
+                    }
+
+                    if (!line) continue;
+
+                    // Handle directives
+                    if (line.startsWith('.org')) {
+                        const addr = this.parseValue(line.split(/\s+/)[1], symbols);
+                        currentAddress = addr;
+                        pc = addr - startAddress;
+                        continue;
+                    }
+
+                    if (line.startsWith('.byte')) {
+                        const values = line.substring(5).split(',');
+                        for (const val of values) {
+                            const v = this.parseValue(val.trim(), symbols);
+                            if (pc < output.length) {
+                                output[pc++] = v & 0xFF;
+                            }
+                            currentAddress++;
+                        }
+                        continue;
+                    }
+
+                    if (line.startsWith('.word')) {
+                        const values = line.substring(5).split(',');
+                        for (const val of values) {
+                            const v = this.parseValue(val.trim(), symbols);
+                            if (pc < output.length) {
+                                output[pc++] = v & 0xFF;
+                                output[pc++] = (v >> 8) & 0xFF;
+                            }
+                            currentAddress += 2;
+                        }
+                        continue;
+                    }
+
+                    // Skip constant definitions
+                    if (line.includes('=')) continue;
+
+                    // Parse instruction
+                    const parts = line.split(/\s+/);
+                    const mnemonic = parts[0].toUpperCase();
+                    const operand = parts[1] || '';
+
+                    if (!this.opcodes[mnemonic]) {
+                        errors.push(`Line ${lineNum + 1}: Unknown instruction '${mnemonic}'`);
+                        continue;
+                    }
+
+                    const { opcode, size, bytes } = this.assembleInstruction(mnemonic, operand, currentAddress, symbols);
+                    
+                    if (opcode === null) {
+                        errors.push(`Line ${lineNum + 1}: Invalid addressing mode for ${mnemonic} ${operand}`);
+                        continue;
+                    }
+
+                    if (pc < output.length) {
+                        for (const byte of bytes) {
+                            output[pc++] = byte;
+                        }
+                    }
+                    currentAddress += size;
+                }
+
+                return { output, errors, symbols };
+            }
+
+            estimateInstructionSize(mnemonic, operand) {
+                if (!operand) return 1;
+                if (operand.startsWith('#')) return 2;
+                if (operand.match(/^\$[0-9A-Fa-f]{1,2}$/)) return 2;
+                return 3;
+            }
+
+            assembleInstruction(mnemonic, operand, address, symbols) {
+                const op = this.opcodes[mnemonic];
+                let mode = 'imp';
+                let value = 0;
+                let opcode = null;
+                let size = 1;
+                let bytes = [];
+
+                if (!operand) {
+                    mode = 'imp';
+                    if (op.imp !== undefined) {
+                        opcode = op.imp;
+                        bytes = [opcode];
+                    } else if (op.acc !== undefined) {
+                        opcode = op.acc;
+                        bytes = [opcode];
+                    }
+                } else {
+                    // Immediate #$XX
+                    if (operand.startsWith('#')) {
+                        mode = 'imm';
+                        value = this.parseValue(operand.substring(1), symbols);
+                        opcode = op.imm;
+                        size = 2;
+                        bytes = [opcode, value & 0xFF];
+                    }
+                    // Indirect indexed ($XX),Y
+                    else if (operand.match(/\(\$[0-9A-Fa-f]+\),\s*[Yy]/)) {
+                        mode = 'indy';
+                        const match = operand.match(/\(\$([0-9A-Fa-f]+)\)/);
+                        value = parseInt(match[1], 16);
+                        opcode = op.indy;
+                        size = 2;
+                        bytes = [opcode, value & 0xFF];
+                    }
+                    // Indexed indirect ($XX,X)
+                    else if (operand.match(/\(\$[0-9A-Fa-f]+,\s*[Xx]\)/)) {
+                        mode = 'indx';
+                        const match = operand.match(/\(\$([0-9A-Fa-f]+)/);
+                        value = parseInt(match[1], 16);
+                        opcode = op.indx;
+                        size = 2;
+                        bytes = [opcode, value & 0xFF];
+                    }
+                    // Indirect ($XXXX)
+                    else if (operand.match(/\(\$[0-9A-Fa-f]+\)/)) {
+                        mode = 'ind';
+                        const match = operand.match(/\(\$([0-9A-Fa-f]+)\)/);
+                        value = parseInt(match[1], 16);
+                        opcode = op.ind;
+                        size = 3;
+                        bytes = [opcode, value & 0xFF, (value >> 8) & 0xFF];
+                    }
+                    // Absolute indexed X $XXXX,X
+                    else if (operand.match(/,\s*[Xx]$/)) {
+                        const addrPart = operand.split(',')[0].trim();
+                        value = this.parseValue(addrPart, symbols);
+                        if (value < 0x100 && op.zpx) {
+                            mode = 'zpx';
+                            opcode = op.zpx;
+                            size = 2;
+                            bytes = [opcode, value & 0xFF];
+                        } else {
+                            mode = 'absx';
+                            opcode = op.absx;
+                            size = 3;
+                            bytes = [opcode, value & 0xFF, (value >> 8) & 0xFF];
+                        }
+                    }
+                    // Absolute indexed Y $XXXX,Y
+                    else if (operand.match(/,\s*[Yy]$/)) {
+                        const addrPart = operand.split(',')[0].trim();
+                        value = this.parseValue(addrPart, symbols);
+                        if (value < 0x100 && op.zpy) {
+                            mode = 'zpy';
+                            opcode = op.zpy;
+                            size = 2;
+                            bytes = [opcode, value & 0xFF];
+                        } else {
+                            mode = 'absy';
+                            opcode = op.absy;
+                            size = 3;
+                            bytes = [opcode, value & 0xFF, (value >> 8) & 0xFF];
+                        }
+                    }
+                    // Relative (branches)
+                    else if (op.rel !== undefined) {
+                        mode = 'rel';
+                        value = this.parseValue(operand, symbols);
+                        const offset = value - (address + 2);
+                        opcode = op.rel;
+                        size = 2;
+                        bytes = [opcode, offset & 0xFF];
+                    }
+                    // Absolute or zero page
+                    else {
+                        value = this.parseValue(operand, symbols);
+                        if (value < 0x100 && op.zp) {
+                            mode = 'zp';
+                            opcode = op.zp;
+                            size = 2;
+                            bytes = [opcode, value & 0xFF];
+                        } else {
+                            mode = 'abs';
+                            opcode = op.abs;
+                            size = 3;
+                            bytes = [opcode, value & 0xFF, (value >> 8) & 0xFF];
+                        }
+                    }
+                }
+
+                return { opcode, size, bytes };
+            }
+
+            parseValue(str, symbols) {
+                str = str.trim();
+                
+                // String literal
+                if (str.startsWith('"') && str.endsWith('"')) {
+                    return str.charCodeAt(1);
+                }
+
+                // Hex
+                if (str.startsWith('$')) {
+                    return parseInt(str.substring(1), 16);
+                }
+
+                // Binary
+                if (str.startsWith('%')) {
+                    return parseInt(str.substring(1), 2);
+                }
+
+                // Decimal
+                if (str.match(/^[0-9]+$/)) {
+                    return parseInt(str, 10);
+                }
+
+                // Symbol
+                if (symbols[str] !== undefined) {
+                    return symbols[str];
+                }
+
+                // Expression evaluation (simple)
+                try {
+                    // Replace symbols in expression
+                    let expr = str;
+                    for (const [sym, val] of Object.entries(symbols)) {
+                        expr = expr.replace(new RegExp(sym, 'g'), val.toString());
+                    }
+                    return eval(expr);
+                } catch (e) {
+                    return 0;
+                }
+            }
+        }
+
+        // ============================================================
+        // BREADBOARD RENDERER
+        // ============================================================
+        class BreadboardRenderer {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.scale = 1.0;
+            }
+
+            render() {
+                const ctx = this.ctx;
+                const width = this.canvas.width;
+                const height = this.canvas.height;
+
+                // Background
+                ctx.fillStyle = '#e8d8c0';
+                ctx.fillRect(0, 0, width, height);
+
+                // Draw breadboard
+                this.drawBreadboard(50, 50, 1100, 700);
+                
+                // Draw components
+                this.drawCPU(100, 200);
+                this.drawVIA(100, 350);
+                this.drawEEPROM(300, 200);
+                this.drawSRAM(300, 350);
+                this.drawLCD(500, 200);
+                this.drawLEDs(700, 400);
+                this.drawPowerRails(50, 50);
+            }
+
+            drawBreadboard(x, y, w, h) {
+                const ctx = this.ctx;
+                
+                // Breadboard body
+                ctx.fillStyle = '#f5f5dc';
+                ctx.fillRect(x, y, w, h);
+                ctx.strokeStyle = '#999';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, w, h);
+
+                // Draw holes
+                const holeSize = 3;
+                const pitch = 10;
+                
+                ctx.fillStyle = '#444';
+                for (let row = 0; row < 60; row++) {
+                    for (let col = 0; col < 100; col++) {
+                        const hx = x + 50 + col * pitch;
+                        const hy = y + 50 + row * pitch;
+                        ctx.beginPath();
+                        ctx.arc(hx, hy, holeSize, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                // Center divider
+                ctx.strokeStyle = '#666';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(x + 50, y + h / 2);
+                ctx.lineTo(x + w - 50, y + h / 2);
+                ctx.stroke();
+            }
+
+            drawCPU(x, y) {
+                this.drawIC(x, y, 200, 80, 'W65C02S', 40);
+            }
+
+            drawVIA(x, y) {
+                this.drawIC(x, y, 200, 80, '6522 VIA', 40);
+            }
+
+            drawEEPROM(x, y) {
+                this.drawIC(x, y, 150, 60, 'AT28C256', 28);
+            }
+
+            drawSRAM(x, y) {
+                this.drawIC(x, y, 150, 60, 'AS6C62256', 28);
+            }
+
+            drawIC(x, y, w, h, label, pins) {
+                const ctx = this.ctx;
+                
+                // IC body
+                ctx.fillStyle = '#2a2a2a';
+                ctx.fillRect(x, y, w, h);
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, w, h);
+
+                // Notch
+                ctx.fillStyle = '#444';
+                ctx.fillRect(x + w/2 - 10, y - 2, 20, 4);
+
+                // Label
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px monospace';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(label, x + w/2, y + h/2);
+
+                // Pins
+                ctx.fillStyle = '#888';
+                const pinsPerSide = pins / 2;
+                const pinSpacing = w / (pinsPerSide + 1);
+                for (let i = 0; i < pinsPerSide; i++) {
+                    // Top pins
+                    ctx.fillRect(x + (i + 1) * pinSpacing - 2, y - 8, 4, 8);
+                    // Bottom pins
+                    ctx.fillRect(x + (i + 1) * pinSpacing - 2, y + h, 4, 8);
+                }
+            }
+
+            drawLCD(x, y) {
+                const ctx = this.ctx;
+                
+                ctx.fillStyle = '#4a7a4a';
+                ctx.fillRect(x, y, 200, 80);
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(x, y, 200, 80);
+
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 14px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('LCD FIT0127', x + 100, y + 40);
+            }
+
+            drawLEDs(x, y) {
+                const ctx = this.ctx;
+                const colors = ['#f00', '#f00', '#0f0', '#0f0', '#ff0', '#ff0', '#00f', '#00f'];
+                
+                for (let i = 0; i < 8; i++) {
+                    ctx.fillStyle = '#333';
+                    ctx.beginPath();
+                    ctx.arc(x + i * 30, y, 10, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.strokeStyle = colors[i];
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // LED leads
+                    ctx.strokeStyle = '#666';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(x + i * 30, y + 10);
+                    ctx.lineTo(x + i * 30, y + 20);
+                    ctx.stroke();
+                }
+            }
+
+            drawPowerRails(x, y) {
+                const ctx = this.ctx;
+                
+                // +5V rail
+                ctx.fillStyle = '#f00';
+                ctx.fillRect(x, y, 20, 700);
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 14px monospace';
+                ctx.save();
+                ctx.translate(x + 10, y + 350);
+                ctx.rotate(-Math.PI / 2);
+                ctx.textAlign = 'center';
+                ctx.fillText('+5V', 0, 0);
+                ctx.restore();
+
+                // GND rail
+                ctx.fillStyle = '#000';
+                ctx.fillRect(x + 25, y, 20, 700);
+                ctx.fillStyle = '#fff';
+                ctx.save();
+                ctx.translate(x + 35, y + 350);
+                ctx.rotate(-Math.PI / 2);
+                ctx.textAlign = 'center';
+                ctx.fillText('GND', 0, 0);
+                ctx.restore();
+            }
+        }
+
+        // ============================================================
+        // MAIN APPLICATION
+        // ============================================================
+        class BreadboardSimulator {
+            constructor() {
+                this.powered = false;
+                this.running = false;
+                this.speed = 50; // Hz
+
+                // Initialize components
+                this.ram = new SRAM62256(0x0000, 0x8000);
+                this.via = new VIA6522(0x8000);
+                this.rom = new EEPROM28C256(0x9000, 0x7000);
+                this.lcd = new LCD_HD44780();
+
+                // Initialize memory bus
+                this.memory = new MemoryBus();
+                this.memory.addDevice(this.ram);
+                this.memory.addDevice(this.rom);
+                this.memory.setVIA(this.via);
+                this.memory.setLCD(this.lcd);
+
+                // Initialize CPU
+                this.cpu = new CPU6502(this.memory);
+
+                // Initialize assembler
+                this.assembler = new Assembler6502();
+
+                // Initialize UI
+                this.initUI();
+
+                // Initialize breadboard renderer
+                this.renderer = new BreadboardRenderer(document.getElementById('breadboard'));
+                this.renderer.render();
+
+                this.lastE = false;
+            }
+
+            initUI() {
+                document.getElementById('power-btn').addEventListener('click', () => this.togglePower());
+                document.getElementById('reset-btn').addEventListener('click', () => this.reset());
+                document.getElementById('step-btn').addEventListener('click', () => this.step());
+                document.getElementById('run-btn').addEventListener('click', () => this.run());
+                document.getElementById('pause-btn').addEventListener('click', () => this.pause());
+                document.getElementById('compile-btn').addEventListener('click', () => this.compile());
+                document.getElementById('speed-slider').addEventListener('input', (e) => {
+                    this.speed = parseInt(e.target.value);
+                    document.getElementById('speed-value').textContent = `${this.speed} Hz`;
+                });
+
+                this.updateDisplay();
+            }
+
+            togglePower() {
+                this.powered = !this.powered;
+                
+                if (this.powered) {
+                    this.systemLog('System powered ON', 'success');
+                    document.getElementById('power-btn').textContent = '⚡ Power Off';
+                    document.getElementById('power-btn').classList.remove('success');
+                    document.getElementById('power-btn').classList.add('danger');
+                    document.getElementById('reset-btn').disabled = false;
+                    document.getElementById('step-btn').disabled = false;
+                    document.getElementById('run-btn').disabled = false;
+                    document.getElementById('status-indicator').className = 'paused';
+                    document.getElementById('status-indicator').textContent = 'PAUSED';
+                    this.reset();
+                } else {
+                    this.pause();
+                    this.systemLog('System powered OFF', 'warning');
+                    document.getElementById('power-btn').textContent = '⚡ Power On';
+                    document.getElementById('power-btn').classList.remove('danger');
+                    document.getElementById('power-btn').classList.add('success');
+                    document.getElementById('reset-btn').disabled = true;
+                    document.getElementById('step-btn').disabled = true;
+                    document.getElementById('run-btn').disabled = true;
+                    document.getElementById('pause-btn').disabled = true;
+                    document.getElementById('status-indicator').className = 'powered-off';
+                    document.getElementById('status-indicator').textContent = 'POWERED OFF';
+                }
+
+                this.updateDisplay();
+            }
+
+            reset() {
+                if (!this.powered) return;
+                
+                this.cpu.reset();
+                this.lcd.reset();
+                this.systemLog('System RESET', 'info');
+                this.runtimeLog('CPU reset to $' + this.cpu.PC.toString(16).toUpperCase().padStart(4, '0'), 'info');
+                this.updateDisplay();
+            }
+
+            step() {
+                if (!this.powered) return;
+                
+                this.cpu.step();
+                this.via.tick();
+                this.updateDisplay();
+                this.updateLEDs();
+                this.updateLCD();
+                
+                const pc = this.cpu.PC.toString(16).toUpperCase().padStart(4, '0');
+                const opcode = this.memory.read(this.cpu.PC).toString(16).toUpperCase().padStart(2, '0');
+                this.runtimeLog(`PC=$${pc} Opcode=$${opcode} A=$${this.cpu.A.toString(16).toUpperCase().padStart(2, '0')}`, 'info');
+            }
+
+            run() {
+                if (!this.powered || this.running) return;
+                
+                this.running = true;
+                document.getElementById('run-btn').disabled = true;
+                document.getElementById('pause-btn').disabled = false;
+                document.getElementById('step-btn').disabled = true;
+                document.getElementById('status-indicator').className = 'running';
+                document.getElementById('status-indicator').textContent = 'RUNNING';
+                
+                this.systemLog('Execution started', 'success');
+                this.runLoop();
+            }
+
+            pause() {
+                this.running = false;
+                if (this.runTimer) {
+                    clearTimeout(this.runTimer);
+                }
+                document.getElementById('run-btn').disabled = false;
+                document.getElementById('pause-btn').disabled = true;
+                document.getElementById('step-btn').disabled = false;
+                if (this.powered) {
+                    document.getElementById('status-indicator').className = 'paused';
+                    document.getElementById('status-indicator').textContent = 'PAUSED';
+                    this.systemLog('Execution paused', 'warning');
+                }
+            }
+
+            runLoop() {
+                if (!this.running || !this.powered) return;
+
+                // Execute multiple cycles per frame for better performance
+                const cyclesPerFrame = Math.max(1, Math.floor(this.speed / 60));
+                for (let i = 0; i < cyclesPerFrame; i++) {
+                    this.cpu.step();
+                    this.via.tick();
+                }
+
+                this.updateDisplay();
+                this.updateLEDs();
+                this.updateLCD();
+
+                this.runTimer = setTimeout(() => this.runLoop(), 1000 / 60);
+            }
+
+            compile() {
+                const code = document.getElementById('code-editor').value;
+                this.systemLog('Compiling assembly code...', 'info');
+
+                const { output, errors, symbols } = this.assembler.assemble(code);
+
+                if (errors.length > 0) {
+                    this.systemLog('Compilation failed with errors:', 'error');
+                    errors.forEach(err => this.systemLog('  ' + err, 'error'));
+                    return;
+                }
+
+                this.systemLog('Compilation successful!', 'success');
+                this.systemLog(`Generated ${output.length} bytes`, 'info');
+
+                // Load ROM
+                this.rom.loadROM(output);
+                this.rom.setWriteProtect(true);
+                this.systemLog('ROM loaded and write-protected', 'success');
+
+                // Auto-reset if powered
+                if (this.powered) {
+                    this.reset();
+                }
+            }
+
+            updateDisplay() {
+                document.getElementById('reg-pc').textContent = '$' + this.cpu.PC.toString(16).toUpperCase().padStart(4, '0');
+                document.getElementById('reg-a').textContent = '$' + this.cpu.A.toString(16).toUpperCase().padStart(2, '0');
+                document.getElementById('reg-x').textContent = '$' + this.cpu.X.toString(16).toUpperCase().padStart(2, '0');
+                document.getElementById('reg-y').textContent = '$' + this.cpu.Y.toString(16).toUpperCase().padStart(2, '0');
+                document.getElementById('reg-sp').textContent = '$' + this.cpu.SP.toString(16).toUpperCase().padStart(2, '0');
+                document.getElementById('reg-flags').textContent = this.cpu.getFlagsString();
+                document.getElementById('cycle-count').textContent = this.cpu.cycles.toString();
+                document.getElementById('portb-value').textContent = '$' + this.via.getPortBOutput().toString(16).toUpperCase().padStart(2, '0');
+            }
+
+            updateLEDs() {
+                const portB = this.via.getPortBOutput();
+                for (let i = 0; i < 8; i++) {
+                    const led = document.getElementById(`led${i}`);
+                    if (portB & (1 << i)) {
+                        led.classList.add('on');
+                    } else {
+                        led.classList.remove('on');
+                    }
+                }
+            }
+
+            updateLCD() {
+                const display = document.getElementById('lcd-display');
+                display.textContent = this.lcd.getDisplayText();
+            }
+
+            systemLog(message, type = 'info') {
+                const console = document.getElementById('system-console');
+                const line = document.createElement('div');
+                line.className = `console-line ${type}`;
+                line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                console.appendChild(line);
+                console.scrollTop = console.scrollHeight;
+            }
+
+            runtimeLog(message, type = 'info') {
+                const console = document.getElementById('runtime-console');
+                const line = document.createElement('div');
+                line.className = `console-line ${type}`;
+                line.textContent = message;
+                console.appendChild(line);
+                console.scrollTop = console.scrollHeight;
+
+                // Limit console lines
+                if (console.children.length > 1000) {
+                    console.removeChild(console.firstChild);
+                }
+            }
+        }
+
+        // Initialize the simulator when page loads
+        let simulator;
+        window.addEventListener('load', () => {
+            simulator = new BreadboardSimulator();
+            simulator.systemLog('6502 Breadboard Computer Simulator initialized', 'success');
+            simulator.systemLog('Load your assembly code and click "Compile & Upload"', 'info');
+        });
+    </script>
 </body>
 </html>
