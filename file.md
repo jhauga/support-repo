@@ -1,79 +1,271 @@
-# Test Markdown File
+# Markdown Basics & Essentials
 
-It worked
+This document demonstrates common and essential Markdown syntax, along with a few advanced features.
 
-# Header Test
+---
 
-## Print Rendering Level 2 Heading
+## 1. Headings
 
-### Print Rendering Level 3 Heading
-
-#### Print Rendering Level 4 Heading
-
-Test rendering of bold, italic, ordered list, and unordered list.
-
-**Ordered List**
-
-1. One item.
-   - Nested item.
-2. Two items.
-3. Three items in the list.
-
-*Unordered List*
-
-- List item
-   - Nested list item.
-* This list item uses an asterick character for the list.
-- This one uses a dash.
-
-
-# Formatted Code
-
-```bash
-> echo command line example
-> echo bash specified as language
+```markdown
+# Heading 1<!-- style="border: 1px solid black" -->
+## Heading 2<!-- style="color: purple" -->
+### Heading 3<!-- style="border-top: 1px solid black" -->
+#### Heading 4<!-- style="color: blue" -->
+##### Heading 5<!-- style="border-bottom: 1px solid black" -->
+###### Heading 6<!-- style="color: green" -->
 ```
 
-# Table Test
+Rendered:
 
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+# Heading 1<!-- style="border: 1px solid black" -->
 
-# Footnote Test
+## Heading 2<!-- style="color: purple" -->
 
-Here is a simple footnote[^1].
+### Heading 3<!-- style="border-top: 1px solid black" -->
 
-A footnote can also have multiple lines[^2].
+#### Heading 4<!-- style="color: blue" -->
 
-[^1]: My reference.
-[^2]: To add line breaks within a footnote, add 2 spaces to the end of a line.  
-This is a second line.
+##### Heading 5<!-- style="border-bottom: 1px solid black" -->
 
-# Alert Test
+###### Heading 6<!-- style="color: green" -->
 
-> [!NOTE]
-> Useful information that users should know, even when skimming content.
+---
 
-> [!TIP]
-> Helpful advice for doing things better or more easily.
+## 2. Emphasis & Text Formatting
 
-> [!IMPORTANT]
-> Key information users need to know to achieve their goal.
+```markdown
+*Italic* or _Italic_
+**Bold** or __Bold__
+***Bold & Italic***<!-- style="text-decoration: underline" -->
+~~Strikethrough~~
+```
 
-> [!WARNING]
-> Urgent info that needs immediate user attention to avoid problems.
+Rendered:
 
-> [!CAUTION]
-> Advises about risks or negative outcomes of certain actions.
+*Italic*
+**Bold**
+***Bold & Italic***<!-- style="text-decoration: underline" -->
+~~Strikethrough~~
 
-# Image Test
+---
 
-**NOTE** - image path is `/c:/Users/johnh/Batch%20Files/bin/support/printMD.jpg`
+## 3. Lists
 
-![full path to 1.5 x 1.5 test image](./image.jpg)
+### Unordered List
 
-# Test Concluded
+```markdown
+<!-- style="list-style-type: square" -->
+- Item A
+- Item B
+  - Nested Item
+```
 
-<hr>
+<!-- style="list-style-type: square" -->
+* Item A
+* Item B
+
+  * Nested Item
+
+### Ordered List
+
+```markdown
+1. First
+2. Second
+3. Third
+```
+
+1. First
+2. Second
+3. Third
+
+---
+
+## 4. Links
+
+```markdown
+[OpenAI](https://openai.com)<!-- style="color:darkslategray" -->
+```
+
+Rendered:
+
+[OpenAI](https://openai.com)<!-- style="color:darkslategray" -->
+
+---
+
+## 5. Images
+
+```markdown
+![Alt text](image.jpg "Optional title")<!-- style="max-width: 300px; min-width: 100px" -->
+```
+
+Rendered:
+
+![Placeholder image](image.jpg)<!-- style="max-width: 300px; min-width: 100px" -->
+
+---
+
+## 6. Code Blocks
+
+### Inline Code
+
+```markdown
+Use `console.log()` to print output.
+```
+
+Rendered:
+
+Use `console.log()` to print output.
+
+### Fenced Code Block
+
+````markdown
+    <!-- style="border-left: 3px solid gray" -->
+    ```js
+    function greet(name) {
+      return `Hello, ${name}!`;
+    }
+    ```
+````
+
+Rendered:
+
+<!-- style="border-left: 3px solid gray" -->
+```js
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+```
+
+---
+
+## 7. Tables
+
+```markdown
+| Name  | Language | Level |
+|-------|----------|-------|
+| Alice | Python   | Advanced |
+| Bob   | JavaScript | Intermediate |
+```
+
+Rendered:
+
+| Name  | Language   | Level        |
+| ----- | ---------- | ------------ |
+| Alice | Python     | Advanced     |
+| Bob   | JavaScript | Intermediate |
+
+---
+
+## 8. Blockquotes & Alerts
+
+### Blockquote
+
+```markdown
+> This is a blockquote.
+```
+
+> This is a blockquote.
+
+### Alerts (GitHub-style)
+
+```markdown
+> **Note**
+> This is an informational alert.
+
+> **Warning**
+> Be careful with this action.
+```
+
+> **Note**
+> This is an informational alert.
+
+> **Warning**
+> Be careful with this action.
+
+---
+
+## 9. Horizontal Rules
+
+```markdown
+---<!-- style="height: 1px" -->
+***<!-- style="height: 5px" -->
+___<!-- style="height: 10px" -->
+```
+
+---<!-- style="height: 1px" -->
+***<!-- style="height: 5px" -->
+___<!-- style="height: 10px" -->
+
+## 10. Footnotes
+
+```markdown
+This is a sentence with a footnote.[^1]
+
+[^1]: This is the footnote text.
+```
+
+Rendered:
+
+This is a sentence with a footnote.[^1]
+
+[^1]: This is the footnote text.
+
+---
+
+## 11. Mathematical Expressions (Advanced)
+
+> Note: Math rendering depends on the platform (GitHub, Markdown + MathJax, etc.)
+
+### Inline Math
+
+```markdown
+The equation $a^2 + b^2 = c^2$ is the Pythagorean theorem.
+```
+
+Rendered:
+
+The equation $a^2 + b^2 = c^2$ is the Pythagorean theorem.
+
+### Block Math
+
+```markdown
+$$
+\int_0^\infty e^{-x} dx = 1
+$$
+```
+
+Rendered:
+
+$$
+\int_0^\infty e^{-x} dx = 1
+$$
+
+---
+
+## 12. Task Lists
+
+```markdown
+- [x]<!-- style="display: none" --> Write documentation
+- [ ]<!-- style="display: none" --> Add examples
+- [ ]<!-- style="display: none" --> Publish
+```
+
+Rendered:
+
+- [x]<!-- style="display: none" --> Write documentation
+- [ ]<!-- style="display: none" --> Add examples
+- [ ]<!-- style="display: none" --> Publish
+
+---
+
+## 13. Escaping Characters
+
+```markdown
+\*This text is not italicized\*
+```
+
+Rendered:
+
+*This text is not italicized*
+
+---
