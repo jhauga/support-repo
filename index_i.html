@@ -1,0 +1,503 @@
+<!doctype html>
+<html>
+<head>
+ <meta charset="utf-8">
+ <title>Markdown to HTML</title>
+ <link rel="icon" href="/favicon.png">
+ <link rel="stylesheet" 
+  href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+ <!-- MathJax for mathematical expressions -->
+ <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  };
+ </script>
+ <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+
+<body>
+ <div id="parseMarkdown" class="markdown-body" data-markdown-src="file.md"></div>
+
+ <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+ <script>
+  /**
+   * Markdown to HTML Converter with Style Comment Support
+   * 
+   * Custom feature: Parses HTML-style comments containing attributes (e.g., style, class, id)
+   * and applies them to generated HTML elements based on comment placement:
+   * 
+   * - Comment AFTER markdown line: applies to the element generated from that line
+   * - Comment WITHIN markdown (inline): applies to that specific inline element
+   * - Comment ABOVE markdown line: applies to the parent/wrapper element
+   */
+
+  (function() {
+    'use strict';
+
+    // Regex patterns for style comments
+    const STYLE_COMMENT_PATTERN = /<!--\s*((?:style|class|id|data-[\w-]+)\s*=\s*"[^"]*"(?:\s+(?:style|class|id|data-[\w-]+)\s*=\s*"[^"]*")*)\s*-->/gi;
+    const ATTR_PATTERN = /(style|class|id|data-[\w-]+)\s*=\s*"([^"]*)"/gi;
+
+    // Storage for attributes during processing
+    let attrStore = {};
+    let attrCounter = 0;
+
+    /**
+     * Store attributes and return a unique ID
+     * @param {Object} attrs - Attributes object
+     * @param {string} type - Type of attribute application
+     * @returns {string} - Unique marker ID
+     */
+    function storeAttrs(attrs, type) {
+      // Use a format that won't be interpreted as markdown syntax
+      const id = `ATTRZMARKERZ${type}Z${attrCounter++}ZEND`;
+      attrStore[id] = attrs;
+      return id;
+    }
+
+    /**
+     * Parse attributes from a style comment
+     * @param {string} comment - The comment content
+     * @returns {Object} - Object with attribute key-value pairs
+     */
+    function parseAttributes(comment) {
+      const attrs = {};
+      let match;
+      const attrRegex = new RegExp(ATTR_PATTERN.source, 'gi');
+      while ((match = attrRegex.exec(comment)) !== null) {
+        attrs[match[1].toLowerCase()] = match[2];
+      }
+      return attrs;
+    }
+
+    /**
+     * Apply attributes to a DOM element
+     * @param {Element} element - DOM element
+     * @param {Object} attrs - Attributes to apply
+     */
+    function applyAttributesToElement(element, attrs) {
+      if (!element || Object.keys(attrs).length === 0) return;
+      
+      for (const [key, value] of Object.entries(attrs)) {
+        if (key === 'style') {
+          const existing = element.getAttribute('style') || '';
+          element.setAttribute('style', value + (existing ? '; ' + existing : ''));
+        } else if (key === 'class') {
+          const existing = element.getAttribute('class') || '';
+          element.setAttribute('class', (existing + ' ' + value).trim());
+        } else {
+          element.setAttribute(key, value);
+        }
+      }
+    }
+
+    /**
+     * Process HTML using DOM to apply stored attributes
+     * @param {string} html - HTML string with markers
+     * @returns {string} - Processed HTML
+     */
+    function applyAttributesViaDOM(html) {
+      const template = document.createElement('template');
+      template.innerHTML = html;
+      const doc = template.content;
+
+      // Process each marker
+      for (const [markerId, attrs] of Object.entries(attrStore)) {
+        const type = markerId.includes('ZAPPLYZ') ? 'APPLY' : 
+                     markerId.includes('ZLISTZ') ? 'LIST' :
+                     markerId.includes('ZHRZ') ? 'HR' :
+                     markerId.includes('ZPARENTZ') ? 'PARENT' : 'INLINE';
+        
+        // Find all text nodes containing the marker
+        const walker = document.createTreeWalker(doc, NodeFilter.SHOW_TEXT, null, false);
+        const nodesToProcess = [];
+        
+        while (walker.nextNode()) {
+          if (walker.currentNode.textContent.includes(markerId)) {
+            nodesToProcess.push(walker.currentNode);
+          }
+        }
+
+        for (const textNode of nodesToProcess) {
+          const parent = textNode.parentElement;
+          if (!parent) continue;
+
+          if (type === 'APPLY') {
+            // Apply to the parent element of this text node
+            // But prefer inline elements if this is inside one
+            let target = parent;
+            
+            // If parent is a block element (p, div, etc.), look for the closest inline sibling or child
+            if (['P', 'DIV', 'LI', 'BLOCKQUOTE'].includes(parent.tagName)) {
+              // Find the previous sibling element or previous inline element
+              let prev = textNode.previousSibling;
+              while (prev) {
+                if (prev.nodeType === Node.ELEMENT_NODE) {
+                  target = prev;
+                  break;
+                }
+                prev = prev.previousSibling;
+              }
+              // If no previous element sibling, check the last child element before this text
+              if (target === parent && parent.children.length > 0) {
+                const children = Array.from(parent.children);
+                for (let i = children.length - 1; i >= 0; i--) {
+                  const child = children[i];
+                  if (textNode.compareDocumentPosition(child) & Node.DOCUMENT_POSITION_PRECEDING) {
+                    target = child;
+                    // If this is a nested structure, get the deepest relevant child
+                    while (target.lastElementChild && ['EM', 'STRONG', 'A', 'CODE', 'SPAN', 'IMG'].includes(target.lastElementChild.tagName)) {
+                      target = target.lastElementChild;
+                    }
+                    break;
+                  }
+                }
+              }
+            }
+            
+            applyAttributesToElement(target, attrs);
+          } else if (type === 'LIST') {
+            // Apply to the nearest ul or ol parent
+            let target = parent;
+            while (target && !['UL', 'OL'].includes(target.tagName)) {
+              target = target.parentElement;
+            }
+            if (target) {
+              applyAttributesToElement(target, attrs);
+            }
+          } else if (type === 'HR') {
+            // Find the preceding or following <hr> element
+            let target = null;
+            // Check previous sibling
+            let sibling = textNode.previousSibling;
+            while (sibling) {
+              if (sibling.nodeType === Node.ELEMENT_NODE && sibling.tagName === 'HR') {
+                target = sibling;
+                break;
+              }
+              sibling = sibling.previousSibling;
+            }
+            // Check in parent's children
+            if (!target && parent) {
+              const hr = parent.previousElementSibling;
+              if (hr && hr.tagName === 'HR') {
+                target = hr;
+              }
+            }
+            // Check if marker is inside a paragraph after an HR
+            if (!target) {
+              let prevElem = parent?.previousElementSibling;
+              if (prevElem && prevElem.tagName === 'HR') {
+                target = prevElem;
+              }
+            }
+            if (target) {
+              applyAttributesToElement(target, attrs);
+            }
+          } else if (type === 'PARENT') {
+            // Apply to the nearest block-level parent
+            let target = parent;
+            while (target && !['UL', 'OL', 'BLOCKQUOTE', 'DIV', 'TABLE', 'DL', 'PRE', 'BODY'].includes(target.tagName)) {
+              target = target.parentElement;
+            }
+            if (target && target.tagName !== 'BODY') {
+              applyAttributesToElement(target, attrs);
+            } else {
+              // Fallback: apply to the direct parent
+              applyAttributesToElement(parent, attrs);
+            }
+          }
+
+          // Remove the marker from the text
+          textNode.textContent = textNode.textContent.replace(markerId, '');
+        }
+      }
+
+      // Serialize back to HTML
+      const div = document.createElement('div');
+      div.appendChild(doc.cloneNode(true));
+      return div.innerHTML;
+    }
+
+    /**
+     * Process markdown with style comments
+     * @param {string} markdown - Raw markdown content
+     * @returns {string} - Processed HTML
+     */
+    function processMarkdownWithStyles(markdown) {
+      // Reset storage for each conversion
+      attrStore = {};
+      attrCounter = 0;
+
+      const lines = markdown.split('\n');
+      const processedLines = [];
+      let parentAttrs = null;
+      let inCodeBlock = false;
+
+      for (let i = 0; i < lines.length; i++) {
+        let line = lines[i];
+        
+        // Check for fenced code block boundaries (``` or ~~~)
+        if (line.trim().match(/^(`{3,}|~{3,})/)) {
+          inCodeBlock = !inCodeBlock;
+          processedLines.push(line);
+          continue;
+        }
+
+        // If inside a code block, don't process style comments
+        if (inCodeBlock) {
+          processedLines.push(line);
+          continue;
+        }
+
+        // Check if line is ONLY a style comment (for applying to next element's parent - lists only)
+        const onlyCommentMatch = line.trim().match(/^<!--\s*((?:style|class|id|data-[\w-]+)\s*=\s*"[^"]*"(?:\s+(?:style|class|id|data-[\w-]+)\s*=\s*"[^"]*")*)\s*-->$/i);
+        if (onlyCommentMatch) {
+          parentAttrs = parseAttributes(onlyCommentMatch[1]);
+          continue; // Don't add this line to output
+        }
+
+        // Special case: task list items with checkbox and inline style comment
+        // Pattern: - [x]<!-- style="..." --> rest of text
+        const taskInlineMatch = line.match(/^(\s*[-*+]\s*)\[([x ])\](<!--\s*((?:style|class|id|data-[\w-]+)\s*=\s*"[^"]*"(?:\s+(?:style|class|id|data-[\w-]+)\s*=\s*"[^"]*")*)\s*-->)(.*)$/i);
+        if (taskInlineMatch) {
+          const prefix = taskInlineMatch[1];
+          const checked = taskInlineMatch[2];
+          const attrs = parseAttributes(taskInlineMatch[4]);
+          const rest = taskInlineMatch[5];
+          // Build attribute string
+          let attrStr = '';
+          if (attrs.style) attrStr += ` style="${attrs.style}"`;
+          if (attrs.class) attrStr += ` class="${attrs.class}"`;
+          if (attrs.id) attrStr += ` id="${attrs.id}"`;
+          // Wrap checkbox in span with attributes
+          processedLines.push(`${prefix}<span${attrStr}>[${checked}]</span>${rest}`);
+          continue;
+        }
+
+        // Check for trailing style comment (after markdown content)
+        const trailingMatch = line.match(/^(.+?)(<!--\s*((?:style|class|id|data-[\w-]+)\s*=\s*"[^"]*"(?:\s+(?:style|class|id|data-[\w-]+)\s*=\s*"[^"]*")*)\s*-->)\s*$/i);
+        
+        if (trailingMatch) {
+          const mdContent = trailingMatch[1];
+          const attrs = parseAttributes(trailingMatch[3]);
+          
+          // Special case: horizontal rules (---, ***, ___) - must be exactly 3+ of same char
+          const hrMatch = mdContent.trim().match(/^(-{3,}|\*{3,}|_{3,})$/);
+          if (hrMatch) {
+            // Store for post-processing on <hr> tag
+            const markerId = storeAttrs(attrs, 'HR');
+            // HR needs blank lines around it, marker goes on next line to be processed later
+            processedLines.push('');
+            processedLines.push(hrMatch[1]);
+            processedLines.push('');
+            processedLines.push(markerId);
+            continue;
+          }
+          
+          const markerId = storeAttrs(attrs, 'APPLY');
+          processedLines.push(mdContent + markerId);
+        } else {
+          // Check if we need to apply parent attrs (only for lists)
+          if (parentAttrs && line.trim() !== '') {
+            // Check if this line starts a list
+            const isListItem = /^\s*[-*+]\s+/.test(line) || /^\s*\d+\.\s+/.test(line);
+            if (isListItem) {
+              // Store for post-processing, don't add marker to the line itself
+              const markerId = storeAttrs(parentAttrs, 'LIST');
+              // Add a special HTML comment that won't interfere with markdown parsing
+              // This will be on its own line and processed after marked converts the list
+              processedLines.push(`<!--LISTMARKER:${markerId}-->`);
+              processedLines.push(line);
+            } else {
+              // Not a list, don't apply parent attrs
+              processedLines.push(line);
+            }
+            parentAttrs = null;
+          } else {
+            processedLines.push(line);
+          }
+        }
+      }
+
+      // Convert to HTML using marked
+      let html = marked.parse(processedLines.join('\n'));
+
+      // Post-process HR markers: find markers that are alone on a line (in a <p>) and 
+      // replace the paragraph with <hr> + apply styles
+      for (const [markerId, attrs] of Object.entries(attrStore)) {
+        if (markerId.includes('ZHRZ')) {
+          // Build attribute string
+          let attrStr = '';
+          if (attrs.style) attrStr += ` style="${attrs.style}"`;
+          if (attrs.class) attrStr += ` class="${attrs.class}"`;
+          if (attrs.id) attrStr += ` id="${attrs.id}"`;
+          
+          // Case 1: marker in its own paragraph after <hr>
+          const hrThenMarkerRegex = new RegExp(`<hr>\\s*<p>${markerId}</p>`, 'g');
+          if (hrThenMarkerRegex.test(html)) {
+            html = html.replace(hrThenMarkerRegex, `<hr${attrStr}>`);
+            delete attrStore[markerId];
+            continue;
+          }
+          
+          // Case 2: marker in a paragraph by itself (HR didn't render)
+          const markerInPRegex = new RegExp(`<p>${markerId}</p>`, 'g');
+          if (markerInPRegex.test(html)) {
+            html = html.replace(markerInPRegex, '');
+            // Find the preceding <hr> and add attributes
+            html = html.replace(/<hr>(?=[^<]*$|(?:<(?!hr)[^>]*>)*$)/i, `<hr${attrStr}>`);
+            delete attrStore[markerId];
+            continue;
+          }
+          
+          // Case 3: marker as text somewhere - apply to previous <hr>
+          if (html.includes(markerId)) {
+            // Replace the last <hr> before this marker with styled version
+            const parts = html.split(markerId);
+            if (parts.length > 1) {
+              const beforeMarker = parts[0];
+              const lastHrIndex = beforeMarker.lastIndexOf('<hr>');
+              if (lastHrIndex !== -1) {
+                parts[0] = beforeMarker.substring(0, lastHrIndex) + `<hr${attrStr}>` + beforeMarker.substring(lastHrIndex + 4);
+              }
+              html = parts.join('');
+            }
+            delete attrStore[markerId];
+          }
+        }
+      }
+
+      // Post-process: Apply stored attributes using DOM
+      html = applyAttributesViaDOM(html);
+
+      // Clean up any remaining markers (safety net)
+      html = html.replace(/ATTRZMARKERZ(?:APPLY|PARENT|INLINE|LIST|HR)Z\d+ZEND/g, '');
+
+      return html;
+    }
+
+    /**
+     * Fetch markdown file via AJAX and convert to HTML
+     * @param {string} url - URL of the markdown file
+     * @param {string} targetSelector - CSS selector for target element
+     */
+    function fetchAndConvertMarkdown(url, targetSelector) {
+      const target = document.querySelector(targetSelector);
+      if (!target) {
+        console.error(`Target element "${targetSelector}" not found`);
+        return;
+      }
+
+      target.innerHTML = '<p>Loading...</p>';
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(markdown => {
+          const html = processMarkdownWithStyles(markdown);
+          target.innerHTML = html;
+          // Trigger MathJax to process the new content
+          if (window.MathJax && MathJax.typesetPromise) {
+            MathJax.typesetPromise([target]).catch(err => console.error('MathJax error:', err));
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching markdown:', error);
+          target.innerHTML = `<p style="color: red;">Error loading markdown: ${error.message}</p>`;
+        });
+    }
+
+    /**
+     * Convert markdown string directly to HTML
+     * @param {string} markdown - Markdown content
+     * @returns {string} - Converted HTML
+     */
+    function convertMarkdown(markdown) {
+      return processMarkdownWithStyles(markdown);
+    }
+
+    // Configure marked options
+    marked.setOptions({
+      gfm: true,
+      breaks: true
+    });
+
+    // Expose functions globally
+    window.MarkdownConverter = {
+      fetch: fetchAndConvertMarkdown,
+      convert: convertMarkdown,
+      processWithStyles: processMarkdownWithStyles
+    };
+
+    // Auto-load: Check for data-markdown-src attribute or URL parameter
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.getElementById('parseMarkdown');
+      
+      // Check for data attribute
+      const srcAttr = container?.getAttribute('data-markdown-src');
+      if (srcAttr) {
+        fetchAndConvertMarkdown(srcAttr, '#parseMarkdown');
+        return;
+      }
+
+      // Check for URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const mdFile = urlParams.get('md') || urlParams.get('markdown');
+      if (mdFile) {
+        fetchAndConvertMarkdown(mdFile, '#parseMarkdown');
+        return;
+      }
+
+      // Demo: Show usage example if no source provided
+      const demoMarkdown = `# Markdown to HTML Converter
+
+## Usage
+
+Load a markdown file by:
+1. Adding \`data-markdown-src="file.md"\` to the container
+2. Using URL parameter: \`?md=file.md\`
+3. Calling \`MarkdownConverter.fetch('file.md', '#parseMarkdown')\`
+
+## Style Comment Examples
+
+### Trailing Comment (applies to preceding element)
+\`\`\`markdown
+# Red Heading <!-- style="color: red" -->
+\`\`\`
+
+### Comment Above (applies to parent/wrapper)
+\`\`\`markdown
+<!-- style="list-style-type: square" -->
+- Item 1
+- Item 2
+\`\`\`
+
+### Multiple Attributes
+\`\`\`markdown
+A paragraph with custom styling. <!-- style="color: blue" class="highlight" id="intro" -->
+\`\`\`
+`;
+      container.innerHTML = processMarkdownWithStyles(demoMarkdown);
+      // Trigger MathJax for demo content
+      if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise([container]).catch(err => console.error('MathJax error:', err));
+      }
+    });
+
+  })();
+ </script>
+</body>
+</html>

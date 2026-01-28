@@ -3,16 +3,29 @@
 Support branch of repository for:
 <!-- Link to PR -->
 - [github/awesome-copilot pull request](https://github.com/). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
-<!-- 
-Test Results:
+- `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
+<!-- git commit -m "undeploy: use htmlpreview for index.html" -->
+<!--
+- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/BRANCH_NAME/index.html) 
+-->
 
-![demo.gif](/demo.gif)
- -->
+Results from using new skill that converts markdown to html with additional custom features. The prompt used utilized the prompt file [markdown-to-html](.github/prompts/markdown-to-html.prompt.md). Two test were performed.
 
-Results from using new skill that converts markdown to html with additional custom features. The prompt used utilized the prompt file [markdown-to-html](.github/prompts/markdown-to-html):
+#### Test I
 
-> [!NOTE]
-> Had to resolve 1 console error, and a several polishing prompts (*like 6*) to finalize.
+The prompt file was ill-named, being `markdown-to-html`. Test info:
+
+- **Agent Model**: Claude Opus 4.5
+- **Prompts**: 7 (*+ or - 1*)
+- **File**: `index_i.html`
+
+#### Test II
+
+- **Agent Model**: Claude Opus 4.5
+- **Prompts**:
+- **File**: `index.html`
+
+##### Test I and II Initial Prompt
 
 ```bash
 /markdown-to-html Using your #file:SKILL.md of converting markdown to html, create
@@ -51,13 +64,4 @@ The starting html was:
  </script>
 </body>
 </html>
-
 ```
-
-- `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
-<!-- git commit -m "undeploy: use htmlpreview for index.html" -->
-<!--
-- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/BRANCH_NAME/index.html) 
--->
-
-AS_NEEDED
