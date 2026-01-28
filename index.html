@@ -2,148 +2,391 @@
 <html>
 <head>
  <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
- 
- <!--<script src="/js/scripts.js"></script>-->
+ <title>Markdown to HTML</title>
  <link rel="icon" href="/favicon.png">
- 
+ <link rel="stylesheet" 
+ href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
+ crossorigin="anonymous" referrerpolicy="no-referrer" />
  <style>
-  body {
-   margin-left: 50px;
-  }
-  div, nav, ul, li, a {
-   display: inline-block;
-   position: relative;
+  .markdown-body {
    box-sizing: border-box;
+   min-width: 200px;
+   max-width: 980px;
+   margin: 0 auto;
+   padding: 45px;
   }
-  div, nav, footer {
-   width: 100%;
-  }
-  nav {
-   background: black;   
-   height: 60px;
-  }
-  nav ul li a {
-   color: white;
-   padding: 10px;
-  }
-  main {
-   margin: 30px;
-  }
-  button {
-   background: darkslategray;
-   color: white;     
-   margin: 10px;
-   padding: 15px;
-   cursor: pointer;
-   border-radius: 10px;
-  }
-  button.showHide {
-   display: block; 
-   background: black;
-   color: white;
-  }
-  button.showHide.black {
-   display: block; 
-   padding: 2px;
-  }  
-  button.showHide.gray {
-   display: block; 
-   background: darkslategray;
-   padding: 2px;
-  }    
-  span.key {
-   color: #0073e6;
-  }  
-  span.str {
-   color: orange;
-  }
-  span.int {
-   color: green;
-  }
-  span.mthd {
-   color: purple;
-  }
-  em {
-   color: dimgray;
-  }  
-  footer {
-   bottom: 0px;   
-   background: black;
-   color: white;
-   margin-left: -50px; 
-   padding: 50px;
+  @media (max-width: 767px) {
+   .markdown-body { padding: 15px; }
   }
  </style>
 </head>
 
 <body>
+ <article class="markdown-body" id="parseMarkdown"></article>
 
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
-   </ul>
-  </nav>
- </div>
+ <script>
+  // Markdown to HTML Converter with Custom Style Comments
+  (function() {
+   const STYLE_COMMENT_REGEX = /<!--\s*style\s*=\s*"([^"]+)"\s*-->/gi;
+   const INLINE_STYLE_REGEX = /<!--\s*style\s*=\s*"([^"]+)"\s*-->/i;
 
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
-  </div>
- </main>
+   // Extract style from comment
+   function extractStyle(comment) {
+    const match = comment.match(/style\s*=\s*"([^"]+)"/i);
+    return match ? match[1] : '';
+   }
 
+   // Apply style to HTML tag
+   function applyStyleToTag(html, style) {
+    if (!style) return html;
+    return html.replace(/^<(\w+)/, (match, tag) => {
+     return `<${tag} style="${style}"`;
+    });
+   }
 
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
+   // Process inline style comments within a line
+   function processInlineStyles(line) {
+    let processed = line;
+    let styleToApply = '';
+    
+    // Check for trailing style comment
+    const trailingMatch = processed.match(/<!--\s*style\s*=\s*"([^"]+)"\s*-->$/);
+    if (trailingMatch) {
+     styleToApply = trailingMatch[1];
+     processed = processed.replace(/<!--\s*style\s*=\s*"([^"]+)"\s*-->$/, '').trim();
+    }
+    
+    return { line: processed, style: styleToApply };
+   }
 
-<h1 id="pageTitle"></h1>
+   // Convert markdown line to HTML
+   function convertLine(line, pendingParentStyle) {
+    let html = '';
+    let { line: cleanLine, style: inlineStyle } = processInlineStyles(line);
+    
+    // Headings
+    const headingMatch = cleanLine.match(/^(#{1,6})\s+(.+)$/);
+    if (headingMatch) {
+     const level = headingMatch[1].length;
+     const text = convertInlineMarkdown(headingMatch[2]);
+     html = `<h${level}>${text}</h${level}>`;
+     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
+     return { html, type: 'heading' };
+    }
 
-<p>CHANGE_TEXT</p>
+    // Horizontal rules
+    if (/^(-{3,}|\*{3,}|_{3,})$/.test(cleanLine)) {
+     html = '<hr>';
+     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
+     return { html, type: 'hr' };
+    }
 
-<pre id="a">
-CHANGE_TEXT
-</pre>
+    // Blockquotes
+    if (cleanLine.startsWith('> ')) {
+     const content = convertInlineMarkdown(cleanLine.slice(2));
+     html = `<blockquote><p>${content}</p></blockquote>`;
+     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
+     return { html, type: 'blockquote' };
+    }
 
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
+    // Unordered list items
+    const ulMatch = cleanLine.match(/^(\s*)[-*+]\s+(.+)$/);
+    if (ulMatch) {
+     const indent = ulMatch[1].length;
+     const content = convertInlineMarkdown(ulMatch[2]);
+     html = `<li>${content}</li>`;
+     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
+     return { html, type: 'ul', indent, parentStyle: pendingParentStyle };
+    }
 
+    // Ordered list items
+    const olMatch = cleanLine.match(/^(\s*)\d+\.\s+(.+)$/);
+    if (olMatch) {
+     const indent = olMatch[1].length;
+     const content = convertInlineMarkdown(olMatch[2]);
+     html = `<li>${content}</li>`;
+     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
+     return { html, type: 'ol', indent, parentStyle: pendingParentStyle };
+    }
 
+    // Task list items
+    const taskMatch = cleanLine.match(/^(\s*)[-*+]\s+\[([ xX])\]\s*(.*)$/);
+    if (taskMatch) {
+     const checked = taskMatch[2].toLowerCase() === 'x' ? ' checked' : '';
+     const content = convertInlineMarkdown(taskMatch[3]);
+     html = `<li><input type="checkbox"${checked} disabled> ${content}</li>`;
+     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
+     return { html, type: 'ul', indent: taskMatch[1].length, parentStyle: pendingParentStyle };
+    }
+
+    // Images
+    const imgMatch = cleanLine.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]+)")?\)$/);
+    if (imgMatch) {
+     const alt = imgMatch[1];
+     const src = imgMatch[2];
+     const title = imgMatch[3] ? ` title="${imgMatch[3]}"` : '';
+     html = `<img src="${src}" alt="${alt}"${title}>`;
+     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
+     return { html: `<p>${html}</p>`, type: 'image' };
+    }
+
+    // Paragraph (default)
+    if (cleanLine.trim()) {
+     html = `<p>${convertInlineMarkdown(cleanLine)}</p>`;
+     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
+     return { html, type: 'paragraph' };
+    }
+
+    return { html: '', type: 'empty' };
+   }
+
+   // Convert inline markdown elements
+   function convertInlineMarkdown(text) {
+    // Images
+    text = text.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]+)")?\)/g, (match, alt, src, title) => {
+     const titleAttr = title ? ` title="${title}"` : '';
+     return `<img src="${src}" alt="${alt}"${titleAttr}>`;
+    });
+
+    // Links
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+    // Bold and italic
+    text = text.replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+    text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    text = text.replace(/_([^_]+)_/g, '<em>$1</em>');
+
+    // Strikethrough
+    text = text.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+
+    // Inline code
+    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+    // Footnotes
+    text = text.replace(/\[\^(\d+)\]/g, '<sup><a href="#fn$1" id="fnref$1">$1</a></sup>');
+
+    return text;
+   }
+
+   // Process code blocks
+   function processCodeBlocks(lines) {
+    const result = [];
+    let inCodeBlock = false;
+    let codeContent = [];
+    let codeLang = '';
+    let codeStyle = '';
+
+    for (let i = 0; i < lines.length; i++) {
+     const line = lines[i];
+     
+     if (line.match(/^```(\w*)/) && !inCodeBlock) {
+      inCodeBlock = true;
+      codeLang = line.match(/^```(\w*)/)[1] || '';
+      codeContent = [];
+      // Check for style comment above
+      if (i > 0 && INLINE_STYLE_REGEX.test(lines[i - 1])) {
+       codeStyle = extractStyle(lines[i - 1]);
+       result.pop(); // Remove the style comment line
+      }
+     } else if (line === '```' && inCodeBlock) {
+      inCodeBlock = false;
+      const langClass = codeLang ? ` class="language-${codeLang}"` : '';
+      let pre = `<pre><code${langClass}>${escapeHtml(codeContent.join('\n'))}</code></pre>`;
+      if (codeStyle) {
+       pre = applyStyleToTag(pre, codeStyle);
+       codeStyle = '';
+      }
+      result.push({ type: 'codeblock', html: pre });
+     } else if (inCodeBlock) {
+      codeContent.push(line);
+     } else {
+      result.push({ type: 'line', content: line });
+     }
+    }
+
+    return result;
+   }
+
+   // Process tables
+   function processTable(lines, startIdx) {
+    const rows = [];
+    let i = startIdx;
+    
+    while (i < lines.length && lines[i].content && lines[i].content.includes('|')) {
+     rows.push(lines[i].content);
+     i++;
+    }
+
+    if (rows.length < 2) return { html: '', endIdx: startIdx };
+
+    // Check for separator row
+    if (!rows[1].match(/^\|?\s*[-:]+/)) return { html: '', endIdx: startIdx };
+
+    let html = '<table>';
+    
+    // Header row
+    const headers = rows[0].split('|').filter(c => c.trim());
+    html += '<thead><tr>';
+    headers.forEach(h => html += `<th>${convertInlineMarkdown(h.trim())}</th>`);
+    html += '</tr></thead>';
+
+    // Body rows
+    html += '<tbody>';
+    for (let j = 2; j < rows.length; j++) {
+     const cells = rows[j].split('|').filter(c => c.trim());
+     html += '<tr>';
+     cells.forEach(c => html += `<td>${convertInlineMarkdown(c.trim())}</td>`);
+     html += '</tr>';
+    }
+    html += '</tbody></table>';
+
+    return { html, endIdx: i };
+   }
+
+   // Escape HTML entities
+   function escapeHtml(text) {
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+    return text.replace(/[&<>"']/g, m => map[m]);
+   }
+
+   // Main conversion function
+   function convertMarkdownToHtml(markdown) {
+    const lines = markdown.split('\n');
+    const processed = processCodeBlocks(lines);
+    let html = '';
+    let currentList = null;
+    let listStack = [];
+    let pendingParentStyle = '';
+    let footnotes = {};
+
+    for (let i = 0; i < processed.length; i++) {
+     const item = processed[i];
+
+     if (item.type === 'codeblock') {
+      // Close any open lists
+      while (listStack.length) {
+       html += `</${listStack.pop()}>`;
+      }
+      currentList = null;
+      html += item.html;
+      continue;
+     }
+
+     const line = item.content;
+
+     // Check for style-only comment (for parent styling)
+     if (line && INLINE_STYLE_REGEX.test(line) && line.trim().match(/^<!--\s*style\s*=\s*"[^"]+"\s*-->$/)) {
+      pendingParentStyle = extractStyle(line);
+      continue;
+     }
+
+     // Check for footnote definitions
+     const footnoteMatch = line && line.match(/^\[\^(\d+)\]:\s*(.+)$/);
+     if (footnoteMatch) {
+      footnotes[footnoteMatch[1]] = footnoteMatch[2];
+      continue;
+     }
+
+     // Skip empty lines but close lists
+     if (!line || !line.trim()) {
+      while (listStack.length) {
+       html += `</${listStack.pop()}>`;
+      }
+      currentList = null;
+      continue;
+     }
+
+     // Check for table
+     if (line.includes('|') && i + 1 < processed.length && 
+         processed[i + 1].content && processed[i + 1].content.match(/^\|?\s*[-:|]+/)) {
+      while (listStack.length) {
+       html += `</${listStack.pop()}>`;
+      }
+      currentList = null;
+      const tableResult = processTable(processed, i);
+      html += tableResult.html;
+      i = tableResult.endIdx - 1;
+      continue;
+     }
+
+     const result = convertLine(line, pendingParentStyle);
+
+     // Handle lists
+     if (result.type === 'ul' || result.type === 'ol') {
+      const listTag = result.type;
+      
+      if (currentList !== listTag || listStack.length === 0) {
+       if (listStack.length && currentList !== listTag) {
+        html += `</${listStack.pop()}>`;
+       }
+       let openTag = `<${listTag}>`;
+       if (pendingParentStyle) {
+        openTag = `<${listTag} style="${pendingParentStyle}">`;
+        pendingParentStyle = '';
+       }
+       html += openTag;
+       listStack.push(listTag);
+       currentList = listTag;
+      }
+      html += result.html;
+     } else {
+      // Close any open lists
+      while (listStack.length) {
+       html += `</${listStack.pop()}>`;
+      }
+      currentList = null;
+      pendingParentStyle = '';
+      html += result.html;
+     }
+    }
+
+    // Close any remaining open lists
+    while (listStack.length) {
+     html += `</${listStack.pop()}>`;
+    }
+
+    // Add footnotes section if any
+    if (Object.keys(footnotes).length) {
+     html += '<hr><section class="footnotes"><ol>';
+     for (const [id, text] of Object.entries(footnotes)) {
+      html += `<li id="fn${id}">${convertInlineMarkdown(text)} <a href="#fnref${id}">↩</a></li>`;
+     }
+     html += '</ol></section>';
+    }
+
+    // Process math blocks
+    html = html.replace(/\$\$([^$]+)\$\$/g, '<div class="math">$$1$</div>');
+    html = html.replace(/\$([^$\n]+)\$/g, '<span class="math">$$$1$$</span>');
+
+    return html;
+   }
+
+   // Fetch and convert markdown file
+   function fetchAndConvert(url) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.onreadystatechange = function() {
+     if (xhr.readyState === 4) {
+      if (xhr.status === 200 || xhr.status === 0) {
+       const markdown = xhr.responseText;
+       const html = convertMarkdownToHtml(markdown);
+       document.getElementById('parseMarkdown').innerHTML = html;
+      } else {
+       document.getElementById('parseMarkdown').innerHTML = 
+        '<p>Error loading markdown file.</p>';
+      }
+     }
+    };
+    xhr.send();
+   }
+
+   // Initialize
+   document.addEventListener('DOMContentLoaded', function() {
+    fetchAndConvert('file.md');
+   });
+  })();
+ </script>
 </body>
 </html>
