@@ -1,6 +1,10 @@
 @echo off
 :: usage: undeploy [1]=branch-name (REQUIRED)
 
+:: Set parameter variables.
+set "_parOneUndeploy=%~1"
+set "_checkParOneUndeploy=-%_parOneUndeploy%-"
+
 :: Store current branch name
 FOR /F "tokens=2" %%A in ('git branch ^| findstr /r "^\*"') do set "_currentBranch=%%A"
 
@@ -17,30 +21,37 @@ git checkout %~1
 FOR /F "tokens=2" %%A in ('git branch ^| findstr /r "^\*"') do set "_checkBranch=%%A"
 
 if "%_checkBranch%"=="%~1" (
- :: Make sure no conflicts with remote
+ rem make sure no conflicts with remote
  git fetch
  git pull
  
- :: Continue only if no conflicts
+ rem continue only if no conflicts
  if NOT ERRORLEVEL 1 (
   rem remove first line with link `https://jhauga.github.io/support-repo/` from README.md
   sed -i "0,/^- .\+https:\/\/jhauga\.github\.io\/support-repo\/.*$/s///" README.md
   
-  :: Uncomment the htmlpreview block - remove <!-- and --> around the block
+  rem uncomment the htmlpreview block - remove <!-- and --> around the block
   sed -i "/^<!--$/,/^-->$/{/^<!--$/d;/^-->$/d}" README.md
   
-  :: Remove the git commit comment line
+  rem remove the git commit comment line
   sed -i "/<!-- git commit -m \"undeploy: use htmlpreview for index.html\" -->/d" README.md
   
-  :: Replace BRANCH_NAME with the actual branch name
+  rem replace BRANCH_NAME with the actual branch name
   sed -i "s/BRANCH_NAME/%~1/g" README.md
   
-  :: Stage, commit, and push changes
+  rem remove undeploy before pushing but ensure not on main
+  if NOT "%_checkBranch%"=="main" (
+   if NOT "%_parOneUndeploy%"=="main" (
+    git rm undeploy.bat
+   )
+  )
+  
+  rem Stage, commit, and push changes
   git add .
   git commit -m "undeploy: use htmlpreview for index.html"
   git push
-  
-  :: Return to original branch
+
+  rem Return to original branch
   git checkout %_currentBranch%
   exit /b 0
  ) else (
