@@ -2,14 +2,14 @@
 
 Support branch of repository for:
 <!-- Link to PR -->
-- [REPO_NAME pull request](https://github.com/). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [github/awesome-copilot pull request](https://github.com/). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
 <!-- 
 Test Results:
 
 ![demo.gif](/demo.gif)
  -->
 
-SHORT_DESCRIPTION
+Results from using new skill that converts markdown to html with additional custom features.
 
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
 <!-- git commit -m "undeploy: use htmlpreview for index.html" -->
