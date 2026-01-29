@@ -11,40 +11,117 @@ Results from not using the skill file, but all other Copilot elements from the P
 - **Prompts**: 1
 
 ```bash
-/markdown-to-html Create an AJAX script in index.html that will convert markdown
-to html with an additional custom feature of applying comments immediately following
-the markdown line, somewhere within the markdown line, or above a new markdown line
-with the text `style` in the comment, but with syntax as if an html attribute in the
-comment; to the html tag that will be generated from the preceding markdown line,
-markdown element if the comment is within the line, and to the parent tag if the
-comment is above the markdown i.e. list items. Use the data in the comments that are
-written as if html formatted attributes as they are written in the comment to the
-custom feature of converting markdown to html. Convert the file #file:file.md to html,
-using it in the AJAX call.
-```
+/markdown-to-html Create index.html and add an AJAX script that will
+convert markdown to html with an additional custom feature of applying
+the attribute in adjacent comments with valid html attribute syntax to
+the parsed html. For example:
 
-The starting html was:
+## At the end of a line:
 
-```html
-<!doctype html>
-<html>
-<head>
- <meta charset="utf-8">
- <title>Markdown to HTML</title>
- <link rel="icon" href="/favicon.png">
- <link rel="stylesheet" 
- href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
- crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+    ```markdown
+    # Heading 1<!-- style="color:blue" -->
+    ```
 
-<body>
- <div id="parseMarkdown"></div>
+Parsed as HTML:
 
- <script>
-  // embeddedScript
-  // Convert markdown to html.
- </script>
-</body>
-</html>
+    ```html
+    <h1 style="color:blue">Heading 1</h1>
+    ```
 
+## Before a markdown line:
+
+    ```markdown
+    <!-- style="list-style-type: square" -->
+    - List item 1
+    - List item 2
+    ```
+
+Parsed as HTML:
+
+    ```html
+    <ul style="list-style-type: square">
+     <li>List item 1</li>
+     <li>List item 2</li>
+    </ul>
+    ```
+
+## Within a markdown line:
+
+    ```markdown
+    - [ ] <!-- style="display: none" --> A todo item
+    ```
+
+Parsed as HTML:
+
+    ```html
+    <ul>
+     <li><input type="checkbox" style="display: none">  A todo item</li>
+    </ul>
+    ```
+
+## In a fenced code block:
+
+    ```markdown
+      ```
+      # Heading 1<!-- style="color:blue" -->
+      ```
+    ```
+
+Parsed as HTML:
+
+    ```html
+    <pre>
+     <code># Heading 1<!-- style="color:blue" --></code>
+    </pre>
+    ```
+
+**IMPORTANT** - see how the raw data is preserved when in fenced code
+block in parsed HTML.
+
+# GOAL
+
+Create an `index.html` file that uses an AJAX call, getting the file #file:file.md , then convert the markdown data to HTML. BE SURE to see:
+
+- #file:basic-markdown-to-html.md 
+- #file:basic-markdown.md 
+- #file:code-blocks-to-html.md 
+- #file:code-blocks.md 
+- #file:collapsed-sections-to-html.md 
+- #file:collapsed.md 
+- #file:tables-to-html.md 
+- #file:tables.md 
+- #file:writing-mathematical-expressions-to-html.md 
+- #file:writing-mathematical.md 
+
+for how the data should be converted to HTML from Markdown. And REMEMBER
+keep the raw data from the markdown in fenced code blocks preserved. So:
+
+    ```markdown
+    # Heading 1<!-- style="border: 1px solid black" -->
+    ## Heading 2<!-- style="color: purple" -->
+    ### Heading 3<!-- style="border-top: 1px solid black" -->
+    #### Heading 4<!-- style="color: blue" -->
+    ##### Heading 5<!-- style="border-bottom: 1px solid black" -->
+    ###### Heading 6<!-- style="color: green" -->
+    ```
+
+Parses HTML as:
+
+    ```html
+    <pre><code>
+    # Heading 1<!-- style="border: 1px solid black" -->
+    ## Heading 2<!-- style="color: purple" -->
+    ### Heading 3<!-- style="border-top: 1px solid black" -->
+    #### Heading 4<!-- style="color: blue" -->
+    ##### Heading 5<!-- style="border-bottom: 1px solid black" -->
+    ###### Heading 6<!-- style="color: green" -->
+    </code></pre>
+    ```
+
+And NOT converting the raw data in markdown code blocks to html and DO NOT
+apply custom feature.
+
+**NOTE** - rememeber to correctly convert markdown math expressions to
+properly formatted HTML. See #file:writing-mathematical-expressions.md
+and #file:writing-mathematical-expressions-to-html.md
 ```
