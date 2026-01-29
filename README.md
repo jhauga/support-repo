@@ -2,7 +2,7 @@
 
 Support branch of repository for:
 <!-- Link to PR -->
-- [negative-markdown-to-html pull request](https://github.com/). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [negative-markdown-to-html pull request](https://github.com/github/awesome-copilot/pull/619). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
 - `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/negative-markdown-to-html/index.html)
 
 Results from not using the skill file, but all other Copilot elements from the PR. Mainly the intial prompt and prompt filed did not imply `Use your #file:SKILL.md of converting markdown to html`.
