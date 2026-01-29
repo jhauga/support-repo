@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown to HTML Converter</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+    }
+    pre {
+      background-color: #f6f8fa;
+      border-radius: 6px;
+      padding: 16px;
+      overflow: auto;
+    }
+    code {
+      background-color: #f6f8fa;
+      border-radius: 3px;
+      padding: 0.2em 0.4em;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 85%;
+    }
+    pre code {
+      background-color: transparent;
+      padding: 0;
+    }
+    blockquote {
+      border-left: 4px solid #dfe2e5;
+      margin: 0;
+      padding-left: 16px;
+      color: #6a737d;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 16px 0;
+    }
+    th, td {
+      border: 1px solid #dfe2e5;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #f6f8fa;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #dfe2e5;
+      margin: 24px 0;
+    }
+    img {
+      max-width: 100%;
+    }
+    a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .task-list-item {
+      list-style: none;
+      margin-left: -20px;
+    }
+    .task-list-item input {
+      margin-right: 8px;
+    }
+    details {
+      margin: 16px 0;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .markdown-alert {
+      padding: 8px 16px;
+      margin: 16px 0;
+      border-left: 4px solid;
+    }
+    .markdown-alert-note {
+      border-color: #0366d6;
+      background-color: #f1f8ff;
+    }
+    .markdown-alert-warning {
+      border-color: #f9c513;
+      background-color: #fffbdd;
+    }
+    .markdown-alert-tip {
+      border-color: #28a745;
+      background-color: #dcffe4;
+    }
+    .markdown-alert-important {
+      border-color: #6f42c1;
+      background-color: #f5f0ff;
+    }
+    .markdown-alert-caution {
+      border-color: #d73a49;
+      background-color: #ffeef0;
+    }
+    .footnotes {
+      border-top: 1px solid #dfe2e5;
+      margin-top: 32px;
+      padding-top: 16px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">Loading...</div>
+
+  <script>
+    /**
+     * Markdown to HTML Converter
+     * Converts markdown to HTML with custom attribute comment parsing
+     */
+    (function() {
+      'use strict';
+
+      // Fetch markdown file and convert to HTML
+      fetch('file.md')
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to load markdown file');
+          return response.text();
+        })
+        .then(markdown => {
+          const html = convertMarkdownToHTML(markdown);
+          document.getElementById('content').innerHTML = html;
+          // Re-render MathJax after content is loaded
+          if (window.MathJax) {
+            MathJax.typesetPromise();
+          }
+        })
+        .catch(error => {
+          document.getElementById('content').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+        });
+
+      /**
+       * Main conversion function
+       */
+      function convertMarkdownToHTML(markdown) {
+        // Store code blocks to preserve raw content
+        const codeBlocks = [];
+        let processed = markdown;
+
+        // Extract and preserve fenced code blocks (```...```)
+        processed = processed.replace(/^(`{3,})(\w*)\n([\s\S]*?)\n\1/gm, (match, fence, lang, code) => {
+          const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
+          // Escape HTML entities in code blocks
+          const escapedCode = escapeHtml(code);
+          const langClass = lang ? ` class="language-${lang}"` : '';
+          codeBlocks.push(`<pre><code${langClass}>${escapedCode}</code></pre>`);
+          return placeholder;
+        });
+
+        // Extract and preserve inline code
+        const inlineCodes = [];
+        processed = processed.replace(/`([^`\n]+)`/g, (match, code) => {
+          const placeholder = `__INLINE_CODE_${inlineCodes.length}__`;
+          inlineCodes.push(`<code>${escapeHtml(code)}</code>`);
+          return placeholder;
+        });
+
+        // Process comments that appear BEFORE a markdown line (for parent elements)
+        // Store them for later application
+        const pendingParentAttributes = {};
+        let lineNum = 0;
+        const lines = processed.split('\n');
+        const processedLines = [];
+        
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          const commentMatch = line.match(/^<!--\s*([^>]+)\s*-->$/);
+          if (commentMatch && i + 1 < lines.length) {
+            // This is a standalone comment, store for next line's parent element
+            pendingParentAttributes[i + 1] = commentMatch[1].trim();
+            continue; // Don't include standalone comment line
+          }
+          processedLines.push({ line, originalIndex: i, parentAttr: pendingParentAttributes[i] || null });
+        }
+
+        // Rebuild processed content
+        processed = processedLines.map(item => {
+          if (item.parentAttr) {
+            return `__PARENT_ATTR_START__${item.parentAttr}__PARENT_ATTR_END__${item.line}`;
+          }
+          return item.line;
+        }).join('\n');
+
+        // Convert markdown elements to HTML
+        processed = convertBlockElements(processed);
+        processed = convertInlineElements(processed);
+
+        // Apply parent attributes
+        processed = applyParentAttributes(processed);
+
+        // Restore code blocks
+        codeBlocks.forEach((block, i) => {
+          processed = processed.replace(`__CODE_BLOCK_${i}__`, block);
+        });
+
+        // Restore inline codes
+        inlineCodes.forEach((code, i) => {
+          processed = processed.replace(`__INLINE_CODE_${i}__`, code);
+        });
+
+        return processed;
+      }
+
+      /**
+       * Escape HTML special characters
+       */
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      /**
+       * Extract and apply inline comment attributes
+       */
+      function extractInlineAttributes(text) {
+        const match = text.match(/<!--\s*([^>]+)\s*-->/);
+        if (match) {
+          return {
+            attributes: match[1].trim(),
+            text: text.replace(/<!--\s*[^>]+\s*-->/, '').trim()
+          };
+        }
+        return { attributes: null, text };
+      }
+
+      /**
+       * Apply attributes to an HTML tag
+       */
+      function applyAttributes(html, attributes) {
+        if (!attributes) return html;
+        // Find the first tag and add attributes
+        return html.replace(/^<(\w+)/, `<$1 ${attributes}`);
+      }
+
+      /**
+       * Apply parent attributes marked with special placeholders
+       */
+      function applyParentAttributes(html) {
+        const regex = /__PARENT_ATTR_START__([^_]+)__PARENT_ATTR_END__/g;
+        let result = html;
+        let match;
+        
+        while ((match = regex.exec(html)) !== null) {
+          const attr = match[1];
+          const placeholder = match[0];
+          const index = result.indexOf(placeholder);
+          
+          if (index !== -1) {
+            // Find the next HTML tag after this placeholder
+            const afterPlaceholder = result.substring(index + placeholder.length);
+            const tagMatch = afterPlaceholder.match(/^\s*<(\w+)/);
+            
+            if (tagMatch) {
+              // Apply attribute to the found tag
+              const newContent = afterPlaceholder.replace(/^(\s*)<(\w+)/, `$1<$2 ${attr}`);
+              result = result.substring(0, index) + newContent;
+            } else {
+              result = result.replace(placeholder, '');
+            }
+          }
+        }
+        
+        return result;
+      }
+
+      /**
+       * Convert block-level elements
+       */
+      function convertBlockElements(text) {
+        let result = text;
+
+        // Process details/summary blocks (passthrough)
+        // These are already HTML, just need to process markdown inside
+
+        // Convert headings with optional inline comments
+        result = result.replace(/^(#{1,6})\s+(.+?)(?:<!--\s*([^>]+)\s*-->)?$/gm, (match, hashes, content, attr) => {
+          const level = hashes.length;
+          const attributes = attr ? ` ${attr.trim()}` : '';
+          return `<h${level}${attributes}>${content.trim()}</h${level}>`;
+        });
+
+        // Convert horizontal rules with optional inline comments
+        result = result.replace(/^([-*_]{3,})(?:<!--\s*([^>]+)\s*-->)?$/gm, (match, rule, attr) => {
+          const attributes = attr ? ` ${attr.trim()}` : '';
+          return `<hr${attributes}>`;
+        });
+
+        // Convert blockquotes with alerts
+        result = convertBlockquotes(result);
+
+        // Convert tables
+        result = convertTables(result);
+
+        // Convert lists (unordered, ordered, task lists)
+        result = convertLists(result);
+
+        // Convert paragraphs
+        result = convertParagraphs(result);
+
+        return result;
+      }
+
+      /**
+       * Convert blockquotes including GitHub alerts
+       */
+      function convertBlockquotes(text) {
+        const lines = text.split('\n');
+        const result = [];
+        let inBlockquote = false;
+        let blockquoteLines = [];
+        let alertType = null;
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          
+          if (line.startsWith('>')) {
+            inBlockquote = true;
+            let content = line.replace(/^>\s?/, '');
+            
+            // Check for alert syntax
+            const alertMatch = content.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]$/i);
+            if (alertMatch) {
+              alertType = alertMatch[1].toLowerCase();
+              continue;
+            }
+            
+            // Check for legacy alert syntax
+            const legacyAlertMatch = content.match(/^\*\*(Note|Warning|Tip|Important|Caution)\*\*$/i);
+            if (legacyAlertMatch) {
+              alertType = legacyAlertMatch[1].toLowerCase();
+              continue;
+            }
+            
+            blockquoteLines.push(content);
+          } else if (inBlockquote && line.trim() === '') {
+            // Empty line might continue blockquote
+            if (i + 1 < lines.length && lines[i + 1].startsWith('>')) {
+              blockquoteLines.push('');
+            } else {
+              // End of blockquote
+              result.push(renderBlockquote(blockquoteLines, alertType));
+              blockquoteLines = [];
+              inBlockquote = false;
+              alertType = null;
+              result.push(line);
+            }
+          } else {
+            if (inBlockquote) {
+              result.push(renderBlockquote(blockquoteLines, alertType));
+              blockquoteLines = [];
+              inBlockquote = false;
+              alertType = null;
+            }
+            result.push(line);
+          }
+        }
+
+        if (inBlockquote) {
+          result.push(renderBlockquote(blockquoteLines, alertType));
+        }
+
+        return result.join('\n');
+      }
+
+      function renderBlockquote(lines, alertType) {
+        const content = lines.join('\n');
+        if (alertType) {
+          return `<blockquote class="markdown-alert markdown-alert-${alertType}">
+<p><strong>${alertType.charAt(0).toUpperCase() + alertType.slice(1)}</strong></p>
+<p>${content}</p>
+</blockquote>`;
+        }
+        return `<blockquote>\n<p>${content}</p>\n</blockquote>`;
+      }
+
+      /**
+       * Convert markdown tables
+       */
+      function convertTables(text) {
+        const lines = text.split('\n');
+        const result = [];
+        let inTable = false;
+        let tableLines = [];
+        let alignments = [];
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          
+          // Check if line is a table row
+          if (line.trim().startsWith('|') || (line.includes('|') && line.match(/^\|?[\s\w\-:|`*_\[\]()]+\|/))) {
+            if (!inTable) {
+              inTable = true;
+            }
+            
+            // Check if this is the separator row
+            if (line.match(/^\|?\s*:?-+:?\s*\|/)) {
+              // Parse alignments
+              alignments = line.split('|').filter(c => c.trim()).map(cell => {
+                cell = cell.trim();
+                if (cell.startsWith(':') && cell.endsWith(':')) return 'center';
+                if (cell.endsWith(':')) return 'right';
+                return 'left';
+              });
+            } else {
+              tableLines.push(line);
+            }
+          } else {
+            if (inTable) {
+              result.push(renderTable(tableLines, alignments));
+              tableLines = [];
+              alignments = [];
+              inTable = false;
+            }
+            result.push(line);
+          }
+        }
+
+        if (inTable) {
+          result.push(renderTable(tableLines, alignments));
+        }
+
+        return result.join('\n');
+      }
+
+      function renderTable(rows, alignments) {
+        if (rows.length === 0) return '';
+
+        const parseRow = (row) => {
+          return row.split('|').filter((_, i, arr) => i > 0 && i < arr.length - 1 || !row.startsWith('|')).map(cell => cell.trim()).filter(cell => cell !== '');
+        };
+
+        const headerCells = parseRow(rows[0]);
+        const bodyRows = rows.slice(1);
+
+        let html = '<table>\n<thead>\n<tr>\n';
+        headerCells.forEach((cell, i) => {
+          const align = alignments[i] ? ` align="${alignments[i]}"` : '';
+          html += `<th${align}>${cell}</th>\n`;
+        });
+        html += '</tr>\n</thead>\n<tbody>\n';
+
+        bodyRows.forEach(row => {
+          const cells = parseRow(row);
+          html += '<tr>\n';
+          cells.forEach((cell, i) => {
+            const align = alignments[i] ? ` align="${alignments[i]}"` : '';
+            html += `<td${align}>${cell}</td>\n`;
+          });
+          html += '</tr>\n';
+        });
+
+        html += '</tbody>\n</table>';
+        return html;
+      }
+
+      /**
+       * Convert lists
+       */
+      function convertLists(text) {
+        const lines = text.split('\n');
+        const result = [];
+        let listStack = []; // Stack of { type: 'ul'|'ol', indent: number }
+        let pendingAttr = null;
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          
+          // Check for preceding comment attribute
+          const attrMatch = line.match(/^__PARENT_ATTR_START__([^_]+)__PARENT_ATTR_END__(.*)$/);
+          let actualLine = line;
+          if (attrMatch) {
+            pendingAttr = attrMatch[1];
+            actualLine = attrMatch[2];
+          }
+
+          // Unordered list item
+          const ulMatch = actualLine.match(/^(\s*)([-*+])\s+(.*)$/);
+          // Ordered list item
+          const olMatch = actualLine.match(/^(\s*)(\d+)\.\s+(.*)$/);
+          
+          if (ulMatch || olMatch) {
+            const match = ulMatch || olMatch;
+            const indent = match[1].length;
+            const content = match[3];
+            const listType = ulMatch ? 'ul' : 'ol';
+            
+            // Check for task list
+            const taskMatch = content.match(/^\[([ xX])\](?:<!--\s*([^>]+)\s*-->)?\s*(.*)$/);
+            
+            // Close lists with greater indentation
+            while (listStack.length > 0 && listStack[listStack.length - 1].indent > indent) {
+              const closingList = listStack.pop();
+              result.push(`</${closingList.type}>`);
+            }
+            
+            // Check if we need to start a new list
+            if (listStack.length === 0 || listStack[listStack.length - 1].indent < indent || listStack[listStack.length - 1].type !== listType) {
+              const listAttr = pendingAttr ? ` ${pendingAttr}` : '';
+              pendingAttr = null;
+              result.push(`<${listType}${listAttr}>`);
+              listStack.push({ type: listType, indent: indent });
+            }
+            
+            if (taskMatch) {
+              const checked = taskMatch[1].toLowerCase() === 'x' ? ' checked' : '';
+              const checkboxAttr = taskMatch[2] ? ` ${taskMatch[2].trim()}` : '';
+              const taskContent = taskMatch[3];
+              result.push(`<li class="task-list-item"><input type="checkbox"${checked} disabled${checkboxAttr}> ${taskContent}</li>`);
+            } else {
+              // Check for inline comment in list item
+              const { attributes, text: cleanContent } = extractInlineAttributes(content);
+              const liAttr = attributes ? ` ${attributes}` : '';
+              result.push(`<li${liAttr}>${cleanContent}</li>`);
+            }
+          } else {
+            // Close all open lists
+            while (listStack.length > 0) {
+              const closingList = listStack.pop();
+              result.push(`</${closingList.type}>`);
+            }
+            
+            if (pendingAttr) {
+              result.push(`__PARENT_ATTR_START__${pendingAttr}__PARENT_ATTR_END__${actualLine}`);
+              pendingAttr = null;
+            } else {
+              result.push(line);
+            }
+          }
+        }
+
+        // Close remaining open lists
+        while (listStack.length > 0) {
+          const closingList = listStack.pop();
+          result.push(`</${closingList.type}>`);
+        }
+
+        return result.join('\n');
+      }
+
+      /**
+       * Convert paragraphs
+       */
+      function convertParagraphs(text) {
+        const lines = text.split('\n');
+        const result = [];
+        let paragraph = [];
+
+        const isBlockElement = (line) => {
+          return line.startsWith('<') || 
+                 line.startsWith('#') || 
+                 line.match(/^[-*_]{3,}/) ||
+                 line.startsWith('>') ||
+                 line.startsWith('|') ||
+                 line.match(/^\d+\.\s/) ||
+                 line.match(/^[-*+]\s/) ||
+                 line.match(/^__CODE_BLOCK_/) ||
+                 line.match(/^__PARENT_ATTR_/);
+        };
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          
+          if (line.trim() === '') {
+            if (paragraph.length > 0) {
+              result.push(`<p>${paragraph.join(' ')}</p>`);
+              paragraph = [];
+            }
+            result.push('');
+          } else if (isBlockElement(line)) {
+            if (paragraph.length > 0) {
+              result.push(`<p>${paragraph.join(' ')}</p>`);
+              paragraph = [];
+            }
+            result.push(line);
+          } else {
+            // Handle line breaks (backslash at end or two spaces)
+            if (line.endsWith('\\') || line.endsWith('  ')) {
+              paragraph.push(line.replace(/\\$/, '').replace(/\s{2}$/, '') + '<br>');
+            } else {
+              paragraph.push(line);
+            }
+          }
+        }
+
+        if (paragraph.length > 0) {
+          result.push(`<p>${paragraph.join(' ')}</p>`);
+        }
+
+        return result.join('\n');
+      }
+
+      /**
+       * Convert inline elements
+       */
+      function convertInlineElements(text) {
+        let result = text;
+
+        // Convert images with optional inline comments
+        result = result.replace(/!\[([^\]]*)\]\(([^)]+)\)(?:<!--\s*([^>]+)\s*-->)?/g, (match, alt, src, attr) => {
+          const attributes = attr ? ` ${attr.trim()}` : '';
+          // Handle optional title in parentheses
+          const srcMatch = src.match(/^([^\s"]+)(?:\s+"([^"]+)")?$/);
+          const actualSrc = srcMatch ? srcMatch[1] : src;
+          const title = srcMatch && srcMatch[2] ? ` title="${srcMatch[2]}"` : '';
+          return `<img src="${actualSrc}" alt="${alt}"${title}${attributes}>`;
+        });
+
+        // Convert links with optional inline comments
+        result = result.replace(/\[([^\]]+)\]\(([^)]+)\)(?:<!--\s*([^>]+)\s*-->)?/g, (match, text, href, attr) => {
+          const attributes = attr ? ` ${attr.trim()}` : '';
+          return `<a href="${href}"${attributes}>${text}</a>`;
+        });
+
+        // Convert bold + italic
+        result = result.replace(/\*\*\*(.+?)\*\*\*(?:<!--\s*([^>]+)\s*-->)?/g, (match, content, attr) => {
+          const attributes = attr ? ` ${attr.trim()}` : '';
+          return `<strong${attributes}><em>${content}</em></strong>`;
+        });
+
+        // Convert bold
+        result = result.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        result = result.replace(/__(.+?)__/g, '<strong>$1</strong>');
+
+        // Convert italic
+        result = result.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        result = result.replace(/_(.+?)_/g, '<em>$1</em>');
+
+        // Convert strikethrough
+        result = result.replace(/~~(.+?)~~/g, '<del>$1</del>');
+
+        // Convert subscript and superscript (HTML passthrough)
+        // These are already HTML tags, no conversion needed
+
+        // Convert inline math expressions (single $)
+        result = result.replace(/\$([^\$\n]+)\$/g, (match, math) => {
+          // Don't convert if it looks like currency
+          if (math.match(/^\d+(\.\d{2})?$/)) return match;
+          return `<span class="math-inline">\\(${math}\\)</span>`;
+        });
+
+        // Convert block math expressions ($$)
+        result = result.replace(/\$\$\n?([\s\S]+?)\n?\$\$/g, (match, math) => {
+          return `<div class="math-block">\\[${math.trim()}\\]</div>`;
+        });
+
+        // Convert footnote references
+        result = result.replace(/\[\^(\d+)\]/g, '<sup id="fnref-$1"><a href="#fn-$1">$1</a></sup>');
+
+        // Convert footnote definitions
+        result = result.replace(/^\[\^(\d+)\]:\s*(.+)$/gm, (match, num, content) => {
+          return `<div class="footnote" id="fn-${num}"><sup>${num}</sup> ${content}</div>`;
+        });
+
+        // Convert escaped characters
+        result = result.replace(/\\([*_`#\[\]()\\~])/g, '$1');
+
+        return result;
+      }
+
+    })();
+  </script>
+</body>
+</html>

@@ -12,8 +12,8 @@ Support branch of repository for:
 Results from using new skill that converts markdown to html with additional custom features. The prompt used utilized the prompt file [markdown-to-html.md](.github/prompts/markdown-to-html.prompt.md).
 
 ```yaml
-Agent Model: "Claude Sonnet 4.5"
-Prompts:
+Agent Model: "Claude Opus 4.5"
+Prompts: 1
 ```
 
 ```bash
@@ -88,11 +88,46 @@ block in parsed HTML.
 
 Create an `index.html` file that uses an AJAX call, getting the file #file:file.md , then convert the markdown data to HTML. BE SURE to see:
 
-- #file:basic-markdown-to-html.md 
-- #file:code-blocks-to-html.md 
-- #file:collapsed-sections-to-html.md 
-- #file:tables-to-html.md 
-- #file:writing-mathematical-expressions-to-html.md 
+- #file:basic-markdown-to-html.md
+- #file:basic-markdown.md
+- #file:code-blocks-to-html.md
+- #file:code-blocks.md
+- #file:collapsed-sections-to-html.md
+- #file:collapsed.md
+- #file:tables-to-html.md
+- #file:tables.md
+- #file:writing-mathematical-expressions-to-html.md
+- #file:writing-mathematical.md
 
-for how the data should be converted to HTML from Markdown.
+for how the data should be converted to HTML from Markdown. And REMEMBER
+keep the raw data from the markdown in fenced code blocks preserved. So:
+
+    ```markdown
+    # Heading 1<!-- style="border: 1px solid black" -->
+    ## Heading 2<!-- style="color: purple" -->
+    ### Heading 3<!-- style="border-top: 1px solid black" -->
+    #### Heading 4<!-- style="color: blue" -->
+    ##### Heading 5<!-- style="border-bottom: 1px solid black" -->
+    ###### Heading 6<!-- style="color: green" -->
+    ```
+
+Parses HTML as:
+
+    ```html
+    <pre><code>
+    # Heading 1<!-- style="border: 1px solid black" -->
+    ## Heading 2<!-- style="color: purple" -->
+    ### Heading 3<!-- style="border-top: 1px solid black" -->
+    #### Heading 4<!-- style="color: blue" -->
+    ##### Heading 5<!-- style="border-bottom: 1px solid black" -->
+    ###### Heading 6<!-- style="color: green" -->
+    </code></pre>
+    ```
+
+And NOT converting the raw data in markdown code blocks to html and DO NOT
+apply custom feature.
+
+**NOTE** - rememeber to correctly convert markdown math expressions to
+properly formatted HTML. See #file:writing-mathematical-expressions.md
+and #file:writing-mathematical-expressions-to-html.md
 ```
