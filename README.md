@@ -2,7 +2,7 @@
 
 Support branch of repository for:
 <!-- Link to PR -->
-- [github/awesome-copilot pull request](https://github.com/). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [github/awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/619). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
 <!-- git commit -m "undeploy: use htmlpreview for index.html" -->
 <!--
@@ -13,7 +13,7 @@ Results from using new skill that converts markdown to html with additional cust
 
 ```yaml
 Agent Model: "Claude Opus 4.5"
-Prompts: 10
+Prompts: 10+
 ```
 
 ```bash
