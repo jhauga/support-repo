@@ -4,7 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Markdown to HTML Converter</title>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     body {
@@ -124,37 +134,74 @@
     (function() {
       'use strict';
 
-      // Fetch markdown file and convert to HTML
+      // Process all math-renderer elements with MathJax
+      function processMathElements() {
+        var mathElements = document.querySelectorAll('math-renderer[data-latex]');
+        mathElements.forEach(function(el) {
+          var latex = el.getAttribute('data-latex');
+          if (!latex) return;
+          
+          var isDisplay = el.classList.contains('js-display-math');
+          // Use LaTeX delimiters for MathJax to process
+          if (isDisplay) {
+            el.innerHTML = '\\[' + latex + '\\]';
+          } else {
+            el.innerHTML = '\\(' + latex + '\\)';
+          }
+          el.removeAttribute('data-latex');
+        });
+        
+        // Trigger MathJax to typeset
+        if (window.MathJax && MathJax.typesetPromise) {
+          MathJax.typesetPromise();
+        }
+      }
+
+      // Initialize: fetch and convert markdown
       fetch('file.md')
-        .then(response => {
+        .then(function(response) {
           if (!response.ok) throw new Error('Failed to load markdown file');
           return response.text();
         })
-        .then(markdown => {
-          const html = convertMarkdownToHTML(markdown);
+        .then(function(markdown) {
+          var html = convertMarkdownToHTML(markdown);
           document.getElementById('content').innerHTML = html;
-          // Re-render MathJax after content is loaded
-          if (window.MathJax) {
-            MathJax.typesetPromise();
-          }
+          // Process math elements after content is inserted
+          processMathElements();
         })
-        .catch(error => {
-          document.getElementById('content').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+        .catch(function(error) {
+          document.getElementById('content').innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
         });
 
       /**
        * Main conversion function
        */
       function convertMarkdownToHTML(markdown) {
+        // Helper to escape HTML (defined early for use in placeholders)
+        const escapeHtmlChars = (text) => {
+          const div = document.createElement('div');
+          div.textContent = text;
+          return div.innerHTML;
+        };
+
         // Store code blocks to preserve raw content
         const codeBlocks = [];
+        const mathBlocks = [];
         let processed = markdown;
+
+        // Extract and preserve math code blocks (```math...```)
+        processed = processed.replace(/^(`{3,})math\n([\s\S]*?)\n\1/gm, function(match, fence, math) {
+          var placeholder = '%%%MATHBLOCK' + mathBlocks.length + '%%%';
+          var escaped = math.trim().replace(/"/g, '&quot;');
+          mathBlocks.push('<math-renderer class="js-display-math" data-latex="' + escaped + '"></math-renderer>');
+          return placeholder;
+        });
 
         // Extract and preserve fenced code blocks (```...```)
         processed = processed.replace(/^(`{3,})(\w*)\n([\s\S]*?)\n\1/gm, (match, fence, lang, code) => {
-          const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
+          const placeholder = `%%%CODEBLOCK${codeBlocks.length}%%%`;
           // Escape HTML entities in code blocks
-          const escapedCode = escapeHtml(code);
+          const escapedCode = escapeHtmlChars(code);
           const langClass = lang ? ` class="language-${lang}"` : '';
           codeBlocks.push(`<pre><code${langClass}>${escapedCode}</code></pre>`);
           return placeholder;
@@ -163,8 +210,17 @@
         // Extract and preserve inline code
         const inlineCodes = [];
         processed = processed.replace(/`([^`\n]+)`/g, (match, code) => {
-          const placeholder = `__INLINE_CODE_${inlineCodes.length}__`;
-          inlineCodes.push(`<code>${escapeHtml(code)}</code>`);
+          const placeholder = `%%%INLINECODE${inlineCodes.length}%%%`;
+          inlineCodes.push(`<code>${escapeHtmlChars(code)}</code>`);
+          return placeholder;
+        });
+
+        // Handle escaped characters (e.g., \* \_ \` \[ \] etc.)
+        // Replace with placeholders to prevent them from being processed
+        const escapedChars = [];
+        processed = processed.replace(/\\([*_`\[\]\\#>!~|])/g, (match, char) => {
+          const placeholder = `%%%ESCAPED${escapedChars.length}%%%`;
+          escapedChars.push(char);
           return placeholder;
         });
 
@@ -175,9 +231,10 @@
         const lines = processed.split('\n');
         const processedLines = [];
         
-        for (let i = 0; i < lines.length; i++) {
-          const line = lines[i];
-          const commentMatch = line.match(/^<!--\s*([^>]+)\s*-->$/);
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          var commentRegex = new RegExp('^<!--\\s*([^>]+)\\s*-->$');
+          var commentMatch = line.match(commentRegex);
           if (commentMatch && i + 1 < lines.length) {
             // This is a standalone comment, store for next line's parent element
             pendingParentAttributes[i + 1] = commentMatch[1].trim();
@@ -189,7 +246,7 @@
         // Rebuild processed content
         processed = processedLines.map(item => {
           if (item.parentAttr) {
-            return `__PARENT_ATTR_START__${item.parentAttr}__PARENT_ATTR_END__${item.line}`;
+            return `%%%PARENTATTRSTART%%%${item.parentAttr}%%%PARENTATTREND%%%${item.line}`;
           }
           return item.line;
         }).join('\n');
@@ -198,17 +255,27 @@
         processed = convertBlockElements(processed);
         processed = convertInlineElements(processed);
 
-        // Apply parent attributes
-        processed = applyParentAttributes(processed);
-
         // Restore code blocks
         codeBlocks.forEach((block, i) => {
-          processed = processed.replace(`__CODE_BLOCK_${i}__`, block);
+          processed = processed.replace(`%%%CODEBLOCK${i}%%%`, block);
         });
 
         // Restore inline codes
         inlineCodes.forEach((code, i) => {
-          processed = processed.replace(`__INLINE_CODE_${i}__`, code);
+          processed = processed.replace(`%%%INLINECODE${i}%%%`, code);
+        });
+
+        // Restore math blocks
+        mathBlocks.forEach((block, i) => {
+          processed = processed.replace(`%%%MATHBLOCK${i}%%%`, block);
+        });
+
+        // Apply parent attributes (after restoring code blocks so they can be styled)
+        processed = applyParentAttributes(processed);
+
+        // Restore escaped characters (convert back to literal characters)
+        escapedChars.forEach((char, i) => {
+          processed = processed.replace(`%%%ESCAPED${i}%%%`, char);
         });
 
         return processed;
@@ -250,7 +317,7 @@
        * Apply parent attributes marked with special placeholders
        */
       function applyParentAttributes(html) {
-        const regex = /__PARENT_ATTR_START__([^_]+)__PARENT_ATTR_END__/g;
+        const regex = /%%%PARENTATTRSTART%%%([^%]+)%%%PARENTATTREND%%%/g;
         let result = html;
         let match;
         
@@ -286,7 +353,17 @@
         // Process details/summary blocks (passthrough)
         // These are already HTML, just need to process markdown inside
 
-        // Convert headings with optional inline comments
+        // Convert setext-style headings (must come before horizontal rules)
+        // H1: text followed by line of ===
+        result = result.replace(/^(.+)\n={3,}$/gm, (match, content) => {
+          return `<h1>${content.trim()}</h1>`;
+        });
+        // H2: text followed by line of ---
+        result = result.replace(/^(.+)\n-{3,}$/gm, (match, content) => {
+          return `<h2>${content.trim()}</h2>`;
+        });
+
+        // Convert headings with optional inline comments (ATX-style)
         result = result.replace(/^(#{1,6})\s+(.+?)(?:<!--\s*([^>]+)\s*-->)?$/gm, (match, hashes, content, attr) => {
           const level = hashes.length;
           const attributes = attr ? ` ${attr.trim()}` : '';
@@ -567,7 +644,8 @@
                  line.startsWith('|') ||
                  line.match(/^\d+\.\s/) ||
                  line.match(/^[-*+]\s/) ||
-                 line.match(/^__CODE_BLOCK_/) ||
+                 line.match(/^%%%CODEBLOCK/) ||
+                 line.match(/^%%%MATHBLOCK/) ||
                  line.match(/^__PARENT_ATTR_/);
         };
 
@@ -645,16 +723,22 @@
         // Convert subscript and superscript (HTML passthrough)
         // These are already HTML tags, no conversion needed
 
-        // Convert inline math expressions (single $)
-        result = result.replace(/\$([^\$\n]+)\$/g, (match, math) => {
+        // Convert inline math expressions (single $, or $`...`$)
+        result = result.replace(/\$`([^`]+)`\$/g, function(match, math) {
+          var escaped = math.replace(/"/g, '&quot;');
+          return '<math-renderer class="js-inline-math" data-latex="' + escaped + '"></math-renderer>';
+        });
+        result = result.replace(/\$([^\$\n]+)\$/g, function(match, math) {
           // Don't convert if it looks like currency
           if (math.match(/^\d+(\.\d{2})?$/)) return match;
-          return `<span class="math-inline">\\(${math}\\)</span>`;
+          var escaped = math.replace(/"/g, '&quot;');
+          return '<math-renderer data-latex="' + escaped + '"></math-renderer>';
         });
 
         // Convert block math expressions ($$)
-        result = result.replace(/\$\$\n?([\s\S]+?)\n?\$\$/g, (match, math) => {
-          return `<div class="math-block">\\[${math.trim()}\\]</div>`;
+        result = result.replace(/\$\$\n?([\s\S]+?)\n?\$\$/g, function(match, math) {
+          var escaped = math.trim().replace(/"/g, '&quot;');
+          return '<math-renderer class="js-display-math" data-latex="' + escaped + '"></math-renderer>';
         });
 
         // Convert footnote references

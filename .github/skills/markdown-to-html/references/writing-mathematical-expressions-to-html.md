@@ -240,6 +240,66 @@ $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \
 </math-renderer>
 ```
 
+### Markdwon
+
+```markdown
+The equation $a^2 + b^2 = c^2$ is the Pythagorean theorem.
+```
+
+### Parsed HTML
+
+```html
+<p>The equation
+ <math-renderer><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>a</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <msup>
+    <mi>b</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>=</mo>
+  <msup>
+    <mi>c</mi>
+    <mn>2</mn>
+  </msup>
+ </math></math-renderer> is the Pythagorean theorem.
+</p>
+```
+
+### Markdown
+
+```
+$$
+\int_0^\infty e^{-x} dx = 1
+$$
+```
+
+### Parsed HTML
+
+```html
+<p><math-renderer><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msubsup>
+    <mo>∫</mo>
+    <mn>0</mn>
+    <mi>∞</mi>
+  </msubsup>
+  <msup>
+    <mi>e</mi>
+    <mrow>
+      <mo>−</mo>
+      <mi>x</mi>
+    </mrow>
+  </msup>
+  <mi>d</mi>
+  <mi>x</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></math-renderer></p>
+```
+
 ---
 
 ## Dollar Sign Inline with Mathematical Expression

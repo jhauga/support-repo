@@ -30,6 +30,19 @@
 <h3>A third-level heading</h3>
 ```
 
+### Markdown
+
+```md
+Heading 2
+---
+```
+
+### Parsed HTML
+
+```html
+<h2>Heading 2</h2>
+```
+
 ---
 
 ## Paragraphs

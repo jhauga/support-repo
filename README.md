@@ -13,7 +13,7 @@ Results from using new skill that converts markdown to html with additional cust
 
 ```yaml
 Agent Model: "Claude Opus 4.5"
-Prompts: 1
+Prompts: 10
 ```
 
 ```bash

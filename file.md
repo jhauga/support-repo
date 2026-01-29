@@ -13,6 +13,8 @@ This document demonstrates common and essential Markdown syntax, along with a fe
 #### Heading 4<!-- style="color: blue" -->
 ##### Heading 5<!-- style="border-bottom: 1px solid black" -->
 ###### Heading 6<!-- style="color: green" -->
+Heading 2
+---
 ```
 
 Rendered:
@@ -28,6 +30,9 @@ Rendered:
 ##### Heading 5<!-- style="border-bottom: 1px solid black" -->
 
 ###### Heading 6<!-- style="color: green" -->
+
+Heading 2
+---
 
 ---
 
@@ -63,7 +68,6 @@ Rendered:
 <!-- style="list-style-type: square" -->
 * Item A
 * Item B
-
   * Nested Item
 
 ### Ordered List
@@ -83,12 +87,12 @@ Rendered:
 ## 4. Links
 
 ```markdown
-[OpenAI](https://openai.com)<!-- style="color:darkslategray" -->
+[OpenAI](https://openai.com)<!-- style="color:darkslategray; text-decoration: underline" -->
 ```
 
 Rendered:
 
-[OpenAI](https://openai.com)<!-- style="color:darkslategray" -->
+[OpenAI](https://openai.com)<!-- style="color:darkslategray; text-decoration: underline" -->
 
 ---
 
@@ -187,14 +191,14 @@ Rendered:
 ## 9. Horizontal Rules
 
 ```markdown
----<!-- style="height: 1px" -->
-***<!-- style="height: 5px" -->
-___<!-- style="height: 10px" -->
+---<!-- style="height: 1px; background: darkblue" -->
+***<!-- style="height: 5px; background: darkslategray" -->
+___<!-- style="height: 10px; background: black" -->
 ```
 
----<!-- style="height: 1px" -->
-***<!-- style="height: 5px" -->
-___<!-- style="height: 10px" -->
+---<!-- style="height: 1px; background: darkblue" -->
+***<!-- style="height: 5px; background: darkslategray" -->
+___<!-- style="height: 10px; background: black" -->
 
 ## 10. Footnotes
 
@@ -227,6 +231,22 @@ Rendered:
 The equation $a^2 + b^2 = c^2$ is the Pythagorean theorem.
 
 ### Block Math
+
+```markdown
+    **The Cauchy-Schwarz Inequality**
+
+    ```math
+    \left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+    ```
+```
+
+Rendered
+
+**The Cauchy-Schwarz Inequality**
+
+```math
+\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+```
 
 ```markdown
 $$
@@ -266,6 +286,6 @@ Rendered:
 
 Rendered:
 
-*This text is not italicized*
+\*This text is not italicized\*
 
 ---
