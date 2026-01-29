@@ -1,392 +1,749 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
- <meta charset="utf-8">
- <title>Markdown to HTML</title>
- <link rel="icon" href="/favicon.png">
- <link rel="stylesheet" 
- href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
- crossorigin="anonymous" referrerpolicy="no-referrer" />
- <style>
-  .markdown-body {
-   box-sizing: border-box;
-   min-width: 200px;
-   max-width: 980px;
-   margin: 0 auto;
-   padding: 45px;
-  }
-  @media (max-width: 767px) {
-   .markdown-body { padding: 15px; }
-  }
- </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown to HTML Converter</title>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #24292e;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 24px;
+      margin-bottom: 16px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+    h1 { font-size: 2em; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    h2 { font-size: 1.5em; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    h3 { font-size: 1.25em; }
+    h4 { font-size: 1em; }
+    h5 { font-size: 0.875em; }
+    h6 { font-size: 0.85em; color: #6a737d; }
+    p { margin-top: 0; margin-bottom: 16px; }
+    pre {
+      background-color: #f6f8fa;
+      border-radius: 6px;
+      padding: 16px;
+      overflow: auto;
+      font-size: 85%;
+      line-height: 1.45;
+    }
+    code {
+      background-color: rgba(27, 31, 35, 0.05);
+      border-radius: 3px;
+      padding: 0.2em 0.4em;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 85%;
+    }
+    pre code {
+      background-color: transparent;
+      padding: 0;
+      font-size: 100%;
+    }
+    blockquote {
+      border-left: 4px solid #dfe2e5;
+      margin: 0 0 16px 0;
+      padding: 0 16px;
+      color: #6a737d;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 16px 0;
+    }
+    th, td {
+      border: 1px solid #dfe2e5;
+      padding: 6px 13px;
+    }
+    th {
+      background-color: #f6f8fa;
+      font-weight: 600;
+    }
+    tr:nth-child(2n) {
+      background-color: #f6f8fa;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid #eaecef;
+      margin: 24px 0;
+      height: 0;
+    }
+    img {
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    ul, ol {
+      padding-left: 2em;
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+    li {
+      margin-top: 0.25em;
+    }
+    li + li {
+      margin-top: 0.25em;
+    }
+    .task-list-item {
+      list-style-type: none;
+      margin-left: -1.5em;
+    }
+    .task-list-item input[type="checkbox"] {
+      margin-right: 0.5em;
+    }
+    details {
+      margin: 16px 0;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .markdown-alert {
+      padding: 8px 16px;
+      margin-bottom: 16px;
+      border-left: 4px solid;
+      border-radius: 0 4px 4px 0;
+    }
+    .markdown-alert-note {
+      border-color: #0366d6;
+      background-color: #f1f8ff;
+    }
+    .markdown-alert-warning {
+      border-color: #f9c513;
+      background-color: #fffbdd;
+    }
+    .markdown-alert-tip {
+      border-color: #28a745;
+      background-color: #dcffe4;
+    }
+    .markdown-alert-important {
+      border-color: #6f42c1;
+      background-color: #f5f0ff;
+    }
+    .markdown-alert-caution {
+      border-color: #d73a49;
+      background-color: #ffeef0;
+    }
+    .footnotes {
+      border-top: 1px solid #eaecef;
+      margin-top: 32px;
+      padding-top: 16px;
+      font-size: 0.875em;
+    }
+    .footnote {
+      margin: 8px 0;
+    }
+    .math-block {
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+  </style>
 </head>
-
 <body>
- <article class="markdown-body" id="parseMarkdown"></article>
+  <div id="content">Loading...</div>
 
- <script>
-  // Markdown to HTML Converter with Custom Style Comments
-  (function() {
-   const STYLE_COMMENT_REGEX = /<!--\s*style\s*=\s*"([^"]+)"\s*-->/gi;
-   const INLINE_STYLE_REGEX = /<!--\s*style\s*=\s*"([^"]+)"\s*-->/i;
+  <script>
+    /**
+     * Markdown to HTML Converter
+     * Converts markdown to HTML with custom attribute comment parsing
+     * 
+     * Custom Feature: HTML comments with style attributes are applied to adjacent elements
+     * - Comment at end of line: applies to the generated HTML element
+     * - Comment before markdown: applies to the parent/wrapper element
+     * - Comment within line: applies to the nearest element (e.g., checkbox in task list)
+     * - Comments inside fenced code blocks are preserved as raw text
+     */
+    (function() {
+      'use strict';
 
-   // Extract style from comment
-   function extractStyle(comment) {
-    const match = comment.match(/style\s*=\s*"([^"]+)"/i);
-    return match ? match[1] : '';
-   }
+      // Fetch markdown file and convert to HTML
+      fetch('file.md')
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to load markdown file');
+          return response.text();
+        })
+        .then(markdown => {
+          const html = convertMarkdownToHTML(markdown);
+          document.getElementById('content').innerHTML = html;
+          // Re-render MathJax after content is loaded
+          if (window.MathJax && window.MathJax.typesetPromise) {
+            MathJax.typesetPromise().catch(err => console.log('MathJax error:', err));
+          }
+        })
+        .catch(error => {
+          document.getElementById('content').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+        });
 
-   // Apply style to HTML tag
-   function applyStyleToTag(html, style) {
-    if (!style) return html;
-    return html.replace(/^<(\w+)/, (match, tag) => {
-     return `<${tag} style="${style}"`;
-    });
-   }
+      /**
+       * Main conversion function
+       */
+      function convertMarkdownToHTML(markdown) {
+        // Normalize line endings
+        let text = markdown.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+        
+        // Store code blocks to preserve raw content (including comments)
+        const codeBlocks = [];
+        
+        // Extract fenced code blocks first - MUST preserve raw content including comments
+        // Special handling for ```math blocks - convert to MathJax block display
+        text = text.replace(/^(`{3,})(\w*)\n([\s\S]*?)\n\1$/gm, (match, fence, lang, code) => {
+          const placeholder = `\x00CODEBLOCK${codeBlocks.length}\x00`;
+          
+          // Special case: ```math blocks render as MathJax block math
+          if (lang === 'math') {
+            codeBlocks.push(`<div class="math-block">\\[${code.trim()}\\]</div>`);
+            return placeholder;
+          }
+          
+          const langClass = lang ? ` class="language-${lang}"` : '';
+          // Escape HTML but preserve the raw content including comments
+          const escapedCode = escapeHtml(code);
+          codeBlocks.push(`<pre><code${langClass}>${escapedCode}</code></pre>`);
+          return placeholder;
+        });
 
-   // Process inline style comments within a line
-   function processInlineStyles(line) {
-    let processed = line;
-    let styleToApply = '';
-    
-    // Check for trailing style comment
-    const trailingMatch = processed.match(/<!--\s*style\s*=\s*"([^"]+)"\s*-->$/);
-    if (trailingMatch) {
-     styleToApply = trailingMatch[1];
-     processed = processed.replace(/<!--\s*style\s*=\s*"([^"]+)"\s*-->$/, '').trim();
-    }
-    
-    return { line: processed, style: styleToApply };
-   }
+        // Store inline code
+        const inlineCodes = [];
+        text = text.replace(/`([^`\n]+)`/g, (match, code) => {
+          const placeholder = `\x00INLINECODE${inlineCodes.length}\x00`;
+          inlineCodes.push(`<code>${escapeHtml(code)}</code>`);
+          return placeholder;
+        });
 
-   // Convert markdown line to HTML
-   function convertLine(line, pendingParentStyle) {
-    let html = '';
-    let { line: cleanLine, style: inlineStyle } = processInlineStyles(line);
-    
-    // Headings
-    const headingMatch = cleanLine.match(/^(#{1,6})\s+(.+)$/);
-    if (headingMatch) {
-     const level = headingMatch[1].length;
-     const text = convertInlineMarkdown(headingMatch[2]);
-     html = `<h${level}>${text}</h${level}>`;
-     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
-     return { html, type: 'heading' };
-    }
+        // Convert block elements
+        text = convertHeadings(text);
+        text = convertHorizontalRules(text);
+        text = convertBlockquotes(text);
+        text = convertTables(text);
+        text = convertLists(text);
+        text = convertMathBlocks(text);
+        text = convertParagraphs(text);
 
-    // Horizontal rules
-    if (/^(-{3,}|\*{3,}|_{3,})$/.test(cleanLine)) {
-     html = '<hr>';
-     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
-     return { html, type: 'hr' };
-    }
+        // Convert inline elements
+        text = convertImages(text);
+        text = convertLinks(text);
+        text = convertEmphasis(text);
+        text = convertInlineMath(text);
+        text = convertFootnotes(text);
+        text = convertEscapedCharacters(text);
 
-    // Blockquotes
-    if (cleanLine.startsWith('> ')) {
-     const content = convertInlineMarkdown(cleanLine.slice(2));
-     html = `<blockquote><p>${content}</p></blockquote>`;
-     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
-     return { html, type: 'blockquote' };
-    }
+        // Restore code blocks
+        codeBlocks.forEach((block, i) => {
+          text = text.replace(`\x00CODEBLOCK${i}\x00`, block);
+        });
 
-    // Unordered list items
-    const ulMatch = cleanLine.match(/^(\s*)[-*+]\s+(.+)$/);
-    if (ulMatch) {
-     const indent = ulMatch[1].length;
-     const content = convertInlineMarkdown(ulMatch[2]);
-     html = `<li>${content}</li>`;
-     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
-     return { html, type: 'ul', indent, parentStyle: pendingParentStyle };
-    }
+        // Restore inline codes
+        inlineCodes.forEach((code, i) => {
+          text = text.replace(`\x00INLINECODE${i}\x00`, code);
+        });
 
-    // Ordered list items
-    const olMatch = cleanLine.match(/^(\s*)\d+\.\s+(.+)$/);
-    if (olMatch) {
-     const indent = olMatch[1].length;
-     const content = convertInlineMarkdown(olMatch[2]);
-     html = `<li>${content}</li>`;
-     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
-     return { html, type: 'ol', indent, parentStyle: pendingParentStyle };
-    }
+        // Clean up empty paragraphs and extra whitespace
+        text = text.replace(/<p>\s*<\/p>/g, '');
+        text = text.replace(/\n{3,}/g, '\n\n');
 
-    // Task list items
-    const taskMatch = cleanLine.match(/^(\s*)[-*+]\s+\[([ xX])\]\s*(.*)$/);
-    if (taskMatch) {
-     const checked = taskMatch[2].toLowerCase() === 'x' ? ' checked' : '';
-     const content = convertInlineMarkdown(taskMatch[3]);
-     html = `<li><input type="checkbox"${checked} disabled> ${content}</li>`;
-     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
-     return { html, type: 'ul', indent: taskMatch[1].length, parentStyle: pendingParentStyle };
-    }
-
-    // Images
-    const imgMatch = cleanLine.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]+)")?\)$/);
-    if (imgMatch) {
-     const alt = imgMatch[1];
-     const src = imgMatch[2];
-     const title = imgMatch[3] ? ` title="${imgMatch[3]}"` : '';
-     html = `<img src="${src}" alt="${alt}"${title}>`;
-     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
-     return { html: `<p>${html}</p>`, type: 'image' };
-    }
-
-    // Paragraph (default)
-    if (cleanLine.trim()) {
-     html = `<p>${convertInlineMarkdown(cleanLine)}</p>`;
-     if (inlineStyle) html = applyStyleToTag(html, inlineStyle);
-     return { html, type: 'paragraph' };
-    }
-
-    return { html: '', type: 'empty' };
-   }
-
-   // Convert inline markdown elements
-   function convertInlineMarkdown(text) {
-    // Images
-    text = text.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]+)")?\)/g, (match, alt, src, title) => {
-     const titleAttr = title ? ` title="${title}"` : '';
-     return `<img src="${src}" alt="${alt}"${titleAttr}>`;
-    });
-
-    // Links
-    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-
-    // Bold and italic
-    text = text.replace(/\*\*\*([^*]+)\*\*\*/g, '<strong><em>$1</em></strong>');
-    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-    text = text.replace(/__([^_]+)__/g, '<strong>$1</strong>');
-    text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-    text = text.replace(/_([^_]+)_/g, '<em>$1</em>');
-
-    // Strikethrough
-    text = text.replace(/~~([^~]+)~~/g, '<del>$1</del>');
-
-    // Inline code
-    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-    // Footnotes
-    text = text.replace(/\[\^(\d+)\]/g, '<sup><a href="#fn$1" id="fnref$1">$1</a></sup>');
-
-    return text;
-   }
-
-   // Process code blocks
-   function processCodeBlocks(lines) {
-    const result = [];
-    let inCodeBlock = false;
-    let codeContent = [];
-    let codeLang = '';
-    let codeStyle = '';
-
-    for (let i = 0; i < lines.length; i++) {
-     const line = lines[i];
-     
-     if (line.match(/^```(\w*)/) && !inCodeBlock) {
-      inCodeBlock = true;
-      codeLang = line.match(/^```(\w*)/)[1] || '';
-      codeContent = [];
-      // Check for style comment above
-      if (i > 0 && INLINE_STYLE_REGEX.test(lines[i - 1])) {
-       codeStyle = extractStyle(lines[i - 1]);
-       result.pop(); // Remove the style comment line
+        return text.trim();
       }
-     } else if (line === '```' && inCodeBlock) {
-      inCodeBlock = false;
-      const langClass = codeLang ? ` class="language-${codeLang}"` : '';
-      let pre = `<pre><code${langClass}>${escapeHtml(codeContent.join('\n'))}</code></pre>`;
-      if (codeStyle) {
-       pre = applyStyleToTag(pre, codeStyle);
-       codeStyle = '';
+
+      /**
+       * Escape HTML special characters
+       */
+      function escapeHtml(text) {
+        return text
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
       }
-      result.push({ type: 'codeblock', html: pre });
-     } else if (inCodeBlock) {
-      codeContent.push(line);
-     } else {
-      result.push({ type: 'line', content: line });
-     }
-    }
 
-    return result;
-   }
-
-   // Process tables
-   function processTable(lines, startIdx) {
-    const rows = [];
-    let i = startIdx;
-    
-    while (i < lines.length && lines[i].content && lines[i].content.includes('|')) {
-     rows.push(lines[i].content);
-     i++;
-    }
-
-    if (rows.length < 2) return { html: '', endIdx: startIdx };
-
-    // Check for separator row
-    if (!rows[1].match(/^\|?\s*[-:]+/)) return { html: '', endIdx: startIdx };
-
-    let html = '<table>';
-    
-    // Header row
-    const headers = rows[0].split('|').filter(c => c.trim());
-    html += '<thead><tr>';
-    headers.forEach(h => html += `<th>${convertInlineMarkdown(h.trim())}</th>`);
-    html += '</tr></thead>';
-
-    // Body rows
-    html += '<tbody>';
-    for (let j = 2; j < rows.length; j++) {
-     const cells = rows[j].split('|').filter(c => c.trim());
-     html += '<tr>';
-     cells.forEach(c => html += `<td>${convertInlineMarkdown(c.trim())}</td>`);
-     html += '</tr>';
-    }
-    html += '</tbody></table>';
-
-    return { html, endIdx: i };
-   }
-
-   // Escape HTML entities
-   function escapeHtml(text) {
-    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-    return text.replace(/[&<>"']/g, m => map[m]);
-   }
-
-   // Main conversion function
-   function convertMarkdownToHtml(markdown) {
-    const lines = markdown.split('\n');
-    const processed = processCodeBlocks(lines);
-    let html = '';
-    let currentList = null;
-    let listStack = [];
-    let pendingParentStyle = '';
-    let footnotes = {};
-
-    for (let i = 0; i < processed.length; i++) {
-     const item = processed[i];
-
-     if (item.type === 'codeblock') {
-      // Close any open lists
-      while (listStack.length) {
-       html += `</${listStack.pop()}>`;
+      /**
+       * Extract style/attributes from HTML comment
+       */
+      function extractCommentAttr(comment) {
+        if (!comment) return '';
+        const match = comment.match(/<!--\s*([^>]+?)\s*-->/);
+        return match ? match[1].trim() : '';
       }
-      currentList = null;
-      html += item.html;
-      continue;
-     }
 
-     const line = item.content;
-
-     // Check for style-only comment (for parent styling)
-     if (line && INLINE_STYLE_REGEX.test(line) && line.trim().match(/^<!--\s*style\s*=\s*"[^"]+"\s*-->$/)) {
-      pendingParentStyle = extractStyle(line);
-      continue;
-     }
-
-     // Check for footnote definitions
-     const footnoteMatch = line && line.match(/^\[\^(\d+)\]:\s*(.+)$/);
-     if (footnoteMatch) {
-      footnotes[footnoteMatch[1]] = footnoteMatch[2];
-      continue;
-     }
-
-     // Skip empty lines but close lists
-     if (!line || !line.trim()) {
-      while (listStack.length) {
-       html += `</${listStack.pop()}>`;
+      /**
+       * Convert headings (h1-h6) with optional style comments
+       */
+      function convertHeadings(text) {
+        return text.replace(/^(#{1,6})\s+(.+?)(?:\s*(<!--[^>]+-->))?$/gm, (match, hashes, content, comment) => {
+          const level = hashes.length;
+          const attr = extractCommentAttr(comment);
+          const attrStr = attr ? ` ${attr}` : '';
+          return `<h${level}${attrStr}>${content.trim()}</h${level}>`;
+        });
       }
-      currentList = null;
-      continue;
-     }
 
-     // Check for table
-     if (line.includes('|') && i + 1 < processed.length && 
-         processed[i + 1].content && processed[i + 1].content.match(/^\|?\s*[-:|]+/)) {
-      while (listStack.length) {
-       html += `</${listStack.pop()}>`;
+      /**
+       * Convert horizontal rules with optional style comments
+       */
+      function convertHorizontalRules(text) {
+        return text.replace(/^([-*_])\1{2,}(?:\s*(<!--[^>]+-->))?$/gm, (match, char, comment) => {
+          const attr = extractCommentAttr(comment);
+          const attrStr = attr ? ` ${attr}` : '';
+          return `<hr${attrStr}>`;
+        });
       }
-      currentList = null;
-      const tableResult = processTable(processed, i);
-      html += tableResult.html;
-      i = tableResult.endIdx - 1;
-      continue;
-     }
 
-     const result = convertLine(line, pendingParentStyle);
+      /**
+       * Convert blockquotes including GitHub-style alerts
+       */
+      function convertBlockquotes(text) {
+        const lines = text.split('\n');
+        const result = [];
+        let i = 0;
 
-     // Handle lists
-     if (result.type === 'ul' || result.type === 'ol') {
-      const listTag = result.type;
-      
-      if (currentList !== listTag || listStack.length === 0) {
-       if (listStack.length && currentList !== listTag) {
-        html += `</${listStack.pop()}>`;
-       }
-       let openTag = `<${listTag}>`;
-       if (pendingParentStyle) {
-        openTag = `<${listTag} style="${pendingParentStyle}">`;
-        pendingParentStyle = '';
-       }
-       html += openTag;
-       listStack.push(listTag);
-       currentList = listTag;
+        while (i < lines.length) {
+          const line = lines[i];
+          
+          if (line.match(/^>\s*/)) {
+            // Start of blockquote
+            let blockLines = [];
+            let alertType = null;
+            
+            while (i < lines.length && (lines[i].match(/^>\s*/) || (lines[i].trim() === '' && i + 1 < lines.length && lines[i + 1].match(/^>\s*/)))) {
+              const content = lines[i].replace(/^>\s?/, '');
+              
+              // Check for alert syntax [!NOTE], [!WARNING], etc.
+              const alertMatch = content.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]$/i);
+              if (alertMatch && blockLines.length === 0) {
+                alertType = alertMatch[1].toLowerCase();
+              } else if (content.trim() !== '' || blockLines.length > 0) {
+                // Check for legacy alert: **Note**, **Warning**
+                const legacyMatch = content.match(/^\*\*(Note|Warning|Tip|Important|Caution)\*\*$/i);
+                if (legacyMatch && blockLines.length === 0) {
+                  alertType = legacyMatch[1].toLowerCase();
+                } else {
+                  blockLines.push(content);
+                }
+              }
+              i++;
+            }
+
+            if (blockLines.length > 0 || alertType) {
+              const content = blockLines.join('\n').trim();
+              if (alertType) {
+                const alertTitle = alertType.charAt(0).toUpperCase() + alertType.slice(1);
+                result.push(`<blockquote class="markdown-alert markdown-alert-${alertType}">`);
+                result.push(`<p><strong>${alertTitle}</strong></p>`);
+                if (content) {
+                  result.push(`<p>${content}</p>`);
+                }
+                result.push('</blockquote>');
+              } else {
+                result.push(`<blockquote>\n<p>${content}</p>\n</blockquote>`);
+              }
+            }
+          } else {
+            result.push(line);
+            i++;
+          }
+        }
+
+        return result.join('\n');
       }
-      html += result.html;
-     } else {
-      // Close any open lists
-      while (listStack.length) {
-       html += `</${listStack.pop()}>`;
+
+      /**
+       * Convert markdown tables
+       */
+      function convertTables(text) {
+        const lines = text.split('\n');
+        const result = [];
+        let i = 0;
+
+        while (i < lines.length) {
+          const line = lines[i];
+          
+          // Check if this looks like a table header row
+          if (line.includes('|') && i + 1 < lines.length && lines[i + 1].match(/^\|?\s*:?-+:?\s*\|/)) {
+            // Parse table
+            const headerRow = line;
+            const separatorRow = lines[i + 1];
+            const bodyRows = [];
+            
+            // Get alignment from separator row
+            const alignments = separatorRow.split('|')
+              .filter(cell => cell.trim())
+              .map(cell => {
+                cell = cell.trim();
+                if (cell.startsWith(':') && cell.endsWith(':')) return 'center';
+                if (cell.endsWith(':')) return 'right';
+                if (cell.startsWith(':')) return 'left';
+                return '';
+              });
+
+            i += 2; // Skip header and separator
+
+            // Collect body rows
+            while (i < lines.length && lines[i].includes('|') && !lines[i].match(/^\s*$/)) {
+              bodyRows.push(lines[i]);
+              i++;
+            }
+
+            // Build HTML table
+            const parseRow = (row) => {
+              return row.split('|')
+                .slice(row.startsWith('|') ? 1 : 0)
+                .slice(0, row.endsWith('|') ? -1 : undefined)
+                .map(cell => cell.trim());
+            };
+
+            let tableHtml = '<table>\n<thead>\n<tr>\n';
+            const headerCells = parseRow(headerRow);
+            headerCells.forEach((cell, idx) => {
+              const align = alignments[idx] ? ` align="${alignments[idx]}"` : '';
+              tableHtml += `<th${align}>${cell}</th>\n`;
+            });
+            tableHtml += '</tr>\n</thead>\n<tbody>\n';
+
+            bodyRows.forEach(row => {
+              tableHtml += '<tr>\n';
+              const cells = parseRow(row);
+              cells.forEach((cell, idx) => {
+                const align = alignments[idx] ? ` align="${alignments[idx]}"` : '';
+                tableHtml += `<td${align}>${cell}</td>\n`;
+              });
+              tableHtml += '</tr>\n';
+            });
+
+            tableHtml += '</tbody>\n</table>';
+            result.push(tableHtml);
+          } else {
+            result.push(line);
+            i++;
+          }
+        }
+
+        return result.join('\n');
       }
-      currentList = null;
-      pendingParentStyle = '';
-      html += result.html;
-     }
-    }
 
-    // Close any remaining open lists
-    while (listStack.length) {
-     html += `</${listStack.pop()}>`;
-    }
+      /**
+       * Convert lists (unordered, ordered, task lists) with comment attributes
+       */
+      function convertLists(text) {
+        const lines = text.split('\n');
+        const result = [];
+        let i = 0;
 
-    // Add footnotes section if any
-    if (Object.keys(footnotes).length) {
-     html += '<hr><section class="footnotes"><ol>';
-     for (const [id, text] of Object.entries(footnotes)) {
-      html += `<li id="fn${id}">${convertInlineMarkdown(text)} <a href="#fnref${id}">↩</a></li>`;
-     }
-     html += '</ol></section>';
-    }
+        while (i < lines.length) {
+          const line = lines[i];
+          
+          // Check for comment before list (applies to parent ul/ol)
+          const commentBeforeMatch = line.match(/^<!--\s*([^>]+?)\s*-->$/);
+          if (commentBeforeMatch && i + 1 < lines.length) {
+            const nextLine = lines[i + 1];
+            if (nextLine.match(/^(\s*)([-*+]|\d+\.)\s/)) {
+              // This comment applies to the following list
+              const listAttr = commentBeforeMatch[1].trim();
+              i++;
+              const listResult = parseList(lines, i, listAttr);
+              result.push(listResult.html);
+              i = listResult.endIndex;
+              continue;
+            }
+          }
 
-    // Process math blocks
-    html = html.replace(/\$\$([^$]+)\$\$/g, '<div class="math">$$1$</div>');
-    html = html.replace(/\$([^$\n]+)\$/g, '<span class="math">$$$1$$</span>');
+          // Check for list start
+          const listMatch = line.match(/^(\s*)([-*+]|\d+\.)\s+(.*)$/);
+          if (listMatch) {
+            const listResult = parseList(lines, i, '');
+            result.push(listResult.html);
+            i = listResult.endIndex;
+          } else {
+            result.push(line);
+            i++;
+          }
+        }
 
-    return html;
-   }
-
-   // Fetch and convert markdown file
-   function fetchAndConvert(url) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.onreadystatechange = function() {
-     if (xhr.readyState === 4) {
-      if (xhr.status === 200 || xhr.status === 0) {
-       const markdown = xhr.responseText;
-       const html = convertMarkdownToHtml(markdown);
-       document.getElementById('parseMarkdown').innerHTML = html;
-      } else {
-       document.getElementById('parseMarkdown').innerHTML = 
-        '<p>Error loading markdown file.</p>';
+        return result.join('\n');
       }
-     }
-    };
-    xhr.send();
-   }
 
-   // Initialize
-   document.addEventListener('DOMContentLoaded', function() {
-    fetchAndConvert('file.md');
-   });
-  })();
- </script>
+      /**
+       * Parse a list starting at the given index
+       */
+      function parseList(lines, startIndex, parentAttr) {
+        let i = startIndex;
+        const items = [];
+        let listType = null;
+        let baseIndent = -1;
+
+        while (i < lines.length) {
+          const line = lines[i];
+          const match = line.match(/^(\s*)([-*+]|\d+\.)\s+(.*)$/);
+          
+          if (!match) {
+            // Check for continued content or nested list
+            if (line.trim() === '' && i + 1 < lines.length && lines[i + 1].match(/^(\s*)([-*+]|\d+\.)\s/)) {
+              i++;
+              continue;
+            }
+            break;
+          }
+
+          const indent = match[1].length;
+          const marker = match[2];
+          let content = match[3];
+
+          if (baseIndent === -1) {
+            baseIndent = indent;
+            listType = marker.match(/\d+/) ? 'ol' : 'ul';
+          }
+
+          if (indent < baseIndent) {
+            break;
+          }
+
+          if (indent > baseIndent) {
+            // Nested list - recursively parse
+            const nestedResult = parseList(lines, i, '');
+            if (items.length > 0) {
+              items[items.length - 1].nested = nestedResult.html;
+            }
+            i = nestedResult.endIndex;
+            continue;
+          }
+
+          // Parse task list item: - [x] or - [ ]
+          const taskMatch = content.match(/^\[([ xX])\](<!--[^>]+-->)?\s*(.*)$/);
+          if (taskMatch) {
+            const checked = taskMatch[1].toLowerCase() === 'x';
+            const checkboxAttr = extractCommentAttr(taskMatch[2]);
+            const taskContent = taskMatch[3];
+            items.push({
+              type: 'task',
+              checked,
+              checkboxAttr,
+              content: taskContent
+            });
+          } else {
+            // Regular list item - check for inline comment at end
+            const inlineCommentMatch = content.match(/^(.+?)(<!--[^>]+-->)$/);
+            if (inlineCommentMatch) {
+              items.push({
+                type: 'item',
+                content: inlineCommentMatch[1].trim(),
+                attr: extractCommentAttr(inlineCommentMatch[2])
+              });
+            } else {
+              items.push({
+                type: 'item',
+                content: content,
+                attr: ''
+              });
+            }
+          }
+
+          i++;
+        }
+
+        // Build HTML
+        const attrStr = parentAttr ? ` ${parentAttr}` : '';
+        let html = `<${listType}${attrStr}>\n`;
+
+        items.forEach(item => {
+          if (item.type === 'task') {
+            const checkedStr = item.checked ? ' checked' : '';
+            const cbAttrStr = item.checkboxAttr ? ` ${item.checkboxAttr}` : '';
+            html += `<li class="task-list-item"><input type="checkbox"${checkedStr} disabled${cbAttrStr}> ${item.content}`;
+          } else {
+            const itemAttrStr = item.attr ? ` ${item.attr}` : '';
+            html += `<li${itemAttrStr}>${item.content}`;
+          }
+          
+          if (item.nested) {
+            html += '\n' + item.nested;
+          }
+          html += '</li>\n';
+        });
+
+        html += `</${listType}>`;
+
+        return { html, endIndex: i };
+      }
+
+      /**
+       * Convert block math expressions ($$...$$ or ```math blocks)
+       * Note: ```math blocks are handled in the code block extraction phase
+       */
+      function convertMathBlocks(text) {
+        // Convert $$ blocks - can be inline or multiline
+        // Handle $$...$$ on same line
+        text = text.replace(/\$\$(.+?)\$\$/g, (match, math) => {
+          return `<div class="math-block">\\[${math.trim()}\\]</div>`;
+        });
+        
+        // Handle $$ blocks spanning multiple lines
+        text = text.replace(/\$\$\n([\s\S]+?)\n\$\$/g, (match, math) => {
+          return `<div class="math-block">\\[${math.trim()}\\]</div>`;
+        });
+
+        return text;
+      }
+
+      /**
+       * Convert paragraphs
+       */
+      function convertParagraphs(text) {
+        const lines = text.split('\n');
+        const result = [];
+        let paragraph = [];
+
+        const isBlockElement = (line) => {
+          return line.match(/^</) ||
+                 line.match(/^\x00CODEBLOCK/) ||
+                 line.trim() === '';
+        };
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+
+          if (line.trim() === '') {
+            if (paragraph.length > 0) {
+              result.push(`<p>${paragraph.join(' ')}</p>`);
+              paragraph = [];
+            }
+            result.push('');
+          } else if (isBlockElement(line)) {
+            if (paragraph.length > 0) {
+              result.push(`<p>${paragraph.join(' ')}</p>`);
+              paragraph = [];
+            }
+            result.push(line);
+          } else {
+            // Handle line breaks (backslash or two trailing spaces)
+            let processedLine = line;
+            if (line.endsWith('\\')) {
+              processedLine = line.slice(0, -1) + '<br>';
+            } else if (line.endsWith('  ')) {
+              processedLine = line.slice(0, -2) + '<br>';
+            }
+            paragraph.push(processedLine);
+          }
+        }
+
+        if (paragraph.length > 0) {
+          result.push(`<p>${paragraph.join(' ')}</p>`);
+        }
+
+        return result.join('\n');
+      }
+
+      /**
+       * Convert images with optional style comments
+       */
+      function convertImages(text) {
+        return text.replace(/!\[([^\]]*)\]\(([^)]+)\)(<!--[^>]+-->)?/g, (match, alt, src, comment) => {
+          const attr = extractCommentAttr(comment);
+          const attrStr = attr ? ` ${attr}` : '';
+          
+          // Handle optional title
+          const srcMatch = src.match(/^([^\s"]+)(?:\s+"([^"]+)")?$/);
+          const actualSrc = srcMatch ? srcMatch[1] : src;
+          const title = srcMatch && srcMatch[2] ? ` title="${srcMatch[2]}"` : '';
+          
+          return `<img src="${actualSrc}" alt="${alt}"${title}${attrStr}>`;
+        });
+      }
+
+      /**
+       * Convert links with optional style comments
+       */
+      function convertLinks(text) {
+        return text.replace(/\[([^\]]+)\]\(([^)]+)\)(<!--[^>]+-->)?/g, (match, linkText, href, comment) => {
+          const attr = extractCommentAttr(comment);
+          const attrStr = attr ? ` ${attr}` : '';
+          return `<a href="${href}"${attrStr}>${linkText}</a>`;
+        });
+      }
+
+      /**
+       * Convert emphasis (bold, italic, strikethrough) with optional style comments
+       */
+      function convertEmphasis(text) {
+        // Bold + Italic with comment
+        text = text.replace(/\*\*\*(.+?)\*\*\*(<!--[^>]+-->)?/g, (match, content, comment) => {
+          const attr = extractCommentAttr(comment);
+          const attrStr = attr ? ` ${attr}` : '';
+          return `<strong${attrStr}><em>${content}</em></strong>`;
+        });
+
+        // Bold
+        text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
+
+        // Italic
+        text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        text = text.replace(/_([^_]+)_/g, '<em>$1</em>');
+
+        // Strikethrough
+        text = text.replace(/~~(.+?)~~/g, '<del>$1</del>');
+
+        return text;
+      }
+
+      /**
+       * Convert inline math expressions ($...$) and ($`...`$)
+       */
+      function convertInlineMath(text) {
+        // First handle $`...`$ syntax (dollar-backtick delimiters)
+        // This syntax is useful when expression contains markdown characters
+        text = text.replace(/\$`([^`]+)`\$/g, (match, math) => {
+          return `\\(${math}\\)`;
+        });
+        
+        // Handle standard $...$ syntax
+        // Skip if it looks like currency (just numbers) or if escaped
+        text = text.replace(/(?<!\\)\$([^\$\n]+?)\$/g, (match, math) => {
+          // Skip if it looks like currency (just numbers)
+          if (math.match(/^\d+(\.\d{2})?$/)) return match;
+          return `\\(${math}\\)`;
+        });
+        
+        // Convert escaped dollar signs \$ to literal $
+        text = text.replace(/\\\$/g, '$');
+        
+        return text;
+      }
+
+      /**
+       * Convert footnotes
+       */
+      function convertFootnotes(text) {
+        // Footnote references
+        text = text.replace(/\[\^(\w+)\](?!:)/g, '<sup id="fnref-$1"><a href="#fn-$1">$1</a></sup>');
+
+        // Footnote definitions
+        text = text.replace(/^\[\^(\w+)\]:\s*(.+)$/gm, (match, id, content) => {
+          return `<div class="footnote" id="fn-${id}"><sup>${id}</sup> ${content}</div>`;
+        });
+
+        return text;
+      }
+
+      /**
+       * Convert escaped characters
+       */
+      function convertEscapedCharacters(text) {
+        return text.replace(/\\([*_`#\[\]()\\~!])/g, '$1');
+      }
+
+    })();
+  </script>
 </body>
 </html>

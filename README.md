@@ -8,7 +8,7 @@ Support branch of repository for:
 Results from not using the skill file, but all other Copilot elements from the PR. Mainly the intial prompt and prompt filed did not imply `Use your #file:SKILL.md of converting markdown to html`.
 
 - **Agent Model**: Claude Opus 4.5
-- **Prompts**: 1
+- **Prompts**: 2
 
 ```bash
 /markdown-to-html Create index.html and add an AJAX script that will
