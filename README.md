@@ -6,62 +6,93 @@ Support branch of repository for:
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
 <!-- git commit -m "undeploy: use htmlpreview for index.html" -->
 <!--
-- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/BRANCH_NAME/index.html) 
+- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/BRANCH_NAME/index.html)
 -->
 
-Results from using new skill that converts markdown to html with additional custom features. The prompt used utilized the prompt file [markdown-to-html](.github/prompts/markdown-to-html.prompt.md). Two test were performed.
+Results from using new skill that converts markdown to html with additional custom features. The prompt used utilized the prompt file [markdown-to-html.md](.github/prompts/markdown-to-html.prompt.md).
 
-#### Test I
-
-The prompt file was ill-named, being `markdown-to-html`. Test info:
-
-- **Agent Model**: Claude Opus 4.5
-- **Prompts**: 7 (*+ or - 1*)
-- **File**: `index_i.html`
-
-#### Test II
-
-- **Agent Model**: Claude Opus 4.5
-- **Prompts**:
-- **File**: `index.html`
-
-##### Test I and II Initial Prompt
-
-```bash
-/markdown-to-html Using your #file:SKILL.md of converting markdown to html, create
-an AJAX script in index.html that will convert markdown to html with an additional
-custom feature of applying comments immediately following the markdown line,
-somewhere within the markdown line, or above a new markdown line with the text
-`style` in the comment, but with syntax as if an html attribute in the comment;
-to the html tag that will be generated from the preceding markdown line, markdown
-element if the comment is within the line, and to the parent tag if the comment is
-above the markdown i.e. list items. Use the data in the comments that are written
-as if html formatted attributes as they are written in the comment to the custom
-feature of converting markdown to html. Convert the file #file:file.md to html,
-using it in the AJAX call.
+```yaml
+Agent Model: "Claude Sonnet 4.5"
+Prompts:
 ```
 
-The starting html was:
+```bash
+/markdown-to-html Using your #file:SKILL.md  of converting markdown to html,
+create index.html and add an AJAX script that will convert markdown to html
+with an additional custom feature of applying the attribute in adjacent
+comments with valid html attribute syntax to the parsed html. For example:
 
-```html
-<!doctype html>
-<html>
-<head>
- <meta charset="utf-8">
- <title>Markdown to HTML</title>
- <link rel="icon" href="/favicon.png">
- <link rel="stylesheet" 
- href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
- crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+## At the end of a line:
 
-<body>
- <div id="parseMarkdown"></div>
+    ```markdown
+    # Heading 1<!-- style="color:blue" -->
+    ```
 
- <script>
-  // embeddedScript
-  // Convert markdown to html.
- </script>
-</body>
-</html>
+Parsed as HTML:
+
+    ```html
+    <h1 style="color:blue">Heading 1</h1>
+    ```
+
+## Before a markdown line:
+
+    ```markdown
+    <!-- style="list-style-type: square" -->
+    - List item 1
+    - List item 2
+    ```
+
+Parsed as HTML:
+
+    ```html
+    <ul style="list-style-type: square">
+     <li>List item 1</li>
+     <li>List item 2</li>
+    </ul>
+    ```
+
+## Within a markdown line:
+
+    ```markdown
+    - [ ] <!-- style="display: none" --> A todo item
+    ```
+
+Parsed as HTML:
+
+    ```html
+    <ul>
+     <li><input type="checkbox" style="display: none">  A todo item</li>
+    </ul>
+    ```
+
+## In a fenced code block:
+
+    ```markdown
+      ```
+      # Heading 1<!-- style="color:blue" -->
+      ```
+    ```
+
+Parsed as HTML:
+
+    ```html
+    <pre>
+     <code># Heading 1<!-- style="color:blue" --></code>
+    </pre>
+    ```
+
+**IMPORTANT** - see how the raw data is preserved when in fenced code
+block in parsed HTML.
+
+# GOAL
+
+Create an `index.html` file that uses an AJAX call, getting the file #file:file.md , then convert the markdown data to HTML. BE SURE to see:
+
+- #file:basic-markdown-to-html.md 
+- #file:code-blocks-to-html.md 
+- #file:collapsed-sections-to-html.md 
+- #file:tables-to-html.md 
+- #file:writing-mathematical-expressions-to-html.md 
+
+for how the data should be converted to HTML from Markdown.
 ```
