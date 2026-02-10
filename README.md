@@ -3,11 +3,9 @@
 Support branch of repository for:
 <!-- Link to PR -->
 - [github/awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/619). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
-- `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
 <!-- git commit -m "undeploy: use htmlpreview for index.html" -->
-<!--
 - `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/BRANCH_NAME/index.html)
--->
+
 
 Results from using new skill that converts markdown to html with additional custom features. The prompt used utilized the prompt file [markdown-to-html.md](.github/prompts/markdown-to-html.prompt.md).
 
