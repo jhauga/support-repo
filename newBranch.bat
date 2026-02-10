@@ -40,6 +40,9 @@ if NOT "%_currentBranch%"=="%_branchName%" (
  exit /b 1
 )
 
+:: update branch name
+sed -i "s;BRANCH_NAME;%_branchName%;g" README.md
+
 :: Update README.md with repo name if provided
 if NOT "%_repoName%"=="" (
  sed -i "s;REPO_NAME;%_repoName%;g" README.md
