@@ -1,149 +1,617 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
  <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
- 
- <!--<script src="/js/scripts.js"></script>-->
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>Web Form Demo - Client-Side Submission Handling</title>
  <link rel="icon" href="/favicon.png">
- 
  <style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
-   margin-left: 50px;
+   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+   background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+   color: #e0e0e0;
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 40px 20px;
   }
-  div, nav, ul, li, a {
-   display: inline-block;
-   position: relative;
-   box-sizing: border-box;
+
+  h1 {
+   font-size: 2rem;
+   margin-bottom: 6px;
+   background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   background-clip: text;
   }
-  div, nav, footer {
+
+  .subtitle {
+   color: #888;
+   font-size: 0.9rem;
+   margin-bottom: 30px;
+   text-align: center;
+  }
+
+  /* ── Form Card ── */
+  .form-card {
+   background: rgba(255, 255, 255, 0.05);
+   backdrop-filter: blur(10px);
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   border-radius: 16px;
+   padding: 36px 40px;
    width: 100%;
+   max-width: 640px;
+   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
-  nav {
-   background: black;   
-   height: 60px;
-  }
-  nav ul li a {
-   color: white;
-   padding: 10px;
-  }
-  main {
-   margin: 30px;
-  }
-  button {
-   background: darkslategray;
-   color: white;     
-   margin: 10px;
-   padding: 15px;
-   cursor: pointer;
+
+  /* ── Fieldsets ── */
+  fieldset {
+   border: 1px solid rgba(255, 255, 255, 0.12);
    border-radius: 10px;
+   padding: 20px 24px 16px;
+   margin-bottom: 20px;
   }
-  button.showHide {
-   display: block; 
-   background: black;
-   color: white;
+
+  legend {
+   font-weight: 600;
+   font-size: 0.95rem;
+   color: #3a7bd5;
+   padding: 0 8px;
   }
-  button.showHide.black {
-   display: block; 
-   padding: 2px;
-  }  
-  button.showHide.gray {
-   display: block; 
-   background: darkslategray;
-   padding: 2px;
-  }    
-  span.key {
-   color: #0073e6;
-  }  
-  span.str {
-   color: orange;
+
+  /* ── Labels ── */
+  label {
+   display: block;
+   font-size: 0.85rem;
+   font-weight: 500;
+   color: #b0b0b0;
+   margin-bottom: 4px;
+   margin-top: 14px;
   }
-  span.int {
-   color: green;
+
+  label.required::after {
+   content: ' *';
+   color: #ff6b6b;
   }
-  span.mthd {
-   color: purple;
+
+  /* ── Inputs, Select, Textarea ── */
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+   width: 100%;
+   padding: 10px 14px;
+   font-size: 0.95rem;
+   color: #f0f0f0;
+   background: rgba(255, 255, 255, 0.07);
+   border: 1px solid rgba(255, 255, 255, 0.15);
+   border-radius: 8px;
+   outline: none;
+   transition: border-color 0.25s, box-shadow 0.25s;
   }
-  em {
-   color: dimgray;
-  }  
+
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  select:focus,
+  textarea:focus {
+   border-color: #3a7bd5;
+   box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.25);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+   color: #666;
+  }
+
+  textarea {
+   resize: vertical;
+   min-height: 80px;
+  }
+
+  select {
+   cursor: pointer;
+   appearance: none;
+   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+   background-repeat: no-repeat;
+   background-position: right 12px center;
+   padding-right: 32px;
+  }
+
+  select option,
+  select optgroup {
+   background: #1e1e2f;
+   color: #e0e0e0;
+  }
+
+  /* ── Checkbox & Radio rows ── */
+  .check-row,
+  .radio-row {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   margin-top: 10px;
+  }
+
+  .check-row label,
+  .radio-row label {
+   margin: 0;
+   cursor: pointer;
+   font-size: 0.9rem;
+   color: #ccc;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+   accent-color: #3a7bd5;
+   width: 18px;
+   height: 18px;
+   cursor: pointer;
+  }
+
+  /* ── Buttons ── */
+  .btn-group {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+   margin-top: 24px;
+  }
+
+  button {
+   flex: 1;
+   min-width: 140px;
+   padding: 12px 20px;
+   font-size: 0.9rem;
+   font-weight: 600;
+   border: none;
+   border-radius: 8px;
+   cursor: pointer;
+   transition: transform 0.15s, box-shadow 0.2s, background 0.25s;
+  }
+
+  button:hover {
+   transform: translateY(-1px);
+   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  button:active {
+   transform: translateY(0);
+  }
+
+  .btn-json    { background: linear-gradient(135deg, #00b09b, #96c93d); color: #fff; }
+  .btn-table   { background: linear-gradient(135deg, #3a7bd5, #00d2ff); color: #fff; }
+  .btn-url     { background: linear-gradient(135deg, #f7971e, #ffd200); color: #1a1a2e; }
+  .btn-mailto  { background: linear-gradient(135deg, #e44d26, #f16529); color: #fff; }
+  .btn-reset   { background: rgba(255, 255, 255, 0.08); color: #aaa; border: 1px solid rgba(255,255,255,0.15); }
+
+  /* ── Output Panel ── */
+  .output-panel {
+   margin-top: 28px;
+   width: 100%;
+   max-width: 640px;
+  }
+
+  .output-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 8px;
+  }
+
+  .output-header h2 {
+   font-size: 1rem;
+   color: #3a7bd5;
+  }
+
+  .output-header button {
+   flex: unset;
+   min-width: unset;
+   padding: 4px 12px;
+   font-size: 0.75rem;
+   background: rgba(255,255,255,0.08);
+   color: #aaa;
+   border: 1px solid rgba(255,255,255,0.15);
+   border-radius: 6px;
+  }
+
+  .output-box {
+   background: rgba(0, 0, 0, 0.4);
+   border: 1px solid rgba(255, 255, 255, 0.1);
+   border-radius: 10px;
+   padding: 20px;
+   min-height: 60px;
+   font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+   font-size: 0.85rem;
+   line-height: 1.6;
+   overflow-x: auto;
+   white-space: pre-wrap;
+   word-break: break-word;
+  }
+
+  .output-box table {
+   width: 100%;
+   border-collapse: collapse;
+  }
+
+  .output-box th,
+  .output-box td {
+   text-align: left;
+   padding: 6px 12px;
+   border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .output-box th {
+   color: #3a7bd5;
+   font-size: 0.8rem;
+   text-transform: uppercase;
+   letter-spacing: 0.5px;
+  }
+
+  .output-box td {
+   color: #ccc;
+  }
+
+  /* JSON syntax colors */
+  .json-key   { color: #3a7bd5; }
+  .json-str   { color: #96c93d; }
+  .json-num   { color: #ffd200; }
+  .json-bool  { color: #ff6b6b; }
+
+  /* ── Validation ── */
+  input:invalid:not(:placeholder-shown),
+  textarea:invalid:not(:placeholder-shown) {
+   border-color: #ff6b6b;
+  }
+
+  .error-msg {
+   color: #ff6b6b;
+   font-size: 0.78rem;
+   margin-top: 2px;
+   display: none;
+  }
+
+  /* ── Toast ── */
+  .toast {
+   position: fixed;
+   bottom: 30px;
+   right: 30px;
+   padding: 14px 24px;
+   border-radius: 10px;
+   font-size: 0.9rem;
+   font-weight: 500;
+   color: #fff;
+   background: linear-gradient(135deg, #00b09b, #96c93d);
+   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+   opacity: 0;
+   transform: translateY(20px);
+   transition: opacity 0.3s, transform 0.3s;
+   pointer-events: none;
+   z-index: 100;
+  }
+
+  .toast.show {
+   opacity: 1;
+   transform: translateY(0);
+  }
+
+  /* ── Footer ── */
   footer {
-   bottom: 0px;   
-   background: black;
-   color: white;
-   margin-left: -50px; 
-   padding: 50px;
+   margin-top: 48px;
+   padding: 20px;
+   text-align: center;
+   color: #555;
+   font-size: 0.8rem;
+  }
+
+  footer a { color: #3a7bd5; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ── Responsive ── */
+  @media (max-width: 500px) {
+   .form-card { padding: 24px 18px; }
+   .btn-group { flex-direction: column; }
+   button { min-width: unset; }
   }
  </style>
 </head>
 
 <body>
 
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
-   </ul>
-  </nav>
- </div>
+<h1>Client-Side Form Handling Demo</h1>
+<p class="subtitle">No server required &mdash; multiple JavaScript submission strategies</p>
 
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
+<!-- ────────────────────────────────────────── -->
+<!-- FORM                                       -->
+<!-- ────────────────────────────────────────── -->
+<div class="form-card">
+ <form id="demoForm" novalidate>
+
+  <!-- Personal Info -->
+  <fieldset>
+   <legend>Personal Information</legend>
+
+   <label for="fullName" class="required">Full Name</label>
+   <input type="text" id="fullName" name="fullName" placeholder="Jane Doe" required>
+   <span class="error-msg" id="errName">Please enter your full name.</span>
+
+   <label for="nickname">Nickname</label>
+   <input type="text" id="nickname" name="nickname" placeholder="JD">
+
+   <label for="email" class="required">Email Address</label>
+   <input type="text" id="email" name="email" placeholder="jane@example.com" required>
+   <span class="error-msg" id="errEmail">Please enter a valid email.</span>
+
+   <label for="age">Age</label>
+   <input type="number" id="age" name="age" placeholder="28" min="1" max="150">
+
+   <label for="yearsExp">Years of Experience</label>
+   <input type="number" id="yearsExp" name="yearsExp" placeholder="5" min="0" max="80">
+  </fieldset>
+
+  <!-- Preferences -->
+  <fieldset>
+   <legend>Preferences</legend>
+
+   <label for="department" class="required">Department</label>
+   <select id="department" name="department" required>
+    <option value="" disabled selected>Select a department&hellip;</option>
+    <optgroup label="Engineering">
+     <option value="frontend">Front-End Development</option>
+     <option value="backend">Back-End Development</option>
+     <option value="devops">DevOps &amp; Infrastructure</option>
+    </optgroup>
+    <optgroup label="Creative">
+     <option value="design">UI / UX Design</option>
+     <option value="content">Content Strategy</option>
+    </optgroup>
+    <optgroup label="Business">
+     <option value="marketing">Marketing</option>
+     <option value="sales">Sales</option>
+    </optgroup>
+   </select>
+
+   <div style="margin-top: 16px;">
+    <span style="font-size:0.85rem; color:#b0b0b0; font-weight:500;">Contact Preference</span>
+    <div class="radio-row">
+     <input type="radio" id="contactEmail" name="contactPref" value="email" checked>
+     <label for="contactEmail">Email</label>
+    </div>
+    <div class="radio-row">
+     <input type="radio" id="contactPhone" name="contactPref" value="phone">
+     <label for="contactPhone">Phone</label>
+    </div>
+    <div class="radio-row">
+     <input type="radio" id="contactNone" name="contactPref" value="none">
+     <label for="contactNone">Do not contact</label>
+    </div>
+   </div>
+
+   <div style="margin-top: 16px;">
+    <span style="font-size:0.85rem; color:#b0b0b0; font-weight:500;">Subscriptions</span>
+    <div class="check-row">
+     <input type="checkbox" id="newsletter" name="newsletter" value="yes">
+     <label for="newsletter">Subscribe to newsletter</label>
+    </div>
+    <div class="check-row">
+     <input type="checkbox" id="terms" name="terms" value="yes">
+     <label for="terms">I agree to the terms of service</label>
+    </div>
+   </div>
+  </fieldset>
+
+  <!-- Message -->
+  <fieldset>
+   <legend>Your Message</legend>
+   <label for="message">Tell us about yourself or leave feedback</label>
+   <textarea id="message" name="message" placeholder="Write something here&hellip;" rows="4"></textarea>
+  </fieldset>
+
+  <!-- Buttons -->
+  <div class="btn-group">
+   <button type="button" class="btn-json"   onclick="submitAsJSON()">JSON Output</button>
+   <button type="button" class="btn-table"  onclick="submitAsTable()">Table View</button>
+   <button type="button" class="btn-url"    onclick="submitAsURL()">URL Params</button>
+   <button type="button" class="btn-mailto" onclick="submitAsMailto()">Mailto Link</button>
+   <button type="reset"  class="btn-reset"  onclick="clearOutput()">Reset</button>
   </div>
- </main>
+ </form>
+</div>
 
+<!-- ────────────────────────────────────────── -->
+<!-- OUTPUT PANEL                                -->
+<!-- ────────────────────────────────────────── -->
+<div class="output-panel" id="outputPanel" style="display:none;">
+ <div class="output-header">
+  <h2 id="outputTitle">Output</h2>
+  <button onclick="copyOutput()">Copy</button>
+ </div>
+ <div class="output-box" id="outputBox"></div>
+</div>
 
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
-<h1 id="pageTitle"></h1>
+<!-- Footer -->
+<footer>
+ <p>Built with semantic HTML, CSS, and vanilla JavaScript &mdash; no frameworks, no server.</p>
+ <p>Hosted on <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a></p>
+</footer>
 
-<p>CHANGE_TEXT</p>
-
-<pre id="a">
-CHANGE_TEXT
-</pre>
-
+<!-- ────────────────────────────────────────── -->
+<!-- JAVASCRIPT                                  -->
+<!-- ────────────────────────────────────────── -->
 <script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
+ /* ── Helpers ── */
+ const form      = document.getElementById('demoForm');
+ const panel     = document.getElementById('outputPanel');
+ const box       = document.getElementById('outputBox');
+ const title     = document.getElementById('outputTitle');
+ const toastEl   = document.getElementById('toast');
 
+ /** Show a brief toast notification */
+ function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(() => toastEl.classList.remove('show'), 2500);
+ }
+
+ /** Collect all form data into a plain object */
+ function collectData() {
+  const fd  = new FormData(form);
+  const obj = {};
+  fd.forEach((value, key) => {
+   // Handle multiple values for same key (checkboxes)
+   if (obj[key]) {
+    obj[key] = [].concat(obj[key], value);
+   } else {
+    obj[key] = value;
+   }
+  });
+  // Ensure unchecked checkboxes appear as "no"
+  ['newsletter', 'terms'].forEach(k => {
+   if (!obj[k]) obj[k] = 'no';
+  });
+  return obj;
+ }
+
+ /** Custom validation — returns true if valid */
+ function validate() {
+  let valid = true;
+  // Reset
+  document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
+
+  const name = form.fullName.value.trim();
+  if (!name) {
+   document.getElementById('errName').style.display = 'block';
+   valid = false;
+  }
+
+  const email = form.email.value.trim();
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRe.test(email)) {
+   document.getElementById('errEmail').style.display = 'block';
+   valid = false;
+  }
+
+  if (!form.department.value) {
+   valid = false;
+   toast('Please select a department.');
+  }
+
+  return valid;
+ }
+
+ /** Show the output panel */
+ function showPanel(heading) {
+  title.textContent = heading;
+  panel.style.display = '';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+ }
+
+ /* ── Strategy 1: JSON Output ── */
+ function submitAsJSON() {
+  if (!validate()) return;
+  const data = collectData();
+  const json = JSON.stringify(data, null, 2);
+
+  // Syntax-highlight the JSON
+  const highlighted = json
+   .replace(/"([^"]+)":/g, '<span class="json-key">"$1"</span>:')
+   .replace(/: "([^"]*)"/g, ': <span class="json-str">"$1"</span>')
+   .replace(/: (\d+)/g,     ': <span class="json-num">$1</span>')
+   .replace(/: (true|false)/g, ': <span class="json-bool">$1</span>');
+
+  box.innerHTML = highlighted;
+  showPanel('Strategy 1 — JSON Object');
+  toast('Form data serialized as JSON');
+ }
+
+ /* ── Strategy 2: HTML Table ── */
+ function submitAsTable() {
+  if (!validate()) return;
+  const data = collectData();
+
+  let html = '<table><tr><th>Field</th><th>Value</th></tr>';
+  for (const [key, val] of Object.entries(data)) {
+   const display = Array.isArray(val) ? val.join(', ') : val || '—';
+   html += `<tr><td>${escapeHTML(key)}</td><td>${escapeHTML(display)}</td></tr>`;
+  }
+  html += '</table>';
+
+  box.innerHTML = html;
+  showPanel('Strategy 2 — HTML Table Render');
+  toast('Form data rendered as a table');
+ }
+
+ /* ── Strategy 3: URL-Encoded Query String ── */
+ function submitAsURL() {
+  if (!validate()) return;
+  const data   = collectData();
+  const params = new URLSearchParams(data).toString();
+  const url    = window.location.origin + window.location.pathname + '?' + params;
+
+  box.innerHTML =
+   '<span class="json-key">GET URL:</span>\n\n' +
+   escapeHTML(url) + '\n\n' +
+   '<span class="json-key">Decoded parameters:</span>\n\n' +
+   escapeHTML(decodeURIComponent(params).replace(/&/g, '\n'));
+
+  showPanel('Strategy 3 — URL Query String');
+  toast('Form data encoded as URL parameters');
+ }
+
+ /* ── Strategy 4: Mailto Link ── */
+ function submitAsMailto() {
+  if (!validate()) return;
+  const data = collectData();
+
+  const subject = encodeURIComponent('Form Submission from ' + data.fullName);
+  let body = '';
+  for (const [key, val] of Object.entries(data)) {
+   const display = Array.isArray(val) ? val.join(', ') : val;
+   body += key + ': ' + display + '\n';
+  }
+
+  const mailto = 'mailto:' + encodeURIComponent(data.email)
+   + '?subject=' + subject
+   + '&body=' + encodeURIComponent(body);
+
+  box.innerHTML =
+   '<span class="json-key">Mailto link generated:</span>\n\n' +
+   escapeHTML(decodeURIComponent(mailto)) + '\n\n' +
+   '<span style="color:#888;">A new email window will open if you have a mail client configured.</span>';
+
+  // Actually open the mailto link
+  window.location.href = mailto;
+
+  showPanel('Strategy 4 — Mailto Compose');
+  toast('Opening your mail client…');
+ }
+
+ /* ── Clear / Reset ── */
+ function clearOutput() {
+  box.innerHTML = '';
+  panel.style.display = 'none';
+  document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
+  toast('Form reset');
+ }
+
+ /* ── Copy to Clipboard ── */
+ function copyOutput() {
+  const text = box.innerText || box.textContent;
+  navigator.clipboard.writeText(text).then(() => toast('Copied to clipboard'));
+ }
+
+ /** Escape HTML entities */
+ function escapeHTML(str) {
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+ }
+</script>
 
 </body>
 </html>

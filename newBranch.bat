@@ -39,6 +39,8 @@ if NOT "%_currentBranch%"=="%_branchName%" (
  echo Error: Failed to switch to branch %_branchName%
  exit /b 1
 )
+:: update branch name
+sed -i "s;BRANCH_NAME;%_branchName%;g" README.md
 
 :: Update README.md with repo name if provided
 if NOT "%_repoName%"=="" (
