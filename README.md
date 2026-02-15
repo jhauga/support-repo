@@ -2,7 +2,7 @@
 
 Support branch of repository for:
 <!-- Link to PR -->
-- [github/awesome-copilot pull request](https://github.com/). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [github/awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/728). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
 <!-- git commit -m "undeploy: use htmlpreview for index.html" -->
 <!--
 - `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/skill-pdftk-server/index.html)
