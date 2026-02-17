@@ -9,6 +9,11 @@ set "_branchName=%~1"
 set "_repoName=%~2"
 set "_description=%~3"
 
+:: Help option
+if /i "%~1"=="-h" goto :showHelp
+if /i "%~1"=="--help" goto :showHelp
+if /i "%~1"=="/?" goto :showHelp
+
 :: Ensure branch name is provided
 if "%_branchName%"=="" (
  echo Error: Branch name is required.
@@ -55,3 +60,16 @@ if NOT "%_description%"=="" (
 
 echo Branch %_branchName% created and configured successfully.
 endlocal
+exit /b 0
+
+:showHelp
+echo newBranch.bat
+echo Usage: newBranch branch-name [repo-name] [_description]
+echo Options:
+echo   -h, --help, /?   Show this help and exit.
+echo.
+echo Examples:
+echo   newBranch feature/login
+echo   newBranch hotfix/api support-repo "Fix API error"
+endlocal
+exit /b 0

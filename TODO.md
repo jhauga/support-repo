@@ -1,4 +1,7 @@
-# Support Repo
+# Support Repo TODO
 
-- [x] Script new support branch.
-- [x] Script when branch is no longer used to deploy GitHub pages.
+- [ ] Clean unused files for each branch
+- [ ] Sibling repo, but only for user project testing
+- [ ] Improve new branch and undeploy branch scripting
+- [ ] Test for new branch scripting
+- [ ] Plug into Claude Code
