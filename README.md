@@ -1,8 +1,8 @@
 # Support Repo
 
 Support branch of repository for:
-<!-- Link to PR -->
-- [github/awesome-copilot pull request](https://github.com/). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+
+- [github/awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/748).
 
 Support branch for new skill in `github/awesome-copilot` with test results. The reference file `getDate.md` deliberately used Windows DOS option syntax to see if the skill resolved to using "-" prepended options, which no - it did not, but the results were good enough; so I did not do any post-polishing prompts or edits.
 
@@ -31,6 +31,8 @@ quasi-coder --create new-command-line-tool
 ## Results
 
 All but the `C` version of the tool were created without any problems. The `C` version compiled with warning, but still works. The tool itself could probably work as-is as an admin helper script (*or something*). With some polishing, a viable Linux package.
+
+To run the tools created by the skill, start a Codespace, and use the copy/paste installer from [GETDATE.md](GETDATE.md).
 
 ### Results According to `quasi-coder`
 
