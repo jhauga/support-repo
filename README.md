@@ -2,7 +2,7 @@
 
 Support branch of repository for:
 <!-- Link to PR -->
-- [github/awesome-copilot pull request](https://github.com/). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [github/awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/792).
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
 <!-- git commit -m "undeploy: use htmlpreview for index.html" -->
 <!--
@@ -57,4 +57,4 @@ run the game using GitHub pages.
 
 ### Results
 
-After first promp, a woring game.
+After first prompt, a working game.
