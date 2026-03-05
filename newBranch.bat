@@ -10,9 +10,9 @@ set "_repoName=%~2"
 set "_description=%~3"
 
 :: Help option
-if /i "%~1"=="-h" goto :showHelp
-if /i "%~1"=="--help" goto :showHelp
-if /i "%~1"=="/?" goto :showHelp
+if /i "%~1"=="-h" goto :_showHelp
+if /i "%~1"=="--help" goto :_showHelp
+if /i "%~1"=="/?" goto :_showHelp
 
 :: Ensure branch name is provided
 if "%_branchName%"=="" (
@@ -51,6 +51,13 @@ sed -i "s;BRANCH_NAME;%_branchName%;g" README.md
 :: Update README.md with repo name if provided
 if NOT "%_repoName%"=="" (
  sed -i "s;REPO_NAME;%_repoName%;g" README.md
+ if EXIST "templates\%_repoName%.txt" (
+  call makeTemplate.bat "%_repoName%"
+ ) else (
+  call makeTemplate.bat "default"
+ )
+) else (
+ call makeTemplate.bat "default"
 )
 
 :: Update README.md with description if provided
@@ -62,12 +69,16 @@ echo Branch %_branchName% created and configured successfully.
 endlocal
 exit /b 0
 
-:showHelp
+:_showHelp
 echo newBranch.bat
 echo Usage: newBranch branch-name [repo-name] [_description]
 echo Options:
 echo   -h, --help, /?   Show this help and exit.
-echo.
+echo:
+echo Templates:
+echo  awesome-copilot
+echo  default
+echo:
 echo Examples:
 echo   newBranch feature/login
 echo   newBranch hotfix/api support-repo "Fix API error"
