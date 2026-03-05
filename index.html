@@ -1,149 +1,50 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
- <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
- 
- <!--<script src="/js/scripts.js"></script>-->
- <link rel="icon" href="/favicon.png">
- 
- <style>
-  body {
-   margin-left: 50px;
-  }
-  div, nav, ul, li, a {
-   display: inline-block;
-   position: relative;
-   box-sizing: border-box;
-  }
-  div, nav, footer {
-   width: 100%;
-  }
-  nav {
-   background: black;   
-   height: 60px;
-  }
-  nav ul li a {
-   color: white;
-   padding: 10px;
-  }
-  main {
-   margin: 30px;
-  }
-  button {
-   background: darkslategray;
-   color: white;     
-   margin: 10px;
-   padding: 15px;
-   cursor: pointer;
-   border-radius: 10px;
-  }
-  button.showHide {
-   display: block; 
-   background: black;
-   color: white;
-  }
-  button.showHide.black {
-   display: block; 
-   padding: 2px;
-  }  
-  button.showHide.gray {
-   display: block; 
-   background: darkslategray;
-   padding: 2px;
-  }    
-  span.key {
-   color: #0073e6;
-  }  
-  span.str {
-   color: orange;
-  }
-  span.int {
-   color: green;
-  }
-  span.mthd {
-   color: purple;
-  }
-  em {
-   color: dimgray;
-  }  
-  footer {
-   bottom: 0px;   
-   background: black;
-   color: white;
-   margin-left: -50px; 
-   padding: 50px;
-  }
- </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home - Neon Pixel Portfolio</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/site.js" defer></script>
 </head>
-
 <body>
+    <div class="wrapper">
+        <header>
+            <h1>Neon Pixel Portfolio</h1>
+            <p class="tagline">The world’s most cliché portfolio website, straight from the late 2000s</p>
+        </header>
 
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
-   </ul>
-  </nav>
- </div>
+        <nav>
+            <ul>
+                <li><a class="active" href="index.html">Home</a></li>
+                <li><a href="About.html">About</a></li>
+                <li><a href="Blog.html">Blog</a></li>
+                <li><a href="Gallery.html">Gallery</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+            </ul>
+        </nav>
 
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
-  </div>
- </main>
+        <main>
+            <section>
+                <div class="marquee"><marquee>Welcome to my official personal portfolio space on the internet superhighway.</marquee></div>
+                <h2>Welcome</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sodales magna non lorem vulputate, eu dapibus libero congue. Aliquam fermentum lorem id lorem convallis, non congue sapien posuere.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum fringilla nulla sed lectus tincidunt, sed luctus massa faucibus. Cras non tincidunt libero, et posuere erat.</p>
+                <p class="blink">Under Construction</p>
+            </section>
 
+            <aside>
+                <h3>Site Stats</h3>
+                <p><strong>Visitors:</strong> <span id="visitor-count">0</span></p>
+                <p><strong>Current time:</strong> <span id="clock">--:--:--</span></p>
+                <p class="small" id="status-text">Currently coding with maximum nostalgia.</p>
+            </aside>
+        </main>
 
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
-
-<h1 id="pageTitle"></h1>
-
-<p>CHANGE_TEXT</p>
-
-<pre id="a">
-CHANGE_TEXT
-</pre>
-
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
-
-
+        <footer>
+            <span>© <span class="year"></span> Neon Pixel Portfolio</span>
+            <span>Powered by HTML, CSS, and JavaScript</span>
+        </footer>
+    </div>
 </body>
 </html>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Lorem Wave</title>
+  <desc id="desc">Simple abstract wave illustration with lorem text.</desc>
+  <rect width="640" height="420" fill="#fff6e8"/>
+  <path d="M0,240 C120,180 220,320 340,250 C430,200 540,280 640,230 L640,420 L0,420 Z" fill="#ffcb7a"/>
+  <path d="M0,280 C130,220 220,360 350,290 C450,240 540,330 640,270 L640,420 L0,420 Z" fill="#f6a94c"/>
+  <text x="40" y="85" font-size="40" font-family="Verdana, Arial, sans-serif" fill="#9a5710">Lorem Ipsum</text>
+  <text x="40" y="122" font-size="20" font-family="Verdana, Arial, sans-serif" fill="#b06d22">sed do eiusmod</text>
+</svg>

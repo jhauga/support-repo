@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Lorem Sun</title>
+  <desc id="desc">Simple retro scene with sun and text.</desc>
+  <rect width="640" height="420" fill="#dce9ff"/>
+  <circle cx="520" cy="110" r="70" fill="#ffbf3f"/>
+  <rect y="260" width="640" height="160" fill="#95b6ff"/>
+  <text x="40" y="90" font-size="42" font-family="Verdana, Arial, sans-serif" fill="#2d4da4">Lorem Ipsum</text>
+  <text x="40" y="135" font-size="22" font-family="Verdana, Arial, sans-serif" fill="#3f5fac">dolor sit amet</text>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Lorem City</title>
+  <desc id="desc">Simple retro skyline with lorem text.</desc>
+  <rect width="640" height="420" fill="#eef3ff"/>
+  <rect x="40" y="180" width="120" height="220" fill="#4f6ebc"/>
+  <rect x="180" y="140" width="140" height="260" fill="#3b56a4"/>
+  <rect x="340" y="200" width="110" height="200" fill="#5e80d6"/>
+  <rect x="470" y="160" width="130" height="240" fill="#2f4a94"/>
+  <rect y="360" width="640" height="60" fill="#1d2f66"/>
+  <text x="30" y="70" font-size="38" font-family="Verdana, Arial, sans-serif" fill="#27458f">Lorem Ipsum</text>
+  <text x="30" y="108" font-size="20" font-family="Verdana, Arial, sans-serif" fill="#4462ad">consectetur adipiscing</text>
+</svg>

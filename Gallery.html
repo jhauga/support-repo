@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gallery - Neon Pixel Portfolio</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <h1>Neon Pixel Portfolio</h1>
+      <p class="tagline">Pixel-perfect memories in SVG form</p>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="About.html">About</a></li>
+        <li><a href="Blog.html">Blog</a></li>
+        <li><a class="active" href="Gallery.html">Gallery</a></li>
+        <li><a href="Contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <section>
+        <div class="marquee"><marquee behavior="alternate">Welcome to my image gallery from the golden era of gradients and glossy buttons.</marquee></div>
+        <h2>Gallery</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Click shuffle to remix the gallery order.</p>
+        <button id="shuffle-gallery" type="button">Shuffle Gallery</button>
+        <div class="gallery-grid">
+          <img src="assets/img/lorem-sun.svg" alt="Simple retro sun illustration with lorem ipsum text">
+          <img src="assets/img/lorem-city.svg" alt="Simple retro city illustration with lorem ipsum text">
+          <img src="assets/img/lorem-wave.svg" alt="Simple retro wave illustration with lorem ipsum text">
+          <img src="assets/img/lorem-card.svg" alt="Simple retro card illustration with lorem ipsum text">
+        </div>
+      </section>
+
+      <aside>
+        <h3>Gallery Notes</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus placerat nisl id dui consequat, vitae luctus eros ultrices.</p>
+      </aside>
+    </main>
+
+    <footer>
+      <span>© <span class="year"></span> Neon Pixel Portfolio</span>
+      <span>Visitor counter: <strong id="visitor-count">0</strong></span>
+    </footer>
+  </div>
+</body>
+</html>
