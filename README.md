@@ -3,17 +3,7 @@
 Support branch of repository for:
 <!-- Link to PR -->
 - [github/awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/792).
-- `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
-<!-- git commit -m "undeploy: use htmlpreview for index.html" -->
-<!--
 - `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/skill-game-engine/index.html)
--->
-
-<!--
-Test Results:
-
-![demo.gif](/demo.gif)
- -->
 
 Supprot repo for new skill `game-engine` with test results.
 
