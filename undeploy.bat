@@ -12,6 +12,15 @@ FOR /F "tokens=2" %%A in ('git branch ^| findstr /r "^\*"') do set "_currentBran
 if "%~1"=="" (
  echo One parameter is required
  exit /b 1
+) else if "%~1"=="-h" (
+ echo usage: undeploy [1]=branch-name ^(REQUIRED^)
+ exit /b 1
+) else if "%~1"=="--help" (
+ echo usage: undeploy [1]=branch-name ^(REQUIRED^)
+ exit /b 1
+) else if "%~1"=="/?" (
+ echo usage: undeploy [1]=branch-name ^(REQUIRED^)
+ exit /b 1
 )
 
 :: Checkout to the specified branch
