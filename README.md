@@ -3,7 +3,7 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [one pull request](https://github.com/). <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [github/awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/898)
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
 <!-- git commit -m "undeploy: use htmlpreview for index.html" -->
 <!--
