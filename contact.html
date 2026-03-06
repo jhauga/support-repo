@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Support - Type-Safe Web App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --secondary-color: #64748b;
+      --success-color: #10b981;
+      --error-color: #ef4444;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --border-color: #e2e8f0;
+      --bg-light: #f8fafc;
+      --bg-white: #ffffff;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      color: var(--text-primary);
+      background-color: var(--bg-light);
+      line-height: 1.6;
+    }
+
+    .header {
+      background-color: var(--bg-white);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      background-color: var(--bg-light);
+      color: var(--primary-color);
+    }
+
+    .main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      width: 100%;
+    }
+
+    .page-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .page-description {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-form {
+      background-color: var(--bg-white);
+      border-radius: 0.75rem;
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-section {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .form-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .form-section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .required {
+      color: var(--error-color);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .form-group input.error,
+    .form-group textarea.error,
+    .form-group select.error {
+      border-color: var(--error-color);
+    }
+
+    .error-message {
+      display: block;
+      color: var(--error-color);
+      font-size: 0.875rem;
+      margin-top: 0.375rem;
+    }
+
+    .form-hint {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-top: 0.375rem;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background-color: #475569;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    .alert-success strong {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React and ReactDOM from CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  
+  <!-- Babel Standalone for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    function App() {
+      const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        category: 'general',
+        message: '',
+        preferredContactMethod: 'email',
+      });
+
+      const [errors, setErrors] = useState({});
+      const [status, setStatus] = useState('idle');
+      const [ticketId, setTicketId] = useState('');
+
+      const validateForm = () => {
+        const newErrors = {};
+
+        if (!formData.name.trim()) {
+          newErrors.name = 'Name is required';
+        }
+
+        if (!formData.email.trim()) {
+          newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+          newErrors.email = 'Email is invalid';
+        }
+
+        if (formData.preferredContactMethod === 'phone' && !formData.phone.trim()) {
+          newErrors.phone = 'Phone number is required when phone is the preferred contact method';
+        }
+
+        if (!formData.subject.trim()) {
+          newErrors.subject = 'Subject is required';
+        }
+
+        if (!formData.message.trim()) {
+          newErrors.message = 'Message is required';
+        } else if (formData.message.trim().length < 10) {
+          newErrors.message = 'Message must be at least 10 characters';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+      };
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+          return;
+        }
+
+        setStatus('submitting');
+
+        setTimeout(() => {
+          const mockTicketId = `TKT-${Date.now()}`;
+          setTicketId(mockTicketId);
+          setStatus('success');
+          console.log('Support ticket submitted:', { ...formData, ticketId: mockTicketId });
+        }, 1500);
+      };
+
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+        
+        setFormData((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+
+        if (errors[name]) {
+          setErrors((prev) => {
+            const newErrors = { ...prev };
+            delete newErrors[name];
+            return newErrors;
+          });
+        }
+      };
+
+      const handleReset = () => {
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          category: 'general',
+          message: '',
+          preferredContactMethod: 'email',
+        });
+        setErrors({});
+        setStatus('idle');
+        setTicketId('');
+      };
+
+      return (
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+          <header className="header">
+            <nav className="nav">
+              <h1 className="logo">Type-Safe Web App</h1>
+              <ul className="nav-links">
+                <li><a href="index.html">Order Parts</a></li>
+                <li><a href="contact.html" className="active">Contact Support</a></li>
+              </ul>
+            </nav>
+          </header>
+
+          <main className="main">
+            <div className="page-container">
+              <h1>Contact Customer Support</h1>
+              <p className="page-description">
+                Have a question or need assistance? Fill out the form below and our support team will get back to you as soon as possible.
+              </p>
+
+              {status === 'success' && (
+                <div className="alert alert-success">
+                  <strong>✓ Support Ticket Created Successfully!</strong>
+                  Your ticket ID is: <strong>{ticketId}</strong>
+                  <br />
+                  We'll respond to your inquiry within 1-2 business days.
+                </div>
+              )}
+
+              <form className="contact-form" onSubmit={handleSubmit}>
+                <div className="form-section">
+                  <h2>Contact Information</h2>
+                  
+                  <div className="form-group">
+                    <label htmlFor="name">
+                      Name <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className={errors.name ? 'error' : ''}
+                      disabled={status === 'submitting' || status === 'success'}
+                    />
+                    {errors.name && (
+                      <span className="error-message">{errors.name}</span>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="email">
+                      Email Address <span className="required">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className={errors.email ? 'error' : ''}
+                      disabled={status === 'submitting' || status === 'success'}
+                    />
+                    {errors.email && (
+                      <span className="error-message">{errors.email}</span>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone Number</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="(555) 123-4567"
+                      className={errors.phone ? 'error' : ''}
+                      disabled={status === 'submitting' || status === 'success'}
+                    />
+                    {errors.phone && (
+                      <span className="error-message">{errors.phone}</span>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="preferredContactMethod">Preferred Contact Method</label>
+                    <select
+                      id="preferredContactMethod"
+                      name="preferredContactMethod"
+                      value={formData.preferredContactMethod}
+                      onChange={handleChange}
+                      disabled={status === 'submitting' || status === 'success'}
+                    >
+                      <option value="email">Email</option>
+                      <option value="phone">Phone</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="form-section">
+                  <h2>Inquiry Details</h2>
+                  
+                  <div className="form-group">
+                    <label htmlFor="category">Category</label>
+                    <select
+                      id="category"
+                      name="category"
+                      value={formData.category}
+                      onChange={handleChange}
+                      disabled={status === 'submitting' || status === 'success'}
+                    >
+                      <option value="general">General Inquiry</option>
+                      <option value="technical">Technical Support</option>
+                      <option value="billing">Billing Question</option>
+                      <option value="complaint">Complaint</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="subject">
+                      Subject <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      placeholder="Brief summary of your inquiry"
+                      className={errors.subject ? 'error' : ''}
+                      disabled={status === 'submitting' || status === 'success'}
+                    />
+                    {errors.subject && (
+                      <span className="error-message">{errors.subject}</span>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="message">
+                      Message <span className="required">*</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      rows="6"
+                      placeholder="Please provide details about your inquiry..."
+                      className={errors.message ? 'error' : ''}
+                      disabled={status === 'submitting' || status === 'success'}
+                    />
+                    {errors.message && (
+                      <span className="error-message">{errors.message}</span>
+                    )}
+                    <span className="form-hint">Minimum 10 characters</span>
+                  </div>
+                </div>
+
+                <div className="form-actions">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={handleReset}
+                    disabled={status === 'submitting'}
+                  >
+                    {status === 'success' ? 'New Inquiry' : 'Reset Form'}
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={status === 'submitting' || status === 'success'}
+                  >
+                    {status === 'submitting' ? 'Submitting...' : 'Submit Inquiry'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </main>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
