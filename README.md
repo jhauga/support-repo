@@ -8,7 +8,6 @@ Support branch of repository for:
 
 
 <!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
-<!-- formatter_1 -->
 Support branch for new html-coder skill.
 
 - **Agent**: Local
@@ -34,4 +33,3 @@ html-coder --new-app video-share
 ### Results
 
 Good and in the context of writing html. The development tool was taken literally, with a make-shift event logger at the bottom of the page.
-<!-- formatter_2 -->
