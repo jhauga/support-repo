@@ -1,149 +1,902 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
- <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
- 
- <!--<script src="/js/scripts.js"></script>-->
- <link rel="icon" href="/favicon.png">
- 
- <style>
-  body {
-   margin-left: 50px;
-  }
-  div, nav, ul, li, a {
-   display: inline-block;
-   position: relative;
-   box-sizing: border-box;
-  }
-  div, nav, footer {
-   width: 100%;
-  }
-  nav {
-   background: black;   
-   height: 60px;
-  }
-  nav ul li a {
-   color: white;
-   padding: 10px;
-  }
-  main {
-   margin: 30px;
-  }
-  button {
-   background: darkslategray;
-   color: white;     
-   margin: 10px;
-   padding: 15px;
-   cursor: pointer;
-   border-radius: 10px;
-  }
-  button.showHide {
-   display: block; 
-   background: black;
-   color: white;
-  }
-  button.showHide.black {
-   display: block; 
-   padding: 2px;
-  }  
-  button.showHide.gray {
-   display: block; 
-   background: darkslategray;
-   padding: 2px;
-  }    
-  span.key {
-   color: #0073e6;
-  }  
-  span.str {
-   color: orange;
-  }
-  span.int {
-   color: green;
-  }
-  span.mthd {
-   color: purple;
-  }
-  em {
-   color: dimgray;
-  }  
-  footer {
-   bottom: 0px;   
-   background: black;
-   color: white;
-   margin-left: -50px; 
-   padding: 50px;
-  }
- </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="VideoShare - A modern video sharing platform with dynamic SVG animations">
+    <link href="favicon.png" rel="icon">
+    <title>VideoShare - Share Your Videos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #ff0000;
+            --secondary-color: #282828;
+            --bg-color: #0f0f0f;
+            --text-color: #ffffff;
+            --hover-color: #3f3f3f;
+            --card-bg: #1f1f1f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--secondary-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .logo svg {
+            margin-right: 0.5rem;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 2rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--hover-color);
+            border-radius: 20px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .user-actions button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .user-actions button:hover {
+            background-color: #cc0000;
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .video-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(255, 0, 0, 0.2);
+        }
+
+        .thumbnail-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: var(--secondary-color);
+            overflow: hidden;
+        }
+
+        .thumbnail-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .video-card:hover .play-overlay {
+            opacity: 1;
+        }
+
+        .video-info {
+            padding: 1rem;
+        }
+
+        .video-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .video-meta {
+            font-size: 0.875rem;
+            color: #aaaaaa;
+        }
+
+        .video-meta span {
+            margin-right: 0.5rem;
+        }
+
+        /* Video Player Modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .video-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--secondary-color);
+            border-radius: 12px;
+            max-width: 1200px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--text-color);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 10;
+            transition: background-color 0.3s;
+        }
+
+        .close-modal:hover {
+            background-color: var(--primary-color);
+        }
+
+        .player-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background-color: #000;
+        }
+
+        .player-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .modal-info {
+            padding: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 2rem;
+            color: #aaaaaa;
+            margin-bottom: 1rem;
+        }
+
+        .modal-description {
+            line-height: 1.8;
+            color: #e0e0e0;
+        }
+
+        /* Development Tools Panel */
+        .dev-tools {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1a1a1a;
+            border-top: 2px solid var(--primary-color);
+            padding: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            z-index: 1500;
+        }
+
+        .dev-tools h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .dev-log {
+            color: #00ff00;
+            line-height: 1.4;
+        }
+
+        .dev-log-entry {
+            margin-bottom: 0.25rem;
+        }
+
+        .dev-log-time {
+            color: #888;
+            margin-right: 0.5rem;
+        }
+
+        .dev-log-event {
+            color: #00ffff;
+            margin-right: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-bar {
+                margin: 0;
+                max-width: 100%;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 1rem;
+            }
+        }
+
+        /* Animation Keyframes */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
-
 <body>
+    <header>
+        <a href="#" class="logo">
+            <svg width="40" height="40" viewBox="0 0 40 40">
+                <rect width="40" height="40" fill="#ff0000" rx="8"/>
+                <polygon points="15,10 15,30 30,20" fill="white"/>
+            </svg>
+            VideoShare
+        </a>
+        
+        <div class="search-bar">
+            <input type="search" id="searchInput" placeholder="Search videos..." aria-label="Search videos">
+        </div>
+        
+        <div class="user-actions">
+            <button id="uploadBtn">+ Upload</button>
+        </div>
+    </header>
 
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
-   </ul>
-  </nav>
- </div>
+    <main>
+        <section>
+            <h1>Trending Videos</h1>
+            <div class="video-grid" id="videoGrid">
+                <!-- Videos will be dynamically generated -->
+            </div>
+        </section>
+    </main>
 
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
-  </div>
- </main>
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal" aria-label="Close video">&times;</button>
+            <div class="player-container">
+                <svg class="player-svg" id="playerSvg" viewBox="0 0 800 450">
+                    <!-- Player content will be dynamically generated -->
+                </svg>
+            </div>
+            <div class="modal-info" id="modalInfo">
+                <!-- Video info will be dynamically updated -->
+            </div>
+        </div>
+    </div>
 
+    <!-- Development Tools -->
+    <div class="dev-tools">
+        <h3>🛠️ Development Console</h3>
+        <div class="dev-log" id="devLog">
+            <div class="dev-log-entry">
+                <span class="dev-log-time">[00:00:00]</span>
+                <span class="dev-log-event">[INIT]</span>
+                VideoShare application initialized
+            </div>
+        </div>
+    </div>
 
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
+    <script>
+        // Development Logger
+        class DevLogger {
+            constructor() {
+                this.logContainer = document.getElementById('devLog');
+                this.startTime = Date.now();
+            }
 
-<h1 id="pageTitle"></h1>
+            log(event, message) {
+                const elapsed = Date.now() - this.startTime;
+                const time = new Date(elapsed).toISOString().substr(11, 8);
+                const entry = document.createElement('div');
+                entry.className = 'dev-log-entry';
+                entry.innerHTML = `
+                    <span class="dev-log-time">[${time}]</span>
+                    <span class="dev-log-event">[${event}]</span>
+                    ${message}
+                `;
+                this.logContainer.appendChild(entry);
+                this.logContainer.scrollTop = this.logContainer.scrollHeight;
+                
+                // Keep only last 20 entries
+                while (this.logContainer.children.length > 20) {
+                    this.logContainer.removeChild(this.logContainer.firstChild);
+                }
+            }
+        }
 
-<p>CHANGE_TEXT</p>
+        const devLog = new DevLogger();
 
-<pre id="a">
-CHANGE_TEXT
-</pre>
+        // Random Animation Algorithm Generator
+        class RandomAnimationAlgorithm {
+            static getRandomColor() {
+                const colors = ['#ff0000', '#ff4444', '#ff6b6b', '#ff8800', '#ffaa00', 
+                              '#00aaff', '#0088ff', '#4444ff', '#6b6bff', '#aa00ff'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
 
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
+            static getRandomShape() {
+                const shapes = ['circle', 'rect', 'polygon', 'ellipse'];
+                return shapes[Math.floor(Math.random() * shapes.length)];
+            }
 
+            static getRandomAnimation() {
+                const animations = [
+                    { type: 'wave', speed: Math.random() * 2 + 1 },
+                    { type: 'pulse', speed: Math.random() * 3 + 1 },
+                    { type: 'rotate', speed: Math.random() * 5 + 2 },
+                    { type: 'morph', speed: Math.random() * 4 + 1 },
+                    { type: 'particles', count: Math.floor(Math.random() * 20) + 10 }
+                ];
+                return animations[Math.floor(Math.random() * animations.length)];
+            }
 
+            static createRandomPattern(width, height) {
+                const pattern = [];
+                const shapeCount = Math.floor(Math.random() * 15) + 5;
+                
+                for (let i = 0; i < shapeCount; i++) {
+                    pattern.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        size: Math.random() * 50 + 10,
+                        color: this.getRandomColor(),
+                        shape: this.getRandomShape(),
+                        rotation: Math.random() * 360,
+                        opacity: Math.random() * 0.5 + 0.3
+                    });
+                }
+                
+                return pattern;
+            }
+        }
+
+        // SVG Animation Engine
+        class SVGAnimationEngine {
+            constructor(svgElement) {
+                this.svg = svgElement;
+                this.animationFrameId = null;
+                this.shapes = [];
+                this.time = 0;
+            }
+
+            createThumbnailAnimation(videoId) {
+                const pattern = RandomAnimationAlgorithm.createRandomPattern(320, 180);
+                const animation = RandomAnimationAlgorithm.getRandomAnimation();
+                
+                this.svg.innerHTML = `
+                    <defs>
+                        <linearGradient id="grad${videoId}" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:${RandomAnimationAlgorithm.getRandomColor()};stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:${RandomAnimationAlgorithm.getRandomColor()};stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grad${videoId})"/>
+                `;
+
+                pattern.forEach((shape, index) => {
+                    let element;
+                    switch (shape.shape) {
+                        case 'circle':
+                            element = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                            element.setAttribute('cx', shape.x);
+                            element.setAttribute('cy', shape.y);
+                            element.setAttribute('r', shape.size / 2);
+                            break;
+                        case 'rect':
+                            element = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                            element.setAttribute('x', shape.x - shape.size / 2);
+                            element.setAttribute('y', shape.y - shape.size / 2);
+                            element.setAttribute('width', shape.size);
+                            element.setAttribute('height', shape.size);
+                            break;
+                        case 'ellipse':
+                            element = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+                            element.setAttribute('cx', shape.x);
+                            element.setAttribute('cy', shape.y);
+                            element.setAttribute('rx', shape.size / 2);
+                            element.setAttribute('ry', shape.size / 3);
+                            break;
+                        case 'polygon':
+                            element = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                            const points = `${shape.x},${shape.y-shape.size/2} ${shape.x+shape.size/2},${shape.y+shape.size/2} ${shape.x-shape.size/2},${shape.y+shape.size/2}`;
+                            element.setAttribute('points', points);
+                            break;
+                    }
+                    
+                    element.setAttribute('fill', shape.color);
+                    element.setAttribute('opacity', shape.opacity);
+                    element.setAttribute('transform', `rotate(${shape.rotation} ${shape.x} ${shape.y})`);
+                    
+                    // Add animation based on type
+                    const animateElement = document.createElementNS('http://www.w3.org/2000/svg', 'animateTransform');
+                    animateElement.setAttribute('attributeName', 'transform');
+                    animateElement.setAttribute('type', 'rotate');
+                    animateElement.setAttribute('from', `${shape.rotation} ${shape.x} ${shape.y}`);
+                    animateElement.setAttribute('to', `${shape.rotation + 360} ${shape.x} ${shape.y}`);
+                    animateElement.setAttribute('dur', `${animation.speed * 2}s`);
+                    animateElement.setAttribute('repeatCount', 'indefinite');
+                    
+                    element.appendChild(animateElement);
+                    this.svg.appendChild(element);
+                });
+
+                devLog.log('SVG', `Thumbnail animation created: ${animation.type} algorithm`);
+            }
+
+            createPlayerAnimation() {
+                const animation = RandomAnimationAlgorithm.getRandomAnimation();
+                devLog.log('PLAY', `Starting player animation: ${animation.type}`);
+                
+                if (animation.type === 'particles') {
+                    this.createParticleAnimation(animation.count);
+                } else if (animation.type === 'wave') {
+                    this.createWaveAnimation(animation.speed);
+                } else if (animation.type === 'pulse') {
+                    this.createPulseAnimation(animation.speed);
+                } else {
+                    this.createMorphAnimation(animation.speed);
+                }
+            }
+
+            createParticleAnimation(count) {
+                this.svg.innerHTML = `
+                    <defs>
+                        <radialGradient id="particleGrad">
+                            <stop offset="0%" style="stop-color:#ff0000;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#000000;stop-opacity:0" />
+                        </radialGradient>
+                    </defs>
+                `;
+
+                const particles = [];
+                for (let i = 0; i < count; i++) {
+                    const particle = {
+                        x: 400,
+                        y: 225,
+                        vx: (Math.random() - 0.5) * 10,
+                        vy: (Math.random() - 0.5) * 10,
+                        size: Math.random() * 20 + 5,
+                        color: RandomAnimationAlgorithm.getRandomColor(),
+                        life: 1.0
+                    };
+                    particles.push(particle);
+
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('r', particle.size);
+                    circle.setAttribute('fill', particle.color);
+                    this.svg.appendChild(circle);
+                }
+
+                const animate = () => {
+                    particles.forEach((p, i) => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.2; // Gravity
+                        p.life -= 0.01;
+
+                        if (p.life <= 0) {
+                            p.x = 400;
+                            p.y = 225;
+                            p.vx = (Math.random() - 0.5) * 10;
+                            p.vy = (Math.random() - 0.5) * 10;
+                            p.life = 1.0;
+                        }
+
+                        const circle = this.svg.children[i + 1];
+                        if (circle) {
+                            circle.setAttribute('cx', p.x);
+                            circle.setAttribute('cy', p.y);
+                            circle.setAttribute('opacity', p.life);
+                        }
+                    });
+
+                    this.animationFrameId = requestAnimationFrame(animate);
+                };
+
+                animate();
+            }
+
+            createWaveAnimation(speed) {
+                const waves = [];
+                const waveCount = 5;
+
+                this.svg.innerHTML = '<rect width="100%" height="100%" fill="#000000"/>';
+
+                for (let i = 0; i < waveCount; i++) {
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('fill', 'none');
+                    path.setAttribute('stroke', RandomAnimationAlgorithm.getRandomColor());
+                    path.setAttribute('stroke-width', '3');
+                    path.setAttribute('opacity', '0.7');
+                    this.svg.appendChild(path);
+                    waves.push({ path, offset: i * Math.PI / waveCount });
+                }
+
+                const animate = () => {
+                    this.time += 0.02 * speed;
+
+                    waves.forEach(wave => {
+                        let pathData = 'M 0 225';
+                        for (let x = 0; x <= 800; x += 10) {
+                            const y = 225 + Math.sin((x * 0.02) + this.time + wave.offset) * 50;
+                            pathData += ` L ${x} ${y}`;
+                        }
+                        wave.path.setAttribute('d', pathData);
+                    });
+
+                    this.animationFrameId = requestAnimationFrame(animate);
+                };
+
+                animate();
+            }
+
+            createPulseAnimation(speed) {
+                this.svg.innerHTML = '';
+                const circles = [];
+                const circleCount = 8;
+
+                for (let i = 0; i < circleCount; i++) {
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', '400');
+                    circle.setAttribute('cy', '225');
+                    circle.setAttribute('fill', 'none');
+                    circle.setAttribute('stroke', RandomAnimationAlgorithm.getRandomColor());
+                    circle.setAttribute('stroke-width', '2');
+                    this.svg.appendChild(circle);
+                    circles.push({ element: circle, phase: (i / circleCount) * Math.PI * 2 });
+                }
+
+                const animate = () => {
+                    this.time += 0.05 * speed;
+
+                    circles.forEach(circle => {
+                        const radius = 50 + Math.sin(this.time + circle.phase) * 100;
+                        const opacity = Math.abs(Math.sin(this.time + circle.phase));
+                        circle.element.setAttribute('r', radius);
+                        circle.element.setAttribute('opacity', opacity);
+                    });
+
+                    this.animationFrameId = requestAnimationFrame(animate);
+                };
+
+                animate();
+            }
+
+            createMorphAnimation(speed) {
+                this.svg.innerHTML = '';
+                const shape = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                shape.setAttribute('fill', RandomAnimationAlgorithm.getRandomColor());
+                shape.setAttribute('opacity', '0.8');
+                this.svg.appendChild(shape);
+
+                const animate = () => {
+                    this.time += 0.02 * speed;
+
+                    const points = [];
+                    const numPoints = 6;
+                    for (let i = 0; i < numPoints; i++) {
+                        const angle = (i / numPoints) * Math.PI * 2;
+                        const radius = 100 + Math.sin(this.time + angle) * 50;
+                        const x = 400 + Math.cos(angle) * radius;
+                        const y = 225 + Math.sin(angle) * radius;
+                        points.push(`${x},${y}`);
+                    }
+
+                    shape.setAttribute('d', `M ${points.join(' L ')} Z`);
+
+                    this.animationFrameId = requestAnimationFrame(animate);
+                };
+
+                animate();
+            }
+
+            stop() {
+                if (this.animationFrameId) {
+                    cancelAnimationFrame(this.animationFrameId);
+                    this.animationFrameId = null;
+                }
+            }
+        }
+
+        // Video Data
+        const videos = [
+            { id: 1, title: 'Amazing Sunset Timelapse in 4K', views: '2.5M', uploadDate: '2 days ago', duration: '4:32' },
+            { id: 2, title: 'Learn Web Development in 2026', views: '892K', uploadDate: '1 week ago', duration: '12:45' },
+            { id: 3, title: 'Top 10 Travel Destinations This Year', views: '1.2M', uploadDate: '3 days ago', duration: '8:17' },
+            { id: 4, title: 'Cooking Perfect Pasta - Chef Tips', views: '445K', uploadDate: '5 days ago', duration: '6:23' },
+            { id: 5, title: 'The Future of AI Technology', views: '3.1M', uploadDate: '1 day ago', duration: '15:08' },
+            { id: 6, title: 'Relaxing Music for Study & Focus', views: '5.7M', uploadDate: '2 weeks ago', duration: '45:00' },
+            { id: 7, title: 'DIY Home Improvement Projects', views: '678K', uploadDate: '4 days ago', duration: '9:41' },
+            { id: 8, title: 'Wildlife Documentary: Ocean Life', views: '2.9M', uploadDate: '1 week ago', duration: '28:15' },
+            { id: 9, title: 'Gaming Highlights - Epic Moments', views: '1.5M', uploadDate: '6 hours ago', duration: '11:30' },
+            { id: 10, title: 'Fitness Routine for Beginners', views: '823K', uploadDate: '3 days ago', duration: '7:52' },
+            { id: 11, title: 'Space Exploration 2026 Update', views: '4.2M', uploadDate: '2 days ago', duration: '18:44' },
+            { id: 12, title: 'Urban Photography Tips & Tricks', views: '567K', uploadDate: '1 week ago', duration: '10:19' }
+        ];
+
+        // Application State
+        let currentPlayerAnimation = null;
+
+        // Initialize Video Grid
+        function initializeVideoGrid() {
+            const videoGrid = document.getElementById('videoGrid');
+            
+            videos.forEach(video => {
+                const card = document.createElement('article');
+                card.className = 'video-card';
+                card.setAttribute('data-video-id', video.id);
+                
+                card.innerHTML = `
+                    <div class="thumbnail-container">
+                        <svg class="thumbnail-svg" viewBox="0 0 320 180" id="thumbnail-${video.id}">
+                            <!-- SVG content will be generated -->
+                        </svg>
+                        <svg class="play-overlay" viewBox="0 0 60 60">
+                            <circle cx="30" cy="30" r="28" fill="rgba(255,0,0,0.9)"/>
+                            <polygon points="22,16 22,44 44,30" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="video-info">
+                        <h2 class="video-title">${video.title}</h2>
+                        <div class="video-meta">
+                            <span>${video.views} views</span>
+                            <span>•</span>
+                            <span>${video.uploadDate}</span>
+                            <span>•</span>
+                            <span>${video.duration}</span>
+                        </div>
+                    </div>
+                `;
+                
+                videoGrid.appendChild(card);
+                
+                // Create thumbnail animation
+                const thumbnailSvg = document.getElementById(`thumbnail-${video.id}`);
+                const thumbnailEngine = new SVGAnimationEngine(thumbnailSvg);
+                thumbnailEngine.createThumbnailAnimation(video.id);
+                
+                // Add hover event for preview animation
+                card.addEventListener('mouseenter', () => {
+                    devLog.log('HOVER', `Video #${video.id} hover preview activated`);
+                    card.style.transform = 'translateY(-5px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                });
+                
+                // Add click event for video playback
+                card.addEventListener('click', () => {
+                    openVideoModal(video);
+                });
+            });
+            
+            devLog.log('INIT', `${videos.length} video thumbnails generated with random SVG algorithms`);
+        }
+
+        // Open Video Modal
+        function openVideoModal(video) {
+            devLog.log('CLICK', `Opening video #${video.id}: ${video.title}`);
+            
+            const modal = document.getElementById('videoModal');
+            const modalInfo = document.getElementById('modalInfo');
+            const playerSvg = document.getElementById('playerSvg');
+            
+            // Update modal content dynamically
+            modalInfo.innerHTML = `
+                <h2 class="modal-title">${video.title}</h2>
+                <div class="modal-meta">
+                    <span>${video.views} views</span>
+                    <span>${video.uploadDate}</span>
+                    <span>${video.duration}</span>
+                </div>
+                <p class="modal-description">
+                    This is a demonstration of the VideoShare platform featuring dynamic SVG animations 
+                    generated using random algorithms. Each video preview and playback experience is unique, 
+                    created in real-time with various animation patterns including particles, waves, pulses, 
+                    and morphing shapes. The platform is optimized for GitHub Pages hosting and includes 
+                    development tools for debugging and monitoring.
+                </p>
+            `;
+            
+            // Show modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Create and start player animation
+            if (currentPlayerAnimation) {
+                currentPlayerAnimation.stop();
+            }
+            
+            currentPlayerAnimation = new SVGAnimationEngine(playerSvg);
+            currentPlayerAnimation.createPlayerAnimation();
+            
+            devLog.log('PLAY', `Video playback started with random SVG animation`);
+        }
+
+        // Close Video Modal
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            if (currentPlayerAnimation) {
+                currentPlayerAnimation.stop();
+                currentPlayerAnimation = null;
+            }
+            
+            devLog.log('STOP', 'Video playback stopped');
+        }
+
+        // Search Functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                devLog.log('SEARCH', `Query: "${query}"`);
+                
+                const cards = document.querySelectorAll('.video-card');
+                let matchCount = 0;
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('.video-title').textContent.toLowerCase();
+                    if (title.includes(query)) {
+                        card.style.display = '';
+                        matchCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                devLog.log('SEARCH', `Found ${matchCount} matching videos`);
+            });
+        }
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', () => {
+            devLog.log('START', 'Initializing VideoShare application...');
+            
+            initializeVideoGrid();
+            setupSearch();
+            
+            // Setup modal close handlers
+            document.getElementById('closeModal').addEventListener('click', closeVideoModal);
+            document.getElementById('videoModal').addEventListener('click', (e) => {
+                if (e.target.id === 'videoModal') {
+                    closeVideoModal();
+                }
+            });
+            
+            // Upload button
+            document.getElementById('uploadBtn').addEventListener('click', () => {
+                devLog.log('UPLOAD', 'Upload button clicked (demo only)');
+                alert('Upload functionality - This is a demo application hosted on GitHub Pages');
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeVideoModal();
+                }
+            });
+            
+            devLog.log('READY', 'Application ready ✓');
+            devLog.log('INFO', 'Hover over videos for preview, click to play with dynamic SVG animations');
+        });
+    </script>
 </body>
 </html>
