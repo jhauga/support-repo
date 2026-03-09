@@ -39,8 +39,8 @@ Good and in the context of writing html. The development tool was taken literall
 
 - **Agent**: Local
 - **Model**: Claude Sonnet 4.5
-- **Number of Prompts**:
-- **Post Edits**:
+- **Number of Prompts**: 1
+- **Post Edits**: none
 
 ### Prompt
 
