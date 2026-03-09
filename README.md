@@ -6,8 +6,8 @@ Support branch of repository for:
 - [awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/924)
 - `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/skill-html-coder/index.html)
 
+## Test 1
 
-<!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
 Support branch for new html-coder skill.
 
 - **Agent**: Local
@@ -15,6 +15,7 @@ Support branch for new html-coder skill.
 - **Number of Prompts**:
 - **Post Edits**: 1
   - Added `<link href="favicon.png" rel="icon">`
+
 
 ### Prompt
 
@@ -33,3 +34,34 @@ html-coder --new-app video-share
 ### Results
 
 Good and in the context of writing html. The development tool was taken literally, with a make-shift event logger at the bottom of the page.
+
+## Test 2
+
+- **Agent**: Local
+- **Model**: Claude Sonnet 4.5
+- **Number of Prompts**:
+- **Post Edits**:
+
+### Prompt
+
+```bash
+html-coder --variation index.html --variation-name test2
+           --shorthand start-shorthand:
+           ```
+           mkdir test1 & move index.html test1\index.html
+           mkdir test2 & (shorthand)=>make-variation test1\index.html in test2\index.html 
+           ```end-shorthand
+           --new-variation no-bottom-dev-tools
+           --base-on youtube.com 
+           --hover-preview svg-animation 
+           --click-video dynamic-update 
+           --on-play svg-animation 
+           --svg-animation use-random-algorithm 
+           --create-root-launch-page index.html
+           --launch-page "link to both variations"
+           --site-host "GitHub Pages"
+```
+
+### Results
+
+Good. Variaition without makeshift dev-tools.
