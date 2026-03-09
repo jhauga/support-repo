@@ -12,6 +12,8 @@ Support branch of repository for:
 
 <!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
 <!-- formatter_1 -->
+## Test 1
+
 Support branch for new skill typescript-coder.
 
 - **Agent**: Local
@@ -43,4 +45,52 @@ Good results:
 
 I thinkg this could be configurred and plugged into a server after adding production elements.
 
-<!-- formatter_2 -->
+## Test 2
+
+**Agent**: Local
+**Model**: Claude Sonnet 4.6
+**Number of Prompts**: 2
+**Post Edits**:  none
+
+### Prompt
+
+```bash
+typescript-coder --variation [index.html,contact.html] --call-it orderB
+                 --command `()=>mkdir orderA & move "index.html,contact.html and relvant files" orderA`
+                 --command `()=>mkdir orderB & typescript-code variation of orderA`
+                 --create launch-page --call-it "index.html"
+                 --all-pages-hosted-on "GitHub Pages" --create-production-elements=false
+                 --use-cdn-for-development=true
+```
+
+### Results
+
+After first prompt, a console error had to be resolve. A copy/paste of console error to second prompt, and the end results - better than the first. The script tag was all TypeScript syntax, so - I feel better about the updates.
+
+## Test 3
+
+**Agent**: Local
+**Model**: Claude Sonnet 4.5
+**Number of Prompts**: 1
+**Post Edits**: none
+
+### Prompt
+
+```bash
+typescript-coder --new-variation orderC 
+                 --language=typeScript
+                 --variation-of "orderA" + "orderB"
+                 --variation-keeps form-elements
+                 --variation-does redo-script-for-form-use-typescript
+                 --add-to-launch-page-index.html=true
+                 --use-production-elements=false --use-development-elements=true
+                 --variation-folder orderC
+```
+
+### Results
+
+Good results:
+
+- Functional form
+- Throws error on missing required fields
+- Throws errors on invalid fields

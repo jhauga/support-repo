@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Support - TypeScript Enhanced Web App</title>
+  <link href="../favicon.png" rel="icon">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --secondary-color: #64748b;
+      --success-color: #10b981;
+      --error-color: #ef4444;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --border-color: #e2e8f0;
+      --bg-light: #f8fafc;
+      --bg-white: #ffffff;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      color: var(--text-primary);
+      background-color: var(--bg-light);
+      line-height: 1.6;
+    }
+
+    .header {
+      background-color: var(--bg-white);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .ts-badge {
+      display: inline-block;
+      background-color: #3178c6;
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.25rem;
+      vertical-align: middle;
+      margin-left: 0.4rem;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      background-color: var(--bg-light);
+      color: var(--primary-color);
+    }
+
+    .main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      width: 100%;
+    }
+
+    .page-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .page-description {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-form {
+      background-color: var(--bg-white);
+      border-radius: 0.75rem;
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-section {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .form-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .form-section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .required {
+      color: var(--error-color);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .form-group input.error,
+    .form-group textarea.error,
+    .form-group select.error {
+      border-color: var(--error-color);
+    }
+
+    .error-message {
+      display: block;
+      color: var(--error-color);
+      font-size: 0.875rem;
+      margin-top: 0.375rem;
+    }
+
+    .form-hint {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-top: 0.375rem;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background-color: #475569;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    .alert-success strong {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .priority-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-left: 0.5rem;
+    }
+
+    .priority-low {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+
+    .priority-normal {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .priority-high {
+      background-color: #fecaca;
+      color: #991b1b;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React and ReactDOM from CDN (development versions) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Babel Standalone (includes TypeScript + React presets) -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Register a TSX preset so TypeScript generics inside JSX are parsed correctly -->
+  <script>
+    Babel.registerPreset('tsx', {
+      presets: [
+        [Babel.availablePresets['typescript'], { allExtensions: true, isTSX: true }],
+        [Babel.availablePresets['react']],
+        [Babel.availablePresets['env']],
+      ],
+    });
+  </script>
+
+  <script type="text/babel" data-presets="tsx">
+    // ══════════════════════════════════════════════════════════════════════════
+    // TypeScript Type Definitions for Contact Form
+    // ══════════════════════════════════════════════════════════════════════════
+
+    interface ContactFormData {
+      name: string;
+      email: string;
+      phone: string;
+      companyName: string;
+      subject: string;
+      category: 'general' | 'technical' | 'billing' | 'complaint' | 'feedback';
+      priority: 'low' | 'normal' | 'high';
+      message: string;
+      preferredContactMethod: 'email' | 'phone' | 'either';
+      requestFollowUp: boolean;
+    }
+
+    type FormErrors = Partial<Record<keyof ContactFormData, string>>;
+    type FormStatus = 'idle' | 'submitting' | 'success';
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // Initial Form State
+    // ══════════════════════════════════════════════════════════════════════════
+
+    const initialFormData: ContactFormData = {
+      name: '',
+      email: '',
+      phone: '',
+      companyName: '',
+      subject: '',
+      category: 'general',
+      priority: 'normal',
+      message: '',
+      preferredContactMethod: 'email',
+      requestFollowUp: true,
+    };
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // Validation Utility Functions
+    // ══════════════════════════════════════════════════════════════════════════
+
+    const validateEmail = (email: string): boolean => {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    const validatePhone = (phone: string): boolean => {
+      return phone.trim() === '' || /^[\d\s\-\(\)\+]+$/.test(phone);
+    };
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // Main App Component
+    // ══════════════════════════════════════════════════════════════════════════
+
+    const { useState } = React;
+
+    function App(): JSX.Element {
+      const [formData, setFormData] = useState<ContactFormData>(initialFormData);
+      const [errors, setErrors] = useState<FormErrors>({});
+      const [status, setStatus] = useState<FormStatus>('idle');
+      const [ticketId, setTicketId] = useState<string>('');
+
+      // ────────────────────────────────────────────────────────────────────────
+      // Form Validation
+      // ────────────────────────────────────────────────────────────────────────
+
+      const validateForm = (): boolean => {
+        const newErrors: FormErrors = {};
+
+        // Contact Information Validation
+        if (!formData.name.trim()) {
+          newErrors.name = 'Name is required';
+        } else if (formData.name.trim().length < 2) {
+          newErrors.name = 'Name must be at least 2 characters';
+        }
+
+        if (!formData.email.trim()) {
+          newErrors.email = 'Email is required';
+        } else if (!validateEmail(formData.email)) {
+          newErrors.email = 'Please enter a valid email address';
+        }
+
+        if (formData.preferredContactMethod === 'phone' && !formData.phone.trim()) {
+          newErrors.phone = 'Phone number is required when phone is the preferred contact method';
+        } else if (formData.phone && !validatePhone(formData.phone)) {
+          newErrors.phone = 'Please enter a valid phone number';
+        }
+
+        // Inquiry Details Validation
+        if (!formData.subject.trim()) {
+          newErrors.subject = 'Subject is required';
+        } else if (formData.subject.trim().length < 5) {
+          newErrors.subject = 'Subject must be at least 5 characters';
+        }
+
+        if (!formData.message.trim()) {
+          newErrors.message = 'Message is required';
+        } else if (formData.message.trim().length < 10) {
+          newErrors.message = 'Message must be at least 10 characters';
+        } else if (formData.message.trim().length > 2000) {
+          newErrors.message = 'Message cannot exceed 2000 characters';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+      };
+
+      // ────────────────────────────────────────────────────────────────────────
+      // Event Handlers
+      // ────────────────────────────────────────────────────────────────────────
+
+      const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+          return;
+        }
+
+        setStatus('submitting');
+
+        // Simulate API call
+        setTimeout((): void => {
+          const mockTicketId: string = `TKT-${Date.now()}`;
+          setTicketId(mockTicketId);
+          setStatus('success');
+          console.log('Support ticket submitted (TypeScript Enhanced):', { 
+            ...formData, 
+            ticketId: mockTicketId,
+            timestamp: new Date().toISOString()
+          });
+        }, 1500);
+      };
+
+      const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+      ): void => {
+        const { name, value, type } = e.target;
+
+        // Handle checkbox differently
+        if (type === 'checkbox') {
+          const checked = (e.target as HTMLInputElement).checked;
+          setFormData((prev: ContactFormData): ContactFormData => ({
+            ...prev,
+            [name]: checked,
+          }));
+        } else {
+          setFormData((prev: ContactFormData): ContactFormData => ({
+            ...prev,
+            [name]: value,
+          }));
+        }
+
+        // Clear error for this field when user makes changes
+        if (errors[name as keyof ContactFormData]) {
+          setErrors((prev: FormErrors): FormErrors => {
+            const updated = { ...prev };
+            delete updated[name as keyof ContactFormData];
+            return updated;
+          });
+        }
+      };
+
+      const handleReset = (): void => {
+        setFormData(initialFormData);
+        setErrors({});
+        setStatus('idle');
+        setTicketId('');
+      };
+
+      // ────────────────────────────────────────────────────────────────────────
+      // Helper Functions
+      // ────────────────────────────────────────────────────────────────────────
+
+      const getPriorityBadgeClass = (priority: ContactFormData['priority']): string => {
+        switch (priority) {
+          case 'low':
+            return 'priority-low';
+          case 'high':
+            return 'priority-high';
+          default:
+            return 'priority-normal';
+        }
+      };
+
+      // ────────────────────────────────────────────────────────────────────────
+      // Render
+      // ────────────────────────────────────────────────────────────────────────
+
+      return (
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+          <header className="header">
+            <nav className="nav">
+              <h1 className="logo">
+                Type-Safe Web App <span className="ts-badge">TS</span>
+              </h1>
+              <ul className="nav-links">
+                <li><a href="../index.html">← Gallery</a></li>
+                <li><a href="index.html">Order Parts</a></li>
+                <li><a href="contact.html" className="active">Contact Support</a></li>
+              </ul>
+            </nav>
+          </header>
+
+          <main className="main">
+            <div className="page-container">
+              <h1>Contact Customer Support</h1>
+              <p className="page-description">
+                Have a question or need assistance? Fill out the comprehensive form below and our support team will get back to you as soon as possible.
+              </p>
+
+              {status === 'success' && (
+                <div className="alert alert-success">
+                  <strong>✓ Support Ticket Created Successfully!</strong>
+                  Your ticket ID is: <strong>{ticketId}</strong>
+                  <span className={`priority-badge ${getPriorityBadgeClass(formData.priority)}`}>
+                    {formData.priority} priority
+                  </span>
+                  <br />
+                  We'll respond to your inquiry within 1-2 business days.
+                </div>
+              )}
+
+              <form className="contact-form" onSubmit={handleSubmit}>
+                {/* Contact Information Section */}
+                <div className="form-section">
+                  <h2>Contact Information</h2>
+
+                  <div className="form-group">
+                    <label htmlFor="name">
+                      Name <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className={errors.name ? 'error' : ''}
+                      disabled={status === 'submitting' || status === 'success'}
+                      placeholder="John Doe"
+                    />
+                    {errors.name && (
+                      <span className="error-message">{errors.name}</span>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="email">
+                      Email Address <span className="required">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className={errors.email ? 'error' : ''}
+                      disabled={status === 'submitting' || status === 'success'}
+                      placeholder="john.doe@company.com"
+                    />
+                    {errors.email && (
+                      <span className="error-message">{errors.email}</span>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone Number</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="(555) 123-4567"
+                      className={errors.phone ? 'error' : ''}
+                      disabled={status === 'submitting' || status === 'success'}
+                    />
+                    {errors.phone && (
+                      <span className="error-message">{errors.phone}</span>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="companyName">Company Name</label>
+                    <input
+                      type="text"
+                      id="companyName"
+                      name="companyName"
+                      value={formData.companyName}
+                      onChange={handleChange}
+                      disabled={status === 'submitting' || status === 'success'}
+                      placeholder="ACME Corporation"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="preferredContactMethod">Preferred Contact Method</label>
+                    <select
+                      id="preferredContactMethod"
+                      name="preferredContactMethod"
+                      value={formData.preferredContactMethod}
+                      onChange={handleChange}
+                      disabled={status === 'submitting' || status === 'success'}
+                    >
+                      <option value="email">Email</option>
+                      <option value="phone">Phone</option>
+                      <option value="either">Either is fine</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Inquiry Details Section */}
+                <div className="form-section">
+                  <h2>Inquiry Details</h2>
+
+                  <div className="form-group">
+                    <label htmlFor="category">Category</label>
+                    <select
+                      id="category"
+                      name="category"
+                      value={formData.category}
+                      onChange={handleChange}
+                      disabled={status === 'submitting' || status === 'success'}
+                    >
+                      <option value="general">General Inquiry</option>
+                      <option value="technical">Technical Support</option>
+                      <option value="billing">Billing Question</option>
+                      <option value="complaint">Complaint</option>
+                      <option value="feedback">Feedback</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="priority">Priority Level</label>
+                    <select
+                      id="priority"
+                      name="priority"
+                      value={formData.priority}
+                      onChange={handleChange}
+                      disabled={status === 'submitting' || status === 'success'}
+                    >
+                      <option value="low">Low - General question</option>
+                      <option value="normal">Normal - Standard inquiry</option>
+                      <option value="high">High - Urgent issue</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="subject">
+                      Subject <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      placeholder="Brief summary of your inquiry"
+                      className={errors.subject ? 'error' : ''}
+                      disabled={status === 'submitting' || status === 'success'}
+                    />
+                    {errors.subject && (
+                      <span className="error-message">{errors.subject}</span>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="message">
+                      Message <span className="required">*</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      rows={8}
+                      placeholder="Please provide details about your inquiry..."
+                      className={errors.message ? 'error' : ''}
+                      disabled={status === 'submitting' || status === 'success'}
+                    />
+                    {errors.message && (
+                      <span className="error-message">{errors.message}</span>
+                    )}
+                    <span className="form-hint">
+                      {formData.message.length} / 2000 characters
+                    </span>
+                  </div>
+
+                  <div className="form-group">
+                    <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                      <input
+                        type="checkbox"
+                        id="requestFollowUp"
+                        name="requestFollowUp"
+                        checked={formData.requestFollowUp}
+                        onChange={handleChange}
+                        disabled={status === 'submitting' || status === 'success'}
+                        style={{ marginRight: '0.5rem', width: 'auto' }}
+                      />
+                      <span>I would like to receive follow-up communications about this inquiry</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Form Actions */}
+                <div className="form-actions">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={handleReset}
+                    disabled={status === 'submitting'}
+                  >
+                    Reset Form
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={status === 'submitting' || status === 'success'}
+                  >
+                    {status === 'submitting' ? 'Submitting...' : 'Submit Inquiry'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </main>
+        </div>
+      );
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // Render to DOM
+    // ══════════════════════════════════════════════════════════════════════════
+
+    const root = ReactDOM.createRoot(document.getElementById('root')!);
+    root.render(<App />);
+  </script>
+</body>
+</html>
