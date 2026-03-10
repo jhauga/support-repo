@@ -4,7 +4,7 @@
 Support branch of repository for:
 <!-- Link to PR -->
 - [awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/953)
-- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/html-designer/index.html)
+- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/skill-html-designer/index.html)
 
 
 <!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
