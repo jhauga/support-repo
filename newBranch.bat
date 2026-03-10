@@ -71,7 +71,7 @@ exit /b 0
 
 :_showHelp
 echo newBranch.bat
-echo Usage: newBranch branch-name [repo-name] [_description]
+echo Usage: newBranch [branch-name] [repo-name] [_description]
 echo Options:
 echo   -h, --help, /?   Show this help and exit.
 echo:
