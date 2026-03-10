@@ -33,8 +33,9 @@ Design for all users, including those with disabilities.
 <button>Click Me</button>
 <a href="#section">Jump to Section</a>
 
-<!-- Custom interactive elements need tabindex and ARIA -->
-<div role="button" tabindex="0" aria-label="Custom button">
+<!-- Prefer native buttons; only use custom buttons if you also add JS keyboard handling -->
+<!-- If you must build a custom button, you MUST: handle Enter + Space, manage focus styles, and keep aria-pressed in sync -->
+<div role="button" tabindex="0" aria-pressed="false" aria-label="Custom button (requires JS keyboard handling)">
   Click
 </div>
 
@@ -506,10 +507,11 @@ Design for mobile devices first, then enhance for larger screens.
 ```html
 <!-- Form with error feedback -->
 <form>
-  <div class="form-group" aria-invalid="true">
+  <div class="form-group">
     <label for="username">Username</label>
     <input 
-      type="text" 
+      aria-invalid="true"
+      type="text"
       id="username" 
       name="username"
       aria-describedby="usernameError"
