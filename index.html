@@ -1,149 +1,337 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
- <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
- 
- <!--<script src="/js/scripts.js"></script>-->
- <link rel="icon" href="/favicon.png">
- 
- <style>
-  body {
-   margin-left: 50px;
-  }
-  div, nav, ul, li, a {
-   display: inline-block;
-   position: relative;
-   box-sizing: border-box;
-  }
-  div, nav, footer {
-   width: 100%;
-  }
-  nav {
-   background: black;   
-   height: 60px;
-  }
-  nav ul li a {
-   color: white;
-   padding: 10px;
-  }
-  main {
-   margin: 30px;
-  }
-  button {
-   background: darkslategray;
-   color: white;     
-   margin: 10px;
-   padding: 15px;
-   cursor: pointer;
-   border-radius: 10px;
-  }
-  button.showHide {
-   display: block; 
-   background: black;
-   color: white;
-  }
-  button.showHide.black {
-   display: block; 
-   padding: 2px;
-  }  
-  button.showHide.gray {
-   display: block; 
-   background: darkslategray;
-   padding: 2px;
-  }    
-  span.key {
-   color: #0073e6;
-  }  
-  span.str {
-   color: orange;
-  }
-  span.int {
-   color: green;
-  }
-  span.mthd {
-   color: purple;
-  }
-  em {
-   color: dimgray;
-  }  
-  footer {
-   bottom: 0px;   
-   background: black;
-   color: white;
-   margin-left: -50px; 
-   padding: 50px;
-  }
- </style>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="favicon.png" rel="icon">
+    <title>Aura Audio | Your Sound, Your Brand</title>
+    <style>
+        :root {
+            --primary-color: #0a0a0a;
+            --secondary-color: #ffffff;
+            --accent-color: #4f46e5;
+            --neutral-color: #f3f4f6;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-serif: 'Playfair Display', serif;
+        }
 
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@700&display=swap');
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            margin: 0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 0;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            font-family: var(--font-sans);
+            letter-spacing: -2px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 700;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #3730a3;
+        }
+
+        /* Header */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: absolute;
+            width: 90%;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .main-nav a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 700;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--neutral-color);
+            padding: 180px 0 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+        
+        .hero h1 {
+            color: var(--primary-color);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 500px;
+        }
+        
+        .hero-image-container {
+            position: absolute;
+            top: 50%;
+            right: -10%;
+            transform: translateY(-50%);
+            width: 50%;
+            opacity: 0.8;
+        }
+
+        .hero-image-container img {
+            width: 100%;
+            height: auto;
+            filter: grayscale(100%) contrast(120%);
+            mix-blend-mode: multiply;
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .feature-card {
+            background: var(--neutral-color);
+            padding: 40px;
+            border-radius: 8px;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .feature-card h3 {
+            font-family: var(--font-sans);
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+        
+        .how-it-works h2 {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+        }
+
+        .step-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--accent-color);
+            font-family: var(--font-serif);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+        }
+        
+        .cta-section .btn {
+            background-color: var(--secondary-color);
+            color: var(--accent-color);
+        }
+        
+        .cta-section .btn:hover {
+            background-color: var(--neutral-color);
+        }
+
+        /* Footer */
+        .main-footer {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .social-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+            .hero-image-container {
+                display: none;
+            }
+            .steps {
+                flex-direction: column;
+            }
+            .footer-content {
+                flex-direction: column;
+            }
+            .social-links {
+                margin-top: 20px;
+            }
+        }
+
+    </style>
+</head>
 <body>
 
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
-   </ul>
-  </nav>
- </div>
+    <header class="main-header">
+        <div class="logo">Aura Audio</div>
+        <nav class="main-nav">
+            <a href="#features">Features</a>
+            <a href="#process">Process</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
 
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
-  </div>
- </main>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Your Sound, Your Brand.</h1>
+                    <p>We engineer premium, white-label headphones. You launch them as your own. Welcome to the future of audio branding.</p>
+                    <a href="#contact" class="btn">Become a Partner</a>
+                </div>
+            </div>
+            <div class="hero-image-container">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop" alt="Stylized headphones">
+            </div>
+        </section>
 
+        <section id="features" class="container">
+            <div class="features">
+                <div class="feature-card">
+                    <h3>Studio-Grade Audio</h3>
+                    <p>Experience breathtaking clarity and deep, resonant bass. Our custom-tuned drivers deliver an immersive soundstage for the most discerning listeners.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Exquisite Materials</h3>
+                    <p>From aircraft-grade aluminum to plush, sustainable leathers, our headphones are built for comfort, durability, and a premium tactile experience.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Your Design DNA</h3>
+                    <p>Customize colors, finishes, and materials. Add your logo. We provide the canvas; you create the masterpiece that reflects your brand's unique identity.</p>
+                </div>
+            </div>
+        </section>
 
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
+        <section id="process" class="how-it-works">
+            <div class="container">
+                <h2>The Path to Your Product</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">01</div>
+                        <h3>Consult & Design</h3>
+                        <p>Collaborate with our team to define your product's aesthetic and technical specifications.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">02</div>
+                        <h3>Manufacture & Brand</h3>
+                        <p>We handle the precision engineering and manufacturing, applying your branding with meticulous care.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">03</div>
+                        <h3>Launch & Scale</h3>
+                        <p>Receive your market-ready product and launch to your audience. We're here to support your growth.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<h1 id="pageTitle"></h1>
+        <section id="contact" class="cta-section">
+            <div class="container">
+                <h2>Ready to Create Your Signature Sound?</h2>
+                <p>Let's talk about how Aura Audio can bring your brand's audio vision to life.</p>
+                <a href="mailto:partners@auraaudio.dev" class="btn">Start the Conversation</a>
+            </div>
+        </section>
+    </main>
 
-<p>CHANGE_TEXT</p>
-
-<pre id="a">
-CHANGE_TEXT
-</pre>
-
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
-
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2026 Aura Audio. All Rights Reserved.</p>
+            <div class="social-links">
+                <a href="#">Twitter</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Instagram</a>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>
