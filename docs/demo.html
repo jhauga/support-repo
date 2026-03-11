@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ts-filecomp — Interactive Demo</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="logo">ts-<span>filecomp</span></a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="index.html">Docs</a>
+    <a href="demo.html" class="active">Demo</a>
+  </nav>
+</header>
+
+<div class="container">
+
+  <section class="hero" style="padding: 30px 0 20px;">
+    <h1 style="font-size: 2rem;">Interactive <span>Demo</span></h1>
+    <p class="tagline">Simulate file comparisons in your browser. No files are read or written.</p>
+  </section>
+
+  <!-- File Panels -->
+  <form id="demoForm" autocomplete="off">
+    <div class="demo-grid">
+
+      <!-- File A -->
+      <div class="file-panel">
+        <h3>
+          File A
+          <span id="badgeA" class="source-badge local">Local</span>
+        </h3>
+
+        <div class="field">
+          <label for="nameA">File Name</label>
+          <input type="text" id="nameA" value="report.csv" required>
+        </div>
+
+        <div class="field">
+          <label for="sizeA">File Size (bytes)</label>
+          <input type="number" id="sizeA" value="2048" min="0" required>
+        </div>
+
+        <div class="field">
+          <label for="createdA">Date Created</label>
+          <input type="datetime-local" id="createdA" required>
+        </div>
+
+        <div class="field">
+          <label for="modifiedA">Date Modified</label>
+          <input type="datetime-local" id="modifiedA" required>
+        </div>
+
+        <div class="field">
+          <label>Source</label>
+          <div class="radio-group">
+            <label><input type="radio" name="sourceA" value="local" checked> Local</label>
+            <label><input type="radio" name="sourceA" value="remote"> Remote</label>
+          </div>
+        </div>
+
+        <div class="field url-field" id="urlFieldA">
+          <label for="urlA">Remote URL</label>
+          <input type="url" id="urlA" placeholder="https://cdn.example.com/report.csv">
+        </div>
+      </div>
+
+      <!-- File B -->
+      <div class="file-panel">
+        <h3>
+          File B
+          <span id="badgeB" class="source-badge local">Local</span>
+        </h3>
+
+        <div class="field">
+          <label for="nameB">File Name</label>
+          <input type="text" id="nameB" value="report.csv" required>
+        </div>
+
+        <div class="field">
+          <label for="sizeB">File Size (bytes)</label>
+          <input type="number" id="sizeB" value="3072" min="0" required>
+        </div>
+
+        <div class="field">
+          <label for="createdB">Date Created</label>
+          <input type="datetime-local" id="createdB" required>
+        </div>
+
+        <div class="field">
+          <label for="modifiedB">Date Modified</label>
+          <input type="datetime-local" id="modifiedB" required>
+        </div>
+
+        <div class="field">
+          <label>Source</label>
+          <div class="radio-group">
+            <label><input type="radio" name="sourceB" value="local" checked> Local</label>
+            <label><input type="radio" name="sourceB" value="remote"> Remote</label>
+          </div>
+        </div>
+
+        <div class="field url-field" id="urlFieldB">
+          <label for="urlB">Remote URL</label>
+          <input type="url" id="urlB" placeholder="https://cdn.example.com/report.csv">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <h3>Comparison Options</h3>
+
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="optSize" checked> Size</label>
+        <label><input type="checkbox" id="optCreated" checked> Created</label>
+        <label><input type="checkbox" id="optModified" checked> Modified</label>
+        <label><input type="checkbox" id="optAll" checked> All</label>
+      </div>
+
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="optDiffNames"> Allow Different Names <code>--different-names</code></label>
+      </div>
+
+      <div class="checkbox-group">
+        <label>Output Format:</label>
+        <label><input type="radio" name="outputFmt" value="human" checked> Human-readable</label>
+        <label><input type="radio" name="outputFmt" value="json"> JSON</label>
+      </div>
+
+      <div class="btn-row">
+        <button type="submit" class="btn btn-primary">Compare</button>
+        <button type="button" id="updateA" class="btn btn-update">Update File A</button>
+        <button type="button" id="updateB" class="btn btn-update">Update File B</button>
+        <button type="button" id="resetBtn" class="btn btn-secondary">Reset</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Results -->
+  <div class="results" id="results">
+    <h3>Results</h3>
+    <div id="resultsBody"></div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  ts-filecomp &mdash; Mock documentation for demonstration purposes only.
+</footer>
+
+<script src="js/demo.js"></script>
+</body>
+</html>

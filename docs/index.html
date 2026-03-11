@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ts-filecomp — TypeScript File Comparator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="logo">ts-<span>filecomp</span></a>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="index.html" class="active">Docs</a>
+    <a href="demo.html">Demo</a>
+  </nav>
+</header>
+
+<div class="container">
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>ts-<span>filecomp</span></h1>
+    <p class="tagline">Compare files by size, creation date, and modification date — locally or remotely — from your terminal or code.</p>
+    <div class="badges">
+      <span class="badge">TypeScript</span>
+      <span class="badge">CLI + API</span>
+      <span class="badge">Local &amp; Remote</span>
+      <span class="badge">Zero Dependencies</span>
+    </div>
+  </section>
+
+  <!-- Install -->
+  <section id="install">
+    <h2>Installation</h2>
+    <p>Install globally to use the CLI, or as a dev dependency for programmatic usage.</p>
+
+    <h3>Global Install</h3>
+    <div class="tabs" data-tab-group="global">
+      <div class="tab-bar">
+        <button class="active" data-tab="npm">npm</button>
+        <button data-tab="yarn">yarn</button>
+        <button data-tab="pnpm">pnpm</button>
+        <button data-tab="bun">bun</button>
+      </div>
+      <div class="tab-panel active" data-tab="npm">
+        <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>npm install -g ts-filecomp</code></pre>
+      </div>
+      <div class="tab-panel" data-tab="yarn">
+        <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>yarn global add ts-filecomp</code></pre>
+      </div>
+      <div class="tab-panel" data-tab="pnpm">
+        <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>pnpm add -g ts-filecomp</code></pre>
+      </div>
+      <div class="tab-panel" data-tab="bun">
+        <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>bun add -g ts-filecomp</code></pre>
+      </div>
+    </div>
+
+    <h3>Dev Dependency</h3>
+    <div class="tabs" data-tab-group="dev">
+      <div class="tab-bar">
+        <button class="active" data-tab="npm">npm</button>
+        <button data-tab="yarn">yarn</button>
+        <button data-tab="pnpm">pnpm</button>
+        <button data-tab="bun">bun</button>
+      </div>
+      <div class="tab-panel active" data-tab="npm">
+        <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>npm install --save-dev ts-filecomp</code></pre>
+      </div>
+      <div class="tab-panel" data-tab="yarn">
+        <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>yarn add --dev ts-filecomp</code></pre>
+      </div>
+      <div class="tab-panel" data-tab="pnpm">
+        <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>pnpm add -D ts-filecomp</code></pre>
+      </div>
+      <div class="tab-panel" data-tab="bun">
+        <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>bun add -d ts-filecomp</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLI Usage -->
+  <section id="cli">
+    <h2>CLI Usage</h2>
+    <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>ts-filecomp &lt;file1&gt; &lt;file2&gt; [options]</code></pre>
+
+    <h3>Examples</h3>
+    <pre><button class="copy-btn" aria-label="Copy">Copy</button><code># Compare two local files (same name required by default)
+ts-filecomp ./v1/report.csv ./v2/report.csv
+
+# Compare by size only
+ts-filecomp ./a/data.json ./b/data.json --size
+
+# Compare a local file with a remote file
+ts-filecomp ./data.json https://cdn.example.com/data.json --remote
+
+# Compare files with different names (requires flag)
+ts-filecomp ./old-report.csv ./new-report.csv --different-names
+
+# JSON output
+ts-filecomp ./a/config.yaml ./b/config.yaml --json
+
+# Verbose output
+ts-filecomp ./a/bundle.js ./b/bundle.js --verbose</code></pre>
+
+    <h3>Options</h3>
+    <table>
+      <thead>
+        <tr><th>Flag</th><th>Short</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>--size</code></td><td><code>-s</code></td><td>Compare file sizes only</td></tr>
+        <tr><td><code>--created</code></td><td><code>-c</code></td><td>Compare creation dates only</td></tr>
+        <tr><td><code>--modified</code></td><td><code>-m</code></td><td>Compare modification dates only</td></tr>
+        <tr><td><code>--all</code></td><td><code>-a</code></td><td>Compare all attributes (default)</td></tr>
+        <tr><td><code>--remote</code></td><td><code>-r</code></td><td>Treat one or both paths as remote URLs</td></tr>
+        <tr><td><code>--different-names</code></td><td><code>-d</code></td><td>Allow comparing files with different names</td></tr>
+        <tr><td><code>--json</code></td><td><code>-j</code></td><td>Output results as JSON</td></tr>
+        <tr><td><code>--verbose</code></td><td><code>-v</code></td><td>Verbose output with full metadata</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Same-Name Constraint -->
+  <section id="same-name">
+    <h2>Same-Name Constraint</h2>
+    <p>By default, <code>ts-filecomp</code> enforces that both files share the <strong>same file name</strong> (the basename, ignoring directory paths). This prevents accidental comparison of unrelated files.</p>
+    <pre><button class="copy-btn" aria-label="Copy">Copy</button><code># ✓ Same name — works
+ts-filecomp ./v1/report.csv ./v2/report.csv
+
+# ✗ Different names — blocked by default
+ts-filecomp ./old-report.csv ./new-report.csv
+# Error: Files have different names. Use --different-names to compare anyway.
+
+# ✓ Override with flag
+ts-filecomp ./old-report.csv ./new-report.csv --different-names</code></pre>
+  </section>
+
+  <!-- Programmatic API -->
+  <section id="api">
+    <h2>Programmatic API</h2>
+    <p>Import <code>ts-filecomp</code> in your TypeScript project for programmatic file comparisons.</p>
+
+    <h3>Basic Comparison</h3>
+    <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>import { compareFiles } from 'ts-filecomp';
+
+const result = await compareFiles('./v1/data.json', './v2/data.json');
+
+console.log(result.size);     // { file1: 2048, file2: 3072, diff: 1024, larger: 'file2' }
+console.log(result.created);  // { file1: '2025-01-15T...', file2: '2025-03-01T...', newer: 'file2' }
+console.log(result.modified); // { file1: '2025-06-10T...', file2: '2025-06-12T...', newer: 'file2' }</code></pre>
+
+    <h3>Remote Comparison</h3>
+    <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>import { compareFiles } from 'ts-filecomp';
+
+const result = await compareFiles(
+  './local/data.json',
+  'https://cdn.example.com/data.json',
+  { remote: true }
+);</code></pre>
+
+    <h3>Different Names</h3>
+    <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>import { compareFiles } from 'ts-filecomp';
+
+const result = await compareFiles(
+  './old-report.csv',
+  './new-report.csv',
+  { differentNames: true, compare: ['size', 'modified'] }
+);</code></pre>
+
+    <h3>Options Interface</h3>
+    <pre><button class="copy-btn" aria-label="Copy">Copy</button><code>interface CompareOptions {
+  compare?: ('size' | 'created' | 'modified')[];  // default: all three
+  remote?: boolean;                                 // default: false
+  differentNames?: boolean;                         // default: false
+  json?: boolean;                                   // default: false
+  verbose?: boolean;                                // default: false
+}
+
+interface CompareResult {
+  file1: string;
+  file2: string;
+  sameName: boolean;
+  size?: {
+    file1: number;
+    file2: number;
+    diff: number;
+    larger: 'file1' | 'file2' | 'equal';
+  };
+  created?: {
+    file1: string;
+    file2: string;
+    newer: 'file1' | 'file2' | 'equal';
+  };
+  modified?: {
+    file1: string;
+    file2: string;
+    newer: 'file1' | 'file2' | 'equal';
+  };
+}</code></pre>
+  </section>
+
+  <!-- Try It -->
+  <section id="demo-link">
+    <h2>Try It Out</h2>
+    <p>See the tool in action with our <a href="demo.html">interactive demo</a> — simulate file comparisons right in your browser.</p>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  ts-filecomp &mdash; Mock documentation for demonstration purposes only.
+</footer>
+
+<script src="js/docs.js"></script>
+</body>
+</html>
