@@ -3,7 +3,7 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [awesome-copilot pull request](https://github.com/) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/970)
 - `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/skill-typescript-package-manager/index.html)
 
 
@@ -13,8 +13,8 @@ Support branch for new skill typescript-package-manager.
 
 - **Agent**: Local
 - **Model**: Claude Opus 4.6
-- **Number of Prompts**: 1 prompt broken into 2 responses
-- **Post Edits**:
+- **Number of Prompts**: 1
+- **Post Edits**: None
 
 ### Prompt
 
@@ -38,5 +38,5 @@ Break this into two prompts.
 
 ### Results
 
-AS_NEEDED
+Good.
 <!-- formatter_2 -->
