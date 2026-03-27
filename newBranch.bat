@@ -73,7 +73,8 @@ exit /b 0
 echo newBranch.bat
 echo Usage: newBranch [branch-name] [repo-name] [_description]
 echo Options:
-echo   -h, --help, /?   Show this help and exit.
+echo   -h, --help, /?
+echo   repo-name - The name of the repo for PR, and used for templates
 echo:
 echo Templates:
 echo  awesome-copilot
@@ -82,5 +83,6 @@ echo:
 echo Examples:
 echo   newBranch feature/login
 echo   newBranch hotfix/api support-repo "Fix API error"
+echo   newBranch instruction-file.instruction awesome-copilot "Short description."
 endlocal
 exit /b 0
