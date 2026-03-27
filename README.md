@@ -3,7 +3,7 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [awesome-copilot pull request](https://github.com/) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [awesome-copilot pull request 1203](https://github.com/github/awesome-copilot/pull/1203)
 
 To see results, create a Codespace and run `python versal.py NewYork-NewYork.txt`.
 
