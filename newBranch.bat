@@ -53,6 +53,10 @@ if NOT "%_repoName%"=="" (
  sed -i "s;REPO_NAME;%_repoName%;g" README.md
  if EXIST "templates\%_repoName%.txt" (
   call makeTemplate.bat "%_repoName%"
+  if "%_repoName%"=="awesome-copilot" (
+   set "_toolName=%_branchName:*-=%%"
+   call set "_newWhat=%%_branchName:-!_toolName!=%%"
+  )
  ) else (
   call makeTemplate.bat "default"
  )
@@ -61,8 +65,12 @@ if NOT "%_repoName%"=="" (
 )
 
 :: Update README.md with description if provided
-if NOT "%_description%"=="" (
- sed -i "s/SHORT_DESCRIPTION/%_description%/g" README.md
+if "%_repoName%"=="awesome-copilot" (
+ sed -i "s/SHORT_DESCRIPTION/Support branch for new %_newWhat% %_toolName%./g" README.md
+) else (
+ if NOT "%_description%"=="" (
+  sed -i "s/SHORT_DESCRIPTION/%_description%/g" README.md
+ )
 )
 
 echo Branch %_branchName% created and configured successfully.
@@ -70,19 +78,21 @@ endlocal
 exit /b 0
 
 :_showHelp
-echo newBranch.bat
-echo Usage: newBranch [branch-name] [repo-name] [_description]
-echo Options:
-echo   -h, --help, /?
-echo   repo-name - The name of the repo for PR, and used for templates
-echo:
-echo Templates:
-echo  awesome-copilot
-echo  default
-echo:
-echo Examples:
-echo   newBranch feature/login
-echo   newBranch hotfix/api support-repo "Fix API error"
-echo   newBranch instruction-file.instruction awesome-copilot "Short description."
-endlocal
-exit /b 0
+ echo newBranch.bat
+ echo Usage: newBranch [branch-name] [repo-name] [_description]
+ echo Options:
+ echo   -h, --help, /?
+ echo   repo-name - The name of the repo for PR, and used for templates
+ echo               NOTE - 3rd parameter will not be used if "awesome-copilot" is repo-name
+ echo:
+ echo Templates:
+ echo  awesome-copilot
+ echo  default
+ echo:
+ echo Examples:
+ echo   newBranch feature/login
+ echo   newBranch hotfix/api support-repo "Fix API error"
+ echo   newBranch instruction-file.instruction awesome-copilot "Short description."
+ endlocal
+ exit /b 0
+goto:eof
