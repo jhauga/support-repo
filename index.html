@@ -2,148 +2,119 @@
 <html>
 <head>
  <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
- 
- <!--<script src="/js/scripts.js"></script>-->
+ <title>freecad-scripts</title>
  <link rel="icon" href="/favicon.png">
- 
  <style>
-  body {
-   margin-left: 50px;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, sans-serif; overflow: hidden; }
+  #canvas-container { width: 100vw; height: 100vh; position: relative; }
+  #info {
+   position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+   background: rgba(0,0,0,0.6); padding: 8px 18px; border-radius: 6px;
+   font-size: 14px; pointer-events: none; z-index: 10;
   }
-  div, nav, ul, li, a {
-   display: inline-block;
-   position: relative;
-   box-sizing: border-box;
-  }
-  div, nav, footer {
-   width: 100%;
-  }
-  nav {
-   background: black;   
-   height: 60px;
-  }
-  nav ul li a {
-   color: white;
-   padding: 10px;
-  }
-  main {
-   margin: 30px;
-  }
-  button {
-   background: darkslategray;
-   color: white;     
-   margin: 10px;
-   padding: 15px;
-   cursor: pointer;
-   border-radius: 10px;
-  }
-  button.showHide {
-   display: block; 
-   background: black;
-   color: white;
-  }
-  button.showHide.black {
-   display: block; 
-   padding: 2px;
-  }  
-  button.showHide.gray {
-   display: block; 
-   background: darkslategray;
-   padding: 2px;
-  }    
-  span.key {
-   color: #0073e6;
-  }  
-  span.str {
-   color: orange;
-  }
-  span.int {
-   color: green;
-  }
-  span.mthd {
-   color: purple;
-  }
-  em {
-   color: dimgray;
-  }  
-  footer {
-   bottom: 0px;   
-   background: black;
-   color: white;
-   margin-left: -50px; 
-   padding: 50px;
-  }
+  #info span { color: #64ffda; }
  </style>
 </head>
 
 <body>
-
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
-   </ul>
-  </nav>
+ <div id="canvas-container">
+  <div id="info"><span>phoneCase.stl</span> &mdash; drag to rotate, scroll to zoom</div>
  </div>
 
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
-  </div>
- </main>
-
-
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
-
-<h1 id="pageTitle"></h1>
-
-<p>CHANGE_TEXT</p>
-
-<pre id="a">
-CHANGE_TEXT
-</pre>
-
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
+ <script type="importmap">
+  {
+   "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+   }
   }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
+ </script>
+ <script type="module">
+  import * as THREE from 'three';
+  import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+  // Scene
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x1a1a2e);
 
+  // Camera
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
+  camera.position.set(0, -200, 150);
+
+  // Renderer
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+  // Controls
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+
+  // Lights
+  const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+  scene.add(ambient);
+
+  const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.0);
+  dirLight1.position.set(100, -100, 200);
+  scene.add(dirLight1);
+
+  const dirLight2 = new THREE.DirectionalLight(0x64ffda, 0.4);
+  dirLight2.position.set(-100, 100, 100);
+  scene.add(dirLight2);
+
+  // Grid helper
+  const grid = new THREE.GridHelper(300, 30, 0x444466, 0x333355);
+  grid.rotation.x = Math.PI / 2;
+  scene.add(grid);
+
+  // Load STL
+  const loader = new STLLoader();
+  loader.load('phoneCase.stl', (geometry) => {
+   geometry.computeVertexNormals();
+
+   const material = new THREE.MeshPhongMaterial({
+    color: 0x2196f3,
+    specular: 0x444444,
+    shininess: 40,
+   });
+   const mesh = new THREE.Mesh(geometry, material);
+
+   // Center geometry on origin
+   geometry.computeBoundingBox();
+   const center = new THREE.Vector3();
+   geometry.boundingBox.getCenter(center);
+   geometry.translate(-center.x, -center.y, -center.z);
+
+   scene.add(mesh);
+
+   // Adjust camera to fit model
+   const box = geometry.boundingBox;
+   const size = new THREE.Vector3();
+   box.getSize(size);
+   const maxDim = Math.max(size.x, size.y, size.z);
+   camera.position.set(0, -maxDim * 1.8, maxDim * 1.2);
+   controls.target.set(0, 0, 0);
+   controls.update();
+  });
+
+  // Resize
+  window.addEventListener('resize', () => {
+   camera.aspect = window.innerWidth / window.innerHeight;
+   camera.updateProjectionMatrix();
+   renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  // Animate
+  function animate() {
+   requestAnimationFrame(animate);
+   controls.update();
+   renderer.render(scene, camera);
+  }
+  animate();
+ </script>
 </body>
 </html>
