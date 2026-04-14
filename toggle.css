@@ -1,0 +1,71 @@
+#toggle-controls {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toggle-btn {
+  display: block;
+  padding: 8px 16px;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.toggle-btn:hover {
+  opacity: 0.85;
+}
+
+.css-toggle-btn {
+  background-color: #5f9ea0;
+}
+
+.dark-toggle-btn {
+  background-color: #000000;
+}
+
+.back-btn {
+  background-color: #0000ff;
+}
+
+/* Page navigation below buttons */
+#toggle-nav {
+  background-color: white;
+  color: black;
+  margin-top: 4px;
+  font-family: sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+.toggle-nav-heading {
+  font-weight: bold;
+  color: #333;
+  padding: 6px 0 2px;
+  white-space: nowrap;
+}
+
+.toggle-nav-link {
+  display: block;
+  color: #4040ff;
+  text-decoration: none;
+  padding: 1px 0;
+  white-space: nowrap;
+}
+
+.toggle-nav-link:hover {
+  text-decoration: underline;
+  color: #093754;
+}

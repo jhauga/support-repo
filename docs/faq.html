@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html>
+<head> <title>curl - Frequently Asked Questions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<link rel="stylesheet" type="text/css" href="../new-curl.css">
+<link rel="stylesheet" type="text/css" href="../toggle.css">
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="icon" href="/logo/curl-symbol.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="curl Releases" href="https://github.com/curl/curl/releases.atom">
+</head>
+<body>
+<div class="main">
+<div class="menu">
+<div class="curlsymbol">
+  <a href="/">
+    <img src="/logo/curl-white-symbol.svg">
+  </a>
+</div>
+<a href="/docs/" class="menuitem" title="Documentation Overview">Docs Overview</a>
+<div class="dropdown">
+  <a class="dropbtn" href="/docs/projdocs.html">Project</a>
+  <div class="dropdown-content">
+    <a href="/docs/bugs.html">Bug Report</a>
+    <a href="/docs/code-of-conduct.html">Code of conduct</a>
+    <a href="/docs/libs.html">Dependencies</a>
+    <a href="/donation.html">Donate</a>
+    <a href="/docs/faq.html">FAQ</a>
+    <a href="/docs/features.html">Features</a>
+    <a href="/docs/governance.html">Governance</a>
+    <a href="/docs/history.html">History</a>
+    <a href="/docs/install.html">Install</a>
+    <a href="/docs/knownbugs.html">Known Bugs</a>
+    <a href="/docs/knownrisks.html">Known Risks</a>
+    <a href="/logo/">Logo</a>
+    <a href="/docs/todo.html">TODO</a>
+    <a href="/about.html">website Info</a>
+  </div>
+</div>
+<div class="dropdown">
+  <a class="dropbtn" href="/docs/protdocs.html">Protocols</a>
+  <div class="dropdown-content">
+    <a href="/docs/caextract.html">CA Extract</a>
+    <a href="/docs/http-cookies.html">HTTP cookies</a>
+    <a href="/docs/http3.html">HTTP/3</a>
+    <a href="/docs/mqtt.html">MQTT</a>
+    <a href="/docs/sslcerts.html">SSL certs</a>
+    <a href="/docs/ssl-compared.html">SSL libs compared</a>
+    <a href="/docs/url-syntax.html">URL syntax</a>
+    <a href="/docs/websocket.html">WebSocket</a>
+  </div>
+</div>
+<div class="dropdown">
+  <a class="dropbtn" href="/docs/reldocs.html">Releases</a>
+  <div class="dropdown-content">
+    <a href="/ch/">Changelog</a>
+    <a href="/docs/security.html">curl CVEs</a>
+    <a href="/docs/releases.html">Release Table</a>
+    <a href="/docs/versions.html">Version Numbering</a>
+    <a href="/docs/verify.html">Verify</a>
+    <a href="/docs/vulnerabilities.html">Vulnerabilities</a>
+  </div>
+</div>
+<div class="dropdown">
+  <a class="dropbtn" href="/docs/tooldocs.html">Tool</a>
+  <div class="dropdown-content">
+    <a href="/docs/comparison-table.html">Comparison Table</a>
+    <a href="/docs/manpage.html">curl man page</a>
+    <a href="/docs/httpscripting.html">HTTP Scripting</a>
+    <a href="/docs/mk-ca-bundle.html">mk-ca-bundle</a>
+    <a href="/docs/tutorial.html">Tutorial</a>
+    <a href="optionswhen.html">When options were added</a>
+  </div>
+</div>
+<div class="dropdown">
+  <a class="dropbtn" href="/docs/whodocs.html">Who and Why</a>
+  <div class="dropdown-content">
+    <a href="/docs/companies.html">Companies</a>
+    <a href="/docs/copyright.html">Copyright</a>
+    <a href="/sponsors.html">Sponsors</a>
+    <a href="/docs/thanks.html">Thanks</a>
+    <a href="/docs/thename.html">The name</a>
+  </div>
+</div>
+</div>
+<div class="contents">
+<div class="where"><a href="/">curl</a> / <a href="/docs/">Docs</a> / <a href="/docs/projdocs.html">Project</a> / <b>FAQ</b></div>
+<div class="relatedbox">
+<b>Related:</b>
+<br><a href="manpage.html">curl man page</a>
+<br><a href="https://github.com/curl/curl/issues/new?title=FAQ&amp;labels=documentation&amp;template=docs.yml&amp;source=docs/faq.html" target="_new">File a bug about the FAQ</a>
+<br><a href="httpscripting.html">HTTP Scripting</a>
+<br><a href="tutorial.html">Tutorial</a>
+<br><a href="todo.html">TODO</a>
+</div>
+</ol>
+</ol>
+<h2><a href="#philosophy">Philosophy</a></h2><ol>
+<li> <a href="#what-is-curl">What is curl?</a>
+<li> <a href="#what-is-libcurl">What is libcurl?</a>
+<li> <a href="#what-is-curl-not">What is curl not?</a>
+<li> <a href="#when-would-you-make-curl-do--">When would you make curl do ... ?</a>
+<li> <a href="#who-makes-curl">Who makes curl?</a>
+<li> <a href="#what-do-you-get-for-making-curl">What do you get for making curl?</a>
+<li> <a href="#what-about-curl-from-curlcom">What about CURL from curl.com?</a>
+<li> <a href="#i-have-a-problem-who-do-i-mail">I have a problem, who do I mail?</a>
+<li> <a href="#where-do-i-buy-commercial-support-for-curl">Where do I buy commercial support for curl?</a>
+<li> <a href="#how-many-are-using-curl">How many are using curl?</a>
+<li> <a href="#why-do-you-not-update-ca-bundlecrt">Why do you not update ca-bundle.crt</a>
+<li> <a href="#i-have-a-problem-who-can-i-chat-with">I have a problem who, can I chat with?</a>
+<li> <a href="#curls-eccn-number">curl's ECCN number?</a>
+<li> <a href="#how-do-i-submit-my-patch">How do I submit my patch?</a>
+<li> <a href="#how-do-i-port-libcurl-to-my-os">How do I port libcurl to my OS?</a>
+</ol>
+<h2><a href="#install">Install</a></h2><ol>
+<li> <a href="#configure-fails-when-using-static-libraries">configure fails when using static libraries</a>
+<li> <a href="#does-curl-work-with-other-ssl-libraries">Does curl work with other SSL libraries?</a>
+<li> <a href="#how-do-i-upgrade-curlexe-in-windows">How do I upgrade curl.exe in Windows?</a>
+<li> <a href="#does-curl-support-socks-rfc-1928-">Does curl support SOCKS (RFC 1928) ?</a>
+</ol>
+<h2><a href="#usage">Usage</a></h2><ol>
+<li> <a href="#curl-1-ssl-is-disabled-https-not-supported">curl: (1) SSL is disabled, https: not supported</a>
+<li> <a href="#how-do-i-tell-curl-to-resume-a-transfer">How do I tell curl to resume a transfer?</a>
+<li> <a href="#why-does-my-posting-using--f-not-work">Why does my posting using -F not work?</a>
+<li> <a href="#how-do-i-tell-curl-to-run-custom-ftp-commands">How do I tell curl to run custom FTP commands?</a>
+<li> <a href="#how-can-i-disable-the-accept-header">How can I disable the Accept: header?</a>
+<li> <a href="#does-curl-support-asp-xml-xhtml-or-html-version-y">Does curl support ASP, XML, XHTML or HTML version Y?</a>
+<li> <a href="#can-i-use-curl-to-deleterename-a-file-through-ftp">Can I use curl to delete/rename a file through FTP?</a>
+<li> <a href="#how-do-i-tell-curl-to-follow-http-redirects">How do I tell curl to follow HTTP redirects?</a>
+<li> <a href="#how-do-i-use-curl-in-my-favorite-programming-language">How do I use curl in my favorite programming language?</a>
+<li> <a href="#what-about-soap-webdav-xml-rpc-or-similar-protocols-over-http">What about SOAP, WebDAV, XML-RPC or similar protocols over HTTP?</a>
+<li> <a href="#how-do-i-post-with-a-different-content-type">How do I POST with a different Content-Type?</a>
+<li> <a href="#why-do-ftp-specific-features-over-http-proxy-fail">Why do FTP-specific features over HTTP proxy fail?</a>
+<li> <a href="#why-do-my-singledouble-quotes-fail">Why do my single/double quotes fail?</a>
+<li> <a href="#does-curl-support-javascript-or-pac-automated-proxy-config">Does curl support JavaScript or PAC (automated proxy config)?</a>
+<li> <a href="#can-i-do-recursive-fetches-with-curl">Can I do recursive fetches with curl?</a>
+<li> <a href="#what-certificates-do-i-need-when-i-use-ssl">What certificates do I need when I use SSL?</a>
+<li> <a href="#how-do-i-list-the-root-directory-of-an-ftp-server">How do I list the root directory of an FTP server?</a>
+<li> <a href="#can-i-use-curl-to-send-a-postput-and-not-wait-for-a-response">Can I use curl to send a POST/PUT and not wait for a response?</a>
+<li> <a href="#how-do-i-get-http-from-a-host-using-a-specific-ip-address">How do I get HTTP from a host using a specific IP address?</a>
+<li> <a href="#how-to-sftp-from-my-users-home-directory">How to SFTP from my user's home directory?</a>
+<li> <a href="#protocol-xxx-not-supported-or-disabled-in-libcurl">Protocol xxx not supported or disabled in libcurl</a>
+<li> <a href="#curl--x-gives-me-http-problems">curl -X gives me HTTP problems</a>
+</ol>
+<h2><a href="#running">Running</a></h2><ol>
+<li> <a href="#why-do-i-get-problems-when-i-use--or--in-the-url">Why do I get problems when I use &amp; or % in the URL?</a>
+<li> <a href="#how-can-i-use----or--to-specify-multiple-urls">How can I use {, }, [ or ] to specify multiple URLs?</a>
+<li> <a href="#why-do-i-get-downloaded-data-even-though-the-webpage-does-not-exist">Why do I get downloaded data even though the webpage does not exist?</a>
+<li> <a href="#why-do-i-get-return-code-xxx-from-an-http-server">Why do I get return code XXX from an HTTP server?</a>
+<li> <a href="#can-you-tell-me-what-error-code-142-means">Can you tell me what error code 142 means?</a>
+<li> <a href="#how-do-i-keep-usernames-and-passwords-secret-in-curl-command-lines">How do I keep usernames and passwords secret in curl command lines?</a>
+<li> <a href="#i-found-a-bug">I found a bug</a>
+<li> <a href="#curl-cannot-authenticate-to-a-server-that-requires-ntlm">curl cannot authenticate to a server that requires NTLM?</a>
+<li> <a href="#my-http-request-using-head-put-or-delete-does-not-work">My HTTP request using HEAD, PUT or DELETE does not work</a>
+<li> <a href="#why-do-my-http-range-requests-return-the-full-document">Why do my HTTP range requests return the full document?</a>
+<li> <a href="#why-do-i-get-certificate-verify-failed-">Why do I get "certificate verify failed" ?</a>
+<li> <a href="#why-is-curl--r-on-windows-one-hour-off">Why is curl -R on Windows one hour off?</a>
+<li> <a href="#redirects-work-in-browser-but-not-with-curl">Redirects work in browser but not with curl</a>
+<li> <a href="#ftps-does-not-work">FTPS does not work</a>
+<li> <a href="#my-http-post-or-put-requests-are-slow">My HTTP POST or PUT requests are slow</a>
+<li> <a href="#non-functional-connect-timeouts">Non-functional connect timeouts</a>
+<li> <a href="#file-urls-containing-drive-letters-windows-netware">file:// URLs containing drive letters (Windows, NetWare)</a>
+<li> <a href="#why-does-not-curl-return-an-error-when-the-network-cable-is-unplugged">Why does not curl return an error when the network cable is unplugged?</a>
+<li> <a href="#curl-does-not-return-error-for-http-non-200-responses">curl does not return error for HTTP non-200 responses</a>
+</ol>
+<h2><a href="#libcurl-1">libcurl</a></h2><ol>
+<li> <a href="#is-libcurl-thread-safe">Is libcurl thread-safe?</a>
+<li> <a href="#how-can-i-receive-all-data-into-a-large-memory-chunk">How can I receive all data into a large memory chunk?</a>
+<li> <a href="#how-do-i-fetch-multiple-files-with-libcurl">How do I fetch multiple files with libcurl?</a>
+<li> <a href="#does-libcurl-do-winsock-initialization-on-win32-systems">Does libcurl do Winsock initialization on Win32 systems?</a>
+<li> <a href="#does-curlopt_writedata-and-curlopt_readdata-work-on-win32-">Does CURLOPT_WRITEDATA and CURLOPT_READDATA work on Win32 ?</a>
+<li> <a href="#what-about-keep-alive-or-persistent-connections">What about Keep-Alive or persistent connections?</a>
+<li> <a href="#link-errors-when-building-libcurl-on-windows">Link errors when building libcurl on Windows</a>
+<li> <a href="#libcurlsox-open-failed-no-such-file-or-directory">libcurl.so.X: open failed: No such file or directory</a>
+<li> <a href="#how-does-libcurl-resolve-hostnames">How does libcurl resolve hostnames?</a>
+<li> <a href="#the-threaded-resolver">The threaded resolver</a>
+<li> <a href="#how-do-i-prevent-libcurl-from-writing-the-response-to-stdout">How do I prevent libcurl from writing the response to stdout?</a>
+<li> <a href="#how-do-i-make-libcurl-not-receive-the-whole-http-response">How do I make libcurl not receive the whole HTTP response?</a>
+<li> <a href="#can-i-make-libcurl-fake-or-hide-my-real-ip-address">Can I make libcurl fake or hide my real IP address?</a>
+<li> <a href="#how-do-i-stop-an-ongoing-transfer">How do I stop an ongoing transfer?</a>
+<li> <a href="#using-c-non-static-functions-for-callbacks">Using C++ non-static functions for callbacks?</a>
+<li> <a href="#how-do-i-get-an-ftp-directory-listing">How do I get an FTP directory listing?</a>
+<li> <a href="#i-want-a-different-time-out">I want a different time-out</a>
+<li> <a href="#can-i-write-a-server-with-libcurl">Can I write a server with libcurl?</a>
+<li> <a href="#does-libcurl-use-threads">Does libcurl use threads?</a>
+</ol>
+<h2><a href="#license">License</a></h2><ol>
+<li> <a href="#i-have-a-gpl-program-can-i-use-the-libcurl-library">I have a GPL program, can I use the libcurl library?</a>
+<li> <a href="#i-have-a-closed-source-program-can-i-use-the-libcurl-library">I have a closed-source program, can I use the libcurl library?</a>
+<li> <a href="#i-have-a-bsd-licensed-program-can-i-use-the-libcurl-library">I have a BSD licensed program, can I use the libcurl library?</a>
+<li> <a href="#i-have-a-program-that-uses-lgpl-libraries-can-i-use-libcurl">I have a program that uses LGPL libraries, can I use libcurl?</a>
+<li> <a href="#can-i-modify-curllibcurl-for-my-program-and-keep-the-changes-secret">Can I modify curl/libcurl for my program and keep the changes secret?</a>
+<li> <a href="#can-you-please-change-the-curllibcurl-license">Can you please change the curl/libcurl license?</a>
+<li> <a href="#what-are-my-obligations-when-using-libcurl-in-my-commercial-apps">What are my obligations when using libcurl in my commercial apps?</a>
+<li> <a href="#what-license-does-curl-use-exactly">What license does curl use exactly?</a>
+</ol>
+<h2><a href="#phpcurl">PHP/CURL</a></h2><ol>
+<li> <a href="#what-is-phpcurl">What is PHP/CURL?</a>
+<li> <a href="#who-wrote-phpcurl">Who wrote PHP/CURL?</a>
+<li> <a href="#can-i-perform-multiple-requests-using-the-same-handle">Can I perform multiple requests using the same handle?</a>
+<li> <a href="#does-phpcurl-have-dependencies">Does PHP/CURL have dependencies?</a>
+</ol>
+<h2><a href="#development">Development</a></h2><ol>
+<li> <a href="#why-does-curl-use-c89">Why does curl use C89?</a>
+<li> <a href="#would-curl-be-rewritten">Would curl be rewritten?</a>
+</ol>
+<!--
+Copyright (C) Daniel Stenberg, <daniel@haxx.se>, et al.
+SPDX-License-Identifier: curl
+-->
+<h1 id="frequently-asked-questions">Frequently Asked Questions</h1>
+<h1 id="philosophy">Philosophy</h1>
+<h2 id="what-is-curl">What is curl?</h2>
+<p>curl is the name of the project. The name is a play on <em>Client for URLs</em>, originally with URL spelled in uppercase to make it obvious it deals with URLs. The fact it can also be read as <em>see URL</em> also helped, it works as an abbreviation for <em>Client URL Request Library</em> or why
+not the recursive version: <em>curl URL Request Library</em>.</p>
+<p>The curl project produces two products:</p>
+<h3 id="libcurl">libcurl</h3>
+<p>A client-side URL transfer library, supporting DICT, FILE, FTP, FTPS, GOPHER, GOPHERS, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, MQTT, MQTTS, POP3, POP3S, RTSP, SCP, SFTP, SMB, SMBS, SMTP, SMTPS, TELNET, TFTP, WS and WSS.</p>
+<p>libcurl supports HTTPS certificates, HTTP POST, HTTP PUT, FTP uploading, Kerberos, SPNEGO, HTTP form based upload, proxies, cookies, user+password authentication, file transfer resume, http proxy tunneling and more.</p>
+<p>libcurl is highly portable, it builds and works identically on numerous platforms. The <a href="https://curl.se/docs/install.html#Ports">internals document</a> lists more than 110 operating systems and 28 CPU architectures on which curl has been reported to run.</p>
+<p>libcurl is free, thread-safe, IPv6 compatible, feature rich, well supported and fast.</p>
+<h3 id="curl">curl</h3>
+<p>A command line tool for getting or sending data using URL syntax.</p>
+<p>Since curl uses libcurl, curl supports the same wide range of common Internet protocols that libcurl does.</p>
+<p>We pronounce curl with an initial k sound. It rhymes with words like girl and earl. <a href="https://media.merriam-webster.com/soundc11/c/curl0001.wav">This is a short WAV file</a> to help you.</p>
+<p>There are numerous sub-projects and related projects that also use the word curl in the project names in various combinations, but you should take notice that this FAQ is directed at the command-line tool named curl (and libcurl the library), and may therefore not be valid for other curl-related
+projects. (There is however a small section for the PHP/CURL in this FAQ.)</p>
+<h2 id="what-is-libcurl">What is libcurl?</h2>
+<p>libcurl is a reliable and portable library for doing Internet data transfers using one or more of its supported Internet protocols.</p>
+<p>You can use libcurl freely in your application, be it open source, commercial or closed-source.</p>
+<p>libcurl is most probably the most portable, most powerful and most often used C-based multi-platform file transfer library on this planet - be it open source or commercial.</p>
+<h2 id="what-is-curl-not">What is curl not?</h2>
+<p>curl is not a Wget clone. That is a common misconception. Never, during curl's development, have we intended curl to replace Wget or compete on its market. curl is targeted at single-shot file transfers.</p>
+<p>curl is not a website mirroring program. If you want to use curl to mirror something: fine, go ahead and write a script that wraps around curl or use libcurl to make it reality.</p>
+<p>curl is not an FTP site mirroring program. Sure, get and send FTP with curl but if you want systematic and sequential behavior you should write a script (or write a new program that interfaces libcurl) and do it.</p>
+<p>curl is not a PHP tool, even though it works perfectly well when used from or with PHP (when using the PHP/CURL module).</p>
+<p>curl is not a program for a single operating system. curl exists, compiles, builds and runs under a wide range of operating systems, including all modern Unixes (and a bunch of older ones too), Windows, Amiga, OS/2, macOS, QNX etc.</p>
+<h2 id="when-would-you-make-curl-do--">When would you make curl do ... ?</h2>
+<p>We love suggestions of what to change in order to make curl and libcurl better. We do however believe in a few rules when it comes to the future of curl:</p>
+<p>curl the command line tool is to remain a non-graphical command line tool. If you want GUIs or fancy scripting capabilities, you should look for another tool that uses libcurl.</p>
+<p>We do not add things to curl that other small and available tools already do well at the side. curl's output can be piped into another program or redirected to another file for the next program to interpret.</p>
+<p>We focus on protocol related issues and improvements. If you want to do more with the supported protocols than curl currently does, chances are good we would agree. If you want to add more protocols, we may agree.</p>
+<p>If you want someone else to do all the work while you wait for us to implement it for you, that is not a friendly attitude. We spend a considerable time already on maintaining and developing curl. In order to get more out of us, you should consider trading in some of your time and effort in
+return. Go to the <a href="https://github.com/curl/curl">GitHub repository</a>, fork the project, and create pull requests with your proposed changes.</p>
+<p>If you write the code, chances are better that it gets into curl faster.</p>
+<h2 id="who-makes-curl">Who makes curl?</h2>
+<p>curl and libcurl are not made by any single individual. Daniel Stenberg is project leader and main developer, but other persons' submissions are important and crucial. Anyone can contribute and post their changes and improvements and have them inserted in the main sources (of course on the
+condition that developers agree that the fixes are good).</p>
+<p>The full list of all contributors is found in the <a href="https://curl.se/docs/thanks.html">docs/THANKS</a> file.</p>
+<p>curl is developed by a community, with Daniel at the wheel.</p>
+<h2 id="what-do-you-get-for-making-curl">What do you get for making curl?</h2>
+<p>Project curl is entirely free and open. We do this voluntarily, mostly in our spare time. Companies may pay individual developers to work on curl. This is not controlled by nor supervised in any way by the curl project.</p>
+<p>We get help from companies. Haxx provides website, bandwidth, mailing lists etc, GitHub hosts <a href="https://github.com/curl/curl">the primary git repository</a> and other services like the bug tracker. Also again, some companies have sponsored certain parts of the development in the past and I
+hope some continue to do so in the future.</p>
+<p>If you want to <a href="https://curl.se/sponsors.html">support our project</a>, consider a donation or a banner-program or even better: by helping us with coding, documenting or testing etc.</p>
+<h2 id="what-about-curl-from-curlcom">What about CURL from curl.com?</h2>
+<p>During the summer of 2001, curl.com was busy advertising their client-side programming language for the web, named CURL.</p>
+<p>We are in no way associated with curl.com or their CURL programming language.</p>
+<p>Our project name curl has been in effective use since 1998. We were not the first computer related project to use the name <em>curl</em> and do not claim any rights to the name.</p>
+<p>We recognize that we are living in parallel with curl.com and wish them every success.</p>
+<h2 id="i-have-a-problem-who-do-i-mail">I have a problem, who do I mail?</h2>
+<p>Please do not mail any single individual unless you really need to. Keep curl-related questions on a suitable mailing list. All available mailing lists are listed <a href="https://curl.se/mail/">online</a>.</p>
+<p>Keeping curl-related questions and discussions on mailing lists allows others to join in and help, to share their ideas, to contribute their suggestions and to spread their wisdom. Keeping discussions on public mailing lists also allows for others to learn from this (both current and future users
+thanks to the web based archives of the mailing lists), thus saving us from having to repeat ourselves even more. Thanks for respecting this.</p>
+<p>If you have found or suspect a security problem in curl or libcurl, <a href="https://curl.se/dev/vuln-disclosure.html">submit all the details to us</a>. We keep the issue private while we investigate, confirm it, work and validate a fix and agree on a time schedule for publication etc. That way
+we produce a fix in a timely manner before the flaw is announced to the world, reducing the impact the problem risks having on existing users.</p>
+<p>Security issues can also be taking to the curl security team by emailing security at curl.se (closed list of receivers, mails are not disclosed).</p>
+<h2 id="where-do-i-buy-commercial-support-for-curl">Where do I buy commercial support for curl?</h2>
+<p>curl is fully open source. It means you can hire any skilled engineer to fix your curl-related problems.</p>
+<p>We list <a href="https://curl.se/support.html">available alternatives</a>.</p>
+<h2 id="how-many-are-using-curl">How many are using curl?</h2>
+<p>It is impossible to tell.</p>
+<p>We do not know how many users that knowingly have installed and use curl.</p>
+<p>We do not know how many users that use curl without knowing that they are in fact using it.</p>
+<p>We do not know how many users that downloaded or installed curl and then never use it.</p>
+<p>In 2025, we estimate that curl runs in roughly thirty billion installations world wide.</p>
+<h2 id="why-do-you-not-update-ca-bundlecrt">Why do you not update ca-bundle.crt</h2>
+<p>In the curl project we have decided not to attempt to keep this file updated (or even present) since deciding what to add to a ca cert bundle is an undertaking we have not been ready to accept, and the one we can get from Mozilla is perfectly fine so there is no need to duplicate that work.</p>
+<p>Today, with many services performed over HTTPS, every operating system should come with a default ca cert bundle that can be deemed somewhat trustworthy and that collection (if reasonably updated) should be deemed to be a lot better than a private curl version.</p>
+<p>If you want the most recent collection of ca certs that Mozilla Firefox uses, we recommend that using our online <a href="https://curl.se/docs/caextract.html">CA certificate service</a> setup for this purpose.</p>
+<h2 id="i-have-a-problem-who-can-i-chat-with">I have a problem who, can I chat with?</h2>
+<p>There is a bunch of friendly people hanging out in the #curl channel on the IRC network libera.chat. If you are polite and nice, chances are good that you can get -- or provide -- help instantly.</p>
+<h2 id="curls-eccn-number">curl's ECCN number?</h2>
+<p>The US government restricts exports of software that contains or uses cryptography. When doing so, the Export Control Classification Number (ECCN) is used to identify the level of export control etc.</p>
+<p>Apache Software Foundation has <a href="https://www.apache.org/dev/crypto.html">a good explanation of ECCN</a>.</p>
+<p>We believe curl's number might be ECCN 5D002, another possibility is 5D992. It seems necessary to write them (the authority that administers ECCN numbers), asking to confirm.</p>
+<p>Comprehensible explanations of the meaning of such numbers and how to obtain them (resp.) are <a href="https://www.bis.gov/licensing/classify-your-item">here</a> and <a href="https://www.bis.gov/licensing/classify-your-item/publicly-available-classification-information">here</a>.</p>
+<p>An incomprehensible description of the two numbers above is available on <a href="https://www.bis.doc.gov/index.php/documents/new-encryption/1653-ccl5-pt2-3">bis.doc.gov</a></p>
+<h2 id="how-do-i-submit-my-patch">How do I submit my patch?</h2>
+<p>We strongly encourage you to submit changes and improvements directly as <a href="https://github.com/curl/curl/pulls">pull requests on GitHub</a>.</p>
+<p>If you cannot or choose not to engage with GitHub, send your patch to the curl-library mailing list. We are many subscribers there and there are lots of people who can review patches, comment on them and receive them properly.</p>
+<p>Lots of more details are found in the <a href="https://curl.se/dev/contribute.html">contribute</a> and <a href="https://curl.se/dev/internals.html">internals</a> documents.</p>
+<h2 id="how-do-i-port-libcurl-to-my-os">How do I port libcurl to my OS?</h2>
+<p>Here's a rough step-by-step:</p>
+<ol type="1">
+<li>copy a suitable <code>lib/config-*.h</code> file as a start to <code>lib/config-[youros].h</code></li>
+<li>edit <code>lib/config-[youros].h</code> to match your OS and setup</li>
+<li>edit <code>lib/curl_setup.h</code> to include <code>config-[youros].h</code> when your OS is detected by the preprocessor, in the style others already exist</li>
+<li>compile <code>/*.c</code> and make them into a library</li>
+</ol>
+<h1 id="install">Install</h1>
+<h2 id="configure-fails-when-using-static-libraries">configure fails when using static libraries</h2>
+<p>You may find that configure fails to properly detect the entire dependency chain of libraries when you provide static versions of the libraries that configure checks for.</p>
+<p>The reason why static libraries is much harder to deal with is that for them we do not get any help but the script itself must know or check what more libraries that are needed (with shared libraries, that dependency chain is handled automatically). This is an error-prone process and one that
+also tends to vary over time depending on the release versions of the involved components and may also differ between operating systems.</p>
+<p>For that reason, configure does few attempts to actually figure this out and you are instead encouraged to set <code>LIBS</code> and <code>LDFLAGS</code> accordingly when you invoke configure, and point out the needed libraries and set the necessary flags yourself.</p>
+<h2 id="does-curl-work-with-other-ssl-libraries">Does curl work with other SSL libraries?</h2>
+<p>curl has been written to use a generic SSL function layer internally, and that SSL functionality can then be provided by one out of many different SSL backends.</p>
+<p>curl can be built to use one of the following SSL alternatives: OpenSSL, LibreSSL, BoringSSL, AWS-LC, GnuTLS, wolfSSL, mbedTLS, Schannel (native Windows) or Rustls. They all have their pros and cons, and we maintain <a href="https://curl.se/docs/ssl-compared.html">a TLS library
+comparison</a>.</p>
+<h2 id="how-do-i-upgrade-curlexe-in-windows">How do I upgrade curl.exe in Windows?</h2>
+<p>The curl tool that is shipped as an integrated component of Windows 10 and Windows 11 is managed by Microsoft. If you were to delete the file or replace it with a newer version downloaded from <a href="https://curl.se/windows/">the curl website</a>, then Windows Update ceases to work on your
+system.</p>
+<p>There is no way to independently force an upgrade of the curl.exe that is part of Windows other than through the regular Windows update process. There is also nothing the curl project itself can do about this, since this is managed and controlled entirely by Microsoft as owners of the operating
+system.</p>
+<p>You can always download and install <a href="https://curl.se/windows/">the latest version of curl for Windows</a> into a separate location.</p>
+<h2 id="does-curl-support-socks-rfc-1928-">Does curl support SOCKS (RFC 1928) ?</h2>
+<p>Yes, SOCKS 4 and 5 are supported.</p>
+<h1 id="usage">Usage</h1>
+<h2 id="curl-1-ssl-is-disabled-https-not-supported">curl: (1) SSL is disabled, https: not supported</h2>
+<p>If you get this output when trying to get anything from an HTTPS server, it means that the instance of curl/libcurl that you are using was built without support for this protocol.</p>
+<p>This could have happened if the configure script that was run at build time could not find all libs and include files curl requires for SSL to work. If the configure script fails to find them, curl is built without SSL support.</p>
+<p>To get HTTPS support into a curl that was previously built but that reports that HTTPS is not supported, you should dig through the document and logs and check out why the configure script does not find the SSL libs and/or include files.</p>
+<h2 id="how-do-i-tell-curl-to-resume-a-transfer">How do I tell curl to resume a transfer?</h2>
+<p>curl supports resumed transfers both ways on both FTP and HTTP. Try the <code>-C</code> option.</p>
+<h2 id="why-does-my-posting-using--f-not-work">Why does my posting using -F not work?</h2>
+<p>You cannot arbitrarily use <code>-F</code> or <code>-d</code>, the choice between <code>-F</code> or <code>-d</code> depends on the HTTP operation you need curl to do and what the web server that receives your post expects.</p>
+<p>If the form you are trying to submit uses the type 'multipart/form-data', then and only then you must use the -F type. In all the most common cases, you should use <code>-d</code> which then causes a posting with the type <code>application/x-www-form-urlencoded</code>.</p>
+<p>This is described in some detail in the <a href="https://curl.se/docs/tutorial.html">Manual</a> and <a href="https://curl.se/docs/httpscripting.html">The Art Of HTTP Scripting</a> documents, and if you do not understand it the first time, read it again before you post questions about this to the
+mailing list. Also, try reading through the mailing list archives for old postings and questions regarding this.</p>
+<h2 id="how-do-i-tell-curl-to-run-custom-ftp-commands">How do I tell curl to run custom FTP commands?</h2>
+<p>You can tell curl to perform optional commands both before and/or after a file transfer. Study the <code>-Q</code>/<code>--quote</code> option.</p>
+<p>Since curl is used for file transfers, you do not normally use curl to perform FTP commands without transferring anything. Therefore you must always specify a URL to transfer to/from even when doing custom FTP commands, or use <code>-I</code> which implies the <em>no body</em>" option sent to
+libcurl.</p>
+<h2 id="how-can-i-disable-the-accept-header">How can I disable the Accept: header?</h2>
+<p>You can change this and all internally generated headers by adding a replacement with the <code>-H</code>/<code>--header</code> option. By adding a header with empty contents you safely disable that one. Use <code>-H Accept:</code> to disable that specific header.</p>
+<h2 id="does-curl-support-asp-xml-xhtml-or-html-version-y">Does curl support ASP, XML, XHTML or HTML version Y?</h2>
+<p>To curl, all contents are alike. It does not matter how the page was generated. It may be ASP, PHP, Perl, shell-script, SSI or plain HTML files. There is no difference to curl and it does not even know what kind of language that generated the page.</p>
+<p>See also the separate question about JavaScript.</p>
+<h2 id="can-i-use-curl-to-deleterename-a-file-through-ftp">Can I use curl to delete/rename a file through FTP?</h2>
+<p>Yes. You specify custom FTP commands with <code>-Q</code>/<code>--quote</code>.</p>
+<p>One example would be to delete a file after you have downloaded it:</p>
+<pre><code>curl -O ftp://example.com/coolfile -Q &#39;-DELE coolfile&#39;</code></pre>
+<p>or rename a file after upload:</p>
+<pre><code>curl -T infile ftp://example.com/dir/ -Q &quot;-RNFR infile&quot; -Q &quot;-RNTO newname&quot;</code></pre>
+<h2 id="how-do-i-tell-curl-to-follow-http-redirects">How do I tell curl to follow HTTP redirects?</h2>
+<p>curl does not follow so-called redirects by default. The <code>Location:</code> header that informs the client about this is only interpreted if you are using the <code>-L</code>/<code>--location</code> option. As in:</p>
+<pre><code>curl -L https://example.com</code></pre>
+<p>Not all redirects are HTTP ones. See <a href="#redirects-work-in-browser-but-not-with-curl">Redirects work in browser but not with curl</a></p>
+<h2 id="how-do-i-use-curl-in-my-favorite-programming-language">How do I use curl in my favorite programming language?</h2>
+<p>Many programming languages have interfaces and bindings that allow you to use curl without having to use the command line tool. If you are fluent in such a language, you may prefer to use one of these interfaces instead.</p>
+<p>Find out more about which languages that support curl directly, and how to install and use them, in the <a href="https://curl.se/libcurl/">libcurl section of the curl website</a>.</p>
+<p>All the various bindings to libcurl are made by other projects and people, outside of the curl project. The curl project itself only produces libcurl with its plain C API. If you do not find anywhere else to ask you can ask about bindings on the curl-library list too, but be prepared that people
+on that list may not know anything about bindings.</p>
+<p>In December 2025 there were around <strong>60</strong> different <a href="https://curl.se/libcurl/bindings.html">interfaces available</a> for almost any language you can imagine.</p>
+<h2 id="what-about-soap-webdav-xml-rpc-or-similar-protocols-over-http">What about SOAP, WebDAV, XML-RPC or similar protocols over HTTP?</h2>
+<p>curl adheres to the HTTP spec, which means you can play with <em>any</em> protocol that is built on top of HTTP. Protocols such as SOAP, WebDAV and XML-RPC are all such ones. You can use <code>-X</code> to set custom requests and -H to set custom headers (or replace internally generated
+ones).</p>
+<p>Using libcurl of course also works and you would use the proper library options to do the same.</p>
+<h2 id="how-do-i-post-with-a-different-content-type">How do I POST with a different Content-Type?</h2>
+<p>You can always replace the internally generated headers with <code>-H</code>/<code>--header</code>. To make a simple HTTP POST with <code>text/xml</code> as content-type, do something like:</p>
+<pre><code>curl -d &quot;datatopost&quot; -H &quot;Content-Type: text/xml&quot; [URL]</code></pre>
+<h2 id="why-do-ftp-specific-features-over-http-proxy-fail">Why do FTP-specific features over HTTP proxy fail?</h2>
+<p>Because when you use an HTTP proxy, the protocol spoken on the network is HTTP, even if you specify an FTP URL. This effectively means that you normally cannot use FTP-specific features such as FTP upload and FTP quote etc.</p>
+<p>There is one exception to this rule, and that is if you can <em>tunnel through</em> the given HTTP proxy. Proxy tunneling is enabled with a special option (<code>-p</code>) and is generally not available as proxy admins usually disable tunneling to ports other than 443 (which is used for HTTPS
+access through proxies).</p>
+<h2 id="why-do-my-singledouble-quotes-fail">Why do my single/double quotes fail?</h2>
+<p>To specify a command line option that includes spaces, you might need to put the entire option within quotes. Like in:</p>
+<pre><code>curl -d &quot; with spaces &quot; example.com</code></pre>
+<p>or perhaps</p>
+<pre><code>curl -d &#39; with spaces &#39; example.com</code></pre>
+<p>Exactly what kind of quotes and how to do this is entirely up to the shell or command line interpreter that you are using. For most Unix shells, you can more or less pick either single (<code>'</code>) or double (<code>"</code>) quotes. For Windows/DOS command prompts you must use double (")
+quotes, and if the option string contains inner double quotes you can escape them with a backslash.</p>
+<p>For Windows PowerShell the arguments are not always passed on as expected because curl is not a PowerShell script. You may or may not be able to use single quotes. To escape inner double quotes seems to require a backslash-backtick escape sequence and the outer quotes as double quotes.</p>
+<p>Please study the documentation for your particular environment. Examples in the curl docs use a mix of both of these as shown above. You must adjust them to work in your environment.</p>
+<p>Remember that curl works and runs on more operating systems than most single individuals have ever tried.</p>
+<h2 id="does-curl-support-javascript-or-pac-automated-proxy-config">Does curl support JavaScript or PAC (automated proxy config)?</h2>
+<p>Many webpages do stuff using embedded JavaScript. curl and libcurl have no built-in support for that, so it is treated like any other contents.</p>
+<p><code>.pac</code> files are a Netscape invention and are sometimes used by organizations to allow them to differentiate which proxies to use. The <code>.pac</code> contents is a JavaScript program that gets invoked by the browser and that returns the name of the proxy to connect to. Since curl
+does not support JavaScript, it cannot support .pac proxy configuration either.</p>
+<p>Some workarounds usually suggested to overcome this JavaScript dependency:</p>
+<p>Depending on the JavaScript complexity, write up a script that translates it to another language and execute that.</p>
+<p>Read the JavaScript code and rewrite the same logic in another language.</p>
+<p>Implement a JavaScript interpreter, people have successfully used the Mozilla JavaScript engine in the past.</p>
+<p>Ask your admins to stop this, for a static proxy setup or similar.</p>
+<h2 id="can-i-do-recursive-fetches-with-curl">Can I do recursive fetches with curl?</h2>
+<p>No. curl itself has no code that performs recursive operations, such as those performed by Wget and similar tools.</p>
+<p>There exists curl using scripts with that functionality, and you can write programs based on libcurl to do it, but the command line tool curl itself cannot.</p>
+<h2 id="what-certificates-do-i-need-when-i-use-ssl">What certificates do I need when I use SSL?</h2>
+<p>There are three different kinds of certificates to keep track of when we talk about using SSL-based protocols (HTTPS or FTPS) using curl or libcurl.</p>
+<h3 id="client-certificate">Client certificate</h3>
+<p>The server you communicate with may require that you can provide this in order to prove that you actually are who you claim to be. If the server does not require this, you do not need a client certificate.</p>
+<p>A client certificate is always used together with a private key, and the private key has a passphrase that protects it.</p>
+<h3 id="server-certificate">Server certificate</h3>
+<p>The server you communicate with has a server certificate. You can and should verify this certificate to make sure that you are truly talking to the real server and not a server impersonating it.</p>
+<p>Servers often also provide an intermediate certificate. It acts as a bridge between a website's SSL certificate and a Certificate Authority's (CA) root certificate, creating a "chain of trust".</p>
+<h3 id="certificate-authority-certificate-ca-cert">Certificate Authority Certificate ("CA cert")</h3>
+<p>You often have several CA certs in a CA cert bundle that can be used to verify a server certificate that was signed by one of the authorities in the bundle. curl does not come with a CA cert bundle but most curl installs provide one. You can also override the default.</p>
+<p>Server certificate verification is enabled by default in curl and libcurl. Server certificates that are <em>self-signed</em> or otherwise signed by a CA that you do not have a CA cert for, cannot be verified. If the verification during a connect fails, you are refused access. You then might have
+to explicitly disable the verification to connect to the server.</p>
+<h2 id="how-do-i-list-the-root-directory-of-an-ftp-server">How do I list the root directory of an FTP server?</h2>
+<p>There are two ways. The way defined in the RFC is to use an encoded slash in the first path part. List the <code>/tmp</code> directory like this:</p>
+<pre><code>curl ftp://ftp.example.com/%2ftmp/</code></pre>
+<p>The second way is non-standard but more readable; start the path section of the URL with a slash:</p>
+<pre><code>curl ftp://ftp.example.com//tmp/</code></pre>
+<h2 id="can-i-use-curl-to-send-a-postput-and-not-wait-for-a-response">Can I use curl to send a POST/PUT and not wait for a response?</h2>
+<p>No.</p>
+<p>You can easily write your own program using libcurl to do such stunts.</p>
+<h2 id="how-do-i-get-http-from-a-host-using-a-specific-ip-address">How do I get HTTP from a host using a specific IP address?</h2>
+<p>For example, you may be trying out a website installation that is not yet in the DNS. Or you have a site using multiple IP addresses for a given host name and you want to address a specific one out of the set.</p>
+<p>Set a custom <code>Host:</code> header that identifies the server name you want to reach but use the target IP address in the URL:</p>
+<pre><code>curl --header &quot;Host: www.example.com&quot; https://somewhere.example/</code></pre>
+<p>You can also opt to add faked hostname entries to curl with the --resolve option. That has the added benefit to make things like redirects also work properly. The above operation would instead be done as:</p>
+<pre><code>curl --resolve www.example.com:80:127.0.0.1 https://www.example.com/</code></pre>
+<h2 id="how-to-sftp-from-my-users-home-directory">How to SFTP from my user's home directory?</h2>
+<p>Contrary to how FTP works, SFTP and SCP URLs specify the exact directory to work with. It means that if you do not specify that you want the user's home directory, you get the actual root directory.</p>
+<p>To specify a file in your user's home directory, you need to use the correct URL syntax which for SFTP might look similar to:</p>
+<pre><code>curl -O -u user:password sftp://example.com/~/file.txt</code></pre>
+<p>and for SCP it is a different protocol prefix:</p>
+<pre><code>curl -O -u user:password scp://example.com/~/file.txt</code></pre>
+<h2 id="protocol-xxx-not-supported-or-disabled-in-libcurl">Protocol xxx not supported or disabled in libcurl</h2>
+<p>When passing on a URL to curl to use, it may respond that the particular protocol is not supported or disabled. The particular way this error message is phrased is because curl does not make a distinction internally of whether a particular protocol is not supported (i.e. never got any code added
+that knows how to speak that protocol) or if it was explicitly disabled. curl can be built to only support a given set of protocols, and the rest would then be disabled or not supported.</p>
+<p>Note that this error also occurs if you pass a wrongly spelled protocol part as in <code>htpts://example.com</code> or as in the less evident case if you prefix the protocol part with a space as in <code>" https://example.com/"</code>.</p>
+<h2 id="curl--x-gives-me-http-problems">curl <code>-X</code> gives me HTTP problems</h2>
+<p>In normal circumstances, <code>-X</code> should hardly ever be used.</p>
+<p>By default you use curl without explicitly saying which request method to use when the URL identifies an HTTP transfer. If you pass in a URL like <code>curl https://example.com</code> it uses GET. If you use <code>-d</code> or <code>-F</code>, curl uses POST, <code>-I</code> causes a HEAD and
+<code>-T</code> makes it a PUT.</p>
+<p>If for whatever reason you are not happy with these default choices that curl does for you, you can override those request methods by specifying <code>-X [WHATEVER]</code>. This way you can for example send a DELETE by doing <code>curl -X DELETE [URL]</code>.</p>
+<p>It is thus pointless to do <code>curl -XGET [URL]</code> as GET would be used anyway. In the same vein it is pointless to do <code>curl -X POST -d data [URL</code>. You can make a fun and somewhat rare request that sends a request-body in a GET request with something like
+<code>curl -X GET -d data [URL]</code>.</p>
+<p>Note that <code>-X</code> does not actually change curl's behavior as it only modifies the actual string sent in the request, but that may of course trigger a different set of events.</p>
+<p>Accordingly, by using <code>-XPOST</code> on a command line that for example would follow a 303 redirect, you effectively prevent curl from behaving correctly. Be aware.</p>
+<h1 id="running">Running</h1>
+<h2 id="why-do-i-get-problems-when-i-use--or--in-the-url">Why do I get problems when I use &amp; or % in the URL?</h2>
+<p>In general Unix shells, the &amp; symbol is treated specially and when used, it runs the specified command in the background. To safely send the &amp; as a part of a URL, you should quote the entire URL by using single (<code>'</code>) or double (<code>"</code>) quotes around it. Similar problems
+can also occur on some shells with other characters, including ?*!$~(){}&lt;&gt;|;`. When in doubt, quote the URL.</p>
+<p>An example that would invoke a remote CGI that uses &amp;-symbols could be:</p>
+<pre><code>curl &#39;https://www.example.com/cgi-bin/query?text=yes&amp;q=curl&#39;</code></pre>
+<p>In Windows, the standard DOS shell treats the percent sign specially and you need to use TWO percent signs for each single one you want to use in the URL.</p>
+<p>If you want a literal percent sign to be part of the data you pass in a POST using <code>-d</code>/<code>--data</code> you must encode it as <code>%25</code> (which then also needs the percent sign doubled on Windows machines).</p>
+<h2 id="how-can-i-use----or--to-specify-multiple-urls">How can I use {, }, [ or ] to specify multiple URLs?</h2>
+<p>Because those letters have a special meaning to the shell, to be used in a URL specified to curl you must quote them.</p>
+<p>An example that downloads two URLs (sequentially) would be:</p>
+<pre><code>curl &#39;{curl,www}.haxx.se&#39;</code></pre>
+<p>To be able to use those characters as actual parts of the URL (without using them for the curl URL <em>globbing</em> system), use the <code>-g</code>/<code>--globoff</code> option:</p>
+<pre><code>curl -g &#39;www.example.com/weirdname[].html&#39;</code></pre>
+<h2 id="why-do-i-get-downloaded-data-even-though-the-webpage-does-not-exist">Why do I get downloaded data even though the webpage does not exist?</h2>
+<p>curl asks remote servers for the page you specify. If the page does not exist at the server, the HTTP protocol defines how the server should respond and that means that headers and a page get returned. That is how HTTP works.</p>
+<p>By using the <code>--fail</code> option you can tell curl explicitly to not get any data if the HTTP return code does not say success.</p>
+<h2 id="why-do-i-get-return-code-xxx-from-an-http-server">Why do I get return code XXX from an HTTP server?</h2>
+<p>RFC 2616 clearly explains the return codes. This is a short transcript. Go read the RFC for exact details:</p>
+<h3 id="400-bad-request">400 Bad Request</h3>
+<p>The request could not be understood by the server due to malformed syntax. The client SHOULD NOT repeat the request without modifications.</p>
+<h3 id="401-unauthorized">401 Unauthorized</h3>
+<p>The request requires user authentication.</p>
+<h3 id="403-forbidden">403 Forbidden</h3>
+<p>The server understood the request, but is refusing to fulfill it. Authorization cannot help and the request SHOULD NOT be repeated.</p>
+<h3 id="404-not-found">404 Not Found</h3>
+<p>The server has not found anything matching the Request-URI. No indication is given as to whether the condition is temporary or permanent.</p>
+<h3 id="405-method-not-allowed">405 Method Not Allowed</h3>
+<p>The method specified in the Request-Line is not allowed for the resource identified by the Request-URI. The response MUST include an <code>Allow:</code> header containing a list of valid methods for the requested resource.</p>
+<h3 id="301-moved-permanently">301 Moved Permanently</h3>
+<p>If you get this return code and an HTML output similar to this:</p>
+<pre><code>&lt;H1&gt;Moved Permanently&lt;/H1&gt; The document has moved &lt;A
+HREF=&quot;https://same_url_now_with_a_trailing_slash.example/&quot;&gt;here&lt;/A&gt;.</code></pre>
+<p>it might be because you requested a directory URL but without the trailing slash. Try the same operation again <em>with</em> the trailing URL, or use the <code>-L</code>/<code>--location</code> option to follow the redirection.</p>
+<h2 id="can-you-tell-me-what-error-code-142-means">Can you tell me what error code 142 means?</h2>
+<p>All curl error codes are described at the end of the man page, in the section called <strong>EXIT CODES</strong>.</p>
+<p>Error codes that are larger than the highest documented error code means that curl has exited due to a crash. This is a serious error, and we appreciate a detailed bug report from you that describes how we could go ahead and repeat this.</p>
+<h2 id="how-do-i-keep-usernames-and-passwords-secret-in-curl-command-lines">How do I keep usernames and passwords secret in curl command lines?</h2>
+<p>This problem has two sides:</p>
+<p>The first part is to avoid having clear-text passwords in the command line so that they do not appear in <em>ps</em> outputs and similar. That is easily avoided by using the <code>-K</code> option to tell curl to read parameters from a file or stdin to which you can pass the secret info. curl
+itself also attempts to hide the given password by blanking out the option - this does not work on all platforms.</p>
+<p>To keep the passwords in your account secret from the rest of the world is not a task that curl addresses. You could of course encrypt them somehow to at least hide them from being read by human eyes, but that is not what anyone would call security.</p>
+<p>Also note that regular HTTP (using Basic authentication) and FTP passwords are sent as cleartext across the network. All it takes for anyone to fetch them is to listen on the network. Eavesdropping is easy. Use more secure authentication methods (like Digest, Negotiate or even NTLM) or consider
+the SSL-based alternatives HTTPS and FTPS.</p>
+<h2 id="i-found-a-bug">I found a bug</h2>
+<p>It is not a bug if the behavior is documented. Read the docs first. Especially check out the KNOWN_BUGS file, it may be a documented bug.</p>
+<p>If it is a problem with a binary you have downloaded or a package for your particular platform, try contacting the person who built the package/archive you have.</p>
+<p>If there is a bug, read the BUGS document first. Then report it as described in there.</p>
+<h2 id="curl-cannot-authenticate-to-a-server-that-requires-ntlm">curl cannot authenticate to a server that requires NTLM?</h2>
+<p>NTLM support requires OpenSSL, GnuTLS, mbedTLS or Microsoft Windows libraries at build-time to provide this functionality.</p>
+<h2 id="my-http-request-using-head-put-or-delete-does-not-work">My HTTP request using HEAD, PUT or DELETE does not work</h2>
+<p>Many web servers allow or demand that the administrator configures the server properly for these requests to work on the web server.</p>
+<p>Some servers seem to support HEAD only on certain kinds of URLs.</p>
+<p>To fully grasp this, try the documentation for the particular server software you are trying to interact with. This is not anything curl can do anything about.</p>
+<h2 id="why-do-my-http-range-requests-return-the-full-document">Why do my HTTP range requests return the full document?</h2>
+<p>Because the range may not be supported by the server, or the server may choose to ignore it and return the full document anyway.</p>
+<h2 id="why-do-i-get-certificate-verify-failed-">Why do I get "certificate verify failed" ?</h2>
+<p>When you invoke curl and get an error 60 error back it means that curl could not verify that the server's certificate was good. curl verifies the certificate using the CA cert bundle and verifying for which names the certificate has been granted.</p>
+<p>To completely disable the certificate verification, use <code>-k</code>. This does however enable man-in-the-middle attacks and makes the transfer <strong>insecure</strong>. We strongly advise against doing this for more than experiments.</p>
+<p>If you get this failure with a CA cert bundle installed and used, the server's certificate might not be signed by one of the certificate authorities in your CA store. It might for example be self-signed. You then correct this problem by obtaining a valid CA cert for the server. Or again, decrease
+the security by disabling this check.</p>
+<p>At times, you find that the verification works in your favorite browser but fails in curl. When this happens, the reason is usually that the server sends an incomplete cert chain. The server is mandated to send all <em>intermediate certificates</em> but does not. This typically works with
+browsers anyway since they A) cache such certs and B) supports AIA which downloads such missing certificates on demand. This is a bad server configuration. A good way to figure out if this is the case it to use <a href="https://www.ssllabs.com/ssltest/">the SSL Labs server</a> test and check the
+certificate chain.</p>
+<p>Details are also in <a href="https://curl.se/docs/sslcerts.html">the SSL certificates document</a>.</p>
+<h2 id="why-is-curl--r-on-windows-one-hour-off">Why is curl -R on Windows one hour off?</h2>
+<p>Since curl 7.53.0 this issue should be fixed as long as curl was built with any modern compiler that allows for a 64-bit curl_off_t type. For older compilers or prior curl versions it may set a time that appears one hour off. This happens due to a flaw in how Windows stores and uses file
+modification times and it is not easily worked around. For more details <a href="https://web.archive.org/web/20050715084352/codeproject.com/datetime/dstbugs.asp">read this</a>.</p>
+<h2 id="redirects-work-in-browser-but-not-with-curl">Redirects work in browser but not with curl</h2>
+<p>curl supports HTTP redirects well (see a previous question above). Browsers generally support at least two other ways to perform redirects that curl does not:</p>
+<p>Meta tags. You can write an HTML tag that causes the browser to redirect to another given URL after a certain time.</p>
+<p>JavaScript. You can write a JavaScript program embedded in an HTML page that redirects the browser to another given URL.</p>
+<p>There is no way to make curl follow these redirects. You must either manually figure out what the page is set to do, or write a script that parses the results and fetches the new URL.</p>
+<h2 id="ftps-does-not-work">FTPS does not work</h2>
+<p>curl supports FTPS (sometimes known as FTP-SSL) both implicit and explicit mode.</p>
+<p>When a URL is used that starts with <code>FTPS://</code>, curl assumes implicit SSL on the control connection and therefore immediately connects and tries to speak SSL. <code>FTPS://</code> connections default to port 990.</p>
+<p>To use explicit FTPS, you use an <code>FTP://</code> URL and the <code>--ssl-reqd</code> option (or one of its related flavors). This is the most common method, and the one mandated by RFC 4217. This kind of connection then of course uses the standard FTP port 21 by default.</p>
+<h2 id="my-http-post-or-put-requests-are-slow">My HTTP POST or PUT requests are slow</h2>
+<p>libcurl makes all POST and PUT requests (except for requests with a small request body) use the <code>Expect: 100-continue</code> header. This header allows the server to deny the operation early so that libcurl can bail out before having to send any data. This is useful in authentication cases
+and others.</p>
+<p>Many servers do not implement the <code>Expect:</code> stuff properly and if the server does not respond (positively) within 1 second libcurl continues and sends off the data anyway.</p>
+<p>You can disable libcurl's use of the <code>Expect:</code> header the same way you disable any header, using <code>-H</code> / <code>CURLOPT_HTTPHEADER</code>, or by forcing it to use HTTP 1.0.</p>
+<h2 id="non-functional-connect-timeouts">Non-functional connect timeouts</h2>
+<p>In most Windows setups having a timeout longer than 21 seconds makes no difference, as it only sends 3 TCP SYN packets and no more. The second packet sent three seconds after the first and the third six seconds after the second. No more than three packets are sent, no matter how long the timeout
+is set.</p>
+<p>See Windows option <code>TcpMaxConnectRetransmissions</code> for more.</p>
+<p>Also, even on non-Windows systems there may run a firewall or anti-virus software or similar that accepts the connection but does not actually do anything else. This makes (lib)curl to consider the connection connected and thus the connect timeout does not trigger.</p>
+<h2 id="file-urls-containing-drive-letters-windows-netware">file:// URLs containing drive letters (Windows, NetWare)</h2>
+<p>When using curl to try to download a local file, one might use a URL in this format:</p>
+<pre><code>file://D:/blah.txt</code></pre>
+<p>you find that even if <code>D:\blah.txt</code> does exist, curl returns a 'file not found' error.</p>
+<p>According to <a href="https://datatracker.ietf.org/doc/html/rfc1738">RFC 1738</a>, <code>file://</code> URLs must contain a host component, but it is ignored by most implementations. In the above example, <code>D:</code> is treated as the host component, and is taken away. Thus, curl tries to
+open <code>/blah.txt</code>. If your system is installed to drive C:, that resolves to <code>C:\blah.txt</code>, and if that does not exist you get the not found error.</p>
+<p>To fix this problem, use <code>file://</code> URLs with <em>three</em> leading slashes:</p>
+<pre><code>file:///D:/blah.txt</code></pre>
+<p>Alternatively, if it makes more sense, specify <code>localhost</code> as the host component:</p>
+<pre><code>file://localhost/D:/blah.txt</code></pre>
+<p>In either case, curl should now be looking for the correct file.</p>
+<h2 id="why-does-not-curl-return-an-error-when-the-network-cable-is-unplugged">Why does not curl return an error when the network cable is unplugged?</h2>
+<p>Unplugging a cable is not an error situation. The TCP/IP protocol stack was designed to be fault tolerant, so even though there may be a physical break somewhere the connection should not be affected, but possibly delayed. Eventually, the physical break gets fixed or the data re-routed around the
+physical problem through another path.</p>
+<p>In such cases, the TCP/IP stack is responsible for detecting when the network connection is irrevocably lost. Since with some protocols it is perfectly legal for the client to wait indefinitely for data, the stack may never report a problem, and even when it does, it can take up to 20 minutes for
+it to detect an issue. The curl option <code>--keepalive-time</code> enables keep-alive support in the TCP/IP stack which makes it periodically probe the connection to make sure it is still available to send data. That should reliably detect any TCP/IP network failure.</p>
+<p>TCP keep alive does not detect the network going down before the TCP/IP connection is established (e.g. during a DNS lookup) or using protocols that do not use TCP. To handle those situations, curl offers a number of timeouts on its own. <code>--speed-limit</code>/<code>--speed-time</code> aborts
+if the data transfer rate falls too low, and <code>--connect-timeout</code> and <code>--max-time</code> can be used to put an overall timeout on the connection phase or the entire transfer.</p>
+<p>A libcurl-using application running in a known physical environment (e.g. an embedded device with only a single network connection) may want to act immediately if its lone network connection goes down. That can be achieved by having the application monitor the network connection on its own using
+an OS-specific mechanism, then signaling libcurl to abort.</p>
+<h2 id="curl-does-not-return-error-for-http-non-200-responses">curl does not return error for HTTP non-200 responses</h2>
+<p>Correct. Unless you use <code>-f</code> (<code>--fail</code>) or <code>--fail-with-body</code>.</p>
+<p>When doing HTTP transfers, curl performs exactly what you are asking it to do and if successful it does not return an error. You can use curl to test your web server's "file not found" page (that gets 404 back), you can use it to check your authentication protected webpages (that gets a 401 back)
+and so on.</p>
+<p>The specific HTTP response code does not constitute a problem or error for curl. It sends and delivers HTTP as you asked and if that worked, everything is fine and dandy. The response code is generally providing more higher level error information that curl does not care about. The error was not
+in the HTTP transfer.</p>
+<p>If you want your command line to treat error codes in the 400 and up range as errors and thus return a non-zero value and possibly show an error message, curl has a dedicated option for that: <code>-f</code> (<code>CURLOPT_FAILONERROR</code> in libcurl speak).</p>
+<p>You can also use the <code>-w</code> option and the variable <code>%{response_code}</code> to extract the exact response code that was returned in the response.</p>
+<h1 id="libcurl-1">libcurl</h1>
+<h2 id="is-libcurl-thread-safe">Is libcurl thread-safe?</h2>
+<p>Yes.</p>
+<p>We have written the libcurl code specifically adjusted for multi-threaded programs. libcurl uses thread-safe functions instead of non-safe ones if your system has such. Note that you must never share the same handle in multiple threads.</p>
+<p>There may be some exceptions to thread safety depending on how libcurl was built. Please review <a href="https://curl.se/libcurl/c/threadsafe.html">the guidelines for thread safety</a> to learn more.</p>
+<h2 id="how-can-i-receive-all-data-into-a-large-memory-chunk">How can I receive all data into a large memory chunk?</h2>
+<p>(See the <a href="https://curl.se/libcurl/c/getinmemory.html">get in memory</a> example.)</p>
+<p>You are in full control of the callback function that gets called every time there is data received from the remote server. You can make that callback do whatever you want. You do not have to write the received data to a file.</p>
+<p>One solution to this problem could be to have a pointer to a struct that you pass to the callback function. You set the pointer using the CURLOPT_WRITEDATA option. Then that pointer is passed to the callback instead of a FILE * to a file:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* store data this struct */lib </span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> MemoryStruct <span class="op">{</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">char</span> <span class="op">*</span>memory<span class="op">;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">size_t</span> size<span class="op">;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">/* imaginary callback function */ </span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="dt">size_t</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>WriteMemoryCallback<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>ptr<span class="op">,</span> <span class="dt">size_t</span> size<span class="op">,</span> <span class="dt">size_t</span> nmemb<span class="op">,</span> <span class="dt">void</span> <span class="op">*</span>data<span class="op">)</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">size_t</span> realsize <span class="op">=</span> size <span class="op">*</span> nmemb<span class="op">;</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">struct</span> MemoryStruct <span class="op">*</span>mem <span class="op">=</span> <span class="op">(</span><span class="kw">struct</span> MemoryStruct <span class="op">*)</span>data<span class="op">;</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  mem<span class="op">-&gt;</span>memory <span class="op">=</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*)</span>realloc<span class="op">(</span>mem<span class="op">-&gt;</span>memory<span class="op">,</span> mem<span class="op">-&gt;</span>size <span class="op">+</span> realsize <span class="op">+</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span><span class="op">(</span>mem<span class="op">-&gt;</span>memory<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    memcpy<span class="op">(&amp;(</span>mem<span class="op">-&gt;</span>memory<span class="op">[</span>mem<span class="op">-&gt;</span>size<span class="op">]),</span> ptr<span class="op">,</span> realsize<span class="op">);</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    mem<span class="op">-&gt;</span>size <span class="op">+=</span> realsize<span class="op">;</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    mem<span class="op">-&gt;</span>memory<span class="op">[</span>mem<span class="op">-&gt;</span>size<span class="op">]</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> realsize<span class="op">;</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h2 id="how-do-i-fetch-multiple-files-with-libcurl">How do I fetch multiple files with libcurl?</h2>
+<p>libcurl has excellent support for transferring multiple files. You should repeatedly set new URLs with <code>curl_easy_setopt()</code> and then transfer it with <code>curl_easy_perform()</code>. The handle you get from curl_easy_init() is not only reusable, but you are even encouraged to reuse it
+if you can, as that enables libcurl to use persistent connections.</p>
+<h2 id="does-libcurl-do-winsock-initialization-on-win32-systems">Does libcurl do Winsock initialization on Win32 systems?</h2>
+<p>Yes, if told to in the <code>curl_global_init()</code> call.</p>
+<h2 id="does-curlopt_writedata-and-curlopt_readdata-work-on-win32-">Does CURLOPT_WRITEDATA and CURLOPT_READDATA work on Win32 ?</h2>
+<p>Yes, but you cannot open a FILE * and pass the pointer to a DLL and have that DLL use the FILE * (as the DLL and the client application cannot access each others' variable memory areas). If you set <code>CURLOPT_WRITEDATA</code> you must also use <code>CURLOPT_WRITEFUNCTION</code> as well to set
+a function that writes the file, even if all it does is write the data to the specified FILE *. Similarly, if you use <code>CURLOPT_READDATA</code> you must also specify <code>CURLOPT_READFUNCTION</code>.</p>
+<h2 id="what-about-keep-alive-or-persistent-connections">What about Keep-Alive or persistent connections?</h2>
+<p>curl and libcurl have excellent support for persistent connections when transferring several files from the same server. curl attempts to reuse connections for all URLs specified on the same command line/config file, and libcurl reuses connections for all transfers that are made using the same
+libcurl handle.</p>
+<p>When you use the easy interface the connection cache is kept within the easy handle. If you instead use the multi interface, the connection cache is kept within the multi handle and shared among all the easy handles that are used within the same multi handle.</p>
+<h2 id="link-errors-when-building-libcurl-on-windows">Link errors when building libcurl on Windows</h2>
+<p>You need to make sure that your project, and all the libraries (both static and dynamic) that it links against, are compiled/linked against the same run time library.</p>
+<p>This is determined by the <code>/MD</code>, <code>/ML</code>, <code>/MT</code> (and their corresponding <code>/M?d</code>) options to the command line compiler. <code>/MD</code> (linking against <code>MSVCRT.dll</code>) seems to be the most commonly used option.</p>
+<p>When building an application that uses the static libcurl library, you must add <code>-DCURL_STATICLIB</code> to your <code>CFLAGS</code>. Otherwise the linker looks for dynamic import symbols. If you are using Visual Studio, you need to instead add <code>CURL_STATICLIB</code> in the
+"Preprocessor Definitions" section.</p>
+<p>If you get a linker error like <code>unknown symbol __imp__curl_easy_init ...</code> you have linked against the wrong (static) library. If you want to use the libcurl.dll and import lib, you do not need any extra <code>CFLAGS</code>, but use one of the import libraries below. These are the
+libraries produced by the various lib/Makefile.* files:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Target</th>
+<th>static lib</th>
+<th>import lib for DLL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MinGW</td>
+<td><code>libcurl.a</code></td>
+<td><code>libcurldll.a</code></td>
+</tr>
+<tr class="even">
+<td>MSVC (release)</td>
+<td><code>libcurl.lib</code></td>
+<td><code>libcurl_imp.lib</code></td>
+</tr>
+<tr class="odd">
+<td>MSVC (debug)</td>
+<td><code>libcurld.lib</code></td>
+<td><code>libcurld_imp.lib</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="libcurlsox-open-failed-no-such-file-or-directory">libcurl.so.X: open failed: No such file or directory</h2>
+<p>This is an error message you might get when you try to run a program linked with a shared version of libcurl and your runtime linker (<code>ld.so</code>) could not find the shared library named <code>libcurl.so.X</code>. (Where X is the number of the current libcurl ABI, typically 3 or 4).</p>
+<p>You need to make sure that <code>ld.so</code> finds <code>libcurl.so.X</code>. You can do that multiple ways, and it differs somewhat between different operating systems. They are usually:</p>
+<ul>
+<li>Add an option to the linker command line that specify the hard-coded path the runtime linker should check for the lib (usually <code>-R</code>)</li>
+<li>Set an environment variable (<code>LD_LIBRARY_PATH</code> for example) where <code>ld.so</code> should check for libs</li>
+<li>Adjust the system's config to check for libs in the directory where you have put the library (like Linux's <code>/etc/ld.so.conf</code>)</li>
+</ul>
+<p><code>man ld.so</code> and <code>man ld</code> tells you more details</p>
+<h2 id="how-does-libcurl-resolve-hostnames">How does libcurl resolve hostnames?</h2>
+<p>libcurl supports a large number of name resolve functions. One of them is picked at build-time and used unconditionally. Thus, if you want to change name resolver function you must rebuild libcurl and tell it to use a different function.</p>
+<h3 id="the-non-ipv6-resolver">The non-IPv6 resolver</h3>
+<p>The non-IPv6 resolver that can use one of four different hostname resolve calls depending on what your system supports:</p>
+<ol type="1">
+<li>gethostbyname()</li>
+<li>gethostbyname_r() with 3 arguments</li>
+<li>gethostbyname_r() with 5 arguments</li>
+<li>gethostbyname_r() with 6 arguments</li>
+</ol>
+<h3 id="the-ipv6-resolver">The IPv6 resolver</h3>
+<p>Uses getaddrinfo()</p>
+<h3 id="the-cares-resolver">The cares resolver</h3>
+<p>The c-ares based name resolver that uses the c-ares library for resolves. Using this offers asynchronous name resolves.</p>
+<h2 id="the-threaded-resolver">The threaded resolver</h2>
+<p>It uses the IPv6 or the non-IPv6 resolver solution in a temporary thread.</p>
+<h2 id="how-do-i-prevent-libcurl-from-writing-the-response-to-stdout">How do I prevent libcurl from writing the response to stdout?</h2>
+<p>libcurl provides a default built-in write function that writes received data to stdout. Set the <code>CURLOPT_WRITEFUNCTION</code> to receive the data, or possibly set <code>CURLOPT_WRITEDATA</code> to a different FILE * handle.</p>
+<h2 id="how-do-i-make-libcurl-not-receive-the-whole-http-response">How do I make libcurl not receive the whole HTTP response?</h2>
+<p>You make the write callback (or progress callback) return an error and libcurl then aborts the transfer.</p>
+<h2 id="can-i-make-libcurl-fake-or-hide-my-real-ip-address">Can I make libcurl fake or hide my real IP address?</h2>
+<p>No. libcurl operates on a higher level. Besides, faking IP address would imply sending IP packets with a made-up source address, and then you normally get a problem with receiving the packet sent back as they would then not be routed to you.</p>
+<p>If you use a proxy to access remote sites, the sites do not see your local IP address but instead the address of the proxy.</p>
+<p>Also note that on many networks NATs or other IP-munging techniques are used that makes you see and use a different IP address locally than what the remote server is seeing you coming from. You may also consider using <a href="https://www.torproject.org/">Tor</a>.</p>
+<h2 id="how-do-i-stop-an-ongoing-transfer">How do I stop an ongoing transfer?</h2>
+<p>With the easy interface you make sure to return the correct error code from one of the callbacks, but none of them are instant. There is no function you can call from another thread or similar that stops it immediately. Instead, you need to make sure that one of the callbacks you use returns an
+appropriate value that stops the transfer. Suitable callbacks that you can do this with include the progress callback, the read callback and the write callback.</p>
+<p>If you are using the multi interface, you can also stop a transfer by removing the particular easy handle from the multi stack at any moment you think the transfer is done or when you wish to abort the transfer.</p>
+<h2 id="using-c-non-static-functions-for-callbacks">Using C++ non-static functions for callbacks?</h2>
+<p>libcurl is a C library, it does not know anything about C++ member functions.</p>
+<p>You can overcome this limitation with relative ease using a static member function that is passed a pointer to the class:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c++"><code class="sourceCode cpp"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">// f is the pointer to your object.</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="at">static</span> <span class="dt">size_t</span> YourClass<span class="op">::</span>func<span class="op">(</span><span class="dt">char</span> <span class="op">*</span>buffer<span class="op">,</span> <span class="dt">size_t</span> sz<span class="op">,</span> <span class="dt">size_t</span> n<span class="op">,</span> <span class="dt">void</span> <span class="op">*</span>f<span class="op">)</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Call non-static member function.</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">static_cast</span><span class="op">&lt;</span>YourClass<span class="op">*&gt;(</span>f<span class="op">)-&gt;</span>nonStaticFunction<span class="op">();</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co">// This is how you pass pointer to the static function:</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>curl_easy_setopt<span class="op">(</span>hcurl<span class="op">,</span> CURLOPT_WRITEFUNCTION<span class="op">,</span> YourClass<span class="op">::</span>func<span class="op">);</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>curl_easy_setopt<span class="op">(</span>hcurl<span class="op">,</span> CURLOPT_WRITEDATA<span class="op">,</span> <span class="kw">this</span><span class="op">);</span></span></code></pre></div>
+<h2 id="how-do-i-get-an-ftp-directory-listing">How do I get an FTP directory listing?</h2>
+<p>If you end the FTP URL you request with a slash, libcurl provides you with a directory listing of that given directory. You can also set <code>CURLOPT_CUSTOMREQUEST</code> to alter what exact listing command libcurl would use to list the files.</p>
+<p>The follow-up question tends to be how is a program supposed to parse the directory listing. How does it know what's a file and what's a directory and what's a symlink etc. If the FTP server supports the <code>MLSD</code> command then it returns data in a machine-readable format that can be
+parsed for type. The types are specified by RFC 3659 section 7.5.1. If <code>MLSD</code> is not supported then you have to work with what you are given. The <code>LIST</code> output format is entirely at the server's own liking and the <code>NLST</code> output does not reveal any types and in many
+cases does not even include all the directory entries. Also, both <code>LIST</code> and <code>NLST</code> tend to hide Unix-style hidden files (those that start with a dot) by default so you need to do <code>LIST -a</code> or similar to see them.</p>
+<p>Example - List only directories. <code>ftp.funet.fi</code> supports <code>MLSD</code> and <code>ftp.kernel.org</code> does not:</p>
+<pre><code>curl -s ftp.funet.fi/pub/ -X MLSD |   perl -lne &#39;print if s/(?:^|;)type=dir;[^ ]+ (.+)$/$1/&#39;
+curl -s ftp.kernel.org/pub/linux/kernel/ |   perl -lne &#39;print if s/^d[-rwx]{9}(?: +[^ ]+){7} (.+)$/$1/&#39;</code></pre>
+<p>If you need to parse LIST output, libcurl provides the ability to specify a wildcard to download multiple files from an FTP directory.</p>
+<h2 id="i-want-a-different-time-out">I want a different time-out</h2>
+<p>Sometimes users realize that <code>CURLOPT_TIMEOUT</code> and <code>CURLOPT_CONNECTIMEOUT</code> are not sufficiently advanced or flexible to cover all the various use cases and scenarios applications end up with.</p>
+<p>libcurl offers many more ways to time-out operations. A common alternative is to use the <code>CURLOPT_LOW_SPEED_LIMIT</code> and <code>CURLOPT_LOW_SPEED_TIME</code> options to specify the lowest possible speed to accept before to consider the transfer timed out.</p>
+<p>The most flexible way is by writing your own time-out logic and using <code>CURLOPT_XFERINFOFUNCTION</code> (perhaps in combination with other callbacks) and use that to figure out exactly when the right condition is met when the transfer should get stopped.</p>
+<h2 id="can-i-write-a-server-with-libcurl">Can I write a server with libcurl?</h2>
+<p>No. libcurl offers no functions or building blocks to build any kind of Internet protocol server. libcurl is only a client-side library. For server libraries, you need to continue your search elsewhere but there exist many good open source ones out there for most protocols you could want a server
+for. There are also really good stand-alone servers that have been tested and proven for many years. There is no need for you to reinvent them.</p>
+<h2 id="does-libcurl-use-threads">Does libcurl use threads?</h2>
+<p>No, libcurl executes in the same thread you call it in. All callbacks are called in the same thread as the one you call libcurl in.</p>
+<p>If you want to avoid your thread to be blocked by the libcurl call, you make sure you use the non-blocking multi API which does transfers asynchronously - still in the same single thread.</p>
+<p>libcurl does potentially internally use threads for name resolving, if it was built to work like that, but in those cases it creates the child threads by itself and they are only used and then killed internally by libcurl and never exposed to the outside.</p>
+<h1 id="license">License</h1>
+<p>curl and libcurl are released under an MIT/X derivative license. The license is liberal and should not impose a problem for your project. This section is a brief summary for the cases we get the most questions.</p>
+<p>We are not lawyers and this is not legal advice. You should probably consult one if you want true and accurate legal insights without our prejudice. Note especially that this section concerns the libcurl license only; compiling in features of libcurl that depend on other libraries (e.g. OpenSSL)
+may affect the licensing obligations of your application.</p>
+<h2 id="i-have-a-gpl-program-can-i-use-the-libcurl-library">I have a GPL program, can I use the libcurl library?</h2>
+<p>Yes</p>
+<p>Since libcurl may be distributed under the MIT/X derivative license, it can be used together with GPL in any software.</p>
+<h2 id="i-have-a-closed-source-program-can-i-use-the-libcurl-library">I have a closed-source program, can I use the libcurl library?</h2>
+<p>Yes</p>
+<p>libcurl does not put any restrictions on the program that uses the library.</p>
+<h2 id="i-have-a-bsd-licensed-program-can-i-use-the-libcurl-library">I have a BSD licensed program, can I use the libcurl library?</h2>
+<p>Yes</p>
+<p>libcurl does not put any restrictions on the program that uses the library.</p>
+<h2 id="i-have-a-program-that-uses-lgpl-libraries-can-i-use-libcurl">I have a program that uses LGPL libraries, can I use libcurl?</h2>
+<p>Yes</p>
+<p>The LGPL license does not clash with other licenses.</p>
+<h2 id="can-i-modify-curllibcurl-for-my-program-and-keep-the-changes-secret">Can I modify curl/libcurl for my program and keep the changes secret?</h2>
+<p>Yes</p>
+<p>The MIT/X derivative license practically allows you to do almost anything with the sources, on the condition that the copyright texts in the sources are left intact.</p>
+<h2 id="can-you-please-change-the-curllibcurl-license">Can you please change the curl/libcurl license?</h2>
+<p>No.</p>
+<p>We have carefully picked this license after years of development and discussions and a large amount of people have contributed with source code knowing that this is the license we use. This license puts the restrictions we want on curl/libcurl and it does not spread to other programs or libraries
+that use it. It should be possible for everyone to use libcurl or curl in their projects, no matter what license they already have in use.</p>
+<h2 id="what-are-my-obligations-when-using-libcurl-in-my-commercial-apps">What are my obligations when using libcurl in my commercial apps?</h2>
+<p>Next to none. All you need to adhere to is the MIT-style license (stated in the COPYING file) which says you have to include the copyright notice in <em>all copies</em> and that you may not use the copyright holder's name when promoting your software.</p>
+<p>You do not have to release any of your source code.</p>
+<p>You do not have to reveal or make public any changes to the libcurl source code.</p>
+<p>You do not have to broadcast to the world that you are using libcurl within your app.</p>
+<p>All we ask is that you disclose <em>the copyright notice and this permission notice</em> somewhere. Most probably like in the documentation or in the section where other third party dependencies already are mentioned and acknowledged.</p>
+<p>As can be seen <a href="https://curl.se/docs/companies.html">here</a> and elsewhere, more and more companies are discovering the power of libcurl and take advantage of it even in commercial environments.</p>
+<h2 id="what-license-does-curl-use-exactly">What license does curl use exactly?</h2>
+<p>curl is released under an <a href="https://curl.se/docs/copyright.html">MIT derivative license</a>. It is similar but not identical to the MIT license.</p>
+<p>The difference is considered big enough to make SPDX list it under its own identifier: <a href="https://spdx.org/licenses/curl.html">curl</a>.</p>
+<p>The changes done to the license that make it uniquely curl were tiny and well-intended, but the reasons for them have been forgotten and we strongly discourage others from doing the same thing.</p>
+<h1 id="phpcurl">PHP/CURL</h1>
+<h2 id="what-is-phpcurl">What is PHP/CURL?</h2>
+<p>The module for PHP that makes it possible for PHP programs to access curl functions from within PHP.</p>
+<p>In the curl project we call this module PHP/CURL to differentiate it from curl the command line tool and libcurl the library. The PHP team however does not refer to it like this (for unknown reasons). They call it plain CURL (often using all caps) or sometimes ext/curl, but both cause much
+confusion to users which in turn gives us a higher question load.</p>
+<h2 id="who-wrote-phpcurl">Who wrote PHP/CURL?</h2>
+<p>PHP/CURL was initially written by Sterling Hughes.</p>
+<h2 id="can-i-perform-multiple-requests-using-the-same-handle">Can I perform multiple requests using the same handle?</h2>
+<p>Yes.</p>
+<p>After a transfer, you set new options in the handle and make another transfer. This makes libcurl reuse the same connection if it can.</p>
+<h2 id="does-phpcurl-have-dependencies">Does PHP/CURL have dependencies?</h2>
+<p>PHP/CURL is a module that comes with the regular PHP package. It depends on and uses libcurl, so you need to have libcurl installed properly before PHP/CURL can be used.</p>
+<h1 id="development">Development</h1>
+<h2 id="why-does-curl-use-c89">Why does curl use C89?</h2>
+<p>As with everything in curl, there is a history and we keep using what we have used before until someone brings up the subject and argues for and works on changing it.</p>
+<p>We started out using C89 in the 1990s because that was the only way to write a truly portable C program and have it run as widely as possible. C89 was for a long time even necessary to make things work on otherwise considered modern platforms such as Windows. Today, we do not really know how many
+users that still require the use of a C89 compiler.</p>
+<p>We continue to use C89 for as long as nobody brings up a strong enough reason for us to change our minds. The core developers of the project do not feel restricted by this and we are not convinced that going C99 offers us enough of a benefit to warrant the risk of cutting off a share of
+users.</p>
+<h2 id="would-curl-be-rewritten">Would curl be rewritten?</h2>
+<p>In one go: no. Little by little over time? Sure.</p>
+<p>Over the years, new languages and clever operating environments come and go. Every now and then the urge apparently arises to request that we rewrite curl in another language.</p>
+<p>Some the most important properties in curl are maintaining the API and ABI for libcurl and keeping the behavior for the command line tool. As long as we can do that, everything else is up for discussion. To maintain the ABI, we probably have to maintain a certain amount of code in C, and to
+remain rock stable, we never risk anything by rewriting a lot of things in one go. That said, we can certainly offer more and more optional backends written in other languages, as long as those backends can be plugged in at build-time. Backends can be written in any language, but should probably
+provide APIs usable from C to ease integration and transition.</p>
+</div>
+</div>
+<script src="../script.js"></script>
+</body>
+</html>

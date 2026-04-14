@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head> <title>libcurl example - 10-at-a-time.c</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<link rel="stylesheet" type="text/css" href="../new-curl.css">
+<link rel="stylesheet" type="text/css" href="../toggle.css">
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="icon" href="/logo/curl-symbol.svg" type="image/svg+xml">
+<link rel="alternate" type="application/rss+xml" title="curl Releases" href="https://github.com/curl/curl/releases.atom">
+<link rel="stylesheet" type="text/css" href="example.css">
+</head>
+<body>
+<div class="main">
+<div class="menu">
+<div class="curlsymbol">
+  <a href="/">
+    <img src="/logo/curl-white-symbol.svg">
+  </a>
+</div>
+<a href="/libcurl/c/libcurl.html" class="menuitem" title="Overview">API Overview</a>
+<div class="dropdown">
+  <a class="dropbtn" href="/libcurl/c/">Docs</a>
+  <div class="dropdown-content">
+    <a href="/libcurl/c/libcurl-easy.html">API: easy</a>
+    <a href="/libcurl/c/libcurl-multi.html">API: multi</a>
+    <a href="/libcurl/c/libcurl-share.html">API: share</a>
+    <a href="/libcurl/c/libcurl-url.html">API: URL</a>
+    <a href="/libcurl/c/libcurl-ws.html">API: WebSocket</a>
+    <a href="/libcurl/c/libcurl-env.html">Environment vars</a>
+    <a href="/libcurl/c/libcurl-errors.html">Errors</a>
+    <a href="/libcurl/c/example.html">Examples</a>
+    <a href="/libcurl/security.html">Security</a>
+    <a href="/libcurl/c/symbols-in-versions.html">Symbols</a>
+    <a href="/libcurl/c/libcurl-tutorial.html">Tutorial</a>
+    <hr>
+    <a href="/libcurl/c/easy_setopt_options.html">easy setopt options</a>
+    <a href="/libcurl/c/easy_getinfo_options.html">easy getinfo options</a>
+    <a href="/libcurl/c/multi_setopt_options.html">multi setopt options</a>
+    <a href="/libcurl/c/tls-options.html">TLS options</a>
+  </div>
+</div>
+<div class="dropdown">
+  <a class="dropbtn" href="/libcurl/c/">Functions</a>
+  <div class="dropdown-content">
+    <a href="/libcurl/c/allfuncs.html">All functions</a>
+    <a href="/libcurl/c/curl_easy_getinfo.html">curl_easy_getinfo</a>
+    <a href="/libcurl/c/curl_easy_init.html">curl_easy_init</a>
+    <a href="/libcurl/c/curl_easy_perform.html">curl_easy_perform</a>
+    <a href="/libcurl/c/curl_easy_reset.html">curl_easy_reset</a>
+    <a href="/libcurl/c/curl_easy_setopt.html">curl_easy_setopt</a>
+    <a href="/libcurl/c/curl_multi_add_handle.html">curl_multi_add_handle</a>
+    <a href="/libcurl/c/curl_multi_init.html">curl_multi_init</a>
+    <a href="/libcurl/c/curl_multi_perform.html">curl_multi_perform</a>
+    <a href="/libcurl/c/curl_multi_remove_handle.html">curl_multi_remove_handle</a>
+    <a href="/libcurl/c/curl_multi_setopt.html">curl_multi_setopt</a>
+  </div>
+</div>
+</div>
+<div class="contents">
+<div class="where"><a href="/">curl</a> / <a href="/libcurl/">libcurl</a> / <a href="/libcurl/c/">API</a> / <a href="/libcurl/c/example.html">Examples</a> / <b>10-at-a-time.c</b></div>
+<h1> 10-at-a-time.c </h1>
+<div class="relatedbox">
+<b>Related:</b>
+<br><a href="allfuncs.html">All functions</a>
+<br><a href="https://github.com/curl/curl/issues/new?title=10-at-a-time.c%20example&amp;labels=documentation&amp;template=docs.yml" target="_new">File a bug</a>
+<br><a href="symbols-in-versions.html">Symbols</a>
+<br><a href="https://github.com/curl/curl/blob/master/docs/examples/10-at-a-time.c" target="_new">View in git</a>
+<br><a href="https://github.com/curl/curl/raw/master/docs/examples/10-at-a-time.c">View raw</a>
+</div>
+<div>
+<PRE>
+<span class="comment">/&#x2a;**************************************************************************
+ *                                  _   _ ____  _
+ *  Project                     ___| | | |  _ \| |
+ *                             / __| | | | |_) | |
+ *                            | (__| |_| |  _ &lt;| |___
+ *                             \___|\___/|_| \_\_____|
+ *
+ * Copyright (C) Daniel Stenberg, &lt;daniel@haxx.se&gt;, et al.
+ *
+ * This software is licensed as described in the file COPYING, which
+ * you should have received as part of this distribution. The terms
+ * are also available at https://curl.se/docs/copyright.html.
+ *
+ * You may opt to use, copy, modify, merge, publish, distribute and/or sell
+ * copies of the Software, and permit persons to whom the Software is
+ * furnished to do so, under the terms of the COPYING file.
+ *
+ * This software is distributed on an &quot;AS IS&quot; basis, WITHOUT WARRANTY OF ANY
+ * KIND, either express or implied.
+ *
+ * SPDX-License-Identifier: curl
+ *
+ **************************************************************************&#x2a;/</span>
+<span class="comment">/&#x2a; &lt;DESC&gt;
+ * Download many files in parallel, in the same thread.
+ * &lt;/DESC&gt;
+ &#x2a;/</span>
+#<span  class="cpp">include</span> <span class="string">&lt;stdlib.h&gt;</span>
+#<span  class="cpp">include</span> <span class="string">&lt;string.h&gt;</span>
+&nbsp;
+#<span  class="cpp">include</span> <span class="string">&lt;curl/curl.h&gt;</span>
+&nbsp;
+<span class="type">static</span> <span class="type">const</span> <span class="type">char</span> *urls[] = {
+  <span class="string">&quot;https://01.example/&quot;</span>,
+  <span class="string">&quot;https://02.example/&quot;</span>,
+  <span class="string">&quot;https://03.example/&quot;</span>,
+  <span class="string">&quot;https://04.example/&quot;</span>,
+  <span class="string">&quot;https://05.example/&quot;</span>,
+  <span class="string">&quot;https://06.example/&quot;</span>,
+  <span class="string">&quot;https://07.example/&quot;</span>,
+  <span class="string">&quot;https://08.example/&quot;</span>,
+  <span class="string">&quot;https://09.example/&quot;</span>,
+  <span class="string">&quot;https://10.example/&quot;</span>,
+  <span class="string">&quot;https://11.example/&quot;</span>,
+  <span class="string">&quot;https://12.example/&quot;</span>,
+  <span class="string">&quot;https://13.example/&quot;</span>,
+  <span class="string">&quot;https://14.example/&quot;</span>,
+  <span class="string">&quot;https://15.example/&quot;</span>,
+  <span class="string">&quot;https://16.example/&quot;</span>,
+  <span class="string">&quot;https://17.example/&quot;</span>,
+  <span class="string">&quot;https://18.example/&quot;</span>,
+  <span class="string">&quot;https://19.example/&quot;</span>,
+  <span class="string">&quot;https://20.example/&quot;</span>,
+  <span class="string">&quot;https://21.example/&quot;</span>,
+  <span class="string">&quot;https://22.example/&quot;</span>,
+  <span class="string">&quot;https://23.example/&quot;</span>,
+  <span class="string">&quot;https://24.example/&quot;</span>,
+  <span class="string">&quot;https://25.example/&quot;</span>,
+  <span class="string">&quot;https://26.example/&quot;</span>,
+  <span class="string">&quot;https://27.example/&quot;</span>,
+  <span class="string">&quot;https://28.example/&quot;</span>,
+  <span class="string">&quot;https://29.example/&quot;</span>,
+  <span class="string">&quot;https://30.example/&quot;</span>,
+  <span class="string">&quot;https://31.example/&quot;</span>,
+  <span class="string">&quot;https://32.example/&quot;</span>,
+  <span class="string">&quot;https://33.example/&quot;</span>,
+  <span class="string">&quot;https://34.example/&quot;</span>,
+  <span class="string">&quot;https://35.example/&quot;</span>,
+  <span class="string">&quot;https://36.example/&quot;</span>,
+  <span class="string">&quot;https://37.example/&quot;</span>,
+  <span class="string">&quot;https://38.example/&quot;</span>,
+  <span class="string">&quot;https://39.example/&quot;</span>,
+  <span class="string">&quot;https://40.example/&quot;</span>,
+  <span class="string">&quot;https://41.example/&quot;</span>,
+  <span class="string">&quot;https://42.example/&quot;</span>,
+  <span class="string">&quot;https://43.example/&quot;</span>,
+  <span class="string">&quot;https://44.example/&quot;</span>,
+  <span class="string">&quot;https://45.example/&quot;</span>,
+  <span class="string">&quot;https://46.example/&quot;</span>,
+};
+&nbsp;
+#<span  class="cpp">define</span> <span class="">MAX_PARALLEL</span> 10  <span class="comment">/&#x2a; number of simultaneous transfers &#x2a;/</span>
+#<span  class="cpp">define</span> <span class="">NUM_URLS</span>     (sizeof(urls) / sizeof(char *))
+&nbsp;
+<span class="type">static</span> size_t <span class="function">write_cb</span>(<span class="type">char</span> *data, size_t n, size_t l, <span class="type">void</span> *userp)
+{
+  <span class="comment">/&#x2a; take care of the data here, ignored in this example &#x2a;/</span>
+  (<span class="type">void</span>)data;
+  (<span class="type">void</span>)userp;
+  <span class="expr">return</span> n * l;
+}
+&nbsp;
+<span class="type">static</span> <span class="type">void</span> <span class="function">add_transfer</span>(CURLM *multi, <span class="type">unsigned</span> <span class="type">int</span> i, <span class="type">int</span> *left)
+{
+  CURL *curl = <a href="https://curl.se/libcurl/c/curl_easy_init.html">curl_easy_init</a>();
+  <span class="expr">if</span>(curl) {
+    <a href="https://curl.se/libcurl/c/curl_easy_setopt.html">curl_easy_setopt</a>(curl, <a href="https://curl.se/libcurl/c/CURLOPT_WRITEFUNCTION.html">CURLOPT_WRITEFUNCTION</a>, write_cb);
+    <a href="https://curl.se/libcurl/c/curl_easy_setopt.html">curl_easy_setopt</a>(curl, <a href="https://curl.se/libcurl/c/CURLOPT_URL.html">CURLOPT_URL</a>, urls[i]);
+    <a href="https://curl.se/libcurl/c/curl_easy_setopt.html">curl_easy_setopt</a>(curl, <a href="https://curl.se/libcurl/c/CURLOPT_PRIVATE.html">CURLOPT_PRIVATE</a>, urls[i]);
+    <a href="https://curl.se/libcurl/c/curl_multi_add_handle.html">curl_multi_add_handle</a>(multi, curl);
+  }
+  (*left)++;
+}
+&nbsp;
+<span class="type">int</span> <span class="function">main</span>(<span class="type">void</span>)
+{
+  CURLM *multi;
+&nbsp;
+  CURLcode result = <a href="https://curl.se/libcurl/c/curl_global_init.html">curl_global_init</a>(CURL_GLOBAL_ALL);
+  <span class="expr">if</span>(result != CURLE_OK)
+    <span class="expr">return</span> (<span class="type">int</span>)result;
+&nbsp;
+  multi = <a href="https://curl.se/libcurl/c/curl_multi_init.html">curl_multi_init</a>();
+  <span class="expr">if</span>(multi) {
+    CURLMsg *msg;
+    <span class="type">unsigned</span> <span class="type">int</span> transfers = 0;
+    <span class="type">int</span> msgs_left = -1;
+    <span class="type">int</span> left = 0;
+&nbsp;
+    <span class="comment">/&#x2a; Limit the amount of simultaneous connections curl should allow: &#x2a;/</span>
+    <a href="https://curl.se/libcurl/c/curl_multi_setopt.html">curl_multi_setopt</a>(multi, <a href="https://curl.se/libcurl/c/CURLMOPT_MAXCONNECTS.html">CURLMOPT_MAXCONNECTS</a>, (<span class="type">long</span>)MAX_PARALLEL);
+&nbsp;
+    <span class="expr">for</span>(transfers = 0; transfers &lt; MAX_PARALLEL &amp;&amp; transfers &lt; NUM_URLS;
+        transfers++)
+      add_transfer(multi, transfers, &amp;left);
+&nbsp;
+    <span class="expr">do</span> {
+      <span class="type">int</span> still_alive = 1;
+      <a href="https://curl.se/libcurl/c/curl_multi_perform.html">curl_multi_perform</a>(multi, &amp;still_alive);
+&nbsp;
+      <span class="comment">/&#x2a; !checksrc! disable EQUALSNULL 1 &#x2a;/</span>
+      <span class="expr">while</span>((msg = <a href="https://curl.se/libcurl/c/curl_multi_info_read.html">curl_multi_info_read</a>(multi, &amp;msgs_left)) != NULL) {
+        <span class="expr">if</span>(msg-&gt;msg == CURLMSG_DONE) {
+          <span class="type">const</span> <span class="type">char</span> *url;
+          CURL *curl = msg-&gt;easy_handle;
+          <a href="https://curl.se/libcurl/c/curl_easy_getinfo.html">curl_easy_getinfo</a>(curl, <a href="https://curl.se/libcurl/c/CURLINFO_PRIVATE.html">CURLINFO_PRIVATE</a>, &amp;url);
+          fprintf(stderr, <span class="string">&quot;R: %d - %s &lt;%s&gt;\n&quot;</span>,
+                  msg-&gt;data.result, <a href="https://curl.se/libcurl/c/curl_easy_strerror.html">curl_easy_strerror</a>(msg-&gt;data.result), url);
+          <a href="https://curl.se/libcurl/c/curl_multi_remove_handle.html">curl_multi_remove_handle</a>(multi, curl);
+          <a href="https://curl.se/libcurl/c/curl_easy_cleanup.html">curl_easy_cleanup</a>(curl);
+          left--;
+        }
+        <span class="expr">else</span> {
+          fprintf(stderr, <span class="string">&quot;E: CURLMsg (%d)\n&quot;</span>, msg-&gt;msg);
+        }
+        <span class="expr">if</span>(transfers &lt; NUM_URLS)
+          add_transfer(multi, transfers++, &amp;left);
+      }
+      <span class="expr">if</span>(left)
+        <a href="https://curl.se/libcurl/c/curl_multi_wait.html">curl_multi_wait</a>(multi, NULL, 0, 1000, NULL);
+&nbsp;
+    } <span class="expr">while</span>(left);
+&nbsp;
+    <a href="https://curl.se/libcurl/c/curl_multi_cleanup.html">curl_multi_cleanup</a>(multi);
+  }
+  <a href="https://curl.se/libcurl/c/curl_global_cleanup.html">curl_global_cleanup</a>();
+&nbsp;
+  <span class="expr">return</span> EXIT_SUCCESS;
+}
+</PRE>
+<h2>Notice</h2>
+<div style="color: #000; background-color: #ffff80; padding: 8px 8px 8px 8px;">
+This source code example is <strong>simplified</strong> and ignores return
+codes and error checks to a large extent. We do this to highlight the libcurl
+function calls and related options and reduce unrelated code.
+<p>
+A real-world application does of course properly check every return value and
+exit correctly at the first serious error.
+</div>
+</div>
+</div>
+<script src="../script.js"></script>
+</body>
+</html>
