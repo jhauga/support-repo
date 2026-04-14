@@ -3,7 +3,7 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [curl-www pull request](https://github.com/) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [curl-www pull request 576](https://github.com/curl/curl-www/pull/576)
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
 <!-- git commit -m "undeploy: use htmlpreview for index.html" -->
 <!--
