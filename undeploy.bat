@@ -33,28 +33,28 @@ if "%_checkBranch%"=="%~1" (
  rem make sure no conflicts with remote
  git fetch
  git pull
- 
+
  rem continue only if no conflicts
  if NOT ERRORLEVEL 1 (
   rem remove first line with link `https://jhauga.github.io/support-repo/` from README.md
   sed -i "0,/^- .\+https:\/\/jhauga\.github\.io\/support-repo\/.*$/s///" README.md
-  
+
   rem uncomment the htmlpreview block - remove <!-- and --> around the block
   sed -i "/^<!--$/,/^-->$/{/^<!--$/d;/^-->$/d}" README.md
-  
+
   rem remove the git commit comment line
   sed -i "/<!-- git commit -m \"undeploy: use htmlpreview for index.html\" -->/d" README.md
-  
+
   rem replace BRANCH_NAME with the actual branch name
   sed -i "s/BRANCH_NAME/%~1/g" README.md
-  
+
   rem remove undeploy before pushing but ensure not on main
   if NOT "%_checkBranch%"=="main" (
    if NOT "%_parOneUndeploy%"=="main" (
     git rm undeploy.bat
    )
   )
-  
+
   rem Stage, commit, and push changes
   git add .
   git commit -m "undeploy: use htmlpreview for index.html"

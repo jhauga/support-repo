@@ -25,8 +25,8 @@ high-quality implementation.
 - Edit markers in the code file or prompt - like:
 
 ```text
- ${openMarker} 
- ()=> shorthand code 
+ ${openMarker}
+ ()=> shorthand code
  ${closeMarker}
 ```
 
@@ -93,8 +93,8 @@ solution for the goal.
 
 ```bash
 [user prompt]
-UPDATE CODE FROM SHORTHAND 
-#file:script.js 
+UPDATE CODE FROM SHORTHAND
+#file:script.js
 Use #file:index.html:94-99 to see where converted
 markdown to html will be parsed `id="a"`.
 ```
