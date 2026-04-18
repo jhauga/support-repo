@@ -152,7 +152,7 @@ goto :eof
 goto :eof
 
 :: ========================================================================
-:: CLEANUP — Remove all batch variables and restore directory.
+:: CLEANUP - Remove all batch variables and restore directory.
 :: ========================================================================
 :_removeBatchVariablesMyTask
     set _helpLinesMyTask=
