@@ -3,7 +3,7 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [awesome-copilot pull request](https://github.com/) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/1435)
 
 <!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
 <!-- formatter_1 -->
@@ -11,7 +11,7 @@ Support branch for new skill batch-files.
 
 - **Agent**: Local
 - **Model**: Claude Opus 4.6
-- **Number of Prompts**: 2
+- **Number of Prompts**: 3
 - **Post Edits**: 2
   - Added echo to game over screen `echo Play again? ^(Y/N^)`
   - Added "Q" to choice in game over screen as `choice /c YNQ ..`
@@ -61,7 +61,7 @@ progress. See details below for initial terminal output:
 
 <details>
 
-<summary>Show Details</summar>
+<summary>Show Details</summary>
 
 ```batch
 ECHO is off.
