@@ -1,79 +1,68 @@
-# Test Markdown File
+# Install Ender-3 V3 SE Hotend Kit
 
-It worked
+## Remove and Replace Broken Part from 3D Printer
 
-# Header Test
+#### 1. Remove the cover
 
-## Print Rendering Level 2 Heading
+![step](img/01.jpg)
 
-### Print Rendering Level 3 Heading
+#### 2. Unplug wires, cutting wire caps
 
-#### Print Rendering Level 4 Heading
+![step](img/02.jpg)
 
-Test rendering of bold, italic, ordered list, and unordered list.
+#### 3. Unscrew nozzle screws
 
-**Ordered List**
+![step](img/03.jpg)
 
-1. One item.
-   - Nested item.
-2. Two items.
-3. Three items in the list.
+#### 4. Cut the remaining wire caps
 
-*Unordered List*
+![step](img/04.jpg)
 
-- List item
-   - Nested list item.
-* This list item uses an asterick character for the list.
-- This one uses a dash.
+#### 5. Remove the nozzle mounting screws
+
+![step](img/05.jpg)
+
+#### 6. Remove the fan
+
+![step](img/06.jpg)
+
+#### 7. Replace part
+
+![step](img/07.jpg)
+
+#### 8. Reconnect cover
+
+![step](img/08.jpg)
 
 
-# Formatted Code
+#### 9. Plug in wires
 
-```bash
-> echo command line example
-> echo bash specified as language
-```
+![step](img/09.jpg)
 
-# Table Test
+#### 10. Reconnect nozzle mounting screws
 
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+![step](img/10.jpg)
 
-# Footnote Test
+#### 11. Nozzle connected to printer
 
-Here is a simple footnote[^1].
+![step](img/11.jpg)
 
-A footnote can also have multiple lines[^2].
+#### 12. Reattach ptfe tube
 
-[^1]: My reference.
-[^2]: To add line breaks within a footnote, add 2 spaces to the end of a line.  
-This is a second line.
+![step](img/12.jpg)
 
-# Alert Test
+#### 13. Insert ptfe tube
 
-> [!NOTE]
-> Useful information that users should know, even when skimming content.
+![step](img/13.jpg)
 
-> [!TIP]
-> Helpful advice for doing things better or more easily.
+#### 14. Plug in all remaining wires
 
-> [!IMPORTANT]
-> Key information users need to know to achieve their goal.
+![step](img/14.jpg)
 
-> [!WARNING]
-> Urgent info that needs immediate user attention to avoid problems.
+#### 15. Screw in nozzle side screws
 
-> [!CAUTION]
-> Advises about risks or negative outcomes of certain actions.
+![step](img/15.jpg)
 
-# Image Test
+#### 16. Reattach cover
 
-**NOTE** - image path is `/c:/Users/johnh/Batch%20Files/bin/support/printMD.jpg`
-
-![full path to 1.5 x 1.5 test image](./image.jpg)
-
-# Test Concluded
-
-<hr>
+![step](img/16.jpg)
