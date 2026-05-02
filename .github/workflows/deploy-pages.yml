@@ -3,8 +3,6 @@ name: Deploy GitHub Pages
 on:
   push:
     branches:
-      - main
-      - master
       - plugin-cms-development
   workflow_dispatch:
 
@@ -33,6 +31,7 @@ jobs:
           path: ./site
 
   deploy:
+    if: github.ref == 'refs/heads/plugin-cms-development'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
