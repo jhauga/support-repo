@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Theme Workbench CMS</title>
+  <meta
+    name="description"
+    content="A lightweight CMS-style workbench for testing WordPress-inspired themes on GitHub Pages."
+  >
+  <link rel="stylesheet" href="./assets/css/cms.css">
+  <link id="theme-stylesheet" rel="stylesheet" href="./themes/starter/theme.css">
+</head>
+<body>
+  <div class="cms-shell">
+    <aside class="cms-sidebar" aria-label="CMS editor">
+      <header class="cms-sidebar__header">
+        <p class="cms-eyebrow">Theme Workbench CMS</p>
+        <h1>Static WordPress-style previewer</h1>
+        <p>
+          Edit content in the browser, preview a starter theme, and deploy the static output to
+          GitHub Pages.
+        </p>
+      </header>
+      <div id="cms-controls"></div>
+    </aside>
+
+    <main class="cms-main">
+      <div class="cms-toolbar">
+        <div>
+          <p class="cms-eyebrow">Preview</p>
+          <h2>Theme output</h2>
+        </div>
+        <p id="preview-status" class="cms-status" aria-live="polite"></p>
+      </div>
+      <section id="cms-preview" class="cms-preview" aria-label="Theme preview"></section>
+    </main>
+  </div>
+
+  <input id="content-import" type="file" accept="application/json" hidden>
+
+  <script type="module" src="./assets/js/app.js"></script>
+</body>
+</html>
