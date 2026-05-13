@@ -72,7 +72,10 @@ if "%_repoName%"=="awesome-copilot" (
   sed -i "s/SHORT_DESCRIPTION/%_description%/g" README.md
  )
 )
-
+:: Update workflow action
+sed "0,/- main/{s/- main/- %_branchName%/}" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
+move /Y .gitHub\workflows\deploy.yml.tmp .gitHub\workflows\deploy.yml >nul 2>nul
+:: Done.
 echo Branch %_branchName% created and configured successfully.
 endlocal
 exit /b 0
