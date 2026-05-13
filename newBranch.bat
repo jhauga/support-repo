@@ -87,7 +87,7 @@ if "%_repoName%"=="awesome-copilot" (
 :: Done.
 echo Branch %_branchName% created and configured successfully.
 endlocal
-exit /b 0 & del /Q newBranch.bat >nul 2>nul
+del /Q newBranch.bat >nul 2>nul & exit /b 0
 
 :_showHelp
  echo newBranch.bat
