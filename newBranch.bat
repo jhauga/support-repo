@@ -77,7 +77,7 @@ sed "s/main/%_branchName%/" .gitHub\workflows\deploy.yml > .gitHub\workflows\dep
 move /Y .gitHub\workflows\deploy.yml.tmp .gitHub\workflows\deploy.yml >nul 2>nul
 
 :: Clean out repo files
-del /Q TODO.md makeTemplates.bat >nul >nul
+del /Q TODO.md makeTemplate.bat >nul >nul
 rmdir /S/Q templates >nul 2>nul
 if "%_repoName%"=="awesome-copilot" (
  rem files not used for pr in awesome-copilot
@@ -87,7 +87,7 @@ if "%_repoName%"=="awesome-copilot" (
 :: Done.
 echo Branch %_branchName% created and configured successfully.
 endlocal
-del /Q newBranch.bat >nul 2>nul & exit /b 0
+del /Q newBranch.bat >nul 2>nul & exit /b 0 >nul 2>nul
 
 :_showHelp
  echo newBranch.bat
