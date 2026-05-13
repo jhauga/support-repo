@@ -72,13 +72,22 @@ if "%_repoName%"=="awesome-copilot" (
   sed -i "s/SHORT_DESCRIPTION/%_description%/g" README.md
  )
 )
-:: Update workflow action
-sed "0,/- main/{s/- main/- %_branchName%/}" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
+:: Update workflow action - only ONE branch name per line
+sed "s/main/%_branchName%/" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
 move /Y .gitHub\workflows\deploy.yml.tmp .gitHub\workflows\deploy.yml >nul 2>nul
+
+:: Clean out repo files
+del /Q TODO.md makeTemplates.bat >nul >nul
+rmdir /S/Q templates >nul 2>nul
+if "%_repoName%"=="awesome-copilot" (
+ rem files not used for pr in awesome-copilot
+ del /Q demo.gif file.md image.jpg >nul 2>nul
+)
+
 :: Done.
 echo Branch %_branchName% created and configured successfully.
 endlocal
-exit /b 0
+exit /b 0 & del /Q newBranch.bat >nul 2>nul
 
 :_showHelp
  echo newBranch.bat
@@ -93,9 +102,10 @@ exit /b 0
  echo  default
  echo:
  echo Examples:
- echo   newBranch feature/login
- echo   newBranch hotfix/api support-repo "Fix API error"
- echo   newBranch instruction-file.instruction awesome-copilot "Short description."
+ echo   newBranch feature-login
+ echo   newBranch hotfix-api support-repo "Fix API error"
+ echo   newBranch instruction-file-name awesome-copilot
+ echo   newBranch skill-branch-name awesome-copilot
  endlocal
  exit /b 0
 goto:eof
