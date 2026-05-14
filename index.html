@@ -1,149 +1,344 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
- <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
- 
- <!--<script src="/js/scripts.js"></script>-->
- <link rel="icon" href="/favicon.png">
- 
- <style>
-  body {
-   margin-left: 50px;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>STL Viewer — 4 Viewports</title>
+<link rel="icon" href="favicon.png">
+<style>
+  :root {
+    --bg: #1e1e1e;
+    --panel: #252526;
+    --border: #3c3c3c;
+    --text: #e6e6e6;
+    --accent: #4ec9b0;
   }
-  div, nav, ul, li, a {
-   display: inline-block;
-   position: relative;
-   box-sizing: border-box;
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow: hidden;
   }
-  div, nav, footer {
-   width: 100%;
+  #toolbar {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 12px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
   }
-  nav {
-   background: black;   
-   height: 60px;
+  #toolbar strong { color: var(--accent); }
+  #toolbar label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
   }
-  nav ul li a {
-   color: white;
-   padding: 10px;
+  #toolbar .swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
   }
-  main {
-   margin: 30px;
+  #toolbar button {
+    background: #0e639c;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
   }
-  button {
-   background: darkslategray;
-   color: white;     
-   margin: 10px;
-   padding: 15px;
-   cursor: pointer;
-   border-radius: 10px;
+  #toolbar button:hover { background: #1177bb; }
+  #grid {
+    position: absolute;
+    top: 44px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
   }
-  button.showHide {
-   display: block; 
-   background: black;
-   color: white;
+  .viewport {
+    position: relative;
+    background: #2b2b2b;
+    overflow: hidden;
   }
-  button.showHide.black {
-   display: block; 
-   padding: 2px;
-  }  
-  button.showHide.gray {
-   display: block; 
-   background: darkslategray;
-   padding: 2px;
-  }    
-  span.key {
-   color: #0073e6;
-  }  
-  span.str {
-   color: orange;
+  .viewport canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
   }
-  span.int {
-   color: green;
+  .label {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 3px 8px;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 3px;
+    font-size: 12px;
+    pointer-events: none;
+    color: var(--text);
+    letter-spacing: 0.5px;
   }
-  span.mthd {
-   color: purple;
+  #status {
+    margin-left: auto;
+    font-size: 12px;
+    opacity: 0.75;
   }
-  em {
-   color: dimgray;
-  }  
-  footer {
-   bottom: 0px;   
-   background: black;
-   color: white;
-   margin-left: -50px; 
-   padding: 50px;
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
   }
- </style>
-</head>
-
-<body>
-
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
-   </ul>
-  </nav>
- </div>
-
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
-  </div>
- </main>
-
-
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
-
-<h1 id="pageTitle"></h1>
-
-<p>CHANGE_TEXT</p>
-
-<pre id="a">
-CHANGE_TEXT
-</pre>
-
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
+}
 </script>
+</head>
+<body>
+  <div id="toolbar">
+    <strong>STL Viewer</strong>
+    <label><input type="checkbox" id="toggle-generated" checked>
+      <span class="swatch" style="background:#4ec9b0"></span> generated.stl
+    </label>
+    <label><input type="checkbox" id="toggle-postprocess" checked>
+      <span class="swatch" style="background:#dcdcaa"></span> post-process.stl
+    </label>
+    <label><input type="checkbox" id="toggle-wireframe">
+      Wireframe
+    </label>
+    <button id="reset-view">Reset Views</button>
+    <span id="status">Loading…</span>
+  </div>
+  <div id="grid">
+    <div class="viewport" data-view="perspective"><div class="label">Perspective</div></div>
+    <div class="viewport" data-view="top"><div class="label">Top</div></div>
+    <div class="viewport" data-view="front"><div class="label">Front</div></div>
+    <div class="viewport" data-view="right"><div class="label">Right</div></div>
+  </div>
 
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 
+const STL_FILES = [
+  { url: 'generated.stl',    name: 'generated',    color: 0x4ec9b0, key: 'generated' },
+  { url: 'post-process.stl', name: 'post-process', color: 0xdcdcaa, key: 'postprocess' }
+];
+
+const VIEW_CONFIGS = {
+  perspective: { ortho: false, dir: [1, 1, 1] },
+  top:         { ortho: true,  dir: [0, 1, 0], up: [0, 0, -1] },
+  front:       { ortho: true,  dir: [0, 0, 1] },
+  right:       { ortho: true,  dir: [1, 0, 0] }
+};
+
+const statusEl = document.getElementById('status');
+const viewports = [];
+const meshesByKey = { generated: [], postprocess: [] };
+let combinedBounds = null;
+
+function createViewport(container, viewName) {
+  const cfg = VIEW_CONFIGS[viewName];
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x2b2b2b);
+
+  const w = container.clientWidth;
+  const h = container.clientHeight;
+  const aspect = w / h;
+
+  let camera;
+  if (cfg.ortho) {
+    const size = 50;
+    camera = new THREE.OrthographicCamera(-size * aspect, size * aspect, size, -size, 0.1, 10000);
+  } else {
+    camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 10000);
+  }
+  if (cfg.up) camera.up.set(...cfg.up);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(w, h);
+  container.appendChild(renderer.domElement);
+
+  // Lighting
+  const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+  scene.add(ambient);
+  const dir1 = new THREE.DirectionalLight(0xffffff, 0.8);
+  dir1.position.set(1, 1, 1);
+  scene.add(dir1);
+  const dir2 = new THREE.DirectionalLight(0xffffff, 0.4);
+  dir2.position.set(-1, -0.5, -1);
+  scene.add(dir2);
+
+  // Grid + axes helpers
+  const grid = new THREE.GridHelper(200, 20, 0x555555, 0x3a3a3a);
+  scene.add(grid);
+  const axes = new THREE.AxesHelper(20);
+  scene.add(axes);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  if (cfg.ortho) {
+    controls.enableRotate = false; // lock orthographic to its axis
+  }
+
+  return { container, viewName, cfg, scene, camera, renderer, controls };
+}
+
+function loadSTL(file) {
+  return new Promise((resolve, reject) => {
+    const loader = new STLLoader();
+    loader.load(file.url,
+      (geometry) => {
+        geometry.computeVertexNormals();
+        geometry.computeBoundingBox();
+        resolve({ file, geometry });
+      },
+      undefined,
+      (err) => reject(err)
+    );
+  });
+}
+
+function addGeometryToAllViews(file, geometry) {
+  for (const vp of viewports) {
+    const material = new THREE.MeshPhongMaterial({
+      color: file.color,
+      specular: 0x111111,
+      shininess: 30,
+      flatShading: false,
+      side: THREE.DoubleSide
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.userData.key = file.key;
+    vp.scene.add(mesh);
+    meshesByKey[file.key].push(mesh);
+  }
+}
+
+function fitAllCameras(box) {
+  const center = new THREE.Vector3();
+  const size = new THREE.Vector3();
+  box.getCenter(center);
+  box.getSize(size);
+  const maxDim = Math.max(size.x, size.y, size.z) || 1;
+
+  for (const vp of viewports) {
+    const { camera, controls, cfg } = vp;
+    const dir = new THREE.Vector3(...cfg.dir).normalize();
+    const distance = maxDim * 2.2;
+
+    if (cfg.ortho) {
+      const aspect = vp.container.clientWidth / vp.container.clientHeight;
+      const half = maxDim * 0.75;
+      camera.left = -half * aspect;
+      camera.right = half * aspect;
+      camera.top = half;
+      camera.bottom = -half;
+      camera.near = -maxDim * 10;
+      camera.far = maxDim * 10;
+      camera.updateProjectionMatrix();
+    } else {
+      camera.near = maxDim / 100;
+      camera.far = maxDim * 100;
+      camera.updateProjectionMatrix();
+    }
+
+    camera.position.copy(center).addScaledVector(dir, distance);
+    controls.target.copy(center);
+    controls.update();
+  }
+}
+
+function onResize() {
+  for (const vp of viewports) {
+    const w = vp.container.clientWidth;
+    const h = vp.container.clientHeight;
+    if (w === 0 || h === 0) continue;
+    const aspect = w / h;
+    if (vp.cfg.ortho) {
+      const halfH = (vp.camera.top - vp.camera.bottom) / 2;
+      vp.camera.left = -halfH * aspect;
+      vp.camera.right = halfH * aspect;
+      vp.camera.updateProjectionMatrix();
+    } else {
+      vp.camera.aspect = aspect;
+      vp.camera.updateProjectionMatrix();
+    }
+    vp.renderer.setSize(w, h);
+  }
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  for (const vp of viewports) {
+    vp.controls.update();
+    vp.renderer.render(vp.scene, vp.camera);
+  }
+}
+
+function setVisible(key, visible) {
+  for (const m of meshesByKey[key]) m.visible = visible;
+}
+
+function setWireframe(on) {
+  for (const key of Object.keys(meshesByKey)) {
+    for (const m of meshesByKey[key]) m.material.wireframe = on;
+  }
+}
+
+// --- init ---
+document.querySelectorAll('.viewport').forEach((el) => {
+  viewports.push(createViewport(el, el.dataset.view));
+});
+
+window.addEventListener('resize', onResize);
+
+document.getElementById('toggle-generated').addEventListener('change', (e) => {
+  setVisible('generated', e.target.checked);
+});
+document.getElementById('toggle-postprocess').addEventListener('change', (e) => {
+  setVisible('postprocess', e.target.checked);
+});
+document.getElementById('toggle-wireframe').addEventListener('change', (e) => {
+  setWireframe(e.target.checked);
+});
+document.getElementById('reset-view').addEventListener('click', () => {
+  if (combinedBounds) fitAllCameras(combinedBounds);
+});
+
+animate();
+
+(async () => {
+  try {
+    const results = await Promise.all(STL_FILES.map(loadSTL));
+    const bbox = new THREE.Box3();
+    for (const { file, geometry } of results) {
+      addGeometryToAllViews(file, geometry);
+      if (geometry.boundingBox) bbox.union(geometry.boundingBox);
+    }
+    combinedBounds = bbox;
+    fitAllCameras(bbox);
+    statusEl.textContent = `Loaded ${results.length} STL file(s)`;
+  } catch (err) {
+    console.error(err);
+    statusEl.textContent = 'Error loading STL: ' + err.message;
+  }
+})();
+</script>
 </body>
 </html>
