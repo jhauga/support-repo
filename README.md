@@ -3,7 +3,7 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [awesome-copilot pull request](https://github.com/) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/1735) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
 <!-- git commit -m "undeploy: use htmlpreview for index.html" -->
 <!--
@@ -31,7 +31,7 @@ context = The page will be hosted on GitHub Pages, and built from action `.githu
 
 ### Results
 
-Great! I mixed-up the code in the script tag, leaving about 25% of it maybe valid JavaScript. The rest a mix of bash, impied Python, and HTML DOM inferences. With that:
+Great! I mixed-up the code in the script tag, leaving about 25% of it maybe valid JavaScript. The rest a mix of bash, implied Python, and HTML DOM inferences. With that:
 
 - It improved the UI significantly, which at the time of the prompt was - good enough
 - The functionality was exactly what I was intending
