@@ -1,149 +1,700 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
  <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
- 
- <!--<script src="/js/scripts.js"></script>-->
- <link rel="icon" href="/favicon.png">
- 
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <title>Multi Lang Coder</title>
+ <link rel="icon" href="favicon.png">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
  <style>
-  body {
-   margin-left: 50px;
+  :root {
+   --sand: #efe6d8;
+   --cream: rgba(255, 250, 242, 0.86);
+   --ink: #1f1713;
+   --muted: #645650;
+   --accent: #c45c32;
+   --accent-dark: #913f21;
+   --line: rgba(74, 51, 41, 0.14);
+   --shadow: 0 28px 60px rgba(31, 23, 19, 0.14);
   }
-  div, nav, ul, li, a {
-   display: inline-block;
-   position: relative;
+
+  * {
    box-sizing: border-box;
   }
-  div, nav, footer {
+
+  body {
+   min-height: 100vh;
+   margin: 0;
+   color: var(--ink);
+   font-family: "Segoe UI", sans-serif;
+   background:
+    radial-gradient(circle at top left, rgba(196, 92, 50, 0.28), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(124, 146, 103, 0.25), transparent 26%),
+    linear-gradient(135deg, #f7f0e6 0%, #efe4d5 52%, #e7ddcf 100%);
+  }
+
+  .page-shell {
+   max-width: 1140px;
+   margin: 0 auto;
+   padding: 32px 20px 56px;
+  }
+
+  .hero {
+   padding: 28px;
+   border: 1px solid var(--line);
+   border-radius: 28px;
+   background: var(--cream);
+   box-shadow: var(--shadow);
+   backdrop-filter: blur(10px);
+  }
+
+  .hero-grid {
+   display: grid;
+   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+   gap: 24px;
+   align-items: start;
+  }
+
+  .eyebrow {
+   margin: 0 0 12px;
+   color: var(--accent-dark);
+   font-size: 0.82rem;
+   font-weight: 700;
+   letter-spacing: 0.18em;
+   text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  h3 {
+   margin: 0;
+   font-family: Georgia, "Times New Roman", serif;
+  }
+
+  h1 {
+   font-size: clamp(2.5rem, 5vw, 4.5rem);
+   line-height: 0.95;
+   letter-spacing: -0.04em;
+  }
+
+  .lede {
+   max-width: 42rem;
+   margin: 18px 0 0;
+   color: var(--muted);
+   font-size: 1.03rem;
+   line-height: 1.7;
+  }
+
+  .control-panel {
+   padding: 22px;
+   border: 1px solid rgba(74, 51, 41, 0.12);
+   border-radius: 22px;
+   background: rgba(255, 255, 255, 0.8);
+  }
+
+  .form-group {
+   margin-bottom: 1rem;
+  }
+
+  .control-panel label {
+   margin-bottom: 0.45rem;
+   font-weight: 600;
+  }
+
+  .control-row {
+   display: grid;
+   grid-template-columns: minmax(0, 180px) auto;
+   gap: 14px;
+   align-items: end;
+  }
+
+  .form-control {
+   min-height: 48px;
+   border: 1px solid rgba(74, 51, 41, 0.22);
+   border-radius: 14px;
+   box-shadow: none;
+  }
+
+  .form-control:focus {
+   border-color: rgba(196, 92, 50, 0.7);
+   box-shadow: 0 0 0 0.2rem rgba(196, 92, 50, 0.14);
+  }
+
+  .search-button {
+   min-width: 160px;
+   min-height: 48px;
+   border: 0;
+   border-radius: 999px;
+   background: linear-gradient(135deg, var(--accent) 0%, #d97d44 100%);
+   box-shadow: 0 16px 30px rgba(196, 92, 50, 0.28);
+  }
+
+  .search-button:hover,
+  .search-button:focus {
+   background: linear-gradient(135deg, #b44f28 0%, #cd6d37 100%);
+  }
+
+  .status {
+   min-height: 1.5rem;
+   margin: 10px 0 0;
+   color: var(--muted);
+   font-size: 0.95rem;
+  }
+
+  .status.is-error {
+   color: #8a2d1a;
+  }
+
+  .results-shell {
+   margin-top: 26px;
+   padding: 24px;
+   border: 1px solid var(--line);
+   border-radius: 28px;
+   background: rgba(255, 252, 247, 0.9);
+   box-shadow: var(--shadow);
+  }
+
+  .results-header {
+   display: flex;
+   justify-content: space-between;
+   gap: 16px;
+   align-items: end;
+   margin-bottom: 20px;
+  }
+
+  .results-header h2 {
+   font-size: 2rem;
+  }
+
+  .result-summary {
+   margin: 0;
+   color: var(--muted);
+   text-align: right;
+  }
+
+  .cards-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+   gap: 18px;
+  }
+
+  .movie-card,
+  .empty-state {
+   height: 100%;
+   overflow: hidden;
+   border: 1px solid rgba(74, 51, 41, 0.12);
+   border-radius: 22px;
+   background: #fffdfa;
+   box-shadow: 0 16px 36px rgba(31, 23, 19, 0.09);
+  }
+
+  .movie-card {
+   display: flex;
+   flex-direction: column;
+  }
+
+  .poster-shell {
+   aspect-ratio: 2 / 3;
+   background: linear-gradient(160deg, rgba(196, 92, 50, 0.16) 0%, rgba(239, 230, 216, 0.6) 100%);
+  }
+
+  .poster-shell img {
    width: 100%;
+   height: 100%;
+   object-fit: cover;
+   display: block;
   }
-  nav {
-   background: black;   
-   height: 60px;
+
+  .poster-fallback {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+   height: 100%;
+   padding: 24px;
+   color: var(--muted);
+   text-align: center;
+   font-size: 0.92rem;
+   font-weight: 600;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
   }
-  nav ul li a {
-   color: white;
-   padding: 10px;
+
+  .movie-card-body {
+   display: flex;
+   flex: 1;
+   flex-direction: column;
+   gap: 16px;
+   padding: 18px;
   }
-  main {
-   margin: 30px;
+
+  .card-title {
+   font-size: 1.32rem;
+   line-height: 1.1;
   }
-  button {
-   background: darkslategray;
-   color: white;     
-   margin: 10px;
-   padding: 15px;
-   cursor: pointer;
-   border-radius: 10px;
+
+  .card-type {
+   margin: 8px 0 0;
+   color: var(--muted);
+   font-size: 0.95rem;
+   text-transform: capitalize;
   }
-  button.showHide {
-   display: block; 
-   background: black;
-   color: white;
+
+  .movie-meta {
+   display: grid;
+   gap: 12px;
+   margin: 0;
   }
-  button.showHide.black {
-   display: block; 
-   padding: 2px;
-  }  
-  button.showHide.gray {
-   display: block; 
-   background: darkslategray;
-   padding: 2px;
-  }    
-  span.key {
-   color: #0073e6;
-  }  
-  span.str {
-   color: orange;
+
+  .movie-meta div {
+   display: grid;
+   gap: 2px;
   }
-  span.int {
-   color: green;
+
+  .movie-meta dt {
+   margin: 0;
+   color: var(--muted);
+   font-size: 0.82rem;
+   font-weight: 700;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
   }
-  span.mthd {
-   color: purple;
+
+  .movie-meta dd {
+   margin: 0;
+   font-size: 0.97rem;
+   word-break: break-word;
   }
-  em {
-   color: dimgray;
-  }  
-  footer {
-   bottom: 0px;   
-   background: black;
-   color: white;
-   margin-left: -50px; 
-   padding: 50px;
+
+  .imdb-link {
+   align-self: start;
+   margin-top: auto;
+   border-radius: 999px;
+  }
+
+  .empty-state {
+   display: grid;
+   place-items: center;
+   min-height: 280px;
+   padding: 24px;
+   text-align: center;
+  }
+
+  .empty-state h3 {
+   margin-bottom: 10px;
+   font-size: 1.8rem;
+  }
+
+  .empty-state p {
+   margin: 0;
+   max-width: 28rem;
+   color: var(--muted);
+   line-height: 1.6;
+  }
+
+  .pagination-bar {
+   margin-top: 22px;
+   display: flex;
+   justify-content: center;
+  }
+
+  .pagination {
+   flex-wrap: wrap;
+   gap: 8px;
+   margin-bottom: 0;
+  }
+
+  .page-item .page-link {
+   border: 0;
+   border-radius: 999px;
+   color: var(--ink);
+   background: rgba(255, 255, 255, 0.92);
+   box-shadow: 0 10px 22px rgba(31, 23, 19, 0.08);
+  }
+
+  .page-item.active .page-link {
+   background: var(--accent);
+   color: #ffffff;
+  }
+
+  .page-item.disabled .page-link {
+   background: rgba(255, 255, 255, 0.55);
+   color: rgba(31, 23, 19, 0.45);
+   box-shadow: none;
+  }
+
+  @media (max-width: 991.98px) {
+   .hero-grid {
+    grid-template-columns: 1fr;
+   }
+  }
+
+  @media (max-width: 575.98px) {
+   .page-shell {
+    padding: 18px 14px 36px;
+   }
+
+   .hero,
+   .results-shell,
+   .control-panel {
+    padding: 18px;
+    border-radius: 20px;
+   }
+
+   .control-row {
+    grid-template-columns: 1fr;
+   }
+
+   .search-button {
+    width: 100%;
+   }
+
+   .results-header {
+    flex-direction: column;
+    align-items: start;
+   }
+
+   .result-summary {
+    text-align: left;
+   }
   }
  </style>
 </head>
 
 <body>
+ <main class="page-shell">
+  <section class="hero">
+   <div class="hero-grid">
+    <div>
+     <p class="eyebrow">Static GitHub Pages Demo</p>
+     <h1>Search movies and shows without a backend.</h1>
+     <p class="lede">This page turns the mixed shorthand into plain browser JavaScript. It queries the OMDb API over HTTPS, renders cards for each match, and paginates results entirely on the client so it can ship as a single static file.</p>
+    </div>
 
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
-   </ul>
-  </nav>
- </div>
+    <form id="searchForm" class="control-panel">
+     <div class="form-group">
+      <label for="searchInput">Search movie or TV show by title</label>
+      <input id="searchInput" class="form-control" type="search" placeholder="Try: Dune, Andor, Matrix" autocomplete="off" required>
+     </div>
 
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
-  </div>
+     <div class="control-row">
+      <div class="form-group mb-0">
+       <label for="numberOfResults">Results per page</label>
+       <select id="numberOfResults" name="numberOfResults" class="form-control">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5" selected>5</option>
+       </select>
+      </div>
+
+      <button id="searchButton" class="btn btn-primary search-button" type="submit">Search</button>
+     </div>
+
+     <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+    </form>
+   </div>
+  </section>
+
+  <section id="resultsSection" class="results-shell" hidden>
+   <div class="results-header">
+    <div>
+     <h2 id="resultsHeading">Results</h2>
+    </div>
+    <p id="resultSummary" class="result-summary"></p>
+   </div>
+
+   <div id="cards" class="cards-grid"></div>
+   <nav id="paginationNav" class="pagination-bar" aria-label="Search result pages"></nav>
+  </section>
  </main>
 
+ <template id="movieCardTemplate">
+  <article class="movie-card">
+   <div class="poster-shell">
+    <img class="card-poster" alt="">
+    <div class="poster-fallback" hidden></div>
+   </div>
+   <div class="movie-card-body">
+    <div>
+     <h3 class="card-title"></h3>
+     <p class="card-type"></p>
+    </div>
 
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
+    <dl class="movie-meta">
+     <div>
+      <dt>Year</dt>
+      <dd class="card-year"></dd>
+     </div>
+     <div>
+      <dt>IMDb ID</dt>
+      <dd class="card-id"></dd>
+     </div>
+    </dl>
 
-<h1 id="pageTitle"></h1>
+    <a class="btn btn-outline-dark imdb-link" target="_blank" rel="noreferrer noopener">Open on IMDb</a>
+   </div>
+  </article>
+ </template>
 
-<p>CHANGE_TEXT</p>
+ <script>
+  const API_ENDPOINT = "https://www.omdbapi.com/";
+  const API_KEY = "99387a0f";
+  const OMDB_PAGE_SIZE = 10;
 
-<pre id="a">
-CHANGE_TEXT
-</pre>
+  const searchForm = document.getElementById("searchForm");
+  const searchInput = document.getElementById("searchInput");
+  const numberOfResults = document.getElementById("numberOfResults");
+  const searchButton = document.getElementById("searchButton");
+  const statusMessage = document.getElementById("statusMessage");
+  const resultsSection = document.getElementById("resultsSection");
+  const resultsHeading = document.getElementById("resultsHeading");
+  const resultSummary = document.getElementById("resultSummary");
+  const cards = document.getElementById("cards");
+  const paginationNav = document.getElementById("paginationNav");
+  const movieCardTemplate = document.getElementById("movieCardTemplate");
 
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
+  const state = {
+   query: "",
+   totalResults: 0,
+   currentPage: 1,
+   pageSize: Number(numberOfResults.value),
+   cache: new Map()
   };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
 
+  function setStatus(message, tone) {
+   statusMessage.textContent = message;
+   statusMessage.classList.toggle("is-error", tone === "error");
+  }
 
+  function resetState(nextQuery) {
+   state.query = nextQuery;
+   state.totalResults = 0;
+   state.currentPage = 1;
+   state.pageSize = Number(numberOfResults.value);
+   state.cache = new Map();
+  }
+
+  async function fetchOmdbPage(query, omdbPage) {
+   const cacheKey = query + "::" + omdbPage;
+
+   if (state.cache.has(cacheKey)) {
+    return state.cache.get(cacheKey);
+   }
+
+   const url = new URL(API_ENDPOINT);
+   url.searchParams.set("apikey", API_KEY);
+   url.searchParams.set("s", query);
+   url.searchParams.set("page", String(omdbPage));
+
+   const response = await fetch(url.toString());
+   if (!response.ok) {
+    throw new Error("The movie search request failed.");
+   }
+
+   const payload = await response.json();
+   if (payload.Response === "False") {
+    throw new Error(payload.Error || "No results found.");
+   }
+
+   state.totalResults = Number(payload.totalResults || 0);
+   state.cache.set(cacheKey, payload);
+   return payload;
+  }
+
+  async function getResultsForPage(pageNumber) {
+   const startIndex = (pageNumber - 1) * state.pageSize;
+   const endIndex = startIndex + state.pageSize - 1;
+   const firstOmdbPage = Math.floor(startIndex / OMDB_PAGE_SIZE) + 1;
+   const lastOmdbPage = Math.floor(endIndex / OMDB_PAGE_SIZE) + 1;
+   const requests = [fetchOmdbPage(state.query, firstOmdbPage)];
+
+   if (lastOmdbPage !== firstOmdbPage) {
+    requests.push(fetchOmdbPage(state.query, lastOmdbPage));
+   }
+
+   const payloads = await Promise.all(requests);
+   const results = payloads.flatMap(function(payload) {
+    return payload.Search || [];
+   });
+   const sliceOffset = startIndex - ((firstOmdbPage - 1) * OMDB_PAGE_SIZE);
+
+   return results.slice(sliceOffset, sliceOffset + state.pageSize);
+  }
+
+  function renderEmptyState(title, description) {
+   cards.innerHTML = "";
+   paginationNav.innerHTML = "";
+   resultSummary.textContent = "";
+
+   const emptyState = document.createElement("article");
+   emptyState.className = "empty-state";
+   emptyState.innerHTML = "<div><h3>" + title + "</h3><p>" + description + "</p></div>";
+   cards.appendChild(emptyState);
+   resultsSection.hidden = false;
+  }
+
+  function buildCard(result) {
+   const fragment = movieCardTemplate.content.cloneNode(true);
+   const poster = fragment.querySelector(".card-poster");
+   const posterFallback = fragment.querySelector(".poster-fallback");
+   const cardTitle = fragment.querySelector(".card-title");
+   const cardType = fragment.querySelector(".card-type");
+   const cardYear = fragment.querySelector(".card-year");
+   const cardId = fragment.querySelector(".card-id");
+   const imdbLink = fragment.querySelector(".imdb-link");
+
+   cardTitle.textContent = result.Title;
+   cardType.textContent = result.Type;
+   cardYear.textContent = result.Year;
+   cardId.textContent = result.imdbID;
+   imdbLink.href = "https://www.imdb.com/title/" + encodeURIComponent(result.imdbID) + "/";
+   imdbLink.setAttribute("aria-label", "Open IMDb page for " + result.Title);
+
+   if (result.Poster && result.Poster !== "N/A") {
+    poster.src = result.Poster;
+    poster.alt = result.Title + " poster";
+   } else {
+    poster.hidden = true;
+    posterFallback.hidden = false;
+    posterFallback.textContent = result.Title + "\nNo poster";
+   }
+
+   return fragment;
+  }
+
+  function renderCards(results) {
+   cards.innerHTML = "";
+   const fragment = document.createDocumentFragment();
+
+   results.forEach(function(result) {
+    fragment.appendChild(buildCard(result));
+   });
+
+   cards.appendChild(fragment);
+  }
+
+  function createPaginationItem(label, targetPage, options) {
+   const item = document.createElement("li");
+   item.className = "page-item";
+
+   if (options.active) {
+    item.classList.add("active");
+   }
+
+   if (options.disabled) {
+    item.classList.add("disabled");
+   }
+
+   const button = document.createElement("button");
+   button.type = "button";
+   button.className = "page-link";
+   button.textContent = label;
+   button.disabled = options.disabled;
+
+   if (!options.disabled) {
+    button.addEventListener("click", function() {
+     loadPage(targetPage);
+    });
+   }
+
+   item.appendChild(button);
+   return item;
+  }
+
+  function renderPagination() {
+   paginationNav.innerHTML = "";
+
+   const totalPages = Math.ceil(state.totalResults / state.pageSize);
+   if (totalPages <= 1) {
+    return;
+   }
+
+   const paginationList = document.createElement("ul");
+   paginationList.className = "pagination";
+
+   paginationList.appendChild(createPaginationItem("Previous", state.currentPage - 1, {
+    disabled: state.currentPage === 1,
+    active: false
+   }));
+
+   const maxVisiblePages = 7;
+   const halfWindow = Math.floor(maxVisiblePages / 2);
+   let startPage = Math.max(1, state.currentPage - halfWindow);
+   let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+   startPage = Math.max(1, endPage - maxVisiblePages + 1);
+
+   for (let pageNumber = startPage; pageNumber <= endPage; pageNumber += 1) {
+    paginationList.appendChild(createPaginationItem(String(pageNumber), pageNumber, {
+     disabled: false,
+     active: pageNumber === state.currentPage
+    }));
+   }
+
+   paginationList.appendChild(createPaginationItem("Next", state.currentPage + 1, {
+    disabled: state.currentPage === totalPages,
+    active: false
+   }));
+
+   paginationNav.appendChild(paginationList);
+  }
+
+  function updateSummary(resultsOnPage) {
+   if (state.totalResults === 0 || resultsOnPage === 0) {
+    resultSummary.textContent = "";
+    return;
+   }
+
+   const start = ((state.currentPage - 1) * state.pageSize) + 1;
+   const end = Math.min(start + resultsOnPage - 1, state.totalResults);
+   resultSummary.textContent = "Showing " + start + "-" + end + " of " + state.totalResults + " results for \"" + state.query + "\".";
+  }
+
+  async function loadPage(pageNumber) {
+   searchButton.disabled = true;
+   setStatus("Loading results...", "info");
+
+   try {
+    state.currentPage = pageNumber;
+    const results = await getResultsForPage(pageNumber);
+
+    resultsHeading.textContent = "Results";
+    renderCards(results);
+    updateSummary(results.length);
+    renderPagination();
+    resultsSection.hidden = false;
+    setStatus("Loaded page " + pageNumber + ".", "info");
+   } catch (error) {
+    resultsHeading.textContent = "No matches";
+    renderEmptyState("Nothing matched that title.", "Try a broader search or a different spelling. The OMDb API returned: " + error.message);
+    setStatus(error.message, "error");
+   } finally {
+    searchButton.disabled = false;
+   }
+  }
+
+  searchForm.addEventListener("submit", function(event) {
+   event.preventDefault();
+
+   const query = searchInput.value.trim();
+   if (!query) {
+    setStatus("Enter a movie or TV title to begin.", "error");
+    return;
+   }
+
+   resetState(query);
+   loadPage(1);
+  });
+
+  numberOfResults.addEventListener("change", function() {
+   state.pageSize = Number(numberOfResults.value);
+
+   if (state.query) {
+    state.currentPage = 1;
+    loadPage(1);
+   }
+  });
+ </script>
 </body>
 </html>
