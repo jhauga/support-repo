@@ -15,7 +15,7 @@
       "id": "btn1",
       "top": 294.2,
       "left": 144,
-      "attrs": { "color": "green", "label": "Price" }
+      "attrs": { "color": "green", "label": "Text" }
     },
     {
       "type": "wokwi-lcd1602",
