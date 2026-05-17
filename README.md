@@ -5,4 +5,4 @@ Support branch of repository for:
 <!-- Link to PR -->
 - `Ctrl + click` View illustration [wokwi project](https://wokwi.com/projects/464248238893219841)
 
-Raw text [file](file.txt) for wokwi project demo.
+Raw text [file](file.txt) for [wokwi](https://wokwi.com/) project demo derived from [urish](https://wokwi.com/makers/urish) project [esp32-jokes-api](https://wokwi.com/projects/342032431249883731).
