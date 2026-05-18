@@ -37,16 +37,29 @@ if "%_checkBranch%"=="%~1" (
  rem continue only if no conflicts
  if NOT ERRORLEVEL 1 (
   rem remove first line with link `https://jhauga.github.io/support-repo/` from README.md
-  sed -i "0,/^- .\+https:\/\/jhauga\.github\.io\/support-repo\/.*$/s///" README.md
+  sed "0,/^- .\+https:\/\/jhauga\.github\.io\/support-repo\/.*$/s///" README.md > README.md.tmp
+  rem move to resovlve sed tmp file bug
+  move /Y README.md.tmp README.md >nul 2>nul
   
   rem uncomment the htmlpreview block - remove <!-- and --> around the block
-  sed -i "/^<!--$/,/^-->$/{/^<!--$/d;/^-->$/d}" README.md
+  sed "/^<!--$/,/^-->$/{/^<!--$/d;/^-->$/d}" README.md > README.md.tmp
+  rem move to resovlve sed tmp file bug
+  move /Y README.md.tmp README.md >nul 2>nul
   
   rem remove the git commit comment line
-  sed -i "/<!-- git commit -m \"undeploy: use htmlpreview for index.html\" -->/d" README.md
+  sed "/<!-- git commit -m \"undeploy: use htmlpreview for index.html\" -->/d" README.md > README.md.tmp
+  rem move to resovlve sed tmp file bug
+  move /Y README.md.tmp README.md >nul 2>nul
   
   rem replace BRANCH_NAME with the actual branch name
-  sed -i "s/BRANCH_NAME/%~1/g" README.md
+  sed "s/BRANCH_NAME/%~1/g" README.md > README.md.tmp
+  rem move to resovlve sed tmp file bug
+  move /Y README.md.tmp README.md >nul 2>nul
+
+  rem remove deploy action
+  if EXIST ".github\workflows\deploy.yml" (
+   del /Q ".github\workflows\deploy.yml" >nul 2>nul
+  )
   
   rem remove undeploy before pushing but ensure not on main
   if NOT "%_checkBranch%"=="main" (

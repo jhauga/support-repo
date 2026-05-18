@@ -46,11 +46,15 @@ if NOT "%_currentBranch%"=="%_branchName%" (
 )
 
 :: update branch name
-sed -i "s;BRANCH_NAME;%_branchName%;g" README.md
+sed "s;BRANCH_NAME;%_branchName%;g" README.md > README.md.tmp
+rem move to resovlve sed tmp file bug
+move /Y README.md.tmp README.md >nul 2>nul
 
 :: Update README.md with repo name if provided
 if NOT "%_repoName%"=="" (
- sed -i "s;REPO_NAME;%_repoName%;g" README.md
+ sed "s;REPO_NAME;%_repoName%;g" README.md > README.md.tmp
+ rem move to resovlve sed tmp file bug
+ move /Y README.md.tmp README.md >nul 2>nul
  if EXIST "templates\%_repoName%.txt" (
   call makeTemplate.bat "%_repoName%"
   if "%_repoName%"=="awesome-copilot" (
@@ -66,10 +70,14 @@ if NOT "%_repoName%"=="" (
 
 :: Update README.md with description if provided
 if "%_repoName%"=="awesome-copilot" (
- sed -i "s/SHORT_DESCRIPTION/Support branch for new %_newWhat% %_toolName%./g" README.md
+ sed "s/SHORT_DESCRIPTION/Support branch for new %_newWhat% %_toolName%./g" README.md  > README.md.tmp
+ rem move to resovlve sed tmp file bug
+ move /Y README.md.tmp README.md >nul 2>nul
 ) else (
  if NOT "%_description%"=="" (
-  sed -i "s/SHORT_DESCRIPTION/%_description%/g" README.md
+  sed "s/SHORT_DESCRIPTION/%_description%/g" README.md > README.md.tmp
+  rem move to resovlve sed tmp file bug
+  move /Y README.md.tmp README.md >nul 2>nul
  )
 )
 :: Update workflow action - only ONE branch name per line
