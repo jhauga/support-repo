@@ -12,8 +12,11 @@ Support branch for new plugin vibe-coder.
 
 - **Agent**: Copilot CLI
 - **Model**: Claude Sonnet 4.5
-- **Number of Prompts**: 4
-- **Post Edits**: 1
+  - **Number of Prompts**: 1-5
+- **Model**: GPT-5.4
+  - **Number of Prompts**: 6-8
+- **Total Prompts**: 8
+- **Post Edits**: 2
 
 ## Results
 
@@ -40,15 +43,16 @@ A beautiful, feature-rich movie discovery application with dynamic data from The
 - 🎲 Random Top 250 Movie Generator
 - 🏆 Random Oscar Winner Generator
 - 🔍 Advanced Search (Movies & TV Shows)
-- 📊 Comprehensive Movie Details
+- 📊 Inline Movie Details from Search Results
 - 🖼️ High-Quality Posters & Backdrops
 - 🔗 Direct Links to IMDB & TMDB
+- 👁️ Toggleable Result Panels for Apps and Search
 
 ### 🚀 Quick Start
 
 1. Open `index.html` in your browser
 2. Click "Get Random Top 250 Movie" or "Get Random Oscar Winning Movie"
-3. Or search for any movie/TV show in the Search section
+3. Search for any movie/TV show in the Search section and use "View Details" to open the rich inline detail view
 
 ### 📝 Prompts Used
 
@@ -227,7 +231,7 @@ See project license for details.
 ---
 
 **Version History:**
-- v2.0 (2026-05-19): TMDB integration, beautiful UI, trailers, cast gallery
+- v2.0 (2026-05-19): TMDB integration, beautiful UI, trailers, cast gallery, inline search details, toggleable app and search results
 - v1.0 (2026-05): Dynamic IMDB scraping, OMDb integration
 - v0.1: Initial vibe-coded prototype
 ```
@@ -235,18 +239,63 @@ See project license for details.
 Made verbose documentation, so - all `md` files here created by prompt. Finished with prompts like:
 
 ```text
-# prompt
+# Claude Post Prompts
+
+## prompt 4
 graphic-designer fix the menu, and do away with the purple gradients.
 Make the look professionsal for @index.html 
 
-# prompt
+## prompt 5
 Liar. The menu is in the middle of the page. Put and fix it to the top of page.
 The functional elements cannot be clicked.
+
+# GPT Post Prompts
+
+## prompt 6
+/vibe-coder Update @index.html to:
+
+- Use the imdbID, or movie id returned from search when "View Details" is clicked,
+ similar to how inline apps on page parse html
+ - Add one link below "View Detail" as "View on TMDB" linking as it does now
+- For two apps, add a button that allows the results to be toggled
+
+### Asked user Confirm this Vibe Lock before I edit:  
+Vibe Lock
+---------
+Feel:         clean, inline, action-first 
+Outcome:      open details from the search result's returned imdbID or movie…
+  └ Outcome: open details from the search result's staying on index.html using TMDB
+             api similar to how both apps parse html and data for movies, keep a
+             separate TMDB link, and let both app result panels toggle open or closed
+
+## prompt 7
+/graphic-designer Look at @toggleButton.svg as it is:
+
+- Rendered
+- As SVG tag data, reading tag `id` attribute for additional prompting
+
+Goal: update only @index.html using only data from the SVG file to add the toggle button(s) for:
+
+- "Get Random Top 250 Movie"
+- "Get Random Oscar Winning Movie"
+
+## prompt 8
+/graphic-designer Great! For the search portion of @index.html we want to:
+
+- Add a button with the same functionality as the toggle button for the apps
+- Create a new design for the toggle icon
+  - For the design - suprise me!
 ```
 
 ### Post Edits
 
+**1.**
+
 ```bash
 move index.new.html index.html
 ```
+
+**2.**
+
+- Manually added the move ids for IMDB's top 250, and Oscar winners.
 <!-- formatter_2 -->
