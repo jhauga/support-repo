@@ -3,7 +3,7 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [awesome-copilot pull request](https://github.com/) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/1761) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
 
 <!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
@@ -89,8 +89,8 @@ Use the current OMDb as a fallback, but add the TMDB API. See:
 - https://developer.themoviedb.org/docs/append-to-response
 - https://developer.themoviedb.org/docs/search-and-query-for-details
 
-API Key: 5f040b52912c3153e54ba8544a80146e
-Access Token: eyJhbGciOiJIUzI1NiJ9...
+API Key: << API_KEY >>
+Access Token: << API_TOKEN >>
 
 For the rest - surprise me!
 ```
