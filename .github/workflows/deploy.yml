@@ -3,7 +3,7 @@ name: Deploy GitHub Pages
 on:
   push:
     branches:
-      - plugin-vibe-coder
+      - plugin-vibe-coding
   workflow_dispatch:
 
 permissions:
@@ -31,7 +31,7 @@ jobs:
           path: .
 
   deploy:
-    if: github.ref == 'refs/heads/plugin-vibe-coder'
+    if: github.ref == 'refs/heads/plugin-vibe-coding'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
