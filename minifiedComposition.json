@@ -1,0 +1,5072 @@
+{
+ "props": {
+  "pageProps": {
+   "tconst": "tt0088763",
+   "aboveTheFoldData": {
+    "id": "tt0088763",
+    "productionStatus": {
+     "currentProductionStage": {
+      "id": "released",
+      "text": "Released",
+      "__typename": "ProductionStage"
+     },
+     "productionStatusHistory": [
+      {
+       "status": {
+        "id": "released",
+        "text": "Released",
+        "__typename": "ProductionStatus"
+       },
+       "__typename": "ProductionStatusHistory"
+      }
+     ],
+     "restriction": null,
+     "__typename": "ProductionStatusDetails"
+    },
+    "externalLinks": {
+     "total": 272,
+     "__typename": "ExternalLinkConnection"
+    },
+    "metacritic": {
+     "metascore": {
+      "score": 88,
+      "__typename": "Metascore"
+     },
+     "__typename": "Metacritic"
+    },
+    "keywords": {
+     "total": 679,
+     "edges": [
+      {
+       "node": {
+        "text": "time travel",
+        "__typename": "TitleKeyword"
+       },
+       "__typename": "TitleKeywordEdge"
+      },
+      {
+       "node": {
+        "text": "time machine",
+        "__typename": "TitleKeyword"
+       },
+       "__typename": "TitleKeywordEdge"
+      },
+      {
+       "node": {
+        "text": "time travel comedy",
+        "__typename": "TitleKeyword"
+       },
+       "__typename": "TitleKeywordEdge"
+      },
+      {
+       "node": {
+        "text": "delorean",
+        "__typename": "TitleKeyword"
+       },
+       "__typename": "TitleKeywordEdge"
+      },
+      {
+       "node": {
+        "text": "future",
+        "__typename": "TitleKeyword"
+       },
+       "__typename": "TitleKeywordEdge"
+      }
+     ],
+     "__typename": "TitleKeywordConnection"
+    },
+    "credits": {
+     "total": 551,
+     "__typename": "CreditConnection"
+    },
+    "engagementStatistics": {
+     "watchlistStatistics": {
+      "displayableCount": {
+       "text": "Added by 727K users",
+       "__typename": "LocalizedDisplayableCount"
+      },
+      "__typename": "WatchlistStatistics"
+     },
+     "__typename": "EngagementStatistics"
+    },
+    "titleText": {
+     "text": "Back to the Future",
+     "__typename": "TitleText"
+    },
+    "titleType": {
+     "displayableProperty": {
+      "value": {
+       "plainText": "",
+       "__typename": "Markdown"
+      },
+      "__typename": "DisplayableTitleTypeProperty"
+     },
+     "text": "Movie",
+     "id": "movie",
+     "isSeries": false,
+     "isEpisode": false,
+     "categories": [
+      {
+       "value": "movie",
+       "__typename": "TitleTypeCategory"
+      }
+     ],
+     "canHaveEpisodes": false,
+     "__typename": "TitleType"
+    },
+    "originalTitleText": {
+     "text": "Back to the Future",
+     "__typename": "TitleText"
+    },
+    "certificate": {
+     "rating": "PG",
+     "__typename": "Certificate"
+    },
+    "releaseYear": {
+     "year": 1985,
+     "endYear": null,
+     "__typename": "YearRange"
+    },
+    "releaseDate": {
+     "day": 3,
+     "month": 7,
+     "year": 1985,
+     "country": {
+      "text": "United States",
+      "__typename": "LocalizedDisplayableCountry"
+     },
+     "__typename": "ReleaseDate"
+    },
+    "runtime": {
+     "seconds": 6960,
+     "displayableProperty": {
+      "value": {
+       "plainText": "1h 56m",
+       "__typename": "Markdown"
+      },
+      "__typename": "DisplayableTitleRuntimeProperty"
+     },
+     "__typename": "Runtime"
+    },
+    "originalRuntime": {
+     "seconds": 6960,
+     "displayableProperty": {
+      "value": {
+       "plainText": "1h 56m",
+       "__typename": "Markdown"
+      },
+      "__typename": "DisplayableTitleRuntimeProperty"
+     },
+     "__typename": "Runtime"
+    },
+    "canRate": {
+     "isRatable": true,
+     "__typename": "CanRate"
+    },
+    "ratingsSummary": {
+     "aggregateRating": 8.5,
+     "voteCount": 1453951,
+     "__typename": "RatingsSummary"
+    },
+    "meterRanking": {
+     "currentRank": 267,
+     "rankChange": {
+      "changeDirection": "DOWN",
+      "difference": 24,
+      "__typename": "MeterRankChange"
+     },
+     "__typename": "TitleMeterRanking"
+    },
+    "series": null,
+    "isAdult": false,
+    "genres": {
+     "genres": [
+      {
+       "text": "Adventure",
+       "id": "Adventure",
+       "__typename": "Genre"
+      },
+      {
+       "text": "Comedy",
+       "id": "Comedy",
+       "__typename": "Genre"
+      },
+      {
+       "text": "Sci-Fi",
+       "id": "Sci-Fi",
+       "__typename": "Genre"
+      }
+     ],
+     "__typename": "Genres"
+    },
+    "interests": {
+     "edges": [
+      {
+       "node": {
+        "id": "in0000037",
+        "primaryText": {
+         "text": "High-Concept Comedy",
+         "__typename": "InterestText"
+        },
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000023",
+        "primaryText": {
+         "text": "Teen Adventure",
+         "__typename": "InterestText"
+        },
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000049",
+        "primaryText": {
+         "text": "Teen Comedy",
+         "__typename": "InterestText"
+        },
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000166",
+        "primaryText": {
+         "text": "Time Travel",
+         "__typename": "InterestText"
+        },
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000024",
+        "primaryText": {
+         "text": "Urban Adventure",
+         "__typename": "InterestText"
+        },
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000012",
+        "primaryText": {
+         "text": "Adventure",
+         "__typename": "InterestText"
+        },
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000034",
+        "primaryText": {
+         "text": "Comedy",
+         "__typename": "InterestText"
+        },
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000162",
+        "primaryText": {
+         "text": "Sci-Fi",
+         "__typename": "InterestText"
+        },
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      }
+     ],
+     "__typename": "InterestConnection"
+    },
+    "plot": {
+     "plotText": {
+      "plainText": "Marty McFly, a 17-year-old high school student, is accidentally sent 30 years into the past in a time-traveling DeLorean invented by his close friend, the maverick scientist Doc Brown.",
+      "__typename": "Markdown"
+     },
+     "language": {
+      "id": "en-US",
+      "__typename": "DisplayableLanguage"
+     },
+     "machineTranslatedText": {
+      "language": {
+       "id": "en-US"
+      },
+      "value": {
+       "plainText": "Marty McFly, a 17-year-old high school student, is accidentally sent 30 years into the past in a time-traveling DeLorean invented by his close friend, the maverick scientist Doc Brown.",
+       "__typename": "Markdown"
+      },
+      "isMachineTranslation": false,
+      "__typename": "MachineTranslatedMarkdown"
+     },
+     "__typename": "Plot"
+    },
+    "plotContributionLink": {
+     "url": "https://contribute.imdb.com/updates?update=tt0088763:outlines.add.1.locale~en-US",
+     "__typename": "ContributionLink"
+    },
+    "primaryImage": {
+     "id": "rm554638848",
+     "width": 1218,
+     "height": 1893,
+     "url": "https://m.media-amazon.com/images/M/MV5BZmM3ZjE0NzctNjBiOC00MDZmLTgzMTUtNGVlOWFlOTNiZDJiXkEyXkFqcGc@._V1_.jpg",
+     "caption": {
+      "plainText": "Michael J. Fox in Back to the Future (1985)",
+      "__typename": "Markdown"
+     },
+     "__typename": "Image"
+    },
+    "images": {
+     "total": 643,
+     "edges": [
+      {
+       "node": {
+        "id": "rm1175664129",
+        "__typename": "Image"
+       },
+       "__typename": "ImageEdge"
+      }
+     ],
+     "__typename": "ImageConnection"
+    },
+    "videos": {
+     "total": 24,
+     "__typename": "TitleRelatedVideosConnection"
+    },
+    "primaryVideos": {
+     "edges": [
+      {
+       "node": {
+        "id": "vi1126811673",
+        "createdDate": "2025-08-29T16:13:04.945168381Z",
+        "isMature": false,
+        "runtime": {
+         "value": 92,
+         "__typename": "VideoRuntime"
+        },
+        "name": {
+         "value": "40th Anniversary Trailer",
+         "language": "en",
+         "__typename": "LocalizedString"
+        },
+        "description": {
+         "value": "Marty McFly, a 17-year-old high school student, is accidentally sent 30 years into the past in a time-traveling DeLorean invented by his close friend, the maverick scientist Doc Brown.",
+         "language": "en",
+         "__typename": "LocalizedString"
+        },
+        "timedTextTracks": [],
+        "recommendedTimedTextTrack": null,
+        "thumbnail": {
+         "url": "https://m.media-amazon.com/images/M/MV5BNzQ0MmJjMzEtZTE4Zi00ZmU5LTlhYTEtMzdjY2EwOTliY2JkXkEyXkFqcGdeQXNvbG5vbXM@._V1_.jpg",
+         "height": 1080,
+         "width": 1920,
+         "__typename": "Thumbnail"
+        },
+        "primaryTitle": {
+         "id": "tt0088763",
+         "titleText": {
+          "text": "Back to the Future",
+          "__typename": "TitleText"
+         },
+         "originalTitleText": {
+          "text": "Back to the Future",
+          "__typename": "TitleText"
+         },
+         "releaseYear": {
+          "year": 1985,
+          "__typename": "YearRange"
+         },
+         "__typename": "Title"
+        },
+        "playbackURLs": [
+         {
+          "displayName": {
+           "value": "1080p",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "MP4",
+          "videoDefinition": "DEF_1080p",
+          "url": "https://imdb-video.media-imdb.com/vi1126811673/1434659529640-260ouz-1756483985174.mp4?Expires=1779236012\u0026Signature=FCg8iOj1bO41gqR-A6Y4bu~vdIOm4ojkDw2jcb3h1uPKpjn3py4LNlx2IrWGBymCmIcZLr6dloLePyL-snkMOo-EHWw2qdrHLpsqJFGOz3ZRUnO62t8QOpnZg-PamY0mzDQcJjMRVIrL0M5PbFHBh2MW85JJTFewVqOc~WPecaHKao-ymOiiYypVNBY6FqN5LGCLwzeUC2BP5aVCZ8ggBYBDLWAkEluRFpwlosfewB1LQYQ8dK60mTTfoeGB8fy98XD07uxR2G-d-PCscXVlbQg9vLtaVCMrE1Q2RwAJsGpj7q8lroi3X0KlJ3ZpS83Vpe0O0Y9n4MIIvV4OgHUFjA__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "metricDimensions": [
+           {
+            "name": "encoder",
+            "value": "ETS",
+            "__typename": "MetricDimension"
+           }
+          ],
+          "__typename": "PlaybackURL"
+         },
+         {
+          "displayName": {
+           "value": "SD",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "MP4",
+          "videoDefinition": "DEF_SD",
+          "url": "https://imdb-video.media-imdb.com/vi1126811673/1434659454657-dx9ykf-1756483985174.mp4?Expires=1779236012\u0026Signature=SRlAUIRgMc8J5tTopTe6BYBSzoQwJ3puD03mot1OKDfy04VZpvtDh5jiplE8EwkQeTJKmmx2HIvueZn4BvgVSA6kyXUM4r~sxersfNcIM6AYZoHux0uHMj67-1ThI2xbP2pTXfBkeNHi-eQ6utuypWshy6X30bqKLV-MOXZEN-T-0-uxsMHvrlYht~bd8iuNu0HhyDVeVDGZN3WgQnR5Y3IGUxnvyzkNohMgklNKDzbJncs~S~75k4-EldmJLQXsswQK93gLHFa43dwk67zNFl16EfLJYHA0017LrbLfzS8ZrEtON8sBV0rhjBgLdGuBXMy2FwCFqheHM5ReJHyK7A__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "metricDimensions": [
+           {
+            "name": "encoder",
+            "value": "ETS",
+            "__typename": "MetricDimension"
+           }
+          ],
+          "__typename": "PlaybackURL"
+         },
+         {
+          "displayName": {
+           "value": "AUTO",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "M3U8",
+          "videoDefinition": "DEF_AUTO",
+          "url": "https://imdb-video.media-imdb.com/vi1126811673/hls-1756483985174-master.m3u8?Expires=1779236012\u0026Signature=QaXD8f8DaRF6DQTIDOY4xPOvdk8uoqFrTFBcS4YLFowgUMHWG5FgH-8HRDbDjy8gZaZZ68uBO6gfQ8PukqIT3QulNYJrnygpcYYsfYQDWHwd7nDB9C9RlxRKDvgj5tJeqMLJBG5oztRYrmT9X3Q-u3ZGrTCv5KL312~sguOSu02FzhqgDjNafcCT64SFYvk0mXILgD0A8S6sYOH0HvSw4Z68YI3IZOE-5bFYqkeul4Rv3ZAK7AY2RWiGo1JwlCj3VtSnAlvs9qou8DhayMGfBaaVNGqvToAuzhCyzbVY9Yj9iuvruExOs9wql~6GvYge7BxvV-EPsMmC6qwqirSQpQ__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "metricDimensions": [
+           {
+            "name": "encoder",
+            "value": "ETS",
+            "__typename": "MetricDimension"
+           }
+          ],
+          "__typename": "PlaybackURL"
+         },
+         {
+          "displayName": {
+           "value": "720p",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "MP4",
+          "videoDefinition": "DEF_720p",
+          "url": "https://imdb-video.media-imdb.com/vi1126811673/1434659379400-8cjq25-1756483985174.mp4?Expires=1779236012\u0026Signature=DRa9KMxaCXy~AVDAWgjAcs~V1jGwm-JKWCArk37k5-PbLrHbeEh9FqJEciUgwQ~93r4YRT~4XWtwUvtmDd4fb0d19u1XIQLnb0Jc4EQwGgHLZ7-4TfgbT4o-0SjQXbb~p2UAQoz4CKstmL3-K~w9USs6M1XKpQToM0gU3mgN8StGRvp1PVbNjn9Kd1hA1SYENMRlM7FcGFugi6J9UNLWrLljWj4LJhjZlUPLS8CtIcnKNKH7DNOtoZfM5xve7bpwQMLj-eXkjFnlaC9wREuNKIwSC4quy424278ex~g2SHKyAsTLR7zWAJsOfCMkT~oFjWPfLhOyDHl7HcFx6qAPAw__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "metricDimensions": [
+           {
+            "name": "encoder",
+            "value": "ETS",
+            "__typename": "MetricDimension"
+           }
+          ],
+          "__typename": "PlaybackURL"
+         },
+         {
+          "displayName": {
+           "value": "480p",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "MP4",
+          "videoDefinition": "DEF_480p",
+          "url": "https://imdb-video.media-imdb.com/vi1126811673/1434659607842-pgv4ql-1756483985174.mp4?Expires=1779236012\u0026Signature=Ya8qgO02-~yQNUXwlCnxLxdnCiI1IcxnfoLjUWksDXNKo6jK259qVIJamlt7LIIXbaRhWDNqZl~cH~S2Uda9NCkbFccpD-cm965Mz-SdctfFKb7ZWmgNw~lhSVirnkrmTdr7FyBfHBoCVgQwSpwqbwtsfD7Ib6c24EgXMoIdAxgrDxbU-K3Jgdd7~qjdLFJRVDsvOPwvMkX0~acg1bSQp43jDzvRUzfnnSIe3lTJ1Mxie5gGR2K8w4fDuFpdsEW2BPV9uuvs2Rodlxe4fAkLFg9mDRW0mIZK9jqmmXYFKpT2XVM3vjG3VzoziM7KAJlMsOWYI-3cxVxP-DhStyX3Aw__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "metricDimensions": [
+           {
+            "name": "encoder",
+            "value": "ETS",
+            "__typename": "MetricDimension"
+           }
+          ],
+          "__typename": "PlaybackURL"
+         }
+        ],
+        "contentType": {
+         "id": "amzn1.imdb.video.contenttype.trailer",
+         "displayName": {
+          "value": "Trailer",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "previewURLs": [
+         {
+          "displayName": {
+           "value": "AUTO",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "M3U8",
+          "videoDefinition": "DEF_AUTO",
+          "url": "https://imdb-video.media-imdb.com/vi1126811673/hls-preview-170ce4c9-2860-4587-a7cd-61c6dd270371.m3u8?Expires=1779236012\u0026Signature=Bkme9L88yA5G136lf8b4hrIQd0WhV0PvLzK4wCKxz~AHlDKR595TIUQmQgkks96odPDTDNzf6TyVepvMLsqAhhji0lh9bJiorO9foRpKTEOh3bCJlGWw33IXYuZKcmGLZknStiXH6~Gl-X-2eXfWiKGT7end1c~h4Lqv~8IsBt1P6GyEvl3caCQJQHp-9TkNwiE7KrUAtR7v-FW6qppVX2RrONwOzlzBh9WLhjEAZUV4gfFVC82UdLcDi-3rU~UwPqhib6PfxemNStgkhxGKvQIkkgZ1dymsAOXhMBEMpliuikmv-u~4shQ4RyXdGxFZhDmjbgZmCab~8GOb9Po2cw__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "__typename": "PlaybackURL"
+         }
+        ],
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi870762265",
+        "createdDate": "2023-09-09T17:03:44.645Z",
+        "isMature": false,
+        "runtime": {
+         "value": 63,
+         "__typename": "VideoRuntime"
+        },
+        "name": {
+         "value": "Back to the Future",
+         "language": "en",
+         "__typename": "LocalizedString"
+        },
+        "description": {
+         "value": "Fathom Events Trailer",
+         "language": "en",
+         "__typename": "LocalizedString"
+        },
+        "timedTextTracks": [],
+        "recommendedTimedTextTrack": null,
+        "thumbnail": {
+         "url": "https://m.media-amazon.com/images/M/MV5BMTk4ZjIxYjItYTkyZC00ZWEwLWI4MTEtNzBiNmNjYTg2NDI2XkEyXkFqcGdeQVRoaXJkUGFydHlJbmdlc3Rpb25Xb3JrZmxvdw@@._V1_.jpg",
+         "height": 1080,
+         "width": 1920,
+         "__typename": "Thumbnail"
+        },
+        "primaryTitle": {
+         "id": "tt0088763",
+         "titleText": {
+          "text": "Back to the Future",
+          "__typename": "TitleText"
+         },
+         "originalTitleText": {
+          "text": "Back to the Future",
+          "__typename": "TitleText"
+         },
+         "releaseYear": {
+          "year": 1985,
+          "__typename": "YearRange"
+         },
+         "__typename": "Title"
+        },
+        "playbackURLs": [
+         {
+          "displayName": {
+           "value": "1080p",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "MP4",
+          "videoDefinition": "DEF_1080p",
+          "url": "https://imdb-video.media-imdb.com/vi870762265/1434659529640-260ouz-1694279024872.mp4?Expires=1779236012\u0026Signature=WSxPxPDY7-Wvy04EJWAtVWCM~-HRzthGeSVy~15YkyBt~Bx66z7biwTm47ZaSq51VdiPJVd64B3XYdITXUhvdZduQsNA9DLoZv9akyy8jtDOH~MD0Oc8UfNHUslP7~bcfgcQ6UzQkVFTM2mPG6Hd38lEE6~xjDCXZqic3958okgIpPmUpq0vc~wmeQxziEcSfpxEdpWxc7e10A2c1UdTb1xoxIuS0UkoLO5NR7dAld9bPLSgSpwnYiE5IH6ieu9L~amC8dyc7TpvVa2Uo3pK~RZMNgxYJQbGlJNSKZ8G0pV3Tn7S6SuVg8ov91OTAYG6si8j7gnjyIBERPfbQBYgEg__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "metricDimensions": [
+           {
+            "name": "encoder",
+            "value": "ETS",
+            "__typename": "MetricDimension"
+           }
+          ],
+          "__typename": "PlaybackURL"
+         },
+         {
+          "displayName": {
+           "value": "AUTO",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "M3U8",
+          "videoDefinition": "DEF_AUTO",
+          "url": "https://imdb-video.media-imdb.com/vi870762265/hls-1694279024872-master.m3u8?Expires=1779236012\u0026Signature=iy~hOHOizrxzTk610114bAUr6~wMEFes8iGx3KRnA0pj8bb7q2GMTePUfAdk8T7NsSttTXmafX4rY3S1SRgroil~HpEyYviUAn~o~tVYOSMHLvnqjcAccQawoPAYw-j5jXq8~MyOfMP3lyZeHiZup9N7toLX7eXobFqQvjfdmMN-EwvJA6Gu0~WfTyZU4mPfD4dWWyMpgY6bl0pb~kzthuWA9xaNSNMe4IaZXxn02XConzpARBLwOqcmP4OgyMNqG6BkUcPSrYmqk104yRNwbeCwHhqoGIAYF9xsYCQptL2kZF~fUO05cyt3rrQKvKxzeWf8a6Ma1Q75ifxg2ICwBw__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "metricDimensions": [
+           {
+            "name": "encoder",
+            "value": "ETS",
+            "__typename": "MetricDimension"
+           }
+          ],
+          "__typename": "PlaybackURL"
+         },
+         {
+          "displayName": {
+           "value": "SD",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "MP4",
+          "videoDefinition": "DEF_SD",
+          "url": "https://imdb-video.media-imdb.com/vi870762265/1434659454657-dx9ykf-1694279024872.mp4?Expires=1779236012\u0026Signature=jXEsO6LFSOBLxrNJCLlk4dI0VUaLxSMzN9u8cDgtNAIR6e3AL1q4uimKDHEoMQA-vJpSa3Vp9V4FT4c9WYY5U37C6qHTH9Sb5IyLZCdzztCEL2RL8D2asUryyukMkCx5FRIEFW-um4Etm0TsAW-JTpFWJRhsA3Kb1pG3VZ~229R4PBkgxsxASk5RaVlHDTeBOVmHP4uKUy03ikwkGKZFE2JA3W3ezrO3Lp6DfmrQMQTbGjP0MGkPm5XHVgBmk7eOhaAV9J7pS63GZ9rCI3A6tAFfdSwNIyVZeUPcfHzca1NMUC~k9awvl9xpkqkuMBtkVX~JPo~BBKNZGhogVwWHeg__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "metricDimensions": [
+           {
+            "name": "encoder",
+            "value": "ETS",
+            "__typename": "MetricDimension"
+           }
+          ],
+          "__typename": "PlaybackURL"
+         },
+         {
+          "displayName": {
+           "value": "720p",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "MP4",
+          "videoDefinition": "DEF_720p",
+          "url": "https://imdb-video.media-imdb.com/vi870762265/1434659379400-8cjq25-1694279024872.mp4?Expires=1779236012\u0026Signature=vES-kOgUHfA8GjBlztKN4OLoGRHGxXl255yaMsKvsLle8HQR4hSXGytAvHtvAsN9zmXKPUNXjU7NE37NzE-8ykrNi7eteaTARtwrKF5tLkj4QwsQK9lIxDRW7jiarNLsWtVE7rDWXWsQkxKz52bMC-Cm8U4y-nE9yQPCGC~BiknWzAJGdeir1LSrZWVZSDXVKX-A3no67BzVdGjTMrBj~lzchMoCftOujIBNPF5ZqWONCeT2CvekREVHowBAcIkbZH0K9eV4D3XCv9W6Kn8EhxJyILeyyhNR2Ki7SqWPWvBfjpIDzI4NjR6WVRZ76Qbw0crpYYvkcnYCRvRVtc~BwA__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "metricDimensions": [
+           {
+            "name": "encoder",
+            "value": "ETS",
+            "__typename": "MetricDimension"
+           }
+          ],
+          "__typename": "PlaybackURL"
+         },
+         {
+          "displayName": {
+           "value": "480p",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "MP4",
+          "videoDefinition": "DEF_480p",
+          "url": "https://imdb-video.media-imdb.com/vi870762265/1434659607842-pgv4ql-1694279024872.mp4?Expires=1779236012\u0026Signature=pnkit1qg4AYCIgXq5zT1PoXUl7dADb6UipF8FH9AlyheWwbAvCVwvK-PNaVWZ4Ate9t5Ei4XT-po9r5uazBpGILMOKxTOjaGQAg6xU-0rvylFbNSV9rC7psUewC-Bk2Y2lVguXwPIpB6biB59bdlnVGFGGeii5Wq8zz8mO95XXVlcHkl2eM6Dy~KUSQiVtUzagoTIw7NVFm738SjmgYr6FpPPg1ONCYxbVLpOCr5y1CYjYNSe-QV~xGirwklqX57F62uf0d7jMk8xnkxREtd9eYBS0mUvlcBHTYWwGMW584WgbD78jsNvWBmTjINuDUui-NpoIYDAy0WNFbRTq1xLw__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "metricDimensions": [
+           {
+            "name": "encoder",
+            "value": "ETS",
+            "__typename": "MetricDimension"
+           }
+          ],
+          "__typename": "PlaybackURL"
+         }
+        ],
+        "contentType": {
+         "id": "amzn1.imdb.video.contenttype.trailer",
+         "displayName": {
+          "value": "Trailer",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "previewURLs": [
+         {
+          "displayName": {
+           "value": "AUTO",
+           "language": "en-US",
+           "__typename": "LocalizedString"
+          },
+          "videoMimeType": "M3U8",
+          "videoDefinition": "DEF_AUTO",
+          "url": "https://imdb-video.media-imdb.com/vi870762265/hls-preview-83ab7e77-4de2-4b87-a28c-7da1b0903996.m3u8?Expires=1779236012\u0026Signature=D6QCdHqOOeNw8xOE4WOMBN9mjoD-MQFkaI9i6kjM7QHfRraAIJTX0miM0NKGBeHL76BpQYb~WmZoUT9lcWM0smVLkPbHIvq7sdFAIaWf9yJ3QpUCUj0sMX18dxlLfbqmX4pi-qHXM1nNFnML5AkEUJQDPIt7VTyPUCIorZ8u8XKLnCo2GeilRBy3OuQw6g9~w-HgDyAKQIDFKaaNX~U-qRXvXRZVR39DXF~jJyCiqQsglrjK3WTiAqr1JDEaBx1cVaWJuk~1fGHTvP~xqU1DSEsL8tNwTlpHk0WSNzFl-TnT7O8uCiNsFtuIGEmC1qjfsGjn~OpYHRDY3eLaHMnzRQ__\u0026Key-Pair-Id=APKAIFLZBVQZ24NQH3KA",
+          "__typename": "PlaybackURL"
+         }
+        ],
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      }
+     ],
+     "__typename": "VideoConnection"
+    },
+    "principalCreditsV2": [
+     {
+      "totalCredits": 1,
+      "grouping": {
+       "text": "Director",
+       "groupingId": "amzn1.imdb.concept.name_credit_category.ace5cb4c-8708-4238-9542-04641e7c8171",
+       "__typename": "CreditGrouping"
+      },
+      "credits": [
+       {
+        "name": {
+         "nameText": {
+          "text": "Robert Zemeckis",
+          "__typename": "NameText"
+         },
+         "id": "nm0000709",
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       }
+      ],
+      "__typename": "PrincipalCreditsForGrouping"
+     },
+     {
+      "totalCredits": 2,
+      "grouping": {
+       "text": "Writers",
+       "groupingId": "amzn1.imdb.concept.name_credit_category.c84ecaff-add5-4f2e-81db-102a41881fe3",
+       "__typename": "CreditGrouping"
+      },
+      "credits": [
+       {
+        "name": {
+         "nameText": {
+          "text": "Robert Zemeckis",
+          "__typename": "NameText"
+         },
+         "id": "nm0000709",
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "nameText": {
+          "text": "Bob Gale",
+          "__typename": "NameText"
+         },
+         "id": "nm0301826",
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       }
+      ],
+      "__typename": "PrincipalCreditsForGrouping"
+     },
+     {
+      "totalCredits": 65,
+      "grouping": {
+       "text": "Stars",
+       "groupingId": "amzn1.imdb.concept.name_credit_group.7510356e-fde9-438e-b3ad-0099ba6bc8ce",
+       "__typename": "CreditGrouping"
+      },
+      "credits": [
+       {
+        "name": {
+         "nameText": {
+          "text": "Michael J. Fox",
+          "__typename": "NameText"
+         },
+         "id": "nm0000150",
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "nameText": {
+          "text": "Christopher Lloyd",
+          "__typename": "NameText"
+         },
+         "id": "nm0000502",
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "nameText": {
+          "text": "Lea Thompson",
+          "__typename": "NameText"
+         },
+         "id": "nm0000670",
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       }
+      ],
+      "__typename": "PrincipalCreditsForGrouping"
+     }
+    ],
+    "reviews": {
+     "total": 1747,
+     "__typename": "ReviewsConnection"
+    },
+    "criticReviewsTotal": {
+     "total": 172,
+     "__typename": "ExternalLinkConnection"
+    },
+    "triviaTotal": {
+     "total": 428,
+     "__typename": "TriviaConnection"
+    },
+    "subNavCredits": {
+     "total": 551,
+     "__typename": "CreditConnection"
+    },
+    "subNavReviews": {
+     "total": 1747,
+     "__typename": "ReviewsConnection"
+    },
+    "subNavTrivia": {
+     "total": 428,
+     "__typename": "TriviaConnection"
+    },
+    "subNavFaqs": {
+     "total": 45,
+     "__typename": "FaqConnection"
+    },
+    "subNavTopQuestions": {
+     "total": 20,
+     "__typename": "AlexaQuestionConnection"
+    },
+    "titleGenres": {
+     "genres": [
+      {
+       "genre": {
+        "text": "Adventure",
+        "__typename": "GenreItem"
+       },
+       "__typename": "TitleGenre"
+      },
+      {
+       "genre": {
+        "text": "Comedy",
+        "__typename": "GenreItem"
+       },
+       "__typename": "TitleGenre"
+      },
+      {
+       "genre": {
+        "text": "Sci-Fi",
+        "__typename": "GenreItem"
+       },
+       "__typename": "TitleGenre"
+      }
+     ],
+     "__typename": "TitleGenres"
+    },
+    "meta": {
+     "canonicalId": "tt0088763",
+     "publicationStatus": "PUBLISHED",
+     "__typename": "TitleMeta"
+    },
+    "countriesOfOrigin": {
+     "countries": [
+      {
+       "id": "US",
+       "__typename": "CountryOfOrigin"
+      }
+     ],
+     "__typename": "CountriesOfOrigin"
+    },
+    "castV2": [
+     {
+      "credits": [
+       {
+        "name": {
+         "id": "nm0000150",
+         "nameText": {
+          "text": "Michael J. Fox",
+          "__typename": "NameText"
+         },
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0000502",
+         "nameText": {
+          "text": "Christopher Lloyd",
+          "__typename": "NameText"
+         },
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0000670",
+         "nameText": {
+          "text": "Lea Thompson",
+          "__typename": "NameText"
+         },
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0000417",
+         "nameText": {
+          "text": "Crispin Glover",
+          "__typename": "NameText"
+         },
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       }
+      ],
+      "__typename": "PrincipalCreditsForGrouping"
+     }
+    ],
+    "crewV2": [
+     {
+      "grouping": {
+       "groupingId": "amzn1.imdb.concept.name_credit_category.ace5cb4c-8708-4238-9542-04641e7c8171",
+       "__typename": "CreditGrouping"
+      },
+      "credits": [
+       {
+        "name": {
+         "id": "nm0000709",
+         "nameText": {
+          "text": "Robert Zemeckis",
+          "__typename": "NameText"
+         },
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       }
+      ],
+      "__typename": "PrincipalCreditsForGrouping"
+     }
+    ],
+    "production": {
+     "edges": [
+      {
+       "node": {
+        "company": {
+         "id": "co0005073",
+         "companyText": {
+          "text": "Universal Pictures",
+          "__typename": "CompanyText"
+         },
+         "__typename": "Company"
+        },
+        "__typename": "CompanyCredit"
+       },
+       "__typename": "CompanyCreditEdge"
+      },
+      {
+       "node": {
+        "company": {
+         "id": "co0009119",
+         "companyText": {
+          "text": "Amblin Entertainment",
+          "__typename": "CompanyText"
+         },
+         "__typename": "Company"
+        },
+        "__typename": "CompanyCredit"
+       },
+       "__typename": "CompanyCreditEdge"
+      },
+      {
+       "node": {
+        "company": {
+         "id": "co0010110",
+         "companyText": {
+          "text": "U-Drive Productions",
+          "__typename": "CompanyText"
+         },
+         "__typename": "Company"
+        },
+        "__typename": "CompanyCredit"
+       },
+       "__typename": "CompanyCreditEdge"
+      }
+     ],
+     "__typename": "CompanyCreditConnection"
+    },
+    "featuredReviews": {
+     "edges": [
+      {
+       "node": {
+        "author": {
+         "nickName": "gavin6942",
+         "__typename": "UserProfile"
+        },
+        "summary": {
+         "originalText": "Gets Better With Age",
+         "__typename": "ReviewSummary"
+        },
+        "text": {
+         "originalText": {
+          "plainText": "A young man (Michael J. Fox) is accidentally sent thirty years into the past in a time-traveling DeLorean invented by his friend, Dr. Emmett Brown (Christopher Lloyd), and must make sure his high-school-age parents unite in order to save his own existence.\n\nAfter almost thirty years (2014), this film loses none of its charm, and actually gains respect. The movie has had such a strong impression on everyone, whether they have seen it or not, as it completely permeated pop culture.\n\nThe script is genius, not only how it parallels 1955 and 1985 (some of the references are dynamite), but how it set the scene for the sequels (despite allegedly not intending to have any). This is just one clever gag after another, and may require repeated viewings to catch them all.",
+          "__typename": "Markdown"
+         },
+         "__typename": "ReviewText"
+        },
+        "authorRating": 9,
+        "submissionDate": "2014-11-19",
+        "__typename": "Review"
+       },
+       "__typename": "ReviewEdge"
+      }
+     ],
+     "__typename": "ReviewsConnection"
+    },
+    "__typename": "Title"
+   },
+   "mainColumnData": {
+    "id": "tt0088763",
+    "wins": {
+     "total": 27,
+     "__typename": "AwardNominationConnection"
+    },
+    "nominationsExcludeWins": {
+     "total": 25,
+     "__typename": "AwardNominationConnection"
+    },
+    "prestigiousAwardSummary": {
+     "nominations": 3,
+     "wins": 1,
+     "award": {
+      "text": "Oscar",
+      "id": "aw0000016",
+      "event": {
+       "id": "ev0000003",
+       "__typename": "AwardsEvent"
+      },
+      "__typename": "AwardDetails"
+     },
+     "__typename": "PrestigiousAwardSummary"
+    },
+    "ratingsSummary": {
+     "topRanking": {
+      "id": "topRated:tt0088763:en_US",
+      "text": {
+       "value": "Top Rated",
+       "__typename": "LocalizedString"
+      },
+      "rank": 29,
+      "__typename": "TopRanking"
+     },
+     "__typename": "RatingsSummary",
+     "aggregateRating": 8.5,
+     "voteCount": 1453951,
+     "notificationText": null
+    },
+    "episodes": null,
+    "videos": {
+     "total": 24,
+     "__typename": "TitleRelatedVideosConnection"
+    },
+    "videoStrip": {
+     "edges": [
+      {
+       "node": {
+        "id": "vi1126811673",
+        "contentType": {
+         "displayName": {
+          "value": "Trailer",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "40th Anniversary Trailer",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 92,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 1080,
+         "url": "https://m.media-amazon.com/images/M/MV5BNzQ0MmJjMzEtZTE4Zi00ZmU5LTlhYTEtMzdjY2EwOTliY2JkXkEyXkFqcGdeQXNvbG5vbXM@._V1_.jpg",
+         "width": 1920,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi870762265",
+        "contentType": {
+         "displayName": {
+          "value": "Trailer",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "Back to the Future",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 63,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 1080,
+         "url": "https://m.media-amazon.com/images/M/MV5BMTk4ZjIxYjItYTkyZC00ZWEwLWI4MTEtNzBiNmNjYTg2NDI2XkEyXkFqcGdeQVRoaXJkUGFydHlJbmdlc3Rpb25Xb3JrZmxvdw@@._V1_.jpg",
+         "width": 1920,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi252380953",
+        "contentType": {
+         "displayName": {
+          "value": "Trailer",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "Back to the Future",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 81,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 360,
+         "url": "https://m.media-amazon.com/images/M/MV5BYTE2MTY1MjktZTFmMS00MjI1LWFjYzUtNTVlZDVkZDNhMWEyXkEyXkFqcGdeQXVyNzU1NzE3NTg@._V1_.jpg",
+         "width": 480,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi1680132121",
+        "contentType": {
+         "displayName": {
+          "value": "Clip",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "Watch Now",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 180,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 1080,
+         "url": "https://m.media-amazon.com/images/M/MV5BN2I1ZjZlODMtN2JmMy00OWY2LTk2N2QtYmI4MDljNWUzZWU1XkEyXkFqcGdeQWFsZWxvZw@@._V1_.jpg",
+         "width": 1920,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi3250307353",
+        "contentType": {
+         "displayName": {
+          "value": "Clip",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "Alphabet of Movies | A to Z",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 93,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 720,
+         "url": "https://m.media-amazon.com/images/M/MV5BZDQ4MWY4MzItNTNiNi00NDM5LTkyOTEtMzRhNDgzYzA1ZmUyXkEyXkFqcGdeQWFybm8@._V1_.jpg",
+         "width": 1280,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi3749494297",
+        "contentType": {
+         "displayName": {
+          "value": "Clip",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "How \"The Umbrella Academy\" Survives 1960s Dallas in Season 2",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 216,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 1080,
+         "url": "https://m.media-amazon.com/images/M/MV5BYzZlZTRiNjUtNDI5Mi00MTcxLWFiNDYtZjRmNzBjMWUyNmYzXkEyXkFqcGdeQWFsZWxvZw@@._V1_.jpg",
+         "width": 1920,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi1477230105",
+        "contentType": {
+         "displayName": {
+          "value": "Clip",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "Jaws, Shreks, \u0026 Lion Kings: A Summer Blockbuster History",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 443,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 1080,
+         "url": "https://m.media-amazon.com/images/M/MV5BYzgwNWEyNGEtMGY3ZS00ODFiLWI4NWItNDgxN2E2NTkxMjgyXkEyXkFqcGdeQWFsZWxvZw@@._V1_.jpg",
+         "width": 1920,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi2099035673",
+        "contentType": {
+         "displayName": {
+          "value": "Clip",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "'Back to the Future' | Anniversary Mashup",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 94,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 1080,
+         "url": "https://m.media-amazon.com/images/M/MV5BYWU4YmYwZTMtOTFhYy00ZTJiLTliMTItODI4OTY4YTk2YWExXkEyXkFqcGdeQXRyYW5zY29kZS13b3JrZmxvdw@@._V1_.jpg",
+         "width": 1920,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi3626548249",
+        "contentType": {
+         "displayName": {
+          "value": "Clip",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "Late-Breaking Summer of '85 Movie News",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 187,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 1080,
+         "url": "https://m.media-amazon.com/images/M/MV5BMGJhMjAzYmMtMzFlOC00NDlmLWFhZDYtZGU2Y2U1MzIzMjY0XkEyXkFqcGdeQWFsZWxvZw@@._V1_.jpg",
+         "width": 1920,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi3662328601",
+        "contentType": {
+         "displayName": {
+          "value": "Clip",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "Back to the Future: 30th Anniversary",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 133,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 360,
+         "url": "https://m.media-amazon.com/images/M/MV5BYjhmM2Y3ZmYtYWJlYS00N2MxLWI0MWMtOTI0MTAzMjAwMjAwXkEyXkFqcGdeQXVyNzU1NzE3NTg@._V1_.jpg",
+         "width": 480,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi1740293145",
+        "contentType": {
+         "displayName": {
+          "value": "Clip",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "Back To The Future: The Skateboard Chase",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 132,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 720,
+         "url": "https://m.media-amazon.com/images/M/MV5BNzIyYWNiODEtY2NhZi00ZDhjLTk3NTUtMTEzMzkwOWFkZmU2XkEyXkFqcGdeQVRoaXJkUGFydHlJbmdlc3Rpb25Xb3JrZmxvdw@@._V1_.jpg",
+         "width": 1280,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      },
+      {
+       "node": {
+        "id": "vi1606075417",
+        "contentType": {
+         "displayName": {
+          "value": "Clip",
+          "__typename": "LocalizedString"
+         },
+         "__typename": "VideoContentType"
+        },
+        "name": {
+         "value": "Back To The Future: World's First Time Traveler",
+         "__typename": "LocalizedString"
+        },
+        "runtime": {
+         "value": 122,
+         "__typename": "VideoRuntime"
+        },
+        "thumbnail": {
+         "height": 1080,
+         "url": "https://m.media-amazon.com/images/M/MV5BZGRjZDVkN2YtNGQyZi00NzkxLWJkNDAtYzNkY2M5M2M5MmUwXkEyXkFqcGdeQXRyYW5zY29kZS13b3JrZmxvdw@@._V1_.jpg",
+         "width": 1920,
+         "__typename": "Thumbnail"
+        },
+        "__typename": "Video"
+       },
+       "__typename": "VideoEdge"
+      }
+     ],
+     "__typename": "VideoConnection"
+    },
+    "titleMainImages": {
+     "total": 643,
+     "edges": [
+      {
+       "node": {
+        "id": "rm1175664129",
+        "url": "https://m.media-amazon.com/images/M/MV5BZmRmYjYwNDUtNzcxNy00MmRkLWIyOTctNmJkZjk5Nzc4ZjZjXkEyXkFqcGc@._V1_.jpg",
+        "caption": {
+         "plainText": "Michael J. Fox in Back to the Future (1985)",
+         "__typename": "Markdown"
+        },
+        "height": 5371,
+        "width": 3589,
+        "__typename": "Image"
+       },
+       "__typename": "ImageEdge"
+      },
+      {
+       "node": {
+        "id": "rm2014524929",
+        "url": "https://m.media-amazon.com/images/M/MV5BODc0ZWI0ZTMtNmNhOC00MTgyLWJkZTQtY2EyZWY2ZTAwYjFhXkEyXkFqcGc@._V1_.jpg",
+        "caption": {
+         "plainText": "Michael J. Fox in Back to the Future (1985)",
+         "__typename": "Markdown"
+        },
+        "height": 4759,
+        "width": 3085,
+        "__typename": "Image"
+       },
+       "__typename": "ImageEdge"
+      },
+      {
+       "node": {
+        "id": "rm2048079361",
+        "url": "https://m.media-amazon.com/images/M/MV5BY2UzNDgxNjYtNDc5NS00NmRiLThlNzAtZDQ0YzQyNDZkMzcwXkEyXkFqcGc@._V1_.jpg",
+        "caption": {
+         "plainText": "Christopher Lloyd in Back to the Future (1985)",
+         "__typename": "Markdown"
+        },
+        "height": 4753,
+        "width": 3088,
+        "__typename": "Image"
+       },
+       "__typename": "ImageEdge"
+      },
+      {
+       "node": {
+        "id": "rm2081633793",
+        "url": "https://m.media-amazon.com/images/M/MV5BYTQ0MTQ4MTYtOTliMS00YjAwLWI1MjYtOWJmMTc4Mzc2MmNlXkEyXkFqcGc@._V1_.jpg",
+        "caption": {
+         "plainText": "Michael J. Fox in Back to the Future (1985)",
+         "__typename": "Markdown"
+        },
+        "height": 3541,
+        "width": 5479,
+        "__typename": "Image"
+       },
+       "__typename": "ImageEdge"
+      },
+      {
+       "node": {
+        "id": "rm1880307201",
+        "url": "https://m.media-amazon.com/images/M/MV5BODBhOTUyNTMtY2FhYy00NzAyLWI3MmMtYzljMmQwYjBhMjI5XkEyXkFqcGc@._V1_.jpg",
+        "caption": {
+         "plainText": "Michael J. Fox in Back to the Future (1985)",
+         "__typename": "Markdown"
+        },
+        "height": 3083,
+        "width": 4762,
+        "__typename": "Image"
+       },
+       "__typename": "ImageEdge"
+      },
+      {
+       "node": {
+        "id": "rm3637261568",
+        "url": "https://m.media-amazon.com/images/M/MV5BMTkwN2MyMjgtMWNhMy00MDE0LTk2YjYtYmI2M2NhZmIzNGJiXkEyXkFqcGc@._V1_.jpg",
+        "caption": {
+         "plainText": "Claudia Wells in Back to the Future (1985)",
+         "__typename": "Markdown"
+        },
+        "height": 720,
+        "width": 1280,
+        "__typename": "Image"
+       },
+       "__typename": "ImageEdge"
+      },
+      {
+       "node": {
+        "id": "rm154052096",
+        "url": "https://m.media-amazon.com/images/M/MV5BMjA4MzI0NzI3MF5BMl5BanBnXkFtZTcwOTc4Mzg0OQ@@._V1_.jpg",
+        "caption": {
+         "plainText": "Michael J. Fox and Christopher Lloyd in Back to the Future (1985)",
+         "__typename": "Markdown"
+        },
+        "height": 1200,
+        "width": 1800,
+        "__typename": "Image"
+       },
+       "__typename": "ImageEdge"
+      },
+      {
+       "node": {
+        "id": "rm428194304",
+        "url": "https://m.media-amazon.com/images/M/MV5BMjE3Nzk5NzYzMV5BMl5BanBnXkFtZTcwNTMxNDc0NA@@._V1_.jpg",
+        "caption": {
+         "plainText": "Christopher Lloyd in Back to the Future (1985)",
+         "__typename": "Markdown"
+        },
+        "height": 2048,
+        "width": 1350,
+        "__typename": "Image"
+       },
+       "__typename": "ImageEdge"
+      },
+      {
+       "node": {
+        "id": "rm1736817152",
+        "url": "https://m.media-amazon.com/images/M/MV5BMTM3MTA2NjQ2Nl5BMl5BanBnXkFtZTcwNzMxNDc0NA@@._V1_.jpg",
+        "caption": {
+         "plainText": "Michael J. Fox in Back to the Future (1985)",
+         "__typename": "Markdown"
+        },
+        "height": 1350,
+        "width": 2048,
+        "__typename": "Image"
+       },
+       "__typename": "ImageEdge"
+      }
+     ],
+     "__typename": "ImageConnection"
+    },
+    "productionStatus": {
+     "currentProductionStage": {
+      "id": "released",
+      "text": "Released",
+      "__typename": "ProductionStage"
+     },
+     "productionStatusHistory": [
+      {
+       "status": {
+        "id": "released",
+        "text": "Released",
+        "__typename": "ProductionStatus"
+       },
+       "__typename": "ProductionStatusHistory"
+      }
+     ],
+     "restriction": null,
+     "__typename": "ProductionStatusDetails"
+    },
+    "primaryImage": {
+     "id": "rm554638848",
+     "__typename": "Image",
+     "url": "https://m.media-amazon.com/images/M/MV5BZmM3ZjE0NzctNjBiOC00MDZmLTgzMTUtNGVlOWFlOTNiZDJiXkEyXkFqcGc@._V1_.jpg",
+     "width": 1218,
+     "height": 1893,
+     "caption": {
+      "plainText": "Michael J. Fox in Back to the Future (1985)",
+      "__typename": "Markdown"
+     }
+    },
+    "inIframeAddLink": {
+     "url": "https://contribute.imdb.com/image/tt0088763/add?bus=imdb\u0026return_url=https%3A%2F%2Fwww.imdb.com%2Fclose_me\u0026site=web",
+     "__typename": "ContributionLink"
+    },
+    "notInIframeAddLink": {
+     "url": "https://contribute.imdb.com/image/tt0088763/add?bus=imdb\u0026return_url=https%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0088763%2F%3Fref_%3Dchttp_t_29\u0026site=mobile",
+     "__typename": "ContributionLink"
+    },
+    "titleType": {
+     "id": "movie",
+     "canHaveEpisodes": false,
+     "__typename": "TitleType"
+    },
+    "castV2": [
+     {
+      "grouping": {
+       "groupingId": "amzn1.imdb.concept.name_credit_group.7caf7d16-5db9-4f4f-8864-d4c6e711c686",
+       "text": "Top Cast",
+       "__typename": "CreditGrouping"
+      },
+      "totalCredits": 65,
+      "credits": [
+       {
+        "name": {
+         "id": "nm0000150",
+         "nameText": {
+          "text": "Michael J. Fox",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BMTcwNzM0MjE4NF5BMl5BanBnXkFtZTcwMDkxMzEwMw@@._V1_.jpg",
+          "width": 273,
+          "height": 400,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Marty McFly",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0000502",
+         "nameText": {
+          "text": "Christopher Lloyd",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BZDM3MjdhZjktMGEyMi00NDRmLThhNjUtNGU3MGE1ZDk3MmI0XkEyXkFqcGc@._V1_.jpg",
+          "width": 3600,
+          "height": 2400,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Dr. Emmett Brown",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0000670",
+         "nameText": {
+          "text": "Lea Thompson",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BNTgwNDE2MTY2MV5BMl5BanBnXkFtZTgwMzQxMDc2MjI@._V1_.jpg",
+          "width": 1451,
+          "height": 2048,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.7f6d81aa-23aa-4503-844d-38201eb08761",
+             "text": "Actress",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Lorraine Baines",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0000417",
+         "nameText": {
+          "text": "Crispin Glover",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BM2VmMDVkODktMWM5Zi00YTI5LTk0ZDAtY2RhMmEyZmRiMGY2XkEyXkFqcGc@._V1_CR66,13,267,400_.jpg",
+          "width": 267,
+          "height": 400,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "George McFly",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0001855",
+         "nameText": {
+          "text": "Tom Wilson",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BMTM3MzM4ODM4M15BMl5BanBnXkFtZTYwMDU1Mzky._V1_.jpg",
+          "width": 300,
+          "height": 373,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": [
+             {
+              "text": "as Thomas F. Wilson",
+              "__typename": "CreditedAsCreditAttribute"
+             }
+            ],
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Biff Tannen",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0920148",
+         "nameText": {
+          "text": "Claudia Wells",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BMTcxMjM2NTI4NV5BMl5BanBnXkFtZTYwMTg5Mjky._V1_.jpg",
+          "width": 373,
+          "height": 300,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.7f6d81aa-23aa-4503-844d-38201eb08761",
+             "text": "Actress",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Jennifer Parker",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0566013",
+         "nameText": {
+          "text": "Marc McClure",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BMTk0OTk5MjUyMl5BMl5BanBnXkFtZTYwNDc4Njgy._V1_.jpg",
+          "width": 300,
+          "height": 374,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Dave McFly",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0818274",
+         "nameText": {
+          "text": "Wendie Jo Sperber",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BMTM5MTk1MDI0OF5BMl5BanBnXkFtZTcwODczNTcyMQ@@._V1_.jpg",
+          "width": 200,
+          "height": 279,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.7f6d81aa-23aa-4503-844d-38201eb08761",
+             "text": "Actress",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Linda McFly",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0225191",
+         "nameText": {
+          "text": "George DiCenzo",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BNDczNjUzNDI1N15BMl5BanBnXkFtZTcwMTUzMTYxOA@@._V1_.jpg",
+          "width": 1064,
+          "height": 1556,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Sam Baines",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0564589",
+         "nameText": {
+          "text": "Frances Lee McCain",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BMGE1NGFiZjgtNzc3ZS00NGNiLWIzZjktM2Q3ZDFkNjI2YjNkXkEyXkFqcGc@._V1_.jpg",
+          "width": 4622,
+          "height": 4024,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.7f6d81aa-23aa-4503-844d-38201eb08761",
+             "text": "Actress",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Stella Baines",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0866055",
+         "nameText": {
+          "text": "James Tolkan",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BYWI0ZDU0ZjQtZWVjMi00MDZhLWFiN2UtZjE3ZDI3ZTlhNzJhXkEyXkFqcGc@._V1_.jpg",
+          "width": 3000,
+          "height": 2234,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Mr. Strickland",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0169454",
+         "nameText": {
+          "text": "J.J. Cohen",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BMTMwMTA2MzgyN15BMl5BanBnXkFtZTcwMjE5OTgwMw@@._V1_.jpg",
+          "width": 1395,
+          "height": 2048,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": [
+             {
+              "text": "as Jeffrey Jay Cohen",
+              "__typename": "CreditedAsCreditAttribute"
+             }
+            ],
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Skinhead",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0797150",
+         "nameText": {
+          "text": "Casey Siemaszko",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BMjQ1MTAxNzIyOF5BMl5BanBnXkFtZTcwMDA2ODczMQ@@._V1_.jpg",
+          "width": 318,
+          "height": 400,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "3-D",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0000708",
+         "nameText": {
+          "text": "Billy Zane",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BMTI5NzA2NTE0NF5BMl5BanBnXkFtZTcwNzAxMTUxMw@@._V1_.jpg",
+          "width": 309,
+          "height": 400,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Match",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0914023",
+         "nameText": {
+          "text": "Harry Waters Jr.",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BNDI2NTNhMTgtOWFhYi00YmY3LWJiNDUtNDA2OTc3M2VjMjgyXkEyXkFqcGc@._V1_.jpg",
+          "width": 895,
+          "height": 859,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Marvin Berry",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0298412",
+         "nameText": {
+          "text": "Donald Fullilove",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BZDdmNzEzMzgtNTA2MC00NTVlLWFiNmMtNjNlZjFhOWNkMmU1XkEyXkFqcGc@._V1_.jpg",
+          "width": 322,
+          "height": 479,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.a9ab2a8b-9153-4edb-a27a-7c2346830d77",
+             "text": "Actor",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Goldie Wilson",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0293483",
+         "nameText": {
+          "text": "Lisa Freeman",
+          "__typename": "NameText"
+         },
+         "primaryImage": {
+          "url": "https://m.media-amazon.com/images/M/MV5BYmQ5NzJkNmUtZGE4Yi00ZDA0LWIyNjItNGQwMzQ3Yjg1YjM0XkEyXkFqcGc@._V1_.jpg",
+          "width": 1221,
+          "height": 1394,
+          "__typename": "Image"
+         },
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.7f6d81aa-23aa-4503-844d-38201eb08761",
+             "text": "Actress",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Babs",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0442022",
+         "nameText": {
+          "text": "Cristen Kauffman",
+          "__typename": "NameText"
+         },
+         "primaryImage": null,
+         "__typename": "Name"
+        },
+        "creditedRoles": {
+         "edges": [
+          {
+           "node": {
+            "category": {
+             "categoryId": "amzn1.imdb.concept.name_credit_category.7f6d81aa-23aa-4503-844d-38201eb08761",
+             "text": "Actress",
+             "__typename": "CreditCategory"
+            },
+            "attributes": null,
+            "characters": {
+             "edges": [
+              {
+               "node": {
+                "name": "Betty",
+                "__typename": "Character"
+               },
+               "__typename": "CharacterEdge"
+              }
+             ],
+             "__typename": "CharacterConnection"
+            },
+            "__typename": "CreditedRole"
+           },
+           "__typename": "CreditedRoleEdge"
+          }
+         ],
+         "__typename": "CreditedRoleConnection"
+        },
+        "episodeCredits": {
+         "total": 0,
+         "yearRange": null,
+         "__typename": "EpisodeCreditConnection"
+        },
+        "__typename": "CreditV2"
+       }
+      ],
+      "__typename": "PrincipalCreditsForGrouping"
+     }
+    ],
+    "crewV2": [
+     {
+      "totalCredits": 1,
+      "grouping": {
+       "groupingId": "amzn1.imdb.concept.name_credit_category.ace5cb4c-8708-4238-9542-04641e7c8171",
+       "text": "Director",
+       "__typename": "CreditGrouping"
+      },
+      "credits": [
+       {
+        "name": {
+         "id": "nm0000709",
+         "nameText": {
+          "text": "Robert Zemeckis",
+          "__typename": "NameText"
+         },
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       }
+      ],
+      "__typename": "PrincipalCreditsForGrouping"
+     },
+     {
+      "totalCredits": 2,
+      "grouping": {
+       "groupingId": "amzn1.imdb.concept.name_credit_category.c84ecaff-add5-4f2e-81db-102a41881fe3",
+       "text": "Writers",
+       "__typename": "CreditGrouping"
+      },
+      "credits": [
+       {
+        "name": {
+         "id": "nm0000709",
+         "nameText": {
+          "text": "Robert Zemeckis",
+          "__typename": "NameText"
+         },
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       },
+       {
+        "name": {
+         "id": "nm0301826",
+         "nameText": {
+          "text": "Bob Gale",
+          "__typename": "NameText"
+         },
+         "__typename": "Name"
+        },
+        "__typename": "CreditV2"
+       }
+      ],
+      "__typename": "PrincipalCreditsForGrouping"
+     }
+    ],
+    "titleText": {
+     "text": "Back to the Future",
+     "__typename": "TitleText"
+    },
+    "originalTitleText": {
+     "text": "Back to the Future",
+     "__typename": "TitleText"
+    },
+    "canRate": {
+     "isRatable": true,
+     "__typename": "CanRate"
+    },
+    "reviews": {
+     "total": 1747,
+     "__typename": "ReviewsConnection"
+    },
+    "aggregateRatingsBreakdown": {
+     "histogram": {
+      "histogramValues": [
+       {
+        "rating": 1,
+        "voteCount": 5882,
+        "__typename": "HistogramValues"
+       },
+       {
+        "rating": 2,
+        "voteCount": 2475,
+        "__typename": "HistogramValues"
+       },
+       {
+        "rating": 3,
+        "voteCount": 3975,
+        "__typename": "HistogramValues"
+       },
+       {
+        "rating": 4,
+        "voteCount": 7820,
+        "__typename": "HistogramValues"
+       },
+       {
+        "rating": 5,
+        "voteCount": 19981,
+        "__typename": "HistogramValues"
+       },
+       {
+        "rating": 6,
+        "voteCount": 58058,
+        "__typename": "HistogramValues"
+       },
+       {
+        "rating": 7,
+        "voteCount": 191337,
+        "__typename": "HistogramValues"
+       },
+       {
+        "rating": 8,
+        "voteCount": 403625,
+        "__typename": "HistogramValues"
+       },
+       {
+        "rating": 9,
+        "voteCount": 385949,
+        "__typename": "HistogramValues"
+       },
+       {
+        "rating": 10,
+        "voteCount": 374849,
+        "__typename": "HistogramValues"
+       }
+      ],
+      "__typename": "Histogram"
+     },
+     "__typename": "AggregateRatingsBreakdown"
+    },
+    "featuredReviews": {
+     "edges": [
+      {
+       "node": {
+        "id": "rw0218352",
+        "author": {
+         "userId": "ur0562732",
+         "profileId": "p.azbj2ipwoioeuuyy5poa7ygbqu",
+         "username": {
+          "text": "Anonymous_Maxine",
+          "__typename": "UserProfileUsername"
+         },
+         "primaryImage": null,
+         "__typename": "UserProfile"
+        },
+        "summary": {
+         "originalText": "How could anything be more fun than this?",
+         "__typename": "ReviewSummary"
+        },
+        "text": {
+         "originalText": {
+          "plaidHtml": "Back To The Future is such an inventive and exciting piece of filmmaking that it is impossible to forget about it. The casting of every character involved was absolutely perfect, and the performances were spectacular. I first saw this film when I was six years old, and it is the only movie that I know of that I don\u0026#39;t think I could ever get sick of.\u003cbr/\u003e\u003cbr/\u003e\nOne of the best things about Back To The Future is that it really makes you think. You can have in-depth conversations about the plausibility of the story-line and spend hours discussing the film. The story is awesome, it is delivered cleverly and entertainingly, and the movie as a whole is just so much FUN that it can be forgiven whatever number of time-travel discrepancies that may be found in the plot. \u003cbr/\u003e\u003cbr/\u003eI cannot recommend this movie enough. I have never found a movie other than this one that provides such a huge dose of great fun, and it has the desirable quality where you are able to see something new each time you see it. The only problem is that they stopped at part III.",
+          "__typename": "Markdown"
+         },
+         "__typename": "ReviewText"
+        },
+        "title": {
+         "id": "tt0088763",
+         "__typename": "Title"
+        },
+        "authorRating": 10,
+        "spoiler": false,
+        "__typename": "Review"
+       },
+       "__typename": "ReviewEdge"
+      },
+      {
+       "node": {
+        "id": "rw0218348",
+        "author": {
+         "userId": "ur0507411",
+         "profileId": "p.biwmcqs7xz7s2hena6is43o3da",
+         "username": {
+          "text": "ad-17",
+          "__typename": "UserProfileUsername"
+         },
+         "primaryImage": null,
+         "__typename": "UserProfile"
+        },
+        "summary": {
+         "originalText": "Let your imagination fly",
+         "__typename": "ReviewSummary"
+        },
+        "text": {
+         "originalText": {
+          "plaidHtml": "A funny sci-fi? Unusual but here it not only works but does so spectacularly. A whimsical but very clever time travel story that bedazzles you leaving you wanting more.\u003cbr/\u003e\u003cbr/\u003eThe charasmatic Michael J Fox plays a wonderful bumbling high schooler searching for love, a guitar gig and his existence which he himself threatens to erase.\u003cbr/\u003e\u003cbr/\u003eClever and humourous references litter this fun flick; references which are further improved upon in the sequels. Views of the same scenes from different angles, different perspectives and different timelines abound.\u003cbr/\u003e\u003cbr/\u003eFun for the entire family.",
+          "__typename": "Markdown"
+         },
+         "__typename": "ReviewText"
+        },
+        "title": {
+         "id": "tt0088763",
+         "__typename": "Title"
+        },
+        "authorRating": 9,
+        "spoiler": false,
+        "__typename": "Review"
+       },
+       "__typename": "ReviewEdge"
+      },
+      {
+       "node": {
+        "id": "rw0218194",
+        "author": {
+         "userId": "ur0970737",
+         "profileId": "p.fvo3qpctpgvgy2myvnltfm5tru",
+         "username": {
+          "text": "James-392",
+          "__typename": "UserProfileUsername"
+         },
+         "primaryImage": null,
+         "__typename": "UserProfile"
+        },
+        "summary": {
+         "originalText": "You gotta come back with me...",
+         "__typename": "ReviewSummary"
+        },
+        "text": {
+         "originalText": {
+          "plaidHtml": "Back To The Future (1985) is my all time favourite movie. It\u0026#39;s a thoroughly feel good film, accessible to all ages and enjoyable from the 1st to the 45th time of watching and never fails to bring a smile.  Humour for all ages and a kick-ass car to boot, what more could a young kid want? Or those young at heart?\u003cbr/\u003e\u003cbr/\u003eFrom Marty\u0026#39;s \u0026quot;Johnny B Goode\u0026quot; to Doc\u0026#39;s classic \u0026quot;Run For It Marty!\u0026quot; You\u0026#39;ll find that even though you know what\u0026#39;s coming next, you\u0026#39;ll still laugh. It is the ultimate feel good movie, the weed overcomes the bully, the dreamers wishes come true and all because a nosey old bird thrusts for a nickel \u0026quot;Save The Clock Tower!\u0026quot;\u003cbr/\u003e\u003cbr/\u003eIt\u0026#39;s popularity spawned 2 sequels and although it got decreasingly good in terms of quality as a film, Back To The Future remains the best film in my repetoire and a safe bet when you need to feel good.\u003cbr/\u003e\u003cbr/\u003eIt gets a solid 9 out of 10, comedy, fantasy, the gorgeous Lea Thompson, the insane but comic Doc and the typical teenager Marty make this film a must for all young at heart.",
+          "__typename": "Markdown"
+         },
+         "__typename": "ReviewText"
+        },
+        "title": {
+         "id": "tt0088763",
+         "__typename": "Title"
+        },
+        "authorRating": null,
+        "spoiler": false,
+        "__typename": "Review"
+       },
+       "__typename": "ReviewEdge"
+      },
+      {
+       "node": {
+        "id": "rw3127091",
+        "author": {
+         "userId": "ur1234929",
+         "profileId": "p.ipulzcdf6eohek3d5zte3h6zz4",
+         "username": {
+          "text": "gavin6942",
+          "__typename": "UserProfileUsername"
+         },
+         "primaryImage": {
+          "image": {
+           "url": "https://m.media-amazon.com/images/M/MV5BMTU1OTg0MjU2Ml5BMl5BanBnXkFtZTcwNDgyMTk2OQ@@._V1_.jpg",
+           "height": 160,
+           "width": 160,
+           "caption": {
+            "plainText": "Avatar",
+            "__typename": "Markdown"
+           },
+           "__typename": "Image"
+          },
+          "__typename": "UserProfileImage"
+         },
+         "__typename": "UserProfile"
+        },
+        "summary": {
+         "originalText": "Gets Better With Age",
+         "__typename": "ReviewSummary"
+        },
+        "text": {
+         "originalText": {
+          "plaidHtml": "A young man (Michael J. Fox) is accidentally sent thirty years into the past in a time-traveling DeLorean invented by his friend, Dr. Emmett Brown (Christopher Lloyd), and must make sure his high-school-age parents unite in order to save his own existence.\u003cbr/\u003e\u003cbr/\u003eAfter almost thirty years (2014), this film loses none of its charm, and actually gains respect. The movie has had such a strong impression on everyone, whether they have seen it or not, as it completely permeated pop culture.\u003cbr/\u003e\u003cbr/\u003eThe script is genius, not only how it parallels 1955 and 1985 (some of the references are dynamite), but how it set the scene for the sequels (despite allegedly not intending to have any). This is just one clever gag after another, and may require repeated viewings to catch them all.",
+          "__typename": "Markdown"
+         },
+         "__typename": "ReviewText"
+        },
+        "title": {
+         "id": "tt0088763",
+         "__typename": "Title"
+        },
+        "authorRating": 9,
+        "spoiler": false,
+        "__typename": "Review"
+       },
+       "__typename": "ReviewEdge"
+      },
+      {
+       "node": {
+        "id": "rw3281589",
+        "author": {
+         "userId": "ur61628411",
+         "profileId": "p.u3xc7yff2ms3p7tns5s232aoaq",
+         "username": {
+          "text": "hannahsutcliffe",
+          "__typename": "UserProfileUsername"
+         },
+         "primaryImage": {
+          "image": {
+           "url": "https://m.media-amazon.com/images/M/MV5BMTk2ODQ4ODM1MF5BMl5BanBnXkFtZTgwNjEyNTIzNjE@._V1_.jpg",
+           "height": 348,
+           "width": 348,
+           "caption": {
+            "plainText": "Avatar",
+            "__typename": "Markdown"
+           },
+           "__typename": "Image"
+          },
+          "__typename": "UserProfileImage"
+         },
+         "__typename": "UserProfile"
+        },
+        "summary": {
+         "originalText": "Absolute Classic",
+         "__typename": "ReviewSummary"
+        },
+        "text": {
+         "originalText": {
+          "plaidHtml": "As a child, I used to watch this movie religiously. I loved the chemistry between Doc Brown and Marty McFly, I loved the all too familiar soundtrack and the ridiculous way in which George McFly laughs. This movie has become such a nostalgic and feel-good film for me. I had the good fortunate to see all three \u0026#39;Back to the Future\u0026#39; movies in cinema last year and it was such an experience to watch this timeless classic with people who enjoy this film as much as I do. Everyone has to see this film at least once in their life! Such an amazing, funny Sci-Fi from the 1980\u0026#39;s. I just can\u0026#39;t get enough of this movie - it will just never get old. Cannot recommend it enough!",
+          "__typename": "Markdown"
+         },
+         "__typename": "ReviewText"
+        },
+        "title": {
+         "id": "tt0088763",
+         "__typename": "Title"
+        },
+        "authorRating": 10,
+        "spoiler": false,
+        "__typename": "Review"
+       },
+       "__typename": "ReviewEdge"
+      }
+     ],
+     "__typename": "ReviewsConnection"
+    },
+    "isAdult": false,
+    "moreLikeThisTitles": {
+     "edges": [
+      {
+       "node": {
+        "id": "tt0096874",
+        "titleText": {
+         "text": "Back to the Future Part II",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "Back to the Future Part II",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm672079360",
+         "width": 580,
+         "height": 880,
+         "url": "https://m.media-amazon.com/images/M/MV5BMTNlOTRmOTEtMTAyMi00NjFiLTk3NDMtNWI0YzA3ZTZlYjZiXkEyXkFqcGc@._V1_.jpg",
+         "caption": {
+          "plainText": "Michael J. Fox and Christopher Lloyd in Back to the Future Part II (1989)",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 1989,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 7.8,
+         "voteCount": 621935,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 6480,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "PG",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Adventure",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Comedy",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Sci-Fi",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      },
+      {
+       "node": {
+        "id": "tt0109830",
+        "titleText": {
+         "text": "Forrest Gump",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "Forrest Gump",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm1954748672",
+         "width": 558,
+         "height": 809,
+         "url": "https://m.media-amazon.com/images/M/MV5BNDYwNzVjMTItZmU5YS00YjQ5LTljYjgtMjY2NDVmYWMyNWFmXkEyXkFqcGc@._V1_.jpg",
+         "caption": {
+          "plainText": "Tom Hanks in Forrest Gump (1994)",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 1994,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 8.8,
+         "voteCount": 2497893,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 8520,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "PG-13",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Drama",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Romance",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      },
+      {
+       "node": {
+        "id": "tt0099088",
+        "titleText": {
+         "text": "Back to the Future Part III",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "Back to the Future Part III",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm2561215488",
+         "width": 1015,
+         "height": 1500,
+         "url": "https://m.media-amazon.com/images/M/MV5BNTNkNzJmY2MtOGNjYi00NDJmLWIyZTQtNmFmMGQ5M2VlOTI0XkEyXkFqcGc@._V1_.jpg",
+         "caption": {
+          "plainText": "Michael J. Fox, Christopher Lloyd, and Mary Steenburgen in Back to the Future Part III (1990)",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 1990,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 7.5,
+         "voteCount": 520365,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 7080,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "PG",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Adventure",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Comedy",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Sci-Fi",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      },
+      {
+       "node": {
+        "id": "tt0133093",
+        "titleText": {
+         "text": "The Matrix",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "The Matrix",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm525547776",
+         "width": 2100,
+         "height": 3156,
+         "url": "https://m.media-amazon.com/images/M/MV5BN2NmN2VhMTQtMDNiOS00NDlhLTliMjgtODE2ZTY0ODQyNDRhXkEyXkFqcGc@._V1_.jpg",
+         "caption": {
+          "plainText": "Keanu Reeves, Laurence Fishburne, Joe Pantoliano, and Carrie-Anne Moss in The Matrix (1999)",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 1999,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 8.7,
+         "voteCount": 2248636,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 8160,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "R",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Action",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Sci-Fi",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      },
+      {
+       "node": {
+        "id": "tt0103064",
+        "titleText": {
+         "text": "Terminator 2: Judgment Day",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "Terminator 2: Judgment Day",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm1982141440",
+         "width": 2160,
+         "height": 3210,
+         "url": "https://m.media-amazon.com/images/M/MV5BNGMyMGNkMDUtMjc2Ni00NWFlLTgyODEtZTY2MzBiZTg0OWZiXkEyXkFqcGc@._V1_.jpg",
+         "caption": {
+          "plainText": "Arnold Schwarzenegger and John Pantellas in Terminator 2: Judgment Day (1991)",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 1991,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 8.6,
+         "voteCount": 1284801,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 8220,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "R",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Action",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Adventure",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Sci-Fi",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      },
+      {
+       "node": {
+        "id": "tt0120689",
+        "titleText": {
+         "text": "The Green Mile",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "The Green Mile",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm946247936",
+         "width": 500,
+         "height": 740,
+         "url": "https://m.media-amazon.com/images/M/MV5BMTUxMzQyNjA5MF5BMl5BanBnXkFtZTYwOTU2NTY3._V1_.jpg",
+         "caption": {
+          "plainText": "Movie Poster",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 1999,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 8.6,
+         "voteCount": 1562302,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 11340,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "R",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Crime",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Drama",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Fantasy",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      },
+      {
+       "node": {
+        "id": "tt0076759",
+        "titleText": {
+         "text": "Star Wars: Episode IV - A New Hope",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "Star Wars",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm164871937",
+         "width": 1920,
+         "height": 2937,
+         "url": "https://m.media-amazon.com/images/M/MV5BOGUwMDk0Y2MtNjBlNi00NmRiLTk2MWYtMGMyMDlhYmI4ZDBjXkEyXkFqcGc@._V1_.jpg",
+         "caption": {
+          "plainText": "Anthony Daniels, Carrie Fisher, Mark Hamill, James Earl Jones, David Prowse, and Kenny Baker in Star Wars: Episode IV - A New Hope (1977)",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 1977,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 8.6,
+         "voteCount": 1571239,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 7260,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "PG",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Action",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Adventure",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Fantasy",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      },
+      {
+       "node": {
+        "id": "tt0080684",
+        "titleText": {
+         "text": "Star Wars: Episode V - The Empire Strikes Back",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "Star Wars: Episode V - The Empire Strikes Back",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm3114097664",
+         "width": 1849,
+         "height": 2883,
+         "url": "https://m.media-amazon.com/images/M/MV5BMTkxNGFlNDktZmJkNC00MDdhLTg0MTEtZjZiYWI3MGE5NWIwXkEyXkFqcGc@._V1_.jpg",
+         "caption": {
+          "plainText": "Harrison Ford, Anthony Daniels, Carrie Fisher, Mark Hamill, James Earl Jones, David Prowse, Kenny Baker, and Peter Mayhew in Star Wars: Episode V - The Empire Strikes Back (1980)",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 1980,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 8.7,
+         "voteCount": 1505893,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 7440,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "PG",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Action",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Adventure",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Fantasy",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      },
+      {
+       "node": {
+        "id": "tt0120815",
+        "titleText": {
+         "text": "Saving Private Ryan",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "Saving Private Ryan",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm1924732160",
+         "width": 800,
+         "height": 1177,
+         "url": "https://m.media-amazon.com/images/M/MV5BZGZhZGQ1ZWUtZTZjYS00MDJhLWFkYjctN2ZlYjE5NWYwZDM2XkEyXkFqcGc@._V1_.jpg",
+         "caption": {
+          "plainText": "Tom Hanks, Matt Damon, Tom Sizemore, and Edward Burns in Saving Private Ryan (1998)",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 1998,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 8.6,
+         "voteCount": 1639859,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 10140,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "R",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Drama",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "War",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      },
+      {
+       "node": {
+        "id": "tt0167261",
+        "titleText": {
+         "text": "The Lord of the Rings: The Two Towers",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "The Lord of the Rings: The Two Towers",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm306845440",
+         "width": 964,
+         "height": 1500,
+         "url": "https://m.media-amazon.com/images/M/MV5BMGQxMDdiOWUtYjc1Ni00YzM1LWE2NjMtZTg3Y2JkMjEzMTJjXkEyXkFqcGc@._V1_.jpg",
+         "caption": {
+          "plainText": "Liv Tyler, Sean Astin, Christopher Lee, Elijah Wood, Viggo Mortensen, Miranda Otto, Ian McKellen, Orlando Bloom, John Rhys-Davies, and Andy Serkis in The Lord of the Rings: The Two Towers (2002)",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 2002,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 8.8,
+         "voteCount": 1958293,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 10740,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "PG-13",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Adventure",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Drama",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Fantasy",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      },
+      {
+       "node": {
+        "id": "tt0172495",
+        "titleText": {
+         "text": "Gladiator",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "Gladiator",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm2442542592",
+         "width": 1755,
+         "height": 2599,
+         "url": "https://m.media-amazon.com/images/M/MV5BYWQ4YmNjYjEtOWE1Zi00Y2U4LWI4NTAtMTU0MjkxNWQ1ZmJiXkEyXkFqcGc@._V1_.jpg",
+         "caption": {
+          "plainText": "Russell Crowe in Gladiator (2000)",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 2000,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 8.5,
+         "voteCount": 1850803,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 9300,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "R",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Action",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Adventure",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Drama",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      },
+      {
+       "node": {
+        "id": "tt0110912",
+        "titleText": {
+         "text": "Pulp Fiction",
+         "__typename": "TitleText"
+        },
+        "titleType": {
+         "id": "movie",
+         "text": "Movie",
+         "canHaveEpisodes": false,
+         "displayableProperty": {
+          "value": {
+           "plainText": "",
+           "__typename": "Markdown"
+          },
+          "__typename": "DisplayableTitleTypeProperty"
+         },
+         "__typename": "TitleType"
+        },
+        "originalTitleText": {
+         "text": "Pulp Fiction",
+         "__typename": "TitleText"
+        },
+        "primaryImage": {
+         "id": "rm1959546112",
+         "width": 1055,
+         "height": 1536,
+         "url": "https://m.media-amazon.com/images/M/MV5BYTViYTE3ZGQtNDBlMC00ZTAyLTkyODMtZGRiZDg0MjA2YThkXkEyXkFqcGc@._V1_.jpg",
+         "caption": {
+          "plainText": "Uma Thurman in Pulp Fiction (1994)",
+          "__typename": "Markdown"
+         },
+         "__typename": "Image"
+        },
+        "releaseYear": {
+         "year": 1994,
+         "endYear": null,
+         "__typename": "YearRange"
+        },
+        "ratingsSummary": {
+         "aggregateRating": 8.8,
+         "voteCount": 2436350,
+         "__typename": "RatingsSummary"
+        },
+        "runtime": {
+         "seconds": 9240,
+         "__typename": "Runtime"
+        },
+        "certificate": {
+         "rating": "R",
+         "__typename": "Certificate"
+        },
+        "canRate": {
+         "isRatable": true,
+         "__typename": "CanRate"
+        },
+        "titleGenres": {
+         "genres": [
+          {
+           "genre": {
+            "text": "Crime",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          },
+          {
+           "genre": {
+            "text": "Drama",
+            "__typename": "GenreItem"
+           },
+           "__typename": "TitleGenre"
+          }
+         ],
+         "__typename": "TitleGenres"
+        },
+        "__typename": "Title"
+       },
+       "__typename": "MoreLikeThisEdge"
+      }
+     ],
+     "__typename": "MoreLikeThisConnection"
+    },
+    "relatedInterests": {
+     "edges": [
+      {
+       "node": {
+        "id": "in0000037",
+        "primaryText": {
+         "text": "High-Concept Comedy",
+         "__typename": "InterestText"
+        },
+        "primaryImage": {
+         "caption": {
+          "plainText": "Jim Carrey in Liar Liar (1997)",
+          "__typename": "Markdown"
+         },
+         "width": 1920,
+         "height": 1040,
+         "url": "https://m.media-amazon.com/images/M/MV5BODM4OTJmZjQtMzFmMC00NmM1LTk2OTgtZjM5ZmQ1ZmRjZWQ5XkEyXkFqcGc@._V1_.jpg",
+         "id": "rm2915019265",
+         "__typename": "Image"
+        },
+        "visibilityLevel": "PUBLIC",
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000023",
+        "primaryText": {
+         "text": "Teen Adventure",
+         "__typename": "InterestText"
+        },
+        "primaryImage": {
+         "caption": {
+          "plainText": "Anna Popplewell in The Chronicles of Narnia: The Lion, the Witch and the Wardrobe (2005)",
+          "__typename": "Markdown"
+         },
+         "width": 2048,
+         "height": 1359,
+         "url": "https://m.media-amazon.com/images/M/MV5BMTU3MjQwNzQ3NF5BMl5BanBnXkFtZTcwMzUyNTQyMw@@._V1_.jpg",
+         "id": "rm3387460608",
+         "__typename": "Image"
+        },
+        "visibilityLevel": "PUBLIC",
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000049",
+        "primaryText": {
+         "text": "Teen Comedy",
+         "__typename": "InterestText"
+        },
+        "primaryImage": {
+         "caption": {
+          "plainText": "Lacey Chabert, Lindsay Lohan, Rachel McAdams, and Amanda Seyfried in Mean Girls (2004)",
+          "__typename": "Markdown"
+         },
+         "width": 1600,
+         "height": 1039,
+         "url": "https://m.media-amazon.com/images/M/MV5BYWUwNTZhODQtZWMxNi00YTBjLWE4NTctZjNkMjc5NzA4ZDdlXkEyXkFqcGc@._V1_.jpg",
+         "id": "rm3422355968",
+         "__typename": "Image"
+        },
+        "visibilityLevel": "PUBLIC",
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000166",
+        "primaryText": {
+         "text": "Time Travel",
+         "__typename": "InterestText"
+        },
+        "primaryImage": {
+         "caption": {
+          "plainText": "Michael J. Fox and Christopher Lloyd in Back to the Future (1985)",
+          "__typename": "Markdown"
+         },
+         "width": 1920,
+         "height": 1040,
+         "url": "https://m.media-amazon.com/images/M/MV5BY2YzZjcwNjktMTIyNi00Nzg0LWEyMDctOTdiZDZmOTEzOTQ2XkEyXkFqcGc@._V1_.jpg",
+         "id": "rm79903232",
+         "__typename": "Image"
+        },
+        "visibilityLevel": "PUBLIC",
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000024",
+        "primaryText": {
+         "text": "Urban Adventure",
+         "__typename": "InterestText"
+        },
+        "primaryImage": {
+         "caption": {
+          "plainText": "Shameik Moore in Spider-Man: Into the Spider-Verse (2018)",
+          "__typename": "Markdown"
+         },
+         "width": 2048,
+         "height": 858,
+         "url": "https://m.media-amazon.com/images/M/MV5BMTU4NjYwNzAxN15BMl5BanBnXkFtZTgwMDkyODI4NjM@._V1_.jpg",
+         "id": "rm350909952",
+         "__typename": "Image"
+        },
+        "visibilityLevel": "PUBLIC",
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000012",
+        "primaryText": {
+         "text": "Adventure",
+         "__typename": "InterestText"
+        },
+        "primaryImage": {
+         "caption": {
+          "plainText": "Still frame",
+          "__typename": "Markdown"
+         },
+         "width": 1920,
+         "height": 816,
+         "url": "https://m.media-amazon.com/images/M/MV5BMTlmNjQxNGItMmM1My00YTk2LTk2NjYtNTc4YWFjYTgxNTRiXkEyXkFqcGc@._V1_.jpg",
+         "id": "rm4076771329",
+         "__typename": "Image"
+        },
+        "visibilityLevel": "PUBLIC",
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000034",
+        "primaryText": {
+         "text": "Comedy",
+         "__typename": "InterestText"
+        },
+        "primaryImage": {
+         "caption": {
+          "plainText": "Will Ferrell in Anchorman: The Legend of Ron Burgundy (2004)",
+          "__typename": "Markdown"
+         },
+         "width": 2048,
+         "height": 1365,
+         "url": "https://m.media-amazon.com/images/M/MV5BMjU5NjQyNTcwOV5BMl5BanBnXkFtZTcwMzc3NzUyMw@@._V1_.jpg",
+         "id": "rm1103727616",
+         "__typename": "Image"
+        },
+        "visibilityLevel": "PUBLIC",
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      },
+      {
+       "node": {
+        "id": "in0000162",
+        "primaryText": {
+         "text": "Sci-Fi",
+         "__typename": "InterestText"
+        },
+        "primaryImage": {
+         "caption": {
+          "plainText": "James Earl Jones and David Prowse in Star Wars: Episode V - The Empire Strikes Back (1980)",
+          "__typename": "Markdown"
+         },
+         "width": 1536,
+         "height": 1035,
+         "url": "https://m.media-amazon.com/images/M/MV5BOTkxMzc0MDg5MV5BMl5BanBnXkFtZTcwNjUxMzA4NA@@._V1_.jpg",
+         "id": "rm137476864",
+         "__typename": "Image"
+        },
+        "visibilityLevel": "PUBLIC",
+        "__typename": "Interest"
+       },
+       "__typename": "InterestEdge"
+      }
+     ],
+     "__typename": "InterestConnection"
+    },
+    "triviaTotal": {
+     "total": 428,
+     "__typename": "TriviaConnection"
+    },
+    "trivia": {
+     "edges": [
+      {
+       "node": {
+        "text": {
+         "plaidHtml": "The rights to the film and its sequels are owned by \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0000709/?ref_=dyk_trv\"\u003eRobert Zemeckis\u003c/a\u003e and \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0301826/?ref_=dyk_trv\"\u003eBob Gale\u003c/a\u003e. In a 2015 interview, Zemeckis maintained that no reboot or remake of the film would be authorized during his or Gale\u0026#39;s lifetime.",
+         "__typename": "Markdown"
+        },
+        "machineTranslatedText": {
+         "language": {
+          "id": "en-US"
+         },
+         "value": {
+          "plaidHtml": "The rights to the film and its sequels are owned by \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0000709/?ref_=dyk_trv\"\u003eRobert Zemeckis\u003c/a\u003e and \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0301826/?ref_=dyk_trv\"\u003eBob Gale\u003c/a\u003e. In a 2015 interview, Zemeckis maintained that no reboot or remake of the film would be authorized during his or Gale\u0026#39;s lifetime.",
+          "__typename": "Markdown"
+         },
+         "isMachineTranslation": false,
+         "__typename": "MachineTranslatedMarkdown"
+        },
+        "trademark": null,
+        "machineTranslatedTrademark": null,
+        "relatedNames": null,
+        "__typename": "TitleTrivia"
+       },
+       "__typename": "TriviaEdge"
+      }
+     ],
+     "__typename": "TriviaConnection"
+    },
+    "goofsTotal": {
+     "total": 285,
+     "__typename": "GoofConnection"
+    },
+    "goofs": {
+     "edges": [
+      {
+       "node": {
+        "text": {
+         "plaidHtml": "When Marty is being chased by terrorists, \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0000655/?ref_=dyk_gf\"\u003eEric Stoltz\u003c/a\u003e is playing Marty. \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0000150/?ref_=dyk_gf\"\u003eMichael J. Fox\u003c/a\u003e was later chosen over him, but they kept the driving scenes at the mall with Stoltz in, since the shots were fairly distant and the driver\u0026#39;s face is not particularly visible.",
+         "__typename": "Markdown"
+        },
+        "machineTranslatedText": {
+         "language": {
+          "id": "en-US"
+         },
+         "value": {
+          "plaidHtml": "When Marty is being chased by terrorists, \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0000655/?ref_=dyk_gf\"\u003eEric Stoltz\u003c/a\u003e is playing Marty. \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0000150/?ref_=dyk_gf\"\u003eMichael J. Fox\u003c/a\u003e was later chosen over him, but they kept the driving scenes at the mall with Stoltz in, since the shots were fairly distant and the driver\u0026#39;s face is not particularly visible.",
+          "__typename": "Markdown"
+         },
+         "isMachineTranslation": false,
+         "__typename": "MachineTranslatedMarkdown"
+        },
+        "__typename": "Goof"
+       },
+       "__typename": "GoofEdge"
+      }
+     ],
+     "__typename": "GoofConnection"
+    },
+    "quotesTotal": {
+     "total": 177,
+     "__typename": "TitleQuoteConnection"
+    },
+    "quotes": {
+     "edges": [
+      {
+       "node": {
+        "displayableArticle": {
+         "body": {
+          "plaidHtml": "\u003cul\u003e\u003cli\u003e[\u003cem\u003elast lines\u003c/em\u003e]\u003c/li\u003e\u003cli\u003e\u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0000150/?ref_=tt_dyk_qu\"\u003eMarty McFly\u003c/a\u003e: Hey, Doc, we better back up. We don\u0026#39;t have enough road to get up to 88.\u003c/li\u003e\u003cli\u003e\u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0000502/?ref_=tt_dyk_qu\"\u003eDr. Emmett Brown\u003c/a\u003e: Roads? Where we\u0026#39;re going, we don\u0026#39;t need roads.\u003c/li\u003e\u003c/ul\u003e",
+          "__typename": "Markdown"
+         },
+         "__typename": "DisplayableArticle"
+        },
+        "machineTranslatedDisplayableArticle": {
+         "body": {
+          "language": {
+           "id": "en-US"
+          },
+          "value": {
+           "plaidHtml": "\u003cul\u003e\u003cli\u003e[\u003cem\u003elast lines\u003c/em\u003e]\u003c/li\u003e\u003cli\u003e\u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0000150/?ref_=tt_dyk_qu\"\u003eMarty McFly\u003c/a\u003e: Hey, Doc, we better back up. We don\u0026#39;t have enough road to get up to 88.\u003c/li\u003e\u003cli\u003e\u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0000502/?ref_=tt_dyk_qu\"\u003eDr. Emmett Brown\u003c/a\u003e: Roads? Where we\u0026#39;re going, we don\u0026#39;t need roads.\u003c/li\u003e\u003c/ul\u003e",
+           "__typename": "Markdown"
+          },
+          "isMachineTranslation": false,
+          "__typename": "MachineTranslatedMarkdown"
+         },
+         "__typename": "MachineTranslatedDisplayableArticle"
+        },
+        "__typename": "TitleQuote"
+       },
+       "__typename": "TitleQuoteEdge"
+      }
+     ],
+     "__typename": "TitleQuoteConnection"
+    },
+    "crazyCredits": {
+     "edges": [
+      {
+       "node": {
+        "text": {
+         "plaidHtml": "The character Marty McFly is credited as a performer on the song \u0026quot;Johnny B. Goode\u0026quot;. It is actually sung by \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0132708/?ref_=dyk_cc\"\u003eMark Campbell\u003c/a\u003e with a guitar solo\nby \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm1792582/?ref_=dyk_cc\"\u003eTim May\u003c/a\u003e.",
+         "__typename": "Markdown"
+        },
+        "machineTranslatedText": {
+         "language": {
+          "id": "en-US"
+         },
+         "value": {
+          "plaidHtml": "The character Marty McFly is credited as a performer on the song \u0026quot;Johnny B. Goode\u0026quot;. It is actually sung by \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0132708/?ref_=dyk_cc\"\u003eMark Campbell\u003c/a\u003e with a guitar solo\nby \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm1792582/?ref_=dyk_cc\"\u003eTim May\u003c/a\u003e.",
+          "__typename": "Markdown"
+         },
+         "isMachineTranslation": false,
+         "__typename": "MachineTranslatedMarkdown"
+        },
+        "__typename": "CrazyCredit"
+       },
+       "__typename": "CrazyCreditEdge"
+      }
+     ],
+     "__typename": "CrazyCreditConnection"
+    },
+    "alternateVersions": {
+     "total": 15,
+     "edges": [
+      {
+       "node": {
+        "text": {
+         "plaidHtml": "Spanish dubbed version also refers to Marty in 1955 as Levi Strauss instead of Calvin Klein.",
+         "__typename": "Markdown"
+        },
+        "machineTranslatedDisplayableArticle": {
+         "body": {
+          "language": {
+           "id": "en-US"
+          },
+          "value": {
+           "plaidHtml": "Spanish dubbed version also refers to Marty in 1955 as Levi Strauss instead of Calvin Klein.",
+           "__typename": "Markdown"
+          },
+          "isMachineTranslation": false,
+          "__typename": "MachineTranslatedMarkdown"
+         },
+         "__typename": "MachineTranslatedDisplayableArticle"
+        },
+        "__typename": "AlternateVersion"
+       },
+       "__typename": "AlternateVersionEdge"
+      }
+     ],
+     "__typename": "AlternateVersionConnection"
+    },
+    "connections": {
+     "edges": [
+      {
+       "node": {
+        "associatedTitle": {
+         "id": "tt36496268",
+         "releaseYear": {
+          "year": 1985,
+          "__typename": "YearRange"
+         },
+         "titleText": {
+          "text": "Marty McFly \u0026 The Starlighters: Johnny B. Goode",
+          "__typename": "TitleText"
+         },
+         "originalTitleText": {
+          "text": "Marty McFly \u0026 The Starlighters: Johnny B. Goode",
+          "__typename": "TitleText"
+         },
+         "series": null,
+         "__typename": "Title"
+        },
+        "category": {
+         "text": "Edited into",
+         "__typename": "TitleConnectionCategory"
+        },
+        "__typename": "TitleConnection"
+       },
+       "__typename": "TitleConnectionEdge"
+      }
+     ],
+     "__typename": "TitleConnectionConnection"
+    },
+    "soundtrack": {
+     "edges": [
+      {
+       "node": {
+        "text": "The Power of Love",
+        "comments": [
+         {
+          "plaidHtml": "Performed by \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm3539158/?ref_=dyk_snd\"\u003eHuey Lewis \u0026amp; The News\u003c/a\u003e (as Huey Lewis and The News)",
+          "__typename": "Markdown"
+         },
+         {
+          "plaidHtml": "Courtesy of Chrysalis Records, Inc.",
+          "__typename": "Markdown"
+         },
+         {
+          "plaidHtml": "Written by \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0507271/?ref_=dyk_snd\"\u003eHuey Lewis\u003c/a\u003e, \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0171614/?ref_=dyk_snd\"\u003eJohnny Colla\u003c/a\u003e and \u003ca class=\"ipc-md-link ipc-md-link--entity\" href=\"/name/nm0370943/?ref_=dyk_snd\"\u003eChris Hayes\u003c/a\u003e",
+          "__typename": "Markdown"
+         },
+         {
+          "plaidHtml": "Published by Hulex Music",
+          "__typename": "Markdown"
+         },
+         {
+          "plaidHtml": "Administered by Red Admiral Music Inc.",
+          "__typename": "Markdown"
+         }
+        ],
+        "__typename": "Track"
+       },
+       "__typename": "SoundtrackEdge"
+      }
+     ],
+     "__typename": "SoundtrackConnection"
+    },
+    "topQuestions": {
+     "total": 20,
+     "edges": [
+      {
+       "node": {
+        "attributeId": "run-time",
+        "question": {
+         "plainText": "How long is Back to the Future?",
+         "__typename": "Markdown"
+        },
+        "machineTranslatedQuestion": {
+         "language": "en-US",
+         "value": {
+          "plainText": "How long is Back to the Future?",
+          "__typename": "Markdown"
+         },
+         "isMachineTranslation": false,
+         "__typename": "MachineTranslatedMarkdown"
+        },
+        "__typename": "AlexaQuestion"
+       },
+       "__typename": "AlexaQuestionEdge"
+      }
+     ],
+     "__typename": "AlexaQuestionConnection"
+    },
+    "faqs": {
+     "total": 25,
+     "edges": [
+      {
+       "node": {
+        "id": "fq0111147",
+        "question": {
+         "plainText": "When 1955 Doc is working with the DeLorean out on the street, in the background a person is seen riding a bike and wearing a brown jacket. This is the same type jacket 1985 Doc is wearing is the second movie when he's riding his bike around town. Is this intentional or coincidental?",
+         "__typename": "Markdown"
+        },
+        "machineTranslatedQuestion": {
+         "language": {
+          "id": "en"
+         },
+         "value": {
+          "plainText": "When 1955 Doc is working with the DeLorean out on the street, in the background a person is seen riding a bike and wearing a brown jacket. This is the same type jacket 1985 Doc is wearing is the second movie when he's riding his bike around town. Is this intentional or coincidental?",
+          "__typename": "Markdown"
+         },
+         "isMachineTranslation": false,
+         "__typename": "MachineTranslatedMarkdown"
+        },
+        "__typename": "Faq"
+       },
+       "__typename": "FaqEdge"
+      },
+      {
+       "node": {
+        "id": "fq0119159",
+        "question": {
+         "plainText": "Wouldn't Doc, in 1955, have found Marty's Kodacolor snapshot unusual?",
+         "__typename": "Markdown"
+        },
+        "machineTranslatedQuestion": {
+         "language": {
+          "id": "en"
+         },
+         "value": {
+          "plainText": "Wouldn't Doc, in 1955, have found Marty's Kodacolor snapshot unusual?",
+          "__typename": "Markdown"
+         },
+         "isMachineTranslation": false,
+         "__typename": "MachineTranslatedMarkdown"
+        },
+        "__typename": "Faq"
+       },
+       "__typename": "FaqEdge"
+      },
+      {
+       "node": {
+        "id": "fq0119845",
+        "question": {
+         "plainText": "What does Marty's younger mother think he is called, when he goes back in time?",
+         "__typename": "Markdown"
+        },
+        "machineTranslatedQuestion": {
+         "language": {
+          "id": "en"
+         },
+         "value": {
+          "plainText": "What does Marty's younger mother think he is called, when he goes back in time?",
+          "__typename": "Markdown"
+         },
+         "isMachineTranslation": false,
+         "__typename": "MachineTranslatedMarkdown"
+        },
+        "__typename": "Faq"
+       },
+       "__typename": "FaqEdge"
+      }
+     ],
+     "__typename": "FaqConnection"
+    },
+    "releaseDate": {
+     "day": 3,
+     "month": 7,
+     "year": 1985,
+     "country": {
+      "id": "US",
+      "text": "United States",
+      "__typename": "LocalizedDisplayableCountry"
+     },
+     "__typename": "ReleaseDate"
+    },
+    "countriesDetails": {
+     "countries": [
+      {
+       "id": "US",
+       "text": "United States",
+       "__typename": "CountryOfOrigin"
+      }
+     ],
+     "__typename": "CountriesOfOrigin"
+    },
+    "detailsExternalLinks": {
+     "edges": [
+      {
+       "node": {
+        "url": "https://www.facebook.com/BTTF",
+        "label": "Official Facebook",
+        "externalLinkRegion": null,
+        "__typename": "ExternalLink"
+       },
+       "__typename": "ExternalLinkEdge"
+      },
+      {
+       "node": {
+        "url": "http://www.backtothefuture.com/",
+        "label": "Official Site",
+        "externalLinkRegion": null,
+        "__typename": "ExternalLink"
+       },
+       "__typename": "ExternalLinkEdge"
+      }
+     ],
+     "total": 3,
+     "__typename": "ExternalLinkConnection"
+    },
+    "spokenLanguages": {
+     "spokenLanguages": [
+      {
+       "id": "en",
+       "text": "English",
+       "__typename": "SpokenLanguage"
+      }
+     ],
+     "__typename": "SpokenLanguages"
+    },
+    "akas": {
+     "edges": [
+      {
+       "node": {
+        "text": "Volver al futuro",
+        "__typename": "Aka"
+       },
+       "__typename": "AkaEdge"
+      }
+     ],
+     "__typename": "AkaConnection"
+    },
+    "filmingLocations": {
+     "edges": [
+      {
+       "node": {
+        "text": "Whittier High School - 12417 E. Philadelphia Street, Whittier, California, USA",
+        "location": "Whittier High School - 12417 E. Philadelphia Street, Whittier, California, USA",
+        "attributes": [
+         {
+          "text": "Hill Valley High School",
+          "__typename": "DisplayableAttribute"
+         }
+        ],
+        "__typename": "FilmingLocation"
+       },
+       "__typename": "FilmingLocationEdge"
+      }
+     ],
+     "total": 25,
+     "__typename": "FilmingLocationConnection"
+    },
+    "production": {
+     "edges": [
+      {
+       "node": {
+        "company": {
+         "id": "co0005073",
+         "companyText": {
+          "text": "Universal Pictures",
+          "__typename": "CompanyText"
+         },
+         "__typename": "Company"
+        },
+        "__typename": "CompanyCredit"
+       },
+       "__typename": "CompanyCreditEdge"
+      },
+      {
+       "node": {
+        "company": {
+         "id": "co0009119",
+         "companyText": {
+          "text": "Amblin Entertainment",
+          "__typename": "CompanyText"
+         },
+         "__typename": "Company"
+        },
+        "__typename": "CompanyCredit"
+       },
+       "__typename": "CompanyCreditEdge"
+      },
+      {
+       "node": {
+        "company": {
+         "id": "co0010110",
+         "companyText": {
+          "text": "U-Drive Productions",
+          "__typename": "CompanyText"
+         },
+         "__typename": "Company"
+        },
+        "__typename": "CompanyCredit"
+       },
+       "__typename": "CompanyCreditEdge"
+      }
+     ],
+     "__typename": "CompanyCreditConnection"
+    },
+    "companies": {
+     "total": 259,
+     "__typename": "CompanyCreditConnection"
+    },
+    "productionBudget": {
+     "budget": {
+      "amount": 19000000,
+      "currency": "USD",
+      "__typename": "Money"
+     },
+     "__typename": "ProductionBudget"
+    },
+    "lifetimeGross": {
+     "total": {
+      "amount": 222476852,
+      "currency": "USD",
+      "__typename": "Money"
+     },
+     "__typename": "BoxOfficeGross"
+    },
+    "openingWeekendGross": {
+     "gross": {
+      "total": {
+       "amount": 11152500,
+       "currency": "USD",
+       "__typename": "Money"
+      },
+      "__typename": "BoxOfficeGross"
+     },
+     "weekendEndDate": "1985-07-07",
+     "__typename": "OpeningWeekendGross"
+    },
+    "worldwideGross": {
+     "total": {
+      "amount": 392976852,
+      "currency": "USD",
+      "__typename": "Money"
+     },
+     "__typename": "BoxOfficeGross"
+    },
+    "technicalSpecifications": {
+     "soundMixes": {
+      "items": [
+       {
+        "id": "dolby_digital",
+        "text": "Dolby Digital",
+        "attributes": [],
+        "__typename": "SoundMix"
+       },
+       {
+        "id": "dolby_atmos",
+        "text": "Dolby Atmos",
+        "attributes": [],
+        "__typename": "SoundMix"
+       }
+      ],
+      "__typename": "SoundMixes"
+     },
+     "aspectRatios": {
+      "items": [],
+      "__typename": "AspectRatios"
+     },
+     "colorations": {
+      "items": [],
+      "__typename": "Colorations"
+     },
+     "__typename": "TechnicalSpecifications"
+    },
+    "runtime": {
+     "displayableProperty": {
+      "value": {
+       "plainText": "1h 56m",
+       "__typename": "Markdown"
+      },
+      "__typename": "DisplayableTitleRuntimeProperty"
+     },
+     "seconds": 6960,
+     "__typename": "Runtime"
+    },
+    "originalRuntime": {
+     "displayableProperty": {
+      "value": {
+       "plainText": "1h 56m",
+       "__typename": "Markdown"
+      },
+      "__typename": "DisplayableTitleRuntimeProperty"
+     },
+     "seconds": 6960,
+     "__typename": "Runtime"
+    },
+    "series": null,
+    "__typename": "Title"
+   },
+   "titleCallToAction": {
+    "callToAction": {
+     "titleProUpsell": {
+      "action": {
+       "url": "https://pro.imdb.com/title/tt0088763/?rf=cons_tt_atf\u0026ref_=cons_tt_atf",
+       "label": {
+        "text": "See production info at IMDbPro",
+        "__typename": "CallToActionText"
+       },
+       "__typename": "ActionLink"
+      },
+      "__typename": "LinkCallToAction"
+     },
+     "__typename": "CallToAction"
+    }
+   },
+   "requestContext": {
+    "timestamp": "2026-05-19T00:29:40.094Z",
+    "sidecar": {
+     "account": {
+      "isLoggedIn": false,
+      "isAmazonAccountPool": false
+     },
+     "placementMap": {},
+     "weblabs": {
+      "IMDB_EPISODE_SPOTLIGHT_WIDGET_1382540": {
+       "C": true
+      },
+      "IMDB_NEXT_JWPLAYER_AD_V2_1365196": {
+       "T1": true
+      },
+      "IMDB_REG_GATE_REVIEW_SUMMARIES_1388372": {
+       "T1": true
+      },
+      "IMDB_UBER_EDIT_NEXT_1228775": {
+       "T1": true
+      },
+      "IMDB_1391726": {
+       "T1": true
+      },
+      "IMDB_BRANCH_KEY_SELECTION_373673": {
+       "C": true
+      },
+      "IMDB_DISCO_KNOWNFOR_V2_1328450": {
+       "T1": true
+      },
+      "IMDB_FAVORITE_PEOPLE_CTA_EXPERIMENT_1368950": {
+       "T2": true
+      },
+      "IMDB_MACHINE_TRANSLATE_1371427": {
+       "T1": true
+      },
+      "IMDB_NEW_TITLE_CHATBOT_1339261": {
+       "T2": true
+      },
+      "IMDB_NEXT_CLIENT_SIDE_NAVIGATION_323089": {
+       "C": true
+      },
+      "IMDB_NEXT_COMPACTVERSION_1304551": {
+       "C": true
+      },
+      "IMDB_NEXT_L1_REMOVAL_1369585": {
+       "T1": true
+      },
+      "IMDB_NEXT_MDOT_DEPRECATION_1376176": {
+       "T1": true
+      },
+      "IMDB_NEXT_SSO_US_LAUNCH_1374904": {
+       "T1": true
+      },
+      "IMDB_PRO_CLIENTS_DASHBOARD_1344703": {
+       "T1": true
+      },
+      "IMDB_PRO_COMPACT_CONTACTS_1318150": {
+       "T1": true
+      },
+      "IMDB_PRO_JOBS_DEPRECATION_1347445": {
+       "T1": true
+      },
+      "IMDB_SEARCH_DISCOVER_MODERN_1367402": {
+       "T2": true
+      }
+     },
+     "ads": {
+      "sisPixelMarkup": "",
+      "adSlotsInfo": "{\"hasPremiumAd\":false,\"headerMarkup\":\"\u003croot\u003e\\n\u003cscript\u003e\\nwindow.ads_js_start = new Date().getTime();\\nvar imdbads = imdbads || {}; imdbads.cmd = imdbads.cmd || [];\\n\u003c/script\u003e\\n\u003c!-- begin ads header --\u003e\\n\u003cscript id=\\\"ads_tarnhelm\\\" src=\\\"https://m.media-amazon.com/images/S/sash/soJhCDPZPzNp-oG.js\\\"\u003e\u003c/script\u003e\\n\u003c!-- Include the CREM library for MRC logic --\u003e\\n\u003cscript id=\\\"crem_library\\\" src=\\\"https://m.media-amazon.com/images/I/11QhRZqmoxL.js\\\"\u003e\u003c/script\u003e\\n\u003cscript id=\\\"ads_doWithAds\\\"\u003e\\ndoWithAds = function(inside, failureMessage){\\nif ('consoleLog' in window \u0026\u0026\\n'generic' in window \u0026\u0026\\n'ad_utils' in window \u0026\u0026\\n'custom' in window \u0026\u0026\\n'monitoring' in generic \u0026\u0026\\n'document_is_ready' in generic) {\\ntry{\\ninside.call(this);\\n}catch(e) {\\nif ( window.ueLogError ) {\\nif(typeof failureMessage !== 'undefined'){\\ne.message = failureMessage;\\n}\\ne.attribution = \\\"Advertising\\\";\\ne.logLevel = \\\"ERROR\\\";\\nueLogError(e);\\n}\\nif( (document.location.hash.match('debug=1')) \u0026\u0026\\n(typeof failureMessage !== 'undefined') ){\\nconsole.error(failureMessage);\\n}\\n}\\n} else {\\nif( (document.location.hash.match('debug=1')) \u0026\u0026\\n(typeof failureMessage !== 'undefined') ){\\nconsole.error(failureMessage);\\n}\\n}\\n};\\n\u003c/script\u003e\\n\u003cscript id=\\\"safeframe\\\" src=\\\"https://m.media-amazon.com/images/S/sash/1yEt16VRmUcwTym.js\\\"\u003e\u003c/script\u003e\\n\u003cscript id=\\\"ads_safeframe_setup\\\"\u003e\\ndoWithAds(function(){\\nif (typeof DAsf != 'undefined' \u0026\u0026 typeof DAsf.registerCustomMessageListener === 'function') {\\nvar ad_utils = window.ad_utils;\\nif (ad_utils) {\\nif (ad_utils.update_ad_details) {\\nDAsf.registerCustomMessageListener('updateAdDetails', window.ad_utils.update_ad_details);\\n}\\nif (ad_utils.set_partner) {\\nDAsf.registerCustomMessageListener('setPartner', window.ad_utils.set_partner);\\n}\\nDAsf.registerCustomMessageListener('sendMetrics', window.generic.monitoring.update_sf_slot_metrics);\\nif (ad_utils.expand_overlay) {\\nDAsf.registerCustomMessageListener('expand', window.ad_utils.expand_overlay);\\n}\\nif (ad_utils.collapse_overlay) {\\nDAsf.registerCustomMessageListener('collapse', window.ad_utils.collapse_overlay);\\n}\\n}\\n}\\n},\\\"ads js missing, skipping safeframe setup.\\\");\\n\u003c/script\u003e\\n\u003cscript id=\\\"ads_general_setup\\\"\u003e\\ndoWithAds(function(){\\nif (ad_utils \u0026\u0026 typeof CREM != 'undefined') {\\nad_utils.CREM = CREM;\\n}\\ngeneric.monitoring.record_metric(\\\"ads_js_request_to_done\\\", (new Date().getTime()) - window.ads_js_start);\\ngeneric.send_csm_head_metrics \u0026\u0026 generic.send_csm_head_metrics();\\nif (ad_utils \u0026\u0026 ad_utils.set_slots_on_page) {\\nad_utils.set_slots_on_page({ 'inline60_refresh':1, 'inlinebottom_refresh':1, 'adhesion_bottom':1, 'inline40_refresh':1, 'inline80_refresh':1, 'inline50_refresh':1, 'inlinebottom':1, 'inline20':1, 'provider_promotion':1, 'inline40':1, 'inline20_refresh':1, 'inline50':1, 'inline60':1, 'inline80':1 });\\n}\\nconsoleLog('advertising initialized','ads');\\n},\\\"ads js missing, skipping general setup.\\\");\\n\u003c/script\u003e\\n\u003cscript async='async' src='https://www.googletagservices.com/tag/js/gpt.js'\u003e\u003c/script\u003e\\n\u003cscript\u003e\\nvar googletag = googletag || {};\\ngoogletag.cmd = googletag.cmd || [];\\ngoogletag.cmd.push(function() {\\ngoogletag.pubads().disableInitialLoad();\\ngoogletag.pubads().enableSingleRequest();\\ngoogletag.pubads().setPrivacySettings({\\n'restrictDataProcessing': false\\n});\\ngoogletag.enableServices();\\n});\\n\u003c/script\u003e\u003cscript type='text/javascript'\u003e\\n!function(a9,a,p,s,t,A,g){if(a[a9])return;function q(c,r){a[a9]._Q.push([c,r])}a[a9]={init:function(){q(\\\"i\\\",arguments)},fetchBids:function(){q(\\\"f\\\",arguments)},setDisplayBids:function(){},targetingKeys:function(){return[]},_Q:[]};A=p.createElement(s);A.async=!0;A.src=t;g=p.getElementsByTagName(s)[0];g.parentNode.insertBefore(A,g)}(\\\"apstag\\\",window,document,\\\"script\\\",\\\"//c.amazon-adsystem.com/aax2/apstag.js\\\");\\n// initialize apstag and have apstag set bids on the googletag slots when they are returned to the page\\napstag.init({\\npubID: '0528db53-6f62-46a6-9cca-c1cab6fedb53',\\nadServer: 'googletag',\\nbidTimeout: 2e3,\\nparams: {\\nus_privacy: '[PLACEHOLDER]'\\n},\\nuseSafeFrames: true\\n});\\n\u003c/script\u003e\\n\u003cscript\u003edoWithAds(function() {\\nif (ad_utils \u0026\u0026 ad_utils.ads_header \u0026\u0026 ad_utils.ads_header.done) {\\nad_utils.ads_header.done();\\n}\\n});\u003c/script\u003e\\n\u003clink rel=\\\"stylesheet\\\" href=\\\"https://m.media-amazon.com/images/S/sash/6WQdCE8Mjrz1328.css\\\"/\u003e\\n\u003c!-- end ads header --\u003e\\n\u003c/root\u003e\",\"slotsEnabled\":true,\"adRefreshWebDisabledByBigRedButton\":false,\"clientSideUrl\":\"https://api.graphql.imdb.com/\",\"plaidOverrides\":{},\"slots\":{\"adhesion_bottom\":{\"creativeMetadata\":{\"aaxAdType\":null,\"adProductType\":null,\"creativeHeight\":300,\"creativeWidth\":250,\"isEligibleForRefresh\":false},\"slotMarkup\":\"\u003c!-- Begin ADHESION_BOTTOM --\u003e\\n\u003cstyle id=\\\"adhesion_bottom_placeholder_styles\\\"\u003e\\n@media only screen and (min-width : 320px) and (max-width : 767px){\\n.placeholder_adhesion_bottom_size {\\nwidth: 320px;\\nheight: 50px;\\n}\\n}\\n@media only screen and (min-width : 768px) and (max-width : 1023px){\\n.placeholder_adhesion_bottom_size {\\nwidth: 728px;\\nheight: 90px;\\n}\\n}\\n@media only screen and (min-width : 1024px) and (max-width : 1279px){\\n.placeholder_adhesion_bottom_size {\\nwidth: 728px;\\nheight: 90px;\\n}\\n}\\n@media only screen and (min-width : 1280px) and (max-width : 9999px){\\n.placeholder_adhesion_bottom_size {\\nwidth: 728px;\\nheight: 90px;\\n}\\n}\\n\u003c/style\u003e\\n\u003cdiv id=\\\"adhesion_bottomplaceholderPattern\\\" style=\\\"position: relative;\\\"\\nclass=\\\"placeholder_pattern placeholder_adhesion_bottom_size\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-8\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-8_refresh\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"adhesion_bottom_wrapper\\\" class=\\\"cornerstone_slot\\\"\u003e\\n\u003c/div\u003e\\n\u003c!-- End ADHESION_BOTTOM --\u003e\"},\"inlinebottom\":{\"creativeMetadata\":{\"aaxAdType\":null,\"adProductType\":null,\"creativeHeight\":300,\"creativeWidth\":250,\"isEligibleForRefresh\":false},\"slotMarkup\":\"\u003c!-- Begin INLINEBOTTOM --\u003e\\n\u003cstyle id=\\\"inlinebottom_placeholder_styles\\\"\u003e\\n@media only screen and (min-width : 300px) and (max-width : 767px){\\n.placeholder_inlinebottom_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 768px) and (max-width : 1023px){\\n.placeholder_inlinebottom_size {\\nwidth: 728px;\\nheight: 90px;\\n}\\n}\\n@media only screen and (min-width : 1024px) and (max-width : 1279px){\\n.placeholder_inlinebottom_size {\\nwidth: 970px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 1280px) and (max-width : 9999px){\\n.placeholder_inlinebottom_size {\\nwidth: 970px;\\nheight: 250px;\\n}\\n}\\n\u003c/style\u003e\\n\u003cdiv id=\\\"inlinebottomplaceholderPattern\\\" style=\\\"position: relative;\\\"\\nclass=\\\"placeholder_pattern placeholder_inlinebottom_size\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-5\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-5_refresh\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"inlinebottom_wrapper\\\" class=\\\"cornerstone_slot\\\"\u003e\\n\u003c/div\u003e\\n\u003c!-- End INLINEBOTTOM --\u003e\"},\"inline20\":{\"creativeMetadata\":{\"aaxAdType\":null,\"adProductType\":null,\"creativeHeight\":320,\"creativeWidth\":50,\"isEligibleForRefresh\":false},\"slotMarkup\":\"\u003c!-- Begin INLINE20 --\u003e\\n\u003cstyle id=\\\"inline20_placeholder_styles\\\"\u003e\\n@media only screen and (min-width : 320px) and (max-width : 767px){\\n.placeholder_inline20_size {\\nwidth: 320px;\\nheight: 50px;\\n}\\n}\\n@media only screen and (min-width : 768px) and (max-width : 1023px){\\n.placeholder_inline20_size {\\nwidth: 728px;\\nheight: 90px;\\n}\\n}\\n@media only screen and (min-width : 1024px) and (max-width : 1279px){\\n.placeholder_inline20_size {\\nwidth: 970px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 1280px) and (max-width : 9999px){\\n.placeholder_inline20_size {\\nwidth: 970px;\\nheight: 250px;\\n}\\n}\\n\u003c/style\u003e\\n\u003cdiv id=\\\"inline20placeholderPattern\\\" style=\\\"position: relative;\\\"\\nclass=\\\"placeholder_pattern placeholder_inline20_size\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-0\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-0_refresh\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"inline20_wrapper\\\" class=\\\"cornerstone_slot\\\"\u003e\\n\u003c/div\u003e\\n\u003c!-- End INLINE20 --\u003e\"},\"provider_promotion\":{\"creativeMetadata\":{\"aaxAdType\":null,\"adProductType\":null,\"creativeHeight\":700,\"creativeWidth\":150,\"isEligibleForRefresh\":false},\"slotMarkup\":\"\u003c!-- Begin PROVIDER_PROMOTION --\u003e\\n\u003cstyle id=\\\"provider_promotion_placeholder_styles\\\"\u003e\\n@media only screen and (min-width : 320px) and (max-width : 767px){\\n.placeholder_provider_promotion_size {\\nwidth: 320px;\\nheight: 50px;\\n}\\n}\\n@media only screen and (min-width : 768px) and (max-width : 1023px){\\n.placeholder_provider_promotion_size {\\nwidth: 640px;\\nheight: 55px;\\n}\\n}\\n@media only screen and (min-width : 1024px) and (max-width : 1279px){\\n.placeholder_provider_promotion_size {\\nwidth: 1024px;\\nheight: 65px;\\n}\\n}\\n@media only screen and (min-width : 1280px) and (max-width : 9999px){\\n.placeholder_provider_promotion_size {\\nwidth: 1280px;\\nheight: 65px;\\n}\\n}\\n\u003c/style\u003e\\n\u003cdiv id=\\\"provider_promotionplaceholderPattern\\\" style=\\\"position: relative;\\\"\\nclass=\\\"placeholder_pattern placeholder_provider_promotion_size\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"provider_promotion_wrapper\\\" class=\\\"cornerstone_slot\\\"\u003e\\n\u003c/div\u003e\\n\u003c!-- End PROVIDER_PROMOTION --\u003e\"},\"inline40\":{\"creativeMetadata\":{\"aaxAdType\":null,\"adProductType\":null,\"creativeHeight\":300,\"creativeWidth\":250,\"isEligibleForRefresh\":false},\"slotMarkup\":\"\u003c!-- Begin INLINE40 --\u003e\\n\u003cstyle id=\\\"inline40_placeholder_styles\\\"\u003e\\n@media only screen and (min-width : 300px) and (max-width : 767px){\\n.placeholder_inline40_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 768px) and (max-width : 1023px){\\n.placeholder_inline40_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 1024px) and (max-width : 1279px){\\n.placeholder_inline40_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 1280px) and (max-width : 9999px){\\n.placeholder_inline40_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n\u003c/style\u003e\\n\u003cdiv id=\\\"inline40placeholderPattern\\\" style=\\\"position: relative;\\\"\\nclass=\\\"placeholder_pattern placeholder_inline40_size\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-1\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-1_refresh\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"inline40_wrapper\\\" class=\\\"cornerstone_slot\\\"\u003e\\n\u003c/div\u003e\\n\u003c!-- End INLINE40 --\u003e\"},\"inline50\":{\"creativeMetadata\":{\"aaxAdType\":null,\"adProductType\":null,\"creativeHeight\":300,\"creativeWidth\":250,\"isEligibleForRefresh\":false},\"slotMarkup\":\"\u003c!-- Begin INLINE50 --\u003e\\n\u003cstyle id=\\\"inline50_placeholder_styles\\\"\u003e\\n@media only screen and (min-width : 300px) and (max-width : 767px){\\n.placeholder_inline50_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 768px) and (max-width : 1023px){\\n.placeholder_inline50_size {\\nwidth: 728px;\\nheight: 90px;\\n}\\n}\\n@media only screen and (min-width : 1024px) and (max-width : 1279px){\\n.placeholder_inline50_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 1280px) and (max-width : 9999px){\\n.placeholder_inline50_size {\\nwidth: 728px;\\nheight: 90px;\\n}\\n}\\n\u003c/style\u003e\\n\u003cdiv id=\\\"inline50placeholderPattern\\\" style=\\\"position: relative;\\\"\\nclass=\\\"placeholder_pattern placeholder_inline50_size\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-2\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-2_refresh\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"inline50_wrapper\\\" class=\\\"cornerstone_slot\\\"\u003e\\n\u003c/div\u003e\\n\u003c!-- End INLINE50 --\u003e\"},\"inline60\":{\"creativeMetadata\":{\"aaxAdType\":null,\"adProductType\":null,\"creativeHeight\":300,\"creativeWidth\":250,\"isEligibleForRefresh\":false},\"slotMarkup\":\"\u003c!-- Begin INLINE60 --\u003e\\n\u003cstyle id=\\\"inline60_placeholder_styles\\\"\u003e\\n@media only screen and (min-width : 300px) and (max-width : 767px){\\n.placeholder_inline60_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 768px) and (max-width : 1023px){\\n.placeholder_inline60_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 1024px) and (max-width : 1279px){\\n.placeholder_inline60_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 1280px) and (max-width : 9999px){\\n.placeholder_inline60_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n\u003c/style\u003e\\n\u003cdiv id=\\\"inline60placeholderPattern\\\" style=\\\"position: relative;\\\"\\nclass=\\\"placeholder_pattern placeholder_inline60_size\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-3\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-3_refresh\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"inline60_wrapper\\\" class=\\\"cornerstone_slot\\\"\u003e\\n\u003c/div\u003e\\n\u003c!-- End INLINE60 --\u003e\"},\"inline80\":{\"creativeMetadata\":{\"aaxAdType\":null,\"adProductType\":null,\"creativeHeight\":300,\"creativeWidth\":250,\"isEligibleForRefresh\":false},\"slotMarkup\":\"\u003c!-- Begin INLINE80 --\u003e\\n\u003cstyle id=\\\"inline80_placeholder_styles\\\"\u003e\\n@media only screen and (min-width : 300px) and (max-width : 767px){\\n.placeholder_inline80_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 768px) and (max-width : 1023px){\\n.placeholder_inline80_size {\\nwidth: 300px;\\nheight: 250px;\\n}\\n}\\n@media only screen and (min-width : 1024px) and (max-width : 1279px){\\n.placeholder_inline80_size {\\nwidth: 300px;\\nheight: 600px;\\n}\\n}\\n@media only screen and (min-width : 1280px) and (max-width : 9999px){\\n.placeholder_inline80_size {\\nwidth: 300px;\\nheight: 600px;\\n}\\n}\\n\u003c/style\u003e\\n\u003cdiv id=\\\"inline80placeholderPattern\\\" style=\\\"position: relative;\\\"\\nclass=\\\"placeholder_pattern placeholder_inline80_size\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-4\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"div-gpt-ad-1779150580-4_refresh\\\"\u003e\\n\u003c/div\u003e\\n\u003cdiv id=\\\"inline80_wrapper\\\" class=\\\"cornerstone_slot\\\"\u003e\\n\u003c/div\u003e\\n\u003c!-- End INLINE80 --\u003e\"},\"sis_pixel\":{\"creativeMetadata\":{\"aaxAdType\":null,\"adProductType\":null,\"creativeHeight\":1,\"creativeWidth\":1,\"isEligibleForRefresh\":false},\"slotMarkup\":\"\u003c!-- begin sis pixel slot --\u003e\\n\\n\\n\u003c!-- Begin SIS code --\u003e\\n\u003cscript\u003e\\n    if (typeof uet == 'function') {\\n      uet(\\\"bb\\\", \\\"LoadSis\\\", {wb: 1});\\n    }\\n\u003c/script\u003e\\n\\n\u003cdiv id=\\\"sis_pixel_r2\\\" style=\\\"height:1px; position: absolute; left: -1000000px; top: -1000000px;\\\"\u003e\\n    \u003ciframe id=\\\"sis_pixel_sitewide\\\" width=\\\"1\\\" height=\\\"1\\\" frameborder=\\\"0\\\" marginwidth=\\\"0\\\" marginheight=\\\"0\\\" scrolling=\\\"no\\\" sandbox=\\\"allow-scripts allow-same-origin allow-top-navigation\\\" title=\\\"sis_pixel_sitewide\\\"\u003e\u003c/iframe\u003e\\n\u003c/div\u003e\\n\\n\u003cscript\u003e\\n    setTimeout(function() {\\n        var el = document.getElementById(\\\"sis_pixel_sitewide\\\");\\n        el.src=\\\"https://s.amazon-adsystem.com/iu3?d=imdb.com\u0026cb=792110502922\u0026pId=tt0088763\u0026r=1\u0026a2=0101e46bbaad2f6463ee91fd2ee2a4bacdc6f6b9d22906e9a237b79b23bb8364c48c\u0026prid=P08JkDYpDo6Of1Deu_ZP9GzmNE0MyKPW_Phdqq_0pSwZB8\u0026rP=https%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0088763%2F%3Fref_%3Dchttp_t_29\u0026encoding=server\u0026gdpr=0\u0026gdpr_pd=1\u0026ex-hargs=v%3D1.0%3Bc%3DIMDB%3Bp%3Dtt0088763%3Bt%3Dimdb_title_view%3B\\\";\\n        el.onload = function() {\\n            if (typeof uex == 'function') {\\n                uex(\\\"ld\\\", \\\"LoadSis\\\", {wb: 1});\\n            }\\n        }\\n    },20);\\n\\n    if (typeof uet == 'function') {\\n        uet(\\\"be\\\", \\\"LoadSis\\\", {wb: 1});\\n    }\\n\u003c/script\u003e\\n\\n\u003c!-- End SIS code --\u003e\\n    \u003c!-- begin comscore beacon --\u003e\\n    \u003cscript type=\\\"text/javascript\\\"\u003e\\n        var _comscore = _comscore || [];\\n        _comscore.push({ c1: \\\"2\\\", c2: \\\"6034961\\\", cs_ucfr: \\\"\\\"});\\n        (function() {\\n            var s = document.createElement(\\\"script\\\"), el = document.getElementsByTagName(\\\"script\\\")[0]; s.async = true;\\n            s.src = (document.location.protocol == \\\"https:\\\" ? \\\"https://sb\\\" : \\\"http://b\\\") + \\\".scorecardresearch.com/beacon.js\\\";\\n            el.parentNode.insertBefore(s, el);\\n        })();\\n    \u003c/script\u003e\\n\\n    \u003cnoscript\u003e\\n        \u003cimg src=\\\"https://sb.scorecardresearch.com/p?c1=2\u0026c2=6034961\u0026cj=1\u0026cs_ucfr=\\\"/\u003e\\n    \u003c/noscript\u003e\\n    \u003c!-- end comscore beacon --\u003e\\n\\n\u003c!-- Begin Cookie Sync Pixel code --\u003e\\n\u003cscript\u003e\\n    if (typeof uet == 'function') {\\n        uet(\\\"bb\\\", \\\"LoadCookieSyncPixel\\\", {wb: 1});\\n    }\\n\u003c/script\u003e\\n\\n\u003cdiv id=\\\"cookie_sync_pixel\\\" style=\\\"height:1px; position: absolute; left: -1000000px; top: -1000000px;\\\"\u003e\\n    \u003ciframe id=\\\"cookie_sync_pixel_sitewide\\\" width=\\\"1\\\" height=\\\"1\\\" frameborder=\\\"0\\\" marginwidth=\\\"0\\\" marginheight=\\\"0\\\" scrolling=\\\"no\\\" sandbox=\\\"allow-scripts allow-same-origin allow-top-navigation\\\" title=\\\"cookie_sync_pixel_sitewide\\\"\u003e\u003c/iframe\u003e\\n\u003c/div\u003e\\n\\n\u003cscript\u003e\\n    setTimeout(function() {\\n        var el = document.getElementById(\\\"cookie_sync_pixel_sitewide\\\");\\n        el.src=\\\"https://s.amazon-adsystem.com/iu3?cm3ppd=1\u0026d=dtb-pub\u0026csif=t\u0026dl=n-onetag_kg_n-Rise_n-smaato_n-mobilefuse_ox-db5_n-sharethrough_n-inmobi_gg_n-minuteMedia_smrt_n-nativo_ym_pm-db5_rbd_n-Seedtag_n-undertone_3lift_n-index\u0026gdpr=0\u0026gdpr_pd=1\\\";\\n        el.onload = function() {\\n            if (typeof uex == 'function') {\\n                uex(\\\"ld\\\", \\\"LoadCookieSyncPixel\\\", {wb: 1});\\n            }\\n        }\\n    },20);\\n\\n    if (typeof uet == 'function') {\\n        uet(\\\"be\\\", \\\"LoadCookieSyncPixel\\\", {wb: 1});\\n    }\\n\u003c/script\u003e\\n\\n\u003c!-- End Cookie Sync Pixel code --\u003e\\n\\n\u003c!-- end sis pixel slot --\u003e\\n\"}},\"slotSizes\":[{\"name\":\"adhesion_bottom\",\"width\":728,\"height\":90},{\"name\":\"adhesion_bottom\",\"width\":728,\"height\":90},{\"name\":\"adhesion_bottom\",\"width\":320,\"height\":50},{\"name\":\"adhesion_bottom\",\"width\":728,\"height\":90},{\"name\":\"inlinebottom\",\"width\":970,\"height\":250},{\"name\":\"inlinebottom\",\"width\":728,\"height\":90},{\"name\":\"inlinebottom\",\"width\":300,\"height\":250},{\"name\":\"inlinebottom\",\"width\":970,\"height\":250},{\"name\":\"inline20\",\"width\":970,\"height\":250},{\"name\":\"inline20\",\"width\":728,\"height\":90},{\"name\":\"inline20\",\"width\":320,\"height\":50},{\"name\":\"inline20\",\"width\":970,\"height\":250},{\"name\":\"provider_promotion\",\"width\":700,\"height\":150},{\"name\":\"provider_promotion\",\"width\":700,\"height\":150},{\"name\":\"provider_promotion\",\"width\":700,\"height\":150},{\"name\":\"provider_promotion\",\"width\":700,\"height\":150},{\"name\":\"inline40\",\"width\":300,\"height\":250},{\"name\":\"inline40\",\"width\":300,\"height\":250},{\"name\":\"inline40\",\"width\":300,\"height\":250},{\"name\":\"inline40\",\"width\":300,\"height\":250},{\"name\":\"inline50\",\"width\":300,\"height\":250},{\"name\":\"inline50\",\"width\":728,\"height\":90},{\"name\":\"inline50\",\"width\":300,\"height\":250},{\"name\":\"inline50\",\"width\":728,\"height\":90},{\"name\":\"inline60\",\"width\":300,\"height\":250},{\"name\":\"inline60\",\"width\":300,\"height\":250},{\"name\":\"inline60\",\"width\":300,\"height\":250},{\"name\":\"inline60\",\"width\":300,\"height\":250},{\"name\":\"inline80\",\"width\":300,\"height\":600},{\"name\":\"inline80\",\"width\":300,\"height\":250},{\"name\":\"inline80\",\"width\":300,\"height\":250},{\"name\":\"inline80\",\"width\":300,\"height\":600}],\"responsiveSlotSizes\":[{\"slotName\":\"adhesion_bottom\",\"breakpoints\":[{\"breakpoint\":1279,\"slotSize\":{\"height\":90,\"width\":728,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":1023,\"slotSize\":{\"height\":90,\"width\":728,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":767,\"slotSize\":{\"height\":50,\"width\":320,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":9999,\"slotSize\":{\"height\":90,\"width\":728,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"}],\"__typename\":\"WebResponsiveSlotSize\"},{\"slotName\":\"inlinebottom\",\"breakpoints\":[{\"breakpoint\":1279,\"slotSize\":{\"height\":250,\"width\":970,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":1023,\"slotSize\":{\"height\":90,\"width\":728,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":767,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":9999,\"slotSize\":{\"height\":250,\"width\":970,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"}],\"__typename\":\"WebResponsiveSlotSize\"},{\"slotName\":\"inline20\",\"breakpoints\":[{\"breakpoint\":1279,\"slotSize\":{\"height\":250,\"width\":970,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":1023,\"slotSize\":{\"height\":90,\"width\":728,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":767,\"slotSize\":{\"height\":50,\"width\":320,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":9999,\"slotSize\":{\"height\":250,\"width\":970,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"}],\"__typename\":\"WebResponsiveSlotSize\"},{\"slotName\":\"provider_promotion\",\"breakpoints\":[{\"breakpoint\":1279,\"slotSize\":{\"height\":150,\"width\":700,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":1023,\"slotSize\":{\"height\":150,\"width\":700,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":767,\"slotSize\":{\"height\":150,\"width\":700,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":9999,\"slotSize\":{\"height\":150,\"width\":700,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"}],\"__typename\":\"WebResponsiveSlotSize\"},{\"slotName\":\"inline40\",\"breakpoints\":[{\"breakpoint\":1279,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":1023,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":767,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":9999,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"}],\"__typename\":\"WebResponsiveSlotSize\"},{\"slotName\":\"inline50\",\"breakpoints\":[{\"breakpoint\":1279,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":1023,\"slotSize\":{\"height\":90,\"width\":728,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":767,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":9999,\"slotSize\":{\"height\":90,\"width\":728,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"}],\"__typename\":\"WebResponsiveSlotSize\"},{\"slotName\":\"inline60\",\"breakpoints\":[{\"breakpoint\":1279,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":1023,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":767,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":9999,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"}],\"__typename\":\"WebResponsiveSlotSize\"},{\"slotName\":\"inline80\",\"breakpoints\":[{\"breakpoint\":1279,\"slotSize\":{\"height\":600,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":1023,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":767,\"slotSize\":{\"height\":250,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"},{\"breakpoint\":9999,\"slotSize\":{\"height\":600,\"width\":300,\"__typename\":\"CreativeSize\"},\"__typename\":\"WebViewportBreakpointSlotSize\"}],\"__typename\":\"WebResponsiveSlotSize\"}],\"apsSlotInfoMap\":{\"inline60_refresh\":{\"apsSlotName\":\"/22890456344/consumer-title-inline60_refresh\",\"apsSlotId\":\"div-gpt-ad-1779150580-3_refresh\"},\"inlinebottom_refresh\":{\"apsSlotName\":\"/22890456344/consumer-title-inlinebottom_refresh\",\"apsSlotId\":\"div-gpt-ad-1779150580-5_refresh\"},\"adhesion_bottom\":{\"apsSlotName\":\"/22890456344/consumer-title-adhesion_bottom\",\"apsSlotId\":\"div-gpt-ad-1779150580-8\"},\"inline40_refresh\":{\"apsSlotName\":\"/22890456344/consumer-title-inline40_refresh\",\"apsSlotId\":\"div-gpt-ad-1779150580-1_refresh\"},\"inline80_refresh\":{\"apsSlotName\":\"/22890456344/consumer-title-inline80_refresh\",\"apsSlotId\":\"div-gpt-ad-1779150580-4_refresh\"},\"inline50_refresh\":{\"apsSlotName\":\"/22890456344/consumer-title-inline50_refresh\",\"apsSlotId\":\"div-gpt-ad-1779150580-2_refresh\"},\"inlinebottom\":{\"apsSlotName\":\"/22890456344/consumer-title-inlinebottom\",\"apsSlotId\":\"div-gpt-ad-1779150580-5\"},\"inline20\":{\"apsSlotName\":\"/22890456344/consumer-title-inline20\",\"apsSlotId\":\"div-gpt-ad-1779150580-0\"},\"inline40\":{\"apsSlotName\":\"/22890456344/consumer-title-inline40\",\"apsSlotId\":\"div-gpt-ad-1779150580-1\"},\"inline20_refresh\":{\"apsSlotName\":\"/22890456344/consumer-title-inline20_refresh\",\"apsSlotId\":\"div-gpt-ad-1779150580-0_refresh\"},\"inline50\":{\"apsSlotName\":\"/22890456344/consumer-title-inline50\",\"apsSlotId\":\"div-gpt-ad-1779150580-2\"},\"inline60\":{\"apsSlotName\":\"/22890456344/consumer-title-inline60\",\"apsSlotId\":\"div-gpt-ad-1779150580-3\"},\"inline80\":{\"apsSlotName\":\"/22890456344/consumer-title-inline80\",\"apsSlotId\":\"div-gpt-ad-1779150580-4\"}},\"adFetchingInfo\":{\"endpoint\":\"https://api.graphql.imdb.com/\",\"query\":{\"kind\":\"Document\",\"definitions\":[{\"kind\":\"OperationDefinition\",\"operation\":\"query\",\"name\":{\"kind\":\"Name\",\"value\":\"WebAds\"},\"variableDefinitions\":[{\"kind\":\"VariableDefinition\",\"variable\":{\"kind\":\"Variable\",\"name\":{\"kind\":\"Name\",\"value\":\"input\"}},\"type\":{\"kind\":\"NonNullType\",\"type\":{\"kind\":\"NamedType\",\"name\":{\"kind\":\"Name\",\"value\":\"WebAdsInput\"}}},\"directives\":[]}],\"directives\":[],\"selectionSet\":{\"kind\":\"SelectionSet\",\"selections\":[{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"webAds\"},\"arguments\":[{\"kind\":\"Argument\",\"name\":{\"kind\":\"Name\",\"value\":\"input\"},\"value\":{\"kind\":\"Variable\",\"name\":{\"kind\":\"Name\",\"value\":\"input\"}}}],\"directives\":[],\"selectionSet\":{\"kind\":\"SelectionSet\",\"selections\":[{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"slots\"},\"arguments\":[],\"directives\":[],\"selectionSet\":{\"kind\":\"SelectionSet\",\"selections\":[{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"name\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"creativeInfo\"},\"arguments\":[],\"directives\":[],\"selectionSet\":{\"kind\":\"SelectionSet\",\"selections\":[{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"size\"},\"arguments\":[],\"directives\":[],\"selectionSet\":{\"kind\":\"SelectionSet\",\"selections\":[{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"width\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"height\"},\"arguments\":[],\"directives\":[]}]}},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"slotMarkup\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"isPremium\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"isEligibleFor3pAd\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"isEligibleForRefresh\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"aaxAdType\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"adProductType\"},\"arguments\":[],\"directives\":[],\"selectionSet\":{\"kind\":\"SelectionSet\",\"selections\":[{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"name\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"symbol\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"grade\"},\"arguments\":[],\"directives\":[]}]}},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"creativeId\"},\"arguments\":[],\"directives\":[]}]}},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"adFeedbackUrl\"},\"arguments\":[],\"directives\":[]}]}},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"hasPremiumAd\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"isRefreshRequest\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"responsiveResizingDisabledSlots\"},\"arguments\":[],\"directives\":[],\"selectionSet\":{\"kind\":\"SelectionSet\",\"selections\":[{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"name\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"breakpoints\"},\"arguments\":[],\"directives\":[],\"selectionSet\":{\"kind\":\"SelectionSet\",\"selections\":[{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"breakpoint\"},\"arguments\":[],\"directives\":[]},{\"kind\":\"Field\",\"name\":{\"kind\":\"Name\",\"value\":\"isDisabled\"},\"arguments\":[],\"directives\":[]}]}}]}}]}}]}}],\"loc\":{\"start\":0,\"end\":928}},\"params\":{\"input\":{\"adParameters\":{\"userAgent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36\",\"pageType\":\"title\",\"subPageType\":\"maindetails\"},\"displayAdTargetingParameters\":{\"adLayout\":\"title_md\",\"pageConst\":\"tt0088763\"},\"webAdTargetingParameters\":{\"isAbpAcceptable\":false,\"site\":\"CONSUMER\",\"url\":\"https://www.imdb.com/title/tt0088763/?ref_=chttp_t_29\"}}}}}",
+      "adsCcbaConsent": true
+     },
+     "localizationResponse": {
+      "userCountryCode": "US",
+      "userLanguage": "en-US",
+      "languageForTranslations": "en-US",
+      "geolocationCountryCode": "US",
+      "geolocationPostalCode": "31201",
+      "gdprCompliantLanguage": "en-US",
+      "latitude": "32.89",
+      "longitude": "-83.46",
+      "showtimesPostalCode": {
+       "countryCode": "US",
+       "postalCode": "31201"
+      },
+      "isOriginalTitlePreferenceSet": false,
+      "isFullLocalizationEnabled": true,
+      "userRegion": "GA",
+      "browserAcceptLangHeaderLocale": "en-US"
+     },
+     "isReferenceViewPreferred": false,
+     "isNewUser": false,
+     "sessionId": "147-2556536-3645915",
+     "showMachineTranslatedContent": true
+    },
+    "sidecarHeaders": {
+     "set-cookie": [
+      "session-id=147-2556536-3645915; Domain=.imdb.com; Expires=Tue, 01 Jan 2036 08:00:01 GMT; Path=/; Secure",
+      "session-id-time=2082787201l; Domain=.imdb.com; Expires=Tue, 01 Jan 2036 08:00:01 GMT; Path=/; Secure",
+      "session-token=lS5WHSoIgTKkqRE4PayVRdcBWQ45FFt4teVBq/SYYzmKs8XSfHqVtFhuSJQP/eaX/Xwa7ddf9TFdNlpPnWG1vYiUC9FQWljPNsIaMpjY26dFz9KnfdbbARdPsZ88AXmtWBLcOBiN48eqeAu0GRdgo2mSGt69mfyOW0g2dlBuL84rIhBq7/giHV3skS/2LmYiScSMuQDw2hTvq4V+aXYF3Z5JHOdr7W68; Domain=.imdb.com; Expires=Tue, 01 Jan 2036 08:00:01 GMT; Path=/; Secure; HttpOnly"
+     ],
+     "x-frame-options": "SAMEORIGIN",
+     "x-xss-protection": "1; mode=block"
+    },
+    "weblabs": {
+     "IMDB_EPISODE_SPOTLIGHT_WIDGET_1382540": {
+      "C": true
+     },
+     "IMDB_NEXT_JWPLAYER_AD_V2_1365196": {
+      "T1": true
+     },
+     "IMDB_REG_GATE_REVIEW_SUMMARIES_1388372": {
+      "T1": true
+     },
+     "IMDB_UBER_EDIT_NEXT_1228775": {
+      "T1": true
+     },
+     "IMDB_1391726": {
+      "T1": true
+     },
+     "IMDB_BRANCH_KEY_SELECTION_373673": {
+      "C": true
+     },
+     "IMDB_DISCO_KNOWNFOR_V2_1328450": {
+      "T1": true
+     },
+     "IMDB_FAVORITE_PEOPLE_CTA_EXPERIMENT_1368950": {
+      "T2": true
+     },
+     "IMDB_MACHINE_TRANSLATE_1371427": {
+      "T1": true
+     },
+     "IMDB_NEW_TITLE_CHATBOT_1339261": {
+      "T2": true
+     },
+     "IMDB_NEXT_CLIENT_SIDE_NAVIGATION_323089": {
+      "C": true
+     },
+     "IMDB_NEXT_COMPACTVERSION_1304551": {
+      "C": true
+     },
+     "IMDB_NEXT_L1_REMOVAL_1369585": {
+      "T1": true
+     },
+     "IMDB_NEXT_MDOT_DEPRECATION_1376176": {
+      "T1": true
+     },
+     "IMDB_NEXT_SSO_US_LAUNCH_1374904": {
+      "T1": true
+     },
+     "IMDB_PRO_CLIENTS_DASHBOARD_1344703": {
+      "T1": true
+     },
+     "IMDB_PRO_COMPACT_CONTACTS_1318150": {
+      "T1": true
+     },
+     "IMDB_PRO_JOBS_DEPRECATION_1347445": {
+      "T1": true
+     },
+     "IMDB_SEARCH_DISCOVER_MODERN_1367402": {
+      "T2": true
+     }
+    },
+    "pageType": "title",
+    "subPageType": "main",
+    "pageConst": "tt0088763",
+    "refTagPrefix": "tt",
+    "headers": {
+     "x-forwarded-for": "75.88.205.231, 72.21.217.50",
+     "x-forwarded-proto": "https",
+     "x-forwarded-port": "443",
+     "host": "www.imdb.com",
+     "x-amzn-trace-id": "Root=1-6a0baef3-69941b7e7ef7f3d1339f661e",
+     "x-forwarded-host": "www.imdb.com",
+     "x-forwarded-server": "www.imdb.com",
+     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+     "x-amz-rid": "0THH71Z2ZSGXHNNBDKRT",
+     "x-autobahn-via": "CloudFront",
+     "x-autobahn-header-order": "Host:cache-control:sec-ch-ua:sec-ch-ua-mobile:sec-ch-ua-platform:upgrade-insecure-requests:user-agent:accept:sec-fetch-site:sec-fetch-mode:sec-fetch-dest:referer:accept-encoding:accept-language:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:cookie:priority",
+     "x-amzn-header-count": "38",
+     "x-amzn-ci-http-version": "3.0",
+     "x-amz-cx-family": "imdb",
+     "x-amz-cx-id": "imdb.com",
+     "x-original-uri": "/title/tt0088763/",
+     "x-original-args": "ref_=chttp_t_29",
+     "x-original-method": "GET",
+     "x-original-scheme": "https",
+     "original-x-forwarded-for": "75.88.205.231",
+     "x-amzn-tenant-id": "www.imdb.com",
+     "x-amzn-domain-name": "www.imdb.com",
+     "x-amazon-frontier": "cf",
+     "cookie": "__eoi=ID=19f45bc1a4771e78:T=1779147953:RT=1779150427:S=AA-AfjbUuJtGo8s-jn55fZa5i5p3; __gads=ID=dad15f36801fb90b:T=1763238536:RT=1779150427:S=ALNI_MZmmZbWRip0DmipT0ttTJUQpiUnQA; __gpi=UID=0000130d27a18123:T=1763238536:RT=1779150427:S=ALNI_MbF67X4QlnP8xcuy0n-cN5gYFETdw; _au_1d=AU1D-0100-001763236218-X1TUOYBW-O6I2; _cc_id=ab532b5353a25a4908fe44cdaf27e8a0; _ga=GA1.1.1203317146.1777407659; _ga_FVWZ0RM4DH=GS2.1.s1779148391$o5$g1$t1779150566$j60$l0$h0; _lr_geo_location=US; _lr_geo_location_state=GA; ad-oo=0; aws-waf-token=865f3e2b-50fd-41c9-af69-0d4781ad0a37:EQoAbXsCgfoJAAAA:bc4SXUQkqPL38QZyh/02fWXZVWDjIUr42xIb+iIPf9nVZnCuK1wlRvujhLSwnYqW+X/Mmmv2KSdTopk3ytP/TAhX7X+BzMeMTA/3UEb502V8ujBRmKG+CyZD6GB89uzHGUw8cC690TMV2cn0vyQ9ivr6llwihFEweFyd63EN5CsDu0Sq5GWrqNVnzYehFcE=; ci=eyJhZ2VTaWduYWwiOiJBRFVMVCIsImRpc2FibGVDQ0JBIjpmYWxzZSwiaXNHZHByIjpmYWxzZX0; csm-hit=tb:D5R881B457QQ6DRS1YDZ+s-D5R881B457QQ6DRS1YDZ|1779150569657\u0026t:1779150569657\u0026adb:adblk_no; panoramaId=07d84ee6b863627440b5923064ed16d539385333c2d93242ba9862d90cc10c17; panoramaIdType=panoIndiv; panoramaId_expiry=1779743085166; session-id=147-2556536-3645915; session-id-time=2082787201l; session-token=payUUdx8y0z15els4A4ITv9CUoxrLVC672Iygj3M0uuzQEyspxh89Rbc51wn0TVLBiWW1q0rPdaPmTjI29qDoNBO167QnpqOLWhgr9bcEBhi1S+26Dh4qPLVajZ2Vt7ACzqijG7wNoZaqL343dL83CHPphA+WeJiG6MpGa1kF+IAFzOSOBAuXC1E43iTOMpWnahKxSF5DjEtCzG/BWJJ8TxocNnP0fs+; sharedId=5537416c-8cac-4d4b-9d4d-f59e713e1174; sharedId_cst=zix7LPQsHA%3D%3D; sharedId_last=Mon%2C%2018%20May%202026%2021%3A11%3A04%20GMT; ubid-main=130-3239329-8532819",
+     "x-amzn-waf-frontier-ja3": "db9a221a7d6a0c4bd5aea3cc3a380e41",
+     "accept-language": "en-US,en;q=0.9",
+     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+     "referer": "https://www.imdb.com/title/tt0088763/?ref_=chttp_t_29",
+     "accept-encoding": "gzip, deflate, br, zstd",
+     "x-amzn-waf-frontier-ja4": "q13d0311h3_55b375c5d22e_653d80c3fe9d",
+     "x-amzn-waf-frontier-request-id": "Xg1ptUf5atRucOb09RbFAB9x6nuRnUcw5gRiPVGYeXM7G49r-yN5bg==",
+     "cache-control": "max-age=0",
+     "sec-ch-ua": "\"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+     "sec-ch-ua-mobile": "?0",
+     "sec-ch-ua-platform": "\"Windows\"",
+     "upgrade-insecure-requests": "1",
+     "sec-fetch-site": "same-origin",
+     "sec-fetch-mode": "navigate",
+     "sec-fetch-dest": "document",
+     "priority": "u=0, i",
+     "x-amzn-waf-frontier-all-managed-labels": "aws:bot-control:private:targeted:aggregate:volumetric:baseline:high:299,aws:bot-control:private:targeted:aggregate:volumetric:baseline:low:120,aws:bot-control:private:targeted:aggregate:volumetric:baseline:maximum:983,aws:bot-control:private:targeted:aggregate:volumetric:baseline:medium:211,captcha:rejected,captcha:rejected:not_solved,token:accepted,token:fingerprint:BSoIdvf7gH9UapmhV3V-YAn112cpUgrK8zWlCaAvviU--2AC00010-0,token:id:714eff23-4b9a-49cd-8a06-cf19870ddcbf",
+     "x-amzn-waf-frontier-client-ip": "75.88.205.231",
+     "x-amazon-internal-nginx-process-enabled": "true",
+     "x-opf-egress": "0",
+     "x-amazon-internal-ip-location": "Country=US;",
+     "x-amazon-internal-ip-class": "external",
+     "x-amzn-route-id": "1._3tOoHqR7GOHwOD_qCblgw.0",
+     "x-amazon-urlspace": "NoPageType"
+    },
+    "requestId": "0THH71Z2ZSGXHNNBDKRT",
+    "isInternal": false,
+    "ipAddress": "75.88.205.231",
+    "queryParams": {
+     "ref_": "chttp_t_29",
+     "tconst": "tt0088763"
+    },
+    "isIMDbAppWebView": false,
+    "requestPath": "/title/tt0088763/?ref_=chttp_t_29",
+    "requestHost": "https://www.imdb.com",
+    "routerPath": "/title/tt0088763/?ref_=chttp_t_29",
+    "clientSideWeblabs": {
+     "IMDB_NEXT_SSO_US_EXPERIMENT_1391702": {
+      "T2": true
+     },
+     "IMDB_RETURNING_TO_TV_1350291": {
+      "T1": true
+     }
+    }
+   },
+   "cmsContext": {
+    "transformedPlacements": {
+     "right-3": {
+      "componentName": "IMDbEditorialSingle",
+      "arguments": {
+       "refTag": "sw_ts",
+       "displayTitle": "See Who's Trending on IMDb Right Now",
+       "callToActionUrl": "/imdbpicks/trending-stars/rg3677002496/mediaviewer/rm3229206786/",
+       "rmConstForSlateImage": "rm3682191618",
+       "callToActionText": "See the gallery",
+       "constId": "rg3677002496",
+       "description": "See some of the most searched stars on IMDb right now.",
+       "linkTargetUrl": "/imdbpicks/trending-stars/rg3677002496/mediaviewer/rm3229206786/",
+       "generatedPrefix": "tt_eds_right-3",
+       "slotName": "right-3"
+      },
+      "symphonyMetadata": {
+       "contentId": "74eabc74-6b3a-4aee-b323-d0bc89c7d991",
+       "creativeId": "4de4b752-82f8-4264-8234-afc363eec217",
+       "placementId": "40075043-60a5-48fc-afe4-9b399f63ebba",
+       "__typename": "SymphonyMetadata",
+       "msoGroupName": null,
+       "msoSlotOrder": null
+      },
+      "transformedArguments": {
+       "refTag": "sw_ts",
+       "displayTitle": "See Who's Trending on IMDb Right Now",
+       "callToActionUrl": "/imdbpicks/trending-stars/rg3677002496/mediaviewer/rm3229206786/",
+       "rmConstForSlateImage": "rm3682191618",
+       "callToActionText": "See the gallery",
+       "constId": "rg3677002496",
+       "description": "See some of the most searched stars on IMDb right now.",
+       "linkTargetUrl": "/imdbpicks/trending-stars/rg3677002496/mediaviewer/rm3229206786/",
+       "generatedPrefix": "tt_eds_right-3",
+       "slotName": "right-3",
+       "iconName": "collections",
+       "errors": [],
+       "overlayCaption": "editorialSingle_label_photos",
+       "linkedImages": [
+        {
+         "imageModel": {
+          "url": "https://m.media-amazon.com/images/M/MV5BNjNhZTRmMWYtNWQ2Mi00MDBiLWJlYjAtZmRhNGZmNzMwZWUxXkEyXkFqcGc@._V1_.jpg",
+          "maxHeight": 702,
+          "maxWidth": 1248,
+          "caption": "Production art"
+         },
+         "link": "/imdbpicks/trending-stars/rg3677002496/mediaviewer/rm3229206786/"
+        }
+       ]
+      },
+      "queryTypeFlags": {
+       "image": true,
+       "gallery": true
+      }
+     },
+     "right-5": {
+      "componentName": "IMDbEditorialSingle",
+      "arguments": {
+       "refTag": "sw_pks_staffpicks_elp",
+       "displayTitle": "Staff Picks: What to Watch in May",
+       "callToActionUrl": "/imdbpicks/staff-picks/",
+       "rmConstForSlateImage": "rm1564134146",
+       "callToActionText": "See our picks",
+       "constId": "ls00000000",
+       "description": "Take a look at the IMDb staff picks for the best movies and series coming in May.",
+       "linkTargetUrl": "/imdbpicks/staff-picks/",
+       "generatedPrefix": "tt_eds_right-5",
+       "slotName": "right-5"
+      },
+      "symphonyMetadata": {
+       "contentId": "7e292a1d-e529-4215-939b-9c90b6e3b513",
+       "creativeId": "ab35f6fb-a22b-4f28-99cb-a316af76816b",
+       "placementId": "40440148-ce58-45e4-9f5d-606651fd8ac2",
+       "__typename": "SymphonyMetadata",
+       "msoGroupName": null,
+       "msoSlotOrder": null
+      },
+      "transformedArguments": {
+       "refTag": "sw_pks_staffpicks_elp",
+       "displayTitle": "Staff Picks: What to Watch in May",
+       "callToActionUrl": "/imdbpicks/staff-picks/",
+       "rmConstForSlateImage": "rm1564134146",
+       "callToActionText": "See our picks",
+       "constId": "ls00000000",
+       "description": "Take a look at the IMDb staff picks for the best movies and series coming in May.",
+       "linkTargetUrl": "/imdbpicks/staff-picks/",
+       "generatedPrefix": "tt_eds_right-5",
+       "slotName": "right-5",
+       "iconName": "list",
+       "errors": [],
+       "overlayCaption": "editorialSingle_label_list",
+       "linkedImages": [
+        {
+         "imageModel": {
+          "url": "https://m.media-amazon.com/images/M/MV5BNTRhMDE0M2UtNmNmNS00ZWE5LTg5MTUtNjc0MzU3MDhhZWQ3XkEyXkFqcGc@._V1_.jpg",
+          "maxHeight": 702,
+          "maxWidth": 1248,
+          "caption": "Production art"
+         },
+         "link": "/imdbpicks/staff-picks/"
+        }
+       ]
+      },
+      "queryTypeFlags": {
+       "image": true
+      }
+     },
+     "right-7": {
+      "componentName": "IMDbEditorialSingle",
+      "arguments": {
+       "refTag": "csegstar_pos",
+       "displayTitle": "'Star Wars' Posters We Love",
+       "callToActionUrl": "/star-wars/posters-we-love/rg179215104/mediaviewer/rm3641710848",
+       "rmConstForSlateImage": "rm3745174530",
+       "callToActionText": "See more posters",
+       "constId": "rg179215104",
+       "description": "From the stylish and retro to the downright strange, we've rounded up some of our favorite posters for [i]Star Wars[/i] movies.",
+       "linkTargetUrl": "/star-wars/posters-we-love/rg179215104/mediaviewer/rm3641710848",
+       "generatedPrefix": "tt_eds_right-7",
+       "slotName": "right-7"
+      },
+      "symphonyMetadata": {
+       "contentId": "9ea05ba1-1d0d-48ed-a12a-754b8e77db89",
+       "creativeId": "ddc79cd8-e28c-4fd3-bf90-1c81d8056df3",
+       "placementId": "ea26faa1-0132-419c-a75f-d71965a1da86",
+       "__typename": "SymphonyMetadata",
+       "msoGroupName": null,
+       "msoSlotOrder": null
+      },
+      "transformedArguments": {
+       "refTag": "csegstar_pos",
+       "displayTitle": "'Star Wars' Posters We Love",
+       "callToActionUrl": "/star-wars/posters-we-love/rg179215104/mediaviewer/rm3641710848",
+       "rmConstForSlateImage": "rm3745174530",
+       "callToActionText": "See more posters",
+       "constId": "rg179215104",
+       "description": "From the stylish and retro to the downright strange, we\u0026#39;ve rounded up some of our favorite posters for \u003cem\u003eStar Wars\u003c/em\u003e movies.",
+       "linkTargetUrl": "/star-wars/posters-we-love/rg179215104/mediaviewer/rm3641710848",
+       "generatedPrefix": "tt_eds_right-7",
+       "slotName": "right-7",
+       "iconName": "collections",
+       "errors": [],
+       "overlayCaption": "editorialSingle_label_photos",
+       "linkedImages": [
+        {
+         "imageModel": {
+          "url": "https://m.media-amazon.com/images/M/MV5BODI3YTU5OTQtYjQ2NC00NjBiLWJiYTktY2VhMjgyOGI5NzA1XkEyXkFqcGc@._V1_.jpg",
+          "maxHeight": 702,
+          "maxWidth": 1248,
+          "caption": "Production art"
+         },
+         "link": "/star-wars/posters-we-love/rg179215104/mediaviewer/rm3641710848"
+        }
+       ]
+      },
+      "queryTypeFlags": {
+       "image": true,
+       "gallery": true
+      }
+     },
+     "navbar-events": {
+      "componentName": "IMDbNavbarEventLinks",
+      "arguments": {
+       "linkPath2": "/festival-central/cannes/",
+       "linkText4": "AAPI Heritage Month",
+       "linkPath1": "/oscars/",
+       "linkText3": "Summer Watch Guide",
+       "linkText6": "Most Anticipated",
+       "linkText5": "Star Wars",
+       "linkPath6": "/most-anticipated/",
+       "linkPath5": "/star-wars/",
+       "linkText2": "Cannes Film Festival",
+       "linkPath4": "/spotlight/",
+       "linkText1": "Oscars",
+       "linkPath3": "/imdbpicks/summer-watch-guide/",
+       "linkRef5": "nv_ev_csegstar",
+       "linkRef6": "nv_ev_csegmamt",
+       "linkRef1": "nv_ev_csegosc",
+       "linkRef2": "nv_ev_csegcann",
+       "linkRef3": "nv_ev_csegswg",
+       "linkRef4": "nv_ev_csegahm",
+       "generatedPrefix": "tt_eds_navbar-events",
+       "slotName": "navbar-events"
+      },
+      "symphonyMetadata": {
+       "contentId": "9b23ee66-db72-4346-a287-f73b9fb01c1f",
+       "creativeId": "6d2181e1-9a24-4b08-9bcb-1f397e5f59fc",
+       "placementId": "891ae089-9a61-40b8-a872-f738a1aa6f74",
+       "__typename": "SymphonyMetadata",
+       "msoGroupName": null,
+       "msoSlotOrder": null
+      }
+     }
+    },
+    "isValid": true,
+    "isDebug": false
+   },
+   "urqlState": null,
+   "fetchState": null,
+   "referrer": "https://www.imdb.com/title/tt0088763/?ref_=chttp_t_29"
+  },
+  "__N_SSP": true
+ },
+ "page": "/title/[tconst]",
+ "query": {
+  "ref_": "chttp_t_29",
+  "tconst": "tt0088763"
+ },
+ "buildId": "WZ-RfHHDWFkxo-CsdWOMz",
+ "assetPrefix": "https://dqpnq362acqdi.cloudfront.net",
+ "runtimeConfig": {
+  "env": "production",
+  "stage": "Prod",
+  "cachedGraphQLEndpoint": "https://caching.graphql.imdb.com/",
+  "graphQLEndpoint": "https://api.graphql.imdb.com/",
+  "graphQLTimeout": "11000",
+  "jwPlayerAssetEndpoint": "https://db187550c7dkf.cloudfront.net/jwplayer-unlimited-8.38.0/jwplayer.js",
+  "jwPlayerAssetExpirimentalEndpoint": "https://db187550c7dkf.cloudfront.net/jwplayer-unlimited-8.38.0/jwplayer.js"
+ },
+ "isFallback": false,
+ "dynamicIds": [
+  72541,
+  6438
+ ],
+ "gssp": true,
+ "locale": "en-US",
+ "locales": [
+  "en-US",
+  "de",
+  "es",
+  "es-ES",
+  "fr",
+  "fr-CA",
+  "hi",
+  "it",
+  "pt"
+ ],
+ "defaultLocale": "en-US",
+ "scriptLoader": []
+}

@@ -1,0 +1,362 @@
+<!doctype html>
+<html>
+<head>
+ <!-- Required meta tags -->
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <title>Multi Lang Coder</title>
+ <link rel="icon" href="/favicon.png">
+ <!-- using bottstrap -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+ <!-- user style -->
+ <style>
+  body {
+   margin-left: 3em;
+  }
+  .results {
+   width: 500px;
+  }
+  .search {
+   display: inline;
+   width: 500px;
+  }
+ </style>
+</head>
+
+<body>
+ <nav>
+  <div style="display: inline; position: fixed; top: 0px; width: 100%;
+()=>responsive: true">
+()=>   <ul style="inline">
+()=>    <li><a href="getId('apps').style.display = ''; getId('search').style.display = '';"">Home</a></li>
+()=>    <li><a href="getId('apps').style.display = ''; getId('search').style.display = 'none';">Apps</a></li>
+()=>    <li><a href="getId('apps').style.display = 'none'; getId('search').style.display = '';">Search</a></li>
+()=>   </ul>
+  </div>
+ </nav>
+ 
+ <h1>IMDB Emulator</h1><hr>
+
+ <p>
+  Search and immulate essential imdb data using the OMDb API, extracting and decompiling data from imdb to make two fun embedded apps; and a search feature that returns results from OMDb API using data from JSON, then use the <code>imdbID</code> property value to scrape and build a page similar to an imdb.com page for a movie, series, or video game.
+ </p>
+
+ <h2>IMDB Emulator Apps</h2>
+ <div id="apps">
+  <div id="randomTop250">
+   <button id="clickToGetRandom250Title" onclick="psuedoCode() {
+// This will get data like `curl` or `python.beutiful.soup` from https://www.imdb.com/chart/top/ and extract a random movie from the list using psuedo `querySelector(".ipc-metadata-list-summary-item")[random]`, and return:
+// primaryImage
+// Title
+// Rank (out of 250)
+// Year
+// Rating (stars)
+// Description
+
+()=>graphic-desiner.see(extractAndParseRandomTop250.svg);
+
+- touch `div id="currentRandomTopTitle"`
+  - let extractTop250 = curl https://www.imdb.com/chart/top/;
+  - extractTop250.querySelecto("ipc-metadata-list-summary-item")[Number(1 + Math.floor( 250 * Math.random()))]; // random between 1 and 250
+  - extractTitleElements():
+   - draw(img.small)
+     - img.small.src = `${this.querySelector(".ipc-image")[0].src}`;
+     - img.small.float = left;
+   - touch inline.row // <g id="inlineRow"> in SVG
+     - inline = inline.h3 && inline.h4 // title and ranking
+       - touch h3
+         - h3.innerText = `${this.querySelector(".ipc-title__text")[0].innerText}`; // title
+       - touch h4
+         - h4.innerText `Rank: #${this.querySelector(".ipc-signpost__text")[0].innerText}`; // movies' ranking in top 250
+   - touch inline.col // <g id="inlineCol"> in SVG
+     - touch p
+       - p.innerHTML = `<b>Year</b>: ()=> {
+                       let getYear = 0;
+                       for i in querySelector(".ipc-inline-list__item"):
+                        // ensure data is 4 digits before retuning this one
+                        if (querySelector(".ipc-inline-list__item")[i].innerText = [0-9]{4}) {
+                         // 4 digits for the year
+                         getYear = 1;
+                         return ${this.querySelector(".ipc-inline-list__item")[0].innerText;
+                        }
+                        if (getYear == 1) break;`
+     - touch p // rating
+       p.innerText = `<b>Rating</b>: ${this.querySelector(".ipc-rating-star--rating")[0].innerText`;
+   - touch description // <g id="description"> in SVG
+   - python.soup(.ipc-icon.ipc-icon--info).click():               // have mimic click to get this data
+     - find(querySelector(".sc-76851b88-2 .gipWtG")[0].innerText; // this should be the movies' description
+- div id="currentRandomTopTitle".innerHTML = return extractTitleElements();
+   }">Get Random Top 250 Movie</button>
+  </div>
+  <div id="randomOscarWinner">
+   <button id="clickToGetRandomOscarBestPictureWinner" onclick="psuedoCode() {
+// This will get data like `curl` or `python.beutiful.soup` from https://www.imdb.com/search/title/?groups=best_picture_winner&sort=year,desc and extract a random oscar winner from the list using psuedo `querySelector(".ipc-metadata-list-summary-item")`, and return:
+// primaryImage
+// Title
+// Year
+// Description
+
+()=>graphic-desiner.see(extractAndParseRandomOscar.svg);
+
+- touch `div id="currentRandomOscar"`
+- extractOscarElements():
+  - let extractOscars = curl https://www.imdb.com/search/title/?groups=best_picture_winner&sort=year,desc
+  - let getRandomTitle = extractOscars.querySelector(".ipc-metadata-list-summary-item")[random];
+  - touch img
+    - img.src = getRandomTitle.querySelector(".ipc-image")[0].src; // poster
+    - img.style.float = left;
+    - img.style.maxHeight = 200px;
+  - touch h3
+    - h3.innerText = getRandomTitle.querySelector(".ipc-title-link-wrapper").innerText; // title
+  - touch p
+    - p.innerText = `Year: ${getRandomTitle.querySelector(".ipc-inline-list__item")[0].innerText}`; year
+  - touch div.p
+    - div.p.innerText = getRandomTitle.querySelector(".ipc-html-content-inner-div")[0].innerText; // description
+- div id="currentRandomTopTitle.innerHTML = return extractOscarElements();">Get Random Oscar Winning Movie</button>
+  </div>
+ </div>
+ 
+ <hr>
+
+ <h2>Search Movie</h2>
+ <div id="search">
+  <p>Search For Movie</p>
+  <br>
+  <div class="form-group">
+   <!-- Set number of results -->
+   <div class="form-group results">
+    <label for="numberOfResults">Number of Results</label>
+    <select id="numberOfResults" name="numberOfResults" 
+            class="form-control form-control-sm">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
+   </div>
+   <div class="form-group search">
+    <label>Search Movie or TV Show by Title</label>
+    <div class="row">
+     <div class="col">
+      <!-- input for search -->
+      <input id="searchInput" class="form-control search" type="search" placeholder="Input title">
+      <!-- Search using api key -->
+      <button class="btn btn-primary"
+              onClick="runSearch()">Search</button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <hr>
+  <div id="results" style="display: none">
+   <div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="javascript:void(0)" class="btn btn-primary" onclick="scrapeData(this.Search.imdbID)">Scrape Data from [imdb](https://imdb.com)</a>
+    </div>
+   </div>
+   <!-- pagination for results -->
+   <nav aria-label="...">
+    <ul class="pagination">
+     <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+     </li>
+     <li class="page-item active" aria-current="page">
+      <a class="page-link" href="#">1 <span class="sr-only">(current)</span></a>
+     </li>
+     <!-- 
+     let num = 2;    
+     page-item = <li class="page-item"><a class="page-link" href="#">num</a></li>
+     let countCards =  api.totalResults;
+     let resetCount = 1;
+     let total = get(numberOfResults.value);
+     while (num < countCards) {
+      if (resetCount >= countCards) {
+       resetCount = 0;
+       copy page-item .
+      }
+      num++;
+     }
+     -->
+     <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+     </li>
+    </ul>
+   </nav>
+  </div>
+ </div>
+ <!-- call to return stylish results -->
+ <script>
+  var numberOfResults = document.getElementById("numberOfResults"); /* number of cards per pagination */
+  var results = document.getElementById("results"); /* cards */  
+  var searchInput = document.getElementById("searchInput"); /* what to search */
+  var apiCall = "http://www.omdbapi.com/?apikey=99387a0f&s=";
+
+  // pseudo code function to create html elements and parse data from imdb.com movie page for mini imdb page
+  function parseMiniImdb() {
+   //()=> graphic-designer.see(minifiedComposition.svg);
+   // study raw data, look for:
+()=> graphic-designer.find(`
+ // this are in reverse order of minifiedComposition/svg
+  <!-- div.id="heading" -->
+  <!-- div.id="info" -->
+  <!-- div.id="stars" -->
+  <!-- div.id = "photos" -->
+  <!-- div.id="reviews" -->
+  <!-- div.id="didYouKnow" -->
+  <!-- div.id="details" -->
+`);
+  // study minifiedComposition.json and use json for pseudo-shorthand below
+  ()=> const insertHTML = extract JSON from shorthand, apply appropriate html tag, and place into minified imdb page
+  // Insert id="heading"
+  titleJSON.primaryTitle.text = movie title && insertHTML;
+  titleJSON.relatedInterests.edges.forEach(node ()=> {
+   node.primaryText.text = a category && insertHTML;
+  });
+
+  // Insert id="info"
+  titleJSON.plot.plotText.plainText = movie description && insertHTML;
+  titleJSON.grouping.text = Director && Director.credits.forEach(find(name.text) && insertHTML);
+  titleJSON.grouping.text = Writers && Writers.credits.forEach(find(name.text) && insertHTML);
+  titleJSON.grouping.text = Stars && Stars.credits.forEach(find(name.text) && insertHTML);
+
+  // Insert id="stars"
+  // limit to 6 for this
+  titleJSON.castV2.grouping.text = "Top Cast" as topCast && topCast.credits.forEach(star ()=> {
+   find(star.name) as star && find(star.nameText.text) as Actor Name && insertHTML;
+   find(star.primaryImage.url) as Star Thumbnail Image && insertHTML;
+   find(star.creditedRoles) as character && find(character.edges[0].node.characters.edges[0].node.name) as Name of Character played in movie;
+  })
+
+  // Insert id="photo"
+  // limit to a max of 8 thumnailed photos
+  titleJSON.titleMainImages.forEach(edge ()=> {
+   edge.node.urle = the photo url && insertHTML;
+  });
+
+
+
+
+  // Insert div.id="reviews"
+  titleJSON.common_ariaLabels_IMDbRating = "IMDb rating: ${rating = soup.querySelector('.sc-a30a09c4-1 .leFYws')[0].innerText}"; // decimal digit like 8.0, 8.5, 1.0, etc...
+  let barGraphVoteCounts = [];
+  titleJSON.histogram.hstogramValues.forEach(rating ()=> {
+   barGraphVoteCounts = push(rating.voteCount);
+  });
+  draw(barGraph.forEach(barGraphVoteCounts do use barGraphVoteCounts.number as height)) && insertHTML;
+
+  // Insert div.id="didYouKnow"
+  titleJSON.trivia.forEach(edge ()=> {
+   - look for "trivia" && and use `plaidHtml` && insertHTML;
+  });
+
+  // Insert div.id="details"
+  titleJSON.releaseDate = movie relase date && insertHTML;
+  titleJSON.countriesDetails as countryOrigin.forEach(find(text) && insertHTML);
+  titleJSON.detailsExternalLinks as officialSite.forEach(find(node.url) && insertHTML);
+  titleJSON.spokenLanguages as languages.forEach(find(text) && insertHTML);
+  titleJSON.akas as alsoKnownAs.forEach(find(node.text) && insertHTML);
+  titleJSON.filmingLocations as filmingLocations.forEach(find(node.text | node.location) && insertHTML);
+  titleJSON.production as production.forEach(find(node.text) && insertHTML);
+  }
+ 
+  // Scrape data from imbd to make data for this app
+  function scrapeData(imdbID) {
+   let url = `https://www.imdb.com/title/${imdbID}/`;
+   let fullData = `curl ${url}`;
+   let jsonId = fullData.getElementById("__NEXT_DATA__"); // see minifiedComposition.json for an example of data
+   let titleJSON = JSON.parse(jsonId.textContent);
+   //()=> graphic-designer.see(minifiedComposition.svg);
+   // skim over raw data and get familar with `minifiedComposition.svg`
+()=> graphic-designer.find(`
+ // this are in reverse order of minifiedComposition/svg
+  <!-- div.id="heading" -->
+  <!-- div.id="info" -->
+  <!-- div.id="stars" -->
+  <!-- div.id = "photos" -->
+  <!-- div.id="reviews" -->
+  <!-- div.id="didYouKnow" -->
+  <!-- div.id="details" -->
+`);
+   parseMiniImdb()
+  }
+  // Function to create card for each result object
+  function createStylishMovieCards(json) {
+   /* inline function to fill new card with data */
+   var newCard = (i, j) => {
+    if (i != 0) cardWrap[j].appendElement("beforeend", card[i]);
+    card[i].querySelector(".card-title")[0].innerHTML = item.Title;
+    card[i].querySelector(".card-text")[0].innerHTML = `
+     <dl>
+      <dt>Year</dt>: <dd>${item.Year}</dd>
+      <dt>Title Details</dt>: <dd>${scrapeData(item.imdbID)}</dd>
+      <dt>Type</dt>: <dd>${item.Type}</dd> <!-- Movie or Series -->
+     </dl>`;
+    card[i].querySelector(".card-img-top")[0].src = item.Poster;
+   };
+   if json.Response eq false:
+    let card = document.getElementsByClassName("card");
+    move card[0].img[0] card[0].svg;
+    card[0].svg.innerHTML = `
+     <g id="frownyFace">
+      <g id="eyes">
+       <path>draw("o")</path><path>draw("o")</path>
+      </g>
+      <g id="frown">
+       <path style="transform: rotate(180)">draw("u")</path>
+      </g>
+     </g>`;
+    card[0].querySelector(".card-title")[0].innerHTML = "404";
+    card[0].querySelector(".card-text")[0].innerHTML = 
+    "No results found for " + searchInput.value;
+   else:
+    let cardIndex = 0;
+    let cardWrapIndex = 0;
+    let searchResults = json.totalResults;
+    let cardWrap = `<div class="card-wrapper"></div>`;
+    /* for each object in search object array create new card */
+    foreach item in json.Search do (
+     let cardCount = 0;
+     let countCards = numberOfResults.value;
+     let resetCount = 1;
+     while (cardCoount < searchResults) {
+      if cardIndex eq 0:
+       touch cardWrap[cardWrapIndex]
+       carWrapIndex++;
+       move card[0] cardWarp[cardWrapIndex];
+       newCard(cardIndex, cardWrapIndex);
+      else:
+       copy card[0] card[cardIndex];
+       newCard(cardIndex, cardWrapIndex);
+      cardIndex++;
+      if (resetCount >= countCards) {
+       cardWrapIndex++;
+       copy cardWrap[0] cardWarp[cardWrapIndex];
+      }
+     }
+    );
+  }
+
+  // onClick function for search button
+  function runSearch() {
+   let data;
+   if (searchInput.value.length >= 1) {
+    results.style.display = "";
+    apiCall = apiCall + searchInput.value.replaceAll(" ", "+");
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = () => {
+     if (this.status == 200 && this.readyState == 4) {
+      data = ()=> { return `curl ${apiCall}`; };
+      createStylishMovieCards(JSON.stringify(data));
+     }
+    };
+    xhttp.open("GET", apiCall, true);
+    xhttp.send();
+   }
+  }
+ </script>
+</body>
+</html>
