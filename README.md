@@ -4,7 +4,7 @@
 Support branch of repository for:
 <!-- Link to PR -->
 - [awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/1761) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
-- `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
+
 
 <!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
 <!-- formatter_1 -->
