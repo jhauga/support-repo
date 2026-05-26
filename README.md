@@ -3,8 +3,8 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/1761) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
-
+- [awesome-copilot pull request](https://github.com/github/awesome-copilot/pull/1761)
+- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/plugin-vibe-coding/index.html)
 
 <!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
 <!-- formatter_1 -->
