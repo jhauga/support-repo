@@ -2,7 +2,7 @@
 <html>
 <head>
  <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
+ <title>Pipes &amp; Footlights</title>
  
  <!--<script src="/js/scripts.js"></script>-->
  <link rel="icon" href="/favicon.png">
@@ -79,70 +79,73 @@
 
 <body>
 
-<!--
- <div>
-  <nav>
-   <ul>
-    <li><a href="javascript:void(0)">Link 1</a></li>
-    <li><a href="javascript:void(0)">Link 2</a></li>
-    <li><a href="javascript:void(0)">Link 3</a></li>
-    <li><a href="javascript:void(0)">Link 4</a></li>
-   </ul>
-  </nav>
- </div>
+  <div id="content" class="markdown-body" style="opacity:0;transition:opacity 0.8s ease;"></div>
 
- <main>
-  <div>
-   <h1>Sample Page</h1>
-   <p>Page content</p>
-  </div>
- </main>
+  <!--
+    This button is not merely an element in the DOM.
+    It is the stage manager — the one who knocks twice before the curtain rises.
+    Click it once and `musical` steps into the light; `stage` follows close behind.
+    Neither exits with a non-zero code tonight.
+  -->
+  <button id="curtain-btn" style="display:block;margin:30px auto;" onclick="raiseTheCurtain()">
+    &#127917; Raise the Curtain
+  </button>
 
+  <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+  <script>
+    // The story waits offstage — a flat file with grand ambitions.
+    // fetch() steps into the spotlight and retrieves it asynchronously,
+    // so the page loads fast and the narrative arrives when it's ready.
+    let storyMarkdown = '';
+    fetch('cmd-musical-stage.md')
+      .then(function(response) { return response.text(); })
+      .then(function(text) { storyMarkdown = text; })
+      .catch(function() { storyMarkdown = ''; });
 
- <footer> 
-  <p>Footer message.</p>
- </footer>
--->
+    // ┌──────────────────────────────────────────────────────────────┐
+    // │  raiseTheCurtain()                                           │
+    // │                                                              │
+    // │  The houselights dim. marked.js converts the raw script     │
+    // │  into rendered HTML, scene by scene. The #content div       │
+    // │  fades in — a slow dissolve, not a hard cut — and the       │
+    // │  button disappears once its single dramatic purpose is done. │
+    // │                                                              │
+    // │  If the story hasn't loaded yet, the curtain stays down.    │
+    // └──────────────────────────────────────────────────────────────┘
+    function raiseTheCurtain() {
+      if (!storyMarkdown) {
+        console.warn('musical: the story has not loaded yet — the curtain is still down');
+        return;
+      }
 
-<h1 id="pageTitle"></h1>
+      var content = document.getElementById('content');
 
-<p>CHANGE_TEXT</p>
+      // Parse markdown — `musical` finally gets its rendered debut.
+      content.innerHTML = marked.parse(storyMarkdown);
 
-<pre id="a">
-CHANGE_TEXT
-</pre>
+      // Animate each top-level block in sequence, like acts taking the stage.
+      var blocks = content.children;
+      var delay = 0;
+      for (var i = 0; i < blocks.length; i++) {
+        (function(el, d) {
+          el.style.opacity = '0';
+          el.style.transition = 'opacity 0.6s ease';
+          setTimeout(function() { el.style.opacity = '1'; }, d);
+        })(blocks[i], delay);
+        delay += 300;
+      }
 
-<script>
- document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
-</script>
+      // Fade the container in as the first act begins.
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          content.style.opacity = '1';
+        });
+      });
+
+      // Every great entrance is one-way — the button takes its bow and exits.
+      document.getElementById('curtain-btn').style.display = 'none';
+    }
+  </script>
 
 
 </body>
