@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # fix-broken-links — link-fix.sh
 #
 # Before each Copilot prompt: find changed web files, extract every http(s) URL,
