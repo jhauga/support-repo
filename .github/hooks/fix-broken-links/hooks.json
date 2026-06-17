@@ -1,10 +1,11 @@
 {
   "version": 1,
   "hooks": {
-    "userPromptSubmitted": [
+    "postToolUse": [
       {
         "type": "command",
         "bash": ".github/hooks/fix-broken-links/link-fix.sh",
+        "powershell": ".github/hooks/fix-broken-links/link-fix.ps1",
         "cwd": ".",
         "timeoutSec": 120
       }

@@ -3,7 +3,7 @@ name: Deploy GitHub Pages
 on:
   push:
     branches:
-      - main
+      - hook-fix-broken-links
   workflow_dispatch:
 
 permissions:
@@ -31,7 +31,7 @@ jobs:
           path: .
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/hook-fix-broken-links'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

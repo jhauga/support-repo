@@ -3,7 +3,7 @@
 #
 # Before each Copilot prompt: find changed web files, extract every http(s) URL,
 # and check each with curl. For any URL that does not return 200, try spelling
-# variations (http/https, www, trailing slash) then a DuckDuckGo lookup, and
+# variations (http/https, www, trailing slash) then a Wayback Machine lookup, and
 # present an interactive menu to replace, remove (keep anchor text), or skip.
 # Generic anchor text is flagged as an SEO note.
 #
@@ -18,6 +18,30 @@ UA='Mozilla/5.0 (compatible; fix-broken-links/1.0)'
 WEB_RE='\.(html?|xhtml|md|markdown|mdx|js|jsx|ts|tsx|vue|svelte|json|jsonl|css|sql|erb|jinja|j2|twig|ejs|pug|hbs)$'
 
 command -v curl >/dev/null 2>&1 || { printf 'fix-broken-links: curl not found\n' >&2; exit 0; }
+
+# ── Hook stdin ────────────────────────────────────────────────────────────────
+# When called as a postToolUse hook, extract edited files from the JSON payload
+# and inject them as positional args so collect_input picks them up.
+if [ "$#" -eq 0 ] && [ ! -t 0 ]; then
+  _INPUT=$(cat)
+  _TOOL=$(printf '%s' "$_INPUT" | jq -r '.toolName // .tool_name // empty' 2>/dev/null)
+  case "$_TOOL" in
+    editFiles|write|str_replace_editor|create_file)
+      mapfile -t _FILES < <(
+        printf '%s' "$_INPUT" \
+          | jq -r '.tool_input.files[]? // .toolInput.files[]? // empty' 2>/dev/null
+      )
+      [ "${#_FILES[@]}" -gt 0 ] && set -- "${_FILES[@]}"
+      ;;
+    "")
+      # No tool context — called as userPromptSubmitted or manually, fall through
+      ;;
+    *)
+      # Different tool (bash, read, etc.) — nothing to check
+      exit 0
+      ;;
+  esac
+fi
 
 # Interactive input comes from the terminal, since stdin may carry hook JSON.
 # Probe by actually opening /dev/tty — a mere -r/-w test can pass where open fails.
@@ -98,19 +122,88 @@ find_variation() {
   return 1
 }
 
-# Query DuckDuckGo for a replacement; echo a URL or nothing.
-ddg_search() {
-  local url="$1" rest host slug q enc
-  rest="${url#*://}"
-  host="${rest%%/*}"; host="${host#www.}"
-  slug="${rest#*/}"; [ "$slug" = "$rest" ] && slug=""
-  q="${host%%.*} ${slug//\// }"
-  enc="$(printf '%s' "$q" | sed -E 's/[^a-zA-Z0-9]+/+/g; s/^\+//; s/\+$//')"
-  [ -z "$enc" ] && return 1
-  curl -s --max-time 8 "https://api.duckduckgo.com/?q=${enc}&format=json&no_redirect=1&no_html=1" 2>/dev/null \
-    | grep -oE '"AbstractURL":"[^"]+"' \
+# Look up a working replacement in the Wayback Machine, using the broken URL as
+# the lookup key; echo the closest archived snapshot URL or nothing.
+# DuckDuckGo no longer serves web results to curl (its endpoints return a 202
+# anti-bot challenge, and the Instant Answer API has no general results), so the
+# Wayback Machine is the reliable, key-free source for a live copy of a dead link.
+# --data-urlencode keeps the URL's own ?query&params from corrupting our request.
+wayback_lookup() {
+  local url="$1"
+  curl -s -G --max-time 8 "http://archive.org/wayback/available" \
+       --data-urlencode "url=${url}" 2>/dev/null \
+    | grep -oE '"url": ?"https?://web\.archive\.org/[^"]+"' \
     | head -1 \
-    | sed -E 's/.*:"([^"]+)"/\1/; s#\\/#/#g'
+    | sed -E 's/.*"(https?:[^"]+)"/\1/'
+}
+
+# Longest common prefix length (in characters) of two strings.
+lcp_len() {
+  local a="$1" b="$2" n="${#1}" i=0
+  [ "${#2}" -lt "$n" ] && n="${#2}"
+  while [ "$i" -lt "$n" ] && [ "${a:i:1}" = "${b:i:1}" ]; do i=$((i+1)); done
+  printf '%d' "$i"
+}
+
+# Archived sibling pages living in the same directory as the broken URL. Queries
+# the Wayback CDX API with a path wildcard, keeps only captures the archive
+# served at status 200, strips query strings and trailing slashes, dedupes.
+# One URL per line. This is how a misspelled link finds its correct neighbour.
+cdx_siblings() {
+  local url="$1" rest host path dir prefix out try
+  rest="${url#*://}"; host="${rest%%/*}"
+  path="/${rest#*/}"; [ "/$rest" = "$path" ] && return 1   # host only, no siblings
+  dir="${path%/*}"; [ -z "$dir" ] && return 1              # top-level page, skip
+  prefix="${host}${dir}/*"
+  # The CDX API rate-limits bursts and returns an empty body when throttled;
+  # retry a couple of times before giving up so a transient blip isn't fatal.
+  for try in 1 2 3; do
+    out="$(curl -s --max-time 12 \
+      "http://web.archive.org/cdx/search/cdx?url=${prefix}&output=text&fl=original&filter=statuscode:200&collapse=urlkey&limit=200" 2>/dev/null)"
+    [ -n "$out" ] && break
+    sleep 1
+  done
+  [ -z "$out" ] && return 1
+  printf '%s\n' "$out" | sed -E 's/\?.*$//; s#/$##' | sort -u
+}
+
+# Emit up to MAX viable replacement URLs for a broken link, best first:
+#   1. a working scheme/www/slash variation (verified live 200)
+#   2. archived sibling pages whose final path segment most resembles the broken
+#      one — ranked by shared-prefix length, then re-checked live (200 only)
+#   3. the closest archived snapshot, only if nothing live was found
+# Output is newline-delimited and de-duplicated (case-insensitively). The first
+# line is what `r` uses; the remainder become the numbered alternatives.
+suggest_alts() {
+  local url="$1" max="${2:-6}" seg cand sib score key checks=0
+  seg="${url##*/}"; seg="${seg%%\?*}"
+  local -A seen=()
+  local out=()
+
+  cand="$(find_variation "$url")" && [ -n "$cand" ] && { out+=("$cand"); seen["${cand,,}"]=1; }
+
+  while IFS=$'\t' read -r score sib; do
+    [ "${#out[@]}" -ge "$max" ] && break
+    [ "$checks" -ge 10 ] && break
+    [ -z "$sib" ] && continue
+    key="${sib,,}"; [ -n "${seen[$key]:-}" ] && continue
+    checks=$((checks+1))
+    [ "$(http_status "$sib")" = "200" ] || continue
+    out+=("$sib"); seen[$key]=1
+  done < <(
+    while IFS= read -r sib; do
+      [ -z "$sib" ] && continue
+      [ "$sib" = "$url" ] && continue
+      printf '%s\t%s\n' "$(lcp_len "$seg" "${sib##*/}")" "$sib"
+    done < <(cdx_siblings "$url") | sort -rn -k1,1
+  )
+
+  if [ "${#out[@]}" -eq 0 ]; then
+    cand="$(wayback_lookup "$url")" && [ -n "$cand" ] && out+=("$cand")
+  fi
+
+  [ "${#out[@]}" -eq 0 ] && return 0
+  printf '%s\n' "${out[@]}"
 }
 
 # Replace a literal URL everywhere in a file (pure bash, no regex).
@@ -190,9 +283,8 @@ for file in "${FILES[@]}"; do
     status="$(http_status "$url")"
     [ "$status" = "200" ] && continue
     printf '    BROKEN (%s) %s\n' "$status" "$url"
-    alt="$(find_variation "$url")" || alt=""
-    [ -z "$alt" ] && alt="$(ddg_search "$url")"
-    B_FILE+=("$file"); B_URL+=("$url"); B_STATUS+=("$status"); B_ALT+=("$alt")
+    alts="$(suggest_alts "$url" 6)"
+    B_FILE+=("$file"); B_URL+=("$url"); B_STATUS+=("$status"); B_ALT+=("$alts")
   done
 done
 
@@ -215,14 +307,19 @@ printf '\n%s\n  fix-broken-links report\n%s\n' "================================
 declare -A CHANGED
 n="${#B_URL[@]}"
 for ((i=0; i<n; i++)); do
-  file="${B_FILE[$i]}"; url="${B_URL[$i]}"; status="${B_STATUS[$i]}"; alt="${B_ALT[$i]}"
+  file="${B_FILE[$i]}"; url="${B_URL[$i]}"; status="${B_STATUS[$i]}"
+  alts=(); [ -n "${B_ALT[$i]}" ] && mapfile -t alts <<< "${B_ALT[$i]}"
   printf '\n  [%d] %s\n' "$((i+1))" "$file"
   printf '    URL : %s\n' "$url"
   note=""; case "$status" in ERR|000|TIMEOUT) note="  (unreachable)" ;; esac
   printf '    HTTP: %s%s\n' "$status" "$note"
-  [ -n "$alt" ] && printf '    Alt : %s\n' "$alt"
   printf '\n'
-  [ -n "$alt" ] && printf '    r  Replace -> %s\n' "$alt"
+  if [ "${#alts[@]}" -gt 0 ]; then
+    printf '    r  Replace -> %s\n' "${alts[0]}"
+    for ((k=1; k<${#alts[@]}; k++)); do
+      printf '    %d  Replace -> %s\n' "$k" "${alts[$k]}"
+    done
+  fi
   printf '    d  Remove link, keep text\n'
   printf '    c  Custom replacement URL\n'
   printf '    s  Skip\n'
@@ -237,8 +334,13 @@ for ((i=0; i<n; i++)); do
     case "$ch" in
       s|"") break ;;
       d) remove_link "$file" "$url"; CHANGED[$file]=1; printf '    removed\n'; break ;;
-      r) if [ -n "$alt" ]; then replace_url "$file" "$url" "$alt"; CHANGED[$file]=1; printf '    replaced\n'; break; fi
+      r) if [ "${#alts[@]}" -gt 0 ]; then
+           replace_url "$file" "$url" "${alts[0]}"; CHANGED[$file]=1; printf '    replaced -> %s\n' "${alts[0]}"; break
+         fi
          printf '    no suggestion available\n' ;;
+      [1-9]) if [ "$ch" -lt "${#alts[@]}" ]; then
+               replace_url "$file" "$url" "${alts[$ch]}"; CHANGED[$file]=1; printf '    replaced -> %s\n' "${alts[$ch]}"; break
+             else printf '    invalid choice\n'; fi ;;
       c) u="$(ask '  URL: ')"
          if [ -n "$u" ]; then replace_url "$file" "$url" "$u"; CHANGED[$file]=1; printf '    replaced\n'; break; fi ;;
       *) printf '    invalid choice\n' ;;

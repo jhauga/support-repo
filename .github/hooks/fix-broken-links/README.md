@@ -1,13 +1,13 @@
 ---
 name: 'Fix Broken Links'
-description: 'Checks changed web files for broken hyperlinks and SEO anchor issues before each Copilot prompt'
-tags: ['links', 'seo', 'html', 'markdown', 'user-prompt-submitted']
+description: 'Checks changed web files for broken hyperlinks and SEO anchor issues after each Copilot tool use.'
+tags: ['links', 'seo', 'html', 'markdown', 'post-tool-use']
 ---
 
 # Fix Broken Links Hook
 
-Scans recently-changed web files for broken hyperlinks before each GitHub Copilot
-prompt. For each broken URL the hook tries common spelling variations, queries
+Scans recently-changed web files for broken hyperlinks after each GitHub Copilot
+tool use. For each broken URL the hook tries common spelling variations, queries
 DuckDuckGo for a replacement, and presents an interactive fix menu. Generic
 anchor text (`click here`, `read more`, etc.) is flagged as an SEO issue.
 
