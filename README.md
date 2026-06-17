@@ -33,7 +33,9 @@ And one could use SEO and/or better link text:
 - [principles](https://learn.microsoft.com/en-us/azure/well-architected/ai/design-principles)
 
 ```bash
-Write a brief blog article referencing about ai research techniques, and organizing research in such a way that it can easliy be kept up-to-date with ai changes; and incorporating research findings in order to build ai skills. Update @index.html as HTML with the final data.
+Write a brief blog article referencing about ai research techniques, and organizing research
+in such a way that it can easliy be kept up-to-date with ai changes; and incorporating
+research findings in order to build ai skills. Update @index.html as HTML with the final data.
 
 **References:**
 
