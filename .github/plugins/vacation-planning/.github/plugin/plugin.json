@@ -1,0 +1,15 @@
+{
+  "name": "vacation-planning",
+  "description": "Plan, propose, schedule, and record day-by-day vacation activities using an MCP server, with a safe handoff for manual entry of logins and payment info.",
+  "version": "1.0.0",
+  "keywords": ["vacation", "travel", "planner", "scheduler", "mcp"],
+  "author": { "name": "Awesome Copilot Community" },
+  "repository": "https://github.com/github/awesome-copilot",
+  "license": "MIT",
+  "agents": ["./agents/travel-activity.md"],
+  "commands": ["./commands/plan-vacation-activity.md"],
+  "skills": [
+    "./skills/mcp-server-generator/",
+    "./skills/vacation-activity-planner/"
+  ]
+}
