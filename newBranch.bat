@@ -81,7 +81,7 @@ if "%_repoName%"=="awesome-copilot" (
  )
 )
 :: Update workflow action - only ONE branch name per line
-sed "s/main/%_branchName%/" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
+sed "s/__main__/%_branchName%/" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
 move /Y .gitHub\workflows\deploy.yml.tmp .gitHub\workflows\deploy.yml >nul 2>nul
 
 :: Clean out repo files
