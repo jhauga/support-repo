@@ -10,10 +10,27 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  # Needed by the "gh run list" fallback query to read this workflow's history.
+  actions: read
 
 concurrency:
   group: pages
   cancel-in-progress: true
+
+# This repo's main branch is a template that produces quasi-artifacts, so its
+# build is expected to fail often; the live Pages site is normally deployed from
+# the feature branches created by newBranch.bat (which rewrites "main" below to
+# the new branch name). To avoid noisy failure notifications we try to build the
+# current commit and, if that fails, fall back through the last few commits that
+# previously deployed successfully on ANY branch and rebuild the most recent one
+# that still builds. The job only fails (and only then notifies) when none of
+# the candidates build - see WORKFLOW_FILE / MAX_FALLBACKS below.
+env:
+  # File name of this workflow, used to query its own run history.
+  WORKFLOW_FILE: deploy.yml
+  # Safety cap: number of previously successful commits to try after the
+  # current one. Prevents an endless walk back through history.
+  MAX_FALLBACKS: 5
 
 jobs:
   build:
@@ -21,23 +38,30 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          # Full history so the fallback step can check out and rebuild older
+          # commits that previously deployed successfully.
+          fetch-depth: 0
 
       - name: Configure GitHub Pages
         id: pages
         uses: actions/configure-pages@v5
 
-      # Rewrite every root-relative link (one that starts with "/") so it
-      # resolves under the project site's base path instead of the site root.
-      # For this repo that turns href="/favicon.png" into
+      # The link rewriter is written to a temp path (outside the work tree) so
+      # that checking out older commits during the fallback loop cannot clobber
+      # or remove it. It rewrites every root-relative link (one starting with
+      # "/") to resolve under the project site's base path instead of the site
+      # root. For this repo that turns href="/favicon.png" into
       # href="/support-repo/favicon.png" -> https://jhauga.github.io/support-repo/favicon.png
       # and works for any "<user-name>.github.io/<repo-name>/" project site.
-      - name: Rewrite root-relative links to Pages base path
-        env:
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+      - name: Write link rewriter
         run: |
-          python3 - <<'PY'
+          cat > "$RUNNER_TEMP/rewrite_links.py" <<'PY'
           import os, re, sys
           from pathlib import Path
+
+          # Build directory to rewrite in place (defaults to current directory).
+          root = Path(sys.argv[1] if len(sys.argv) > 1 else ".")
 
           # base_path is "/<repo-name>" for a project site, "/" (or empty) for a
           # user/org root site. A root site needs no rewriting, so bail out.
@@ -86,7 +110,7 @@ jobs:
               return pre + quote + ", ".join(out) + quote
 
           changed = 0
-          for path in Path(".").rglob("*.html"):
+          for path in root.rglob("*.html"):
               if any(part in (".git", "node_modules") for part in path.parts):
                   continue
               text = path.read_text(encoding="utf-8")
@@ -101,10 +125,85 @@ jobs:
           print(f"Done. Rewrote {changed} file(s) with base path '{base}'.")
           PY
 
+      # Try the current commit first, then walk back through up to MAX_FALLBACKS
+      # commits that previously deployed successfully, rebuilding the most recent
+      # one that still builds into "_site". Succeeds as soon as one builds; only
+      # fails when every candidate fails (the intended last-resort error).
+      - name: Build site (with fallback to last successful commit)
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+
+          # Build a single commit into "_site". Returns non-zero on any failure
+          # so the caller can move on to the next fallback candidate.
+          build_commit() {
+            local sha="$1"
+            rm -rf _site
+            mkdir -p _site
+            # The commit may not be in the local history after a force-push;
+            # fetch it best-effort before checking it out.
+            git fetch --no-tags --quiet origin "$sha" 2>/dev/null || true
+            git checkout -f "$sha" -- . 2>/dev/null \
+              || git checkout -f "$sha" 2>/dev/null \
+              || return 1
+            # Copy the site content into the isolated build dir.
+            rsync -a --exclude='.git' --exclude='_site' --exclude='node_modules' \
+              ./ _site/ || return 1
+            # Run the build (link rewrite) against the build dir.
+            python3 "$RUNNER_TEMP/rewrite_links.py" _site || return 1
+          }
+
+          # Candidate list: current commit first, then the last MAX_FALLBACKS
+          # commits whose deploy run concluded successfully, across ANY branch
+          # (most recent first). This repo's live Pages site is deployed from the
+          # feature branches, not from this template branch, so the fallback must
+          # NOT be restricted to a single branch - otherwise this branch (which is
+          # expected to fail) would never find a good build to fall back to.
+          candidates=("$GITHUB_SHA")
+          while IFS= read -r sha; do
+            [ -n "$sha" ] && candidates+=("$sha")
+          done < <(gh run list \
+            --workflow "$WORKFLOW_FILE" \
+            --status success \
+            --limit "$MAX_FALLBACKS" \
+            --json headSha \
+            --jq '.[].headSha' 2>/dev/null || true)
+
+          selected=""
+          attempt=0
+          declare -A seen=()
+          for sha in "${candidates[@]}"; do
+            [ -z "$sha" ] && continue
+            [ -n "${seen[$sha]:-}" ] && continue   # de-duplicate
+            seen[$sha]=1
+            attempt=$((attempt + 1))
+            echo "::group::Attempt $attempt - building ${sha:0:12}"
+            if build_commit "$sha"; then
+              selected="$sha"
+              echo "Built ${sha:0:12} successfully."
+              echo "::endgroup::"
+              break
+            fi
+            echo "Build failed for ${sha:0:12}; trying next candidate."
+            echo "::endgroup::"
+          done
+
+          if [ -z "$selected" ]; then
+            echo "::error::No buildable commit found in the current commit plus the last $MAX_FALLBACKS successful deploys."
+            exit 1
+          fi
+
+          if [ "$selected" != "$GITHUB_SHA" ]; then
+            echo "::warning::Current commit failed to build; deployed fallback commit ${selected:0:12}."
+          fi
+          echo "Selected commit: $selected"
+
       - name: Upload static site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
   deploy:
     if: github.ref == 'refs/heads/main'
