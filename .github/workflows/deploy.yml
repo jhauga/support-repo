@@ -23,7 +23,83 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure GitHub Pages
+        id: pages
         uses: actions/configure-pages@v5
+
+      # Rewrite every root-relative link (one that starts with "/") so it
+      # resolves under the project site's base path instead of the domain root.
+      # For this repo that turns href="/favicon.png" into
+      # href="/support-repo/favicon.png" -> https://jhauga.github.io/support-repo/favicon.png
+      # and works for any "<user-name>.github.io/<repo-name>/" project site.
+      - name: Rewrite root-relative links to Pages base path
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: |
+          python3 - <<'PY'
+          import os, re, sys
+          from pathlib import Path
+
+          # base_path is "/<repo-name>" for a project site, "/" (or empty) for a
+          # user/org root site. A root site needs no rewriting, so bail out.
+          base = (os.environ.get("BASE_PATH") or "").rstrip("/")
+          if not base:
+              print("No base path (user/org root site) - nothing to rewrite.")
+              sys.exit(0)
+
+          seg = re.escape(base.strip("/"))  # repo segment, already URL-safe
+          # Skip values that are already prefixed (idempotent) so re-runs are safe.
+          guard = r"(?!/)(?!" + seg + r"(?:/|[\"'#?]))"
+
+          # Single-URL attributes that take a root-relative path.
+          ATTRS = (
+              "href|src|action|formaction|poster|data|cite|manifest|"
+              "background|ping|longdesc|profile|xlink:href"
+          )
+          attr_re = re.compile(
+              r'((?:' + ATTRS + r')\s*=\s*["\'])/' + guard, re.IGNORECASE)
+
+          # srcset / imagesrcset hold a comma-separated list of "url descriptor".
+          srcset_re = re.compile(
+              r'((?:srcset|imagesrcset)\s*=\s*)(["\'])(.*?)\2',
+              re.IGNORECASE | re.DOTALL)
+
+          # CSS url(...) in inline style="" and <style> blocks.
+          css_re = re.compile(r'url\(\s*(["\']?)/' + guard, re.IGNORECASE)
+
+          # <meta http-equiv="refresh" content="0; url=/path">
+          meta_re = re.compile(
+              r'(content\s*=\s*["\'][^"\']*?url=)/' + guard, re.IGNORECASE)
+
+          def fix_srcset(m):
+              pre, quote, value = m.group(1), m.group(2), m.group(3)
+              out = []
+              for cand in value.split(","):
+                  c = cand.strip()
+                  if not c:
+                      continue
+                  bits = c.split(None, 1)
+                  url = bits[0]
+                  if (url.startswith("/") and not url.startswith("//")
+                          and not url.startswith(base + "/") and url != base):
+                      url = base + url
+                  out.append(url + ((" " + bits[1]) if len(bits) > 1 else ""))
+              return pre + quote + ", ".join(out) + quote
+
+          changed = 0
+          for path in Path(".").rglob("*.html"):
+              if any(part in (".git", "node_modules") for part in path.parts):
+                  continue
+              text = path.read_text(encoding="utf-8")
+              new = attr_re.sub(r'\g<1>' + base + '/', text)
+              new = srcset_re.sub(fix_srcset, new)
+              new = css_re.sub(r'url(\g<1>' + base + '/', new)
+              new = meta_re.sub(r'\g<1>' + base + '/', new)
+              if new != text:
+                  path.write_text(new, encoding="utf-8")
+                  changed += 1
+                  print(f"rewrote {path}")
+          print(f"Done. Rewrote {changed} file(s) with base path '{base}'.")
+          PY
 
       - name: Upload static site artifact
         uses: actions/upload-pages-artifact@v3
