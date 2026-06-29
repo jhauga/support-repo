@@ -3,7 +3,7 @@ name: Deploy GitHub Pages
 on:
   push:
     branches:
-      - __main__
+      - it-worked
   workflow_dispatch:
 
 permissions:
@@ -206,7 +206,7 @@ jobs:
           path: _site
 
   deploy:
-    if: github.ref == 'refs/heads/__main__'
+    if: github.ref == 'refs/heads/it-worked'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
