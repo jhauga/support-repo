@@ -27,7 +27,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       # Rewrite every root-relative link (one that starts with "/") so it
-      # resolves under the project site's base path instead of the domain root.
+      # resolves under the project site's base path instead of the site root.
       # For this repo that turns href="/favicon.png" into
       # href="/support-repo/favicon.png" -> https://jhauga.github.io/support-repo/favicon.png
       # and works for any "<user-name>.github.io/<repo-name>/" project site.
