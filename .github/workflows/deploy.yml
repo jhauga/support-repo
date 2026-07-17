@@ -3,7 +3,7 @@ name: Deploy GitHub Pages
 on:
   push:
     branches:
-      - extension-backrooms-canvas
+      - hook-fix-broken-links
   workflow_dispatch:
 
 permissions:
@@ -206,7 +206,7 @@ jobs:
           path: _site
 
   deploy:
-    if: github.ref == 'refs/heads/extension-backrooms-canvas'
+    if: github.ref == 'refs/heads/hook-fix-broken-links'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
