@@ -34,5 +34,5 @@ extension
 
 See screenshot below:
 
-![screenshot from test](https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/extension-backrooms-canva/test.png)
+![screenshot from test](https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/extension-backrooms-canvas/test.png)
 <!-- formatter_2 -->
