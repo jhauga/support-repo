@@ -3,10 +3,27 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [REPO_NAME pull request](https://github.com/) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
-- `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
-<!-- git commit -m "undeploy: use htmlpreview for index.html" -->
-<!--
-- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/BRANCH_NAME/index.html)
--->
+- [awesome-copilot pull request](https://github.com/)
 
+<!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
+<!-- formatter_1 -->
+Support branch for new canvas extension `chat-cards`.
+
+- **Agent**: Interactive
+- **Model**: Claude Sonnet 4.6
+- **Number of Prompts**: 1
+- **Post Edits**: None
+
+### Prompt
+
+```text
+I need help with learning the programming language RUST. I want get get a
+solid understanding of the language's base. Learn enough to apply the 80/20
+rule of producing functional applications from learning the language, and when
+to use it vs. when to use other languages. Use chat-cards to help out
+```
+
+### Results
+
+![test.gif](test.gif)
+<!-- formatter_2 -->
