@@ -3,7 +3,7 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [awesome-copilot pull request](https://github.com/) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [awesome-copilot pull request 2688](https://github.com/github/awesome-copilot/pull/2688/)
 - `Ctrl + click` View repo tested on [napkin-sketch](https://github.com/isocialPractice/napkin-sketch)
 
 <!-- formatter_1 -->
