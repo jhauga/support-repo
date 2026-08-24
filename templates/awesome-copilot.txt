@@ -2,7 +2,11 @@
 <!-- formatter_1 -->
 SHORT_DESCRIPTION
 
-### Test Conditions
+## Test Conditions
+
+### Evaluation Context
+
+- **Session Target**:
 - **Agent**:
 - **Model**:
 - **Number of Prompts**:
