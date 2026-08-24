@@ -3,7 +3,7 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [awesome-copilot pull request](https://github.com/) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [awesome-copilot pull request](https://github.com/)
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
 <!-- git commit -m "undeploy: use htmlpreview for index.html" -->
 <!--
@@ -16,17 +16,22 @@ Support branch for new skill rhino3d-plugins.
 
 ## Test Conditions
 
-- **Agent**: Local
+### Evaluation Context
+
+- **Session Target**: Local
+- **Agent**: Agent
 - **Model**: Claude Sonnet 4.5
-- **Number of Prompts**: 1
+- **Number of Prompts**: 2
 - **Post Edits**: none
 <!-- NOTE: change if updated -->
 ### Copilot Pro+ Plan Credit Usage
 
 - **Start Credits**: 64%
-- **End Credits**:
+- **End Credits**: 68%
 
 ### Prompt
+
+#### I
 
 ```bash
 /rhino3d-plugins --new-plugin webview-prep 
@@ -53,7 +58,43 @@ Support branch for new skill rhino3d-plugins.
                  end-steps
 ```
 
+#### II
+
+```bash
+Resolve:
+
+     ```batch
+     dotnet build -c Release
+     Restore complete (0.6s)
+       WebViewPrep failed with 1 error(s) (1.0s)
+         D:\Users\user\support-repo\webview-prep\WebViewPrepPlugIn.cs(46,43): error CS0507: 'WebViewPrepPlugIn.LoadTime': cannot change access modifiers when overriding 'public' inherited member 'PlugIn.LoadTime'
+
+     Build failed with 1 error(s) in 1.8s
+     ```
+```
+
+Accounted for the error in the skill, updating it.
+
+### III
+
+```md
+The plugin works, but there are 2 issues:
+
+**Issue 1**:
+
+2 file extension are not exporting:
+
+- STL: Terminal retturns "Failed to export model"
+- GLB: Terminal retturns "Failed to export model"
+
+**Issue 2**:
+
+**Toggle Info** removes the data from the panel. The data is initially there though.
+```
+
+Accounted for the issues in the skill, updating it.
+
 ### Results
 
-AS_NEEDED
+The plugin worked as intended.
 <!-- formatter_2 -->

@@ -1,0 +1,12 @@
+name: webviewprep
+version: 1.0.0
+authors:
+- Acme Corp
+description: Generate interactive web previews of Rhino models using three.js
+url: https://example.com
+keywords:
+- web
+- preview
+- three.js
+- export
+- viewer

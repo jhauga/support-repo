@@ -174,6 +174,10 @@ then succeeds with Rhino still running, and the new binary loads on the next Rhi
 
 Errors that recur when writing plugin code that has never been compiled against RhinoCommon:
 
+- RhinoCommon mixes public and protected virtuals on the same base classes, and an override
+  must match the base member's access exactly (CS0507). `PlugIn.LoadTime` and
+  `Command.EnglishName` are **public**; `PlugIn.OnLoad` and `Command.RunCommand` are
+  **protected**. Don't copy the modifier from the override above it — check the base.
 - `SaveFileDialog` / `OpenFileDialog` exist in both `Eto.Forms` and `Rhino.UI` — with both
   namespaces imported the bare name is ambiguous (CS0104); fully qualify one.
 - `ObjectEnumeratorSettings` has no `VisibleObjects` member. Filter with
@@ -222,8 +226,10 @@ self-inflicted load failure. Guard it, set `errorMessage`, and reserve failure f
 fatal conditions.
 
 By default a plugin loads on demand, the first time one of its commands is typed. Override
-`LoadTime => PlugInLoadTime.AtStartup` when it must be running before that — to register
-panels, display modes, render content, or document event watchers.
+`public override PlugInLoadTime LoadTime => PlugInLoadTime.AtStartup;` when it must be
+running before that — to register panels, display modes, render content, or document event
+watchers. Note the `public`: the base member is public, and writing `protected override` (the
+modifier the neighboring `OnLoad` override uses) fails with CS0507.
 
 `EnglishName` must be unique across everything installed; a collision means the command
 simply will not work. `RunMode.Scripted` means the command was driven by a script or macro
@@ -637,6 +643,15 @@ you; never re-implement that switch. A Rhino `Material` maps to a workable PBR a
 object up front, park them on `mesh.userData`, and swap `mesh.material` on toggle — do not
 rebuild materials on every switch.
 
+**Page toggles hide, they never destroy.** Every show/hide control in a generated page flips
+a CSS class (or `display`) on an element that keeps its content — never hide by clearing
+`innerHTML`, removing nodes, or re-running the populate function. Populate the panel **once**
+from the model data at startup; keep toggling and populating as two separate functions. A
+control that both builds and shows produces the signature bug: the data displays initially,
+then the first toggle wipes it and re-showing has nothing left to restore. After wiring any
+toggle, check that the state round-trips — hide then show must render content identical to
+first load.
+
 **Export the model as a file format, not raw data.** Never serialize geometry into the page as
 raw vertex/face dumps (inline JSON) unless the user explicitly asks for it — it balloons the
 HTML to hundreds of thousands of lines and is opaque to every other tool. Default to **STL**
@@ -647,6 +662,26 @@ fidelity. Serve the binary next to the page over localhost; for a standalone sin
 export, embed it base64-encoded. Small metadata (layer names and colors, dimension text) may
 stay as compact inline JSON — the ban is on raw geometry, and on `WriteIndented` payloads
 generally.
+
+**Writing those formats from plugin code.** `RhinoDoc.WriteFile` writes **`.3dm` only** —
+every other extension goes through `RhinoDoc.Export(path)` / `ExportSelected(path)`, which
+route to the installed file-export plugin for that extension (or through scripting
+`_-Export`, which operates on the *current selection* and needs
+`[CommandStyle(Style.ScriptRunner)]`). Three reliability rules, learned from "Failed to
+export model" reports that carried no clue why:
+
+- These APIs return a bare `bool` with **no failure reason**. Never collapse that into a
+  generic "export failed" message — report the target path, the format, and the object or
+  selection count, so the user's report tells you which precondition broke.
+- The STL exporter writes only mesh data and, when scripted, can stall or fail on meshing and
+  options prompts. For geometry the plugin has already meshed (a web viewer, a print
+  pipeline), skip the export plugin entirely and write **binary STL directly**: an 80-byte
+  header, a uint32 triangle count, then 50 bytes per triangle (12-byte normal, three 12-byte
+  vertices, a zero ushort). About thirty lines, no dialogs, no dependency on exporter state.
+- Export, `RunScript`, and all document access belong on Rhino's **UI thread**. A panel that
+  offloads work with `Task.Run` must marshal back with `RhinoApp.InvokeOnUiThread(...)`
+  before touching the document or an exporter — off the main thread these fail
+  unpredictably, usually as that same reasonless `false`.
 
 ---
 
