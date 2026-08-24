@@ -2,10 +2,16 @@
 <!-- formatter_1 -->
 SHORT_DESCRIPTION
 
+### Test Conditions
 - **Agent**:
 - **Model**:
 - **Number of Prompts**:
 - **Post Edits**:
+<!-- NOTE: change if updated -->
+### Copilot Pro+ Plan Credit Usage
+
+- **Start Credits**:
+- **End Credits**:
 
 ### Prompt
 
