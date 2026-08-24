@@ -21,7 +21,7 @@ Support branch for new skill rhino3d-plugins.
 - **Session Target**: Local
 - **Agent**: Agent
 - **Model**: Claude Sonnet 4.5
-- **Number of Prompts**: 2
+- **Number of Prompts**: 3
 - **Post Edits**: none
 <!-- NOTE: change if updated -->
 ### Copilot Pro+ Plan Credit Usage
