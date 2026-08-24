@@ -14,10 +14,17 @@ Support branch of repository for:
 <!-- formatter_1 -->
 Support branch for new skill rhino3d-plugins.
 
+## Test Conditions
+
 - **Agent**: Local
 - **Model**: Claude Sonnet 4.5
 - **Number of Prompts**: 1
 - **Post Edits**: none
+<!-- NOTE: change if updated -->
+### Copilot Pro+ Plan Credit Usage
+
+- **Start Credits**: 64%
+- **End Credits**:
 
 ### Prompt
 
