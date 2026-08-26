@@ -80,14 +80,24 @@ if "%_repoName%"=="awesome-copilot" (
   move /Y README.md.tmp README.md >nul 2>nul
  )
 )
+:: Extension branches for awesome-copilot deploy from main instead of the new branch
+set "_isExtension="
+if "%_branchName:~0,9%"=="extension" if "%_repoName%"=="awesome-copilot" set "_isExtension=1"
+
 :: Update workflow action - only ONE branch name per line
-sed "s/__main__/%_branchName%/" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
+if defined _isExtension (
+ sed "s/__main__/main/" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
+) else (
+ sed "s/__main__/%_branchName%/" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
+)
 move /Y .gitHub\workflows\deploy.yml.tmp .gitHub\workflows\deploy.yml >nul 2>nul
 
 :: Clean out repo files
 del /Q TODO.md makeTemplate.bat >nul >nul
 rmdir /S/Q templates >nul 2>nul
 if "%_repoName%"=="awesome-copilot" (
+ rem keep a copy of the demo for extension branches before cleanup
+ if defined _isExtension copy /Y demo.gif test.gif >nul 2>nul
  rem files not used for pr in awesome-copilot
  del /Q demo.gif file.md image.jpg >nul 2>nul
 )
