@@ -3,8 +3,7 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [awesome-copilot pull request](https://github.com/)
-<!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
+- [awesome-copilot pull request 2806](https://github.com/github/awesome-copilot/pull/2806)
 <!-- formatter_1 -->
 Canvas extension where Copilot tutors the user on code changes so that they can
 understand the updates applied to the codebase.
