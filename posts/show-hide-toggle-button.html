@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+ <meta charset="utf-8">
+ <title>Show/Hide Toggle Button in Vanilla JavaScript</title>
+ <meta name="description" content="Learn how to build a reusable vanilla JavaScript toggle button that shows or hides an adjacent element and swaps its own label automatically.">
+ <link rel="icon" href="/favicon.png">
+
+ <style>
+  body {
+   margin-left: 50px;
+   margin-right: 50px;
+   font-family: sans-serif;
+  }
+  nav {
+   background: black;
+   height: 60px;
+   display: block;
+  }
+  nav a {
+   color: white;
+   display: inline-block;
+   padding: 20px 10px;
+  }
+  main {
+   margin: 30px 0;
+   max-width: 700px;
+  }
+  pre {
+   background: #f4f4f4;
+   padding: 15px;
+   overflow-x: auto;
+  }
+  button {
+   background: darkslategray;
+   color: white;
+   margin: 10px 0;
+   padding: 10px 15px;
+   cursor: pointer;
+   border-radius: 10px;
+   border: none;
+  }
+  footer {
+   background: black;
+   color: white;
+   margin: 30px -50px 0;
+   padding: 30px 50px;
+  }
+ </style>
+</head>
+
+<body>
+
+<nav>
+ <a href="/index.html">Home</a>
+</nav>
+
+<main>
+
+<h1>Show/Hide Toggle Button in Vanilla JavaScript</h1>
+
+<p>A button that toggles the visibility of the content next to it, and updates
+its own label to say "Show" or "Hide" depending on the current state, is a
+common UI pattern. Here's a small, dependency-free function that does exactly
+that for any button placed directly before the element it controls.</p>
+
+<h2>The function</h2>
+
+<pre><code>const toggleShowHide = (button) => {
+ const target = button.nextElementSibling;
+ const isHidden = button.innerText.indexOf("Show") > -1;
+
+ target.style.display = isHidden ? "" : "none";
+ button.innerText = isHidden
+  ? button.innerText.replace("Show", "Hide")
+  : button.innerText.replace("Hide", "Show");
+};
+</code></pre>
+
+<p>The function reads the button's own text to decide the current state, so no
+extra state variable or data attribute is needed. It relies on
+<code>nextElementSibling</code>, so the button and the element it controls must
+be adjacent in the markup.</p>
+
+<h2>Usage example</h2>
+
+<p>Wire the function up to a button's <code>click</code> event, and give the
+button a label that starts with "Show":</p>
+
+<pre><code>&lt;button onclick="toggleShowHide(this)"&gt;Show details&lt;/button&gt;
+&lt;p style="display:none"&gt;Hello, World!&lt;/p&gt;
+</code></pre>
+
+<p>Live demo:</p>
+
+<button onclick="toggleShowHide(this)">Show details</button>
+<p style="display:none">Hello, World!</p>
+
+<p>Clicking the button reveals the paragraph and relabels the button "Hide
+details"; clicking again hides the paragraph and restores the "Show details"
+label.</p>
+
+<h2>Limits</h2>
+
+<ul>
+ <li>Only the single next sibling element is toggled - it won't reach further
+ down the tree.</li>
+ <li>The button's label must contain the literal word "Show" or "Hide" for the
+ text swap to work.</li>
+</ul>
+
+</main>
+
+<footer>
+ <p>Back to <a href="/index.html">home</a>.</p>
+</footer>
+
+<script>
+ const toggleShowHide = (button) => {
+  const target = button.nextElementSibling;
+  const isHidden = button.innerText.indexOf("Show") > -1;
+
+  target.style.display = isHidden ? "" : "none";
+  button.innerText = isHidden
+   ? button.innerText.replace("Show", "Hide")
+   : button.innerText.replace("Hide", "Show");
+ };
+</script>
+
+</body>
+</html>

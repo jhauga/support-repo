@@ -1,5 +1,4 @@
 ---
-name: 'make-blog-post'
 description: 'When working in a workspace or repository, and deemed that a function, method, tool, etc. can be used independently; then make a blog post where that code is written up as an informational walkthrough for 1 specific purpose'
 applyTo: '**'
 ---

@@ -2,7 +2,7 @@
 <html>
 <head>
  <meta charset="utf-8">
- <title>CHANGE_TITLE</title>
+ <title>Make Blog Post</title>
  
  <!--<script src="/js/scripts.js"></script>-->
  <link rel="icon" href="/favicon.png">
@@ -106,44 +106,16 @@
 
 <h1 id="pageTitle"></h1>
 
-<p>CHANGE_TEXT</p>
-
-<pre id="a">
-CHANGE_TEXT
-</pre>
-
 <script>
  document.getElementById("pageTitle").innerHTML = document.title;
- var a = document.getElementById("a");
- 
- // Show hide example
- // USE - GitHub folder in snippets
- // USE _gitshbtn to make html HTML
- //     _gitshbtnb - black
- //     _gitshbtng - gray
- const showHideExample = (cur) => {
-  if (cur.innerText.indexOf("Show") > -1) {
-   cur.nextElementSibling.style.display = "";
-   cur.innerText = cur.innerText.replace("Show", "Hide");
-  } else {
-   cur.nextElementSibling.style.display = "none";
-   cur.innerText = cur.innerText.replace("Hide", "Show");
-  }
- };
- 
- const someAJAX = (f) => {
-  let xmlhttp = new XMLHttpRequest();
-  xmlhttp.onload = function() {
-   let txt = this.response;
-   a.innerHTML = txt;
-  };
-  xmlhttp.open("GET", f, true);
-  xmlhttp.send();
- };
- // UNCOMENT AND CHANGE NAME FOR AJAX TEST
- //someAJAX("file.ext");
 </script>
 
+<section id="posts">
+ <h2>Posts</h2>
+ <ul>
+  <li><a href="/posts/show-hide-toggle-button.html">Show/Hide Toggle Button in Vanilla JavaScript</a></li>
+ </ul>
+</section>
 
 </body>
 </html>

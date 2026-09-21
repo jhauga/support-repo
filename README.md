@@ -18,24 +18,35 @@ Support branch for new instruction make-blog-post.
 
 ### Evaluation Context
 
-- **Session Target**:
-- **Agent**:
-- **Model**:
-- **Number of Prompts**:
-- **Post Edits**:
+- **Session Target**: Local
+- **Agent**: Agent
+- **Model**: Claude Sonnet 5
+  - **Thinking Effort**: High
+- **Number of Prompts**: 1
+- **Post Edits**: Yes
+  - In `index.html` page; title changed, and template elements removed
 <!-- NOTE: change if updated -->
 ### Copilot Pro+ Plan Credit Usage
 
-- **Start Credits**:
-- **End Credits**:
+- **Start Credits**: 1%
+- **End Credits**: 1%
 
 ### Prompt
 
 ```bash
-
+Make a post about this branch written for Github Pages. Update index.html for
+entry, and new post accoring to insturctions.
 ```
 
 ### Results
 
-AS_NEEDED
+Good.
+
+- Asked to proceed: Pass
+- Asked for post to be approved: Pass
+- New post file created: Passed using repo, and did not resolve to using a global path
+  - Path used: pass
+  - File used: pass
+- Ended Response correctly: Pass
+
 <!-- formatter_2 -->
