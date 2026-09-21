@@ -1,14 +1,21 @@
 <!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
+<!--
+IMPORTANT - mind description, and change first line for 1 to sentence description.
+## Description
+-->
 <!-- formatter_1 -->
 SHORT_DESCRIPTION
 
 ## Test Conditions
+
+Full [test results](https://github.com/jhauga/support-repo/tree/BRANCH_NAME) (*ctrl + click*) at support repo.
 
 ### Evaluation Context
 
 - **Session Target**:
 - **Agent**:
 - **Model**:
+  - **Thinking Effort**:
 - **Number of Prompts**:
 - **Post Edits**:
 <!-- NOTE: change if updated -->
