@@ -3,7 +3,7 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [awesome-copilot pull request](https://github.com/) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [awesome-copilot pull request 3584](https://github.com/github/awesome-copilot/pull/3584)
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
 <!-- git commit -m "undeploy: use htmlpreview for index.html" -->
 <!--
@@ -12,7 +12,7 @@ Support branch of repository for:
 
 <!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
 <!-- formatter_1 -->
-Support branch for new instruction make-blog-post.
+Instructions to assist in the automation, or help in making blog post for a workspace, repo, or as a standalone post.
 
 ## Test Conditions
 
