@@ -193,6 +193,7 @@ Check 'run 1 sets a UUID with --session-id' { $sid -match $UuidPattern }
 Check 'run 1 prompt names the plan file and skill' {
   (Get-CallArgs 1).Contains($Plan) -and (Get-CallArgs 1).Contains('handle-big-tasks')
 }
+Check 'run 1 prompt names the decisions file' { (Get-CallArgs 1).Contains($Plan + '.decisions.md') }
 Check 'run 1 passes -s --no-color' { (Test-Token 1 '-s') -and (Test-Token 1 '--no-color') }
 Check 'runs 2-3 answer Y in the same session' {
   ((Get-CallArgs 2) -like "-p Y --resume=$sid *") -and ((Get-CallArgs 3) -like "-p Y --resume=$sid *")
@@ -205,7 +206,7 @@ Check 'LOOP_COPILOT_ARGS, parentheses included, reach every run' {
 }
 Check 'prints UTF-8 responses intact' { $Out.Contains($Utf8Text) -and (Get-Log).Contains($Utf8Text) }
 Check 'log has a separator for each run' {
-  ([regex]::Matches((Get-Log), '\| run \d+ of 50 -----')).Count -eq 3
+  ([regex]::Matches((Get-Log), '\| run \d+ of 10 -----')).Count -eq 3
 }
 Check 'log ends with the completion line' { (Get-Log).TrimEnd().EndsWith('Task complete after 3 run(s).') }
 Check 'removes its temp files' { Test-TmpEmpty }
@@ -293,12 +294,36 @@ Check 'stops after 2 calls' { (Get-Calls) -eq 2 }
 Check 'reports the cap' { $Out.Contains('safety cap of 2 runs') }
 Check 'removes its temp files' { Test-TmpEmpty }
 
+New-Scenario 'Default safety cap' 'defaultcap'
+Set-Response 'default' "Phase done.`nCONTINUE? Y or N`n"
+Invoke-Driver @($Plan, '0')
+Check 'exits 1' { $Rc -eq 1 }
+Check 'stops after 10 calls' { (Get-Calls) -eq 10 }
+Check 'reports the cap' { $Out.Contains('safety cap of 10 runs') }
+Check 'prints the resume command' { $Out.Contains('copilot --resume=' + (Get-SessionId)) }
+
+New-Scenario 'Decision pending, guard line last' 'guard'
+Set-Response 1 "Phase 3 waits on D1 in plan.md.decisions.md.`n`nREVISED SCRIPT - Unique user response is required`n"
+Invoke-Driver @($Plan, '0')
+Check 'exits 1' { $Rc -eq 1 }
+Check 'stops after 1 call' { (Get-Calls) -eq 1 }
+Check 'reports the guard line' { $Out.Contains('Last line: REVISED SCRIPT - Unique user response is required') }
+Check 'prints the resume command' { $Out.Contains('copilot --resume=' + (Get-SessionId)) }
+
+New-Scenario 'Quoted value with spaces in LOOP_COPILOT_ARGS' 'quotedargs'
+Set-Response 1 "All done.`nTASK COMPLETE!`n"
+$quoted = '--add-dir "C:\work\shared plans"'
+Invoke-Driver @($Plan, '0') @{ LOOP_COPILOT_ARGS = $quoted }
+Check 'exits 0' { $Rc -eq 0 }
+Check 'the quoted value reaches copilot intact' { (Get-CallArgs 1).EndsWith($quoted) }
+
 New-Scenario 'Plan path with spaces, parentheses, and an ampersand' 'oddpath' 'R&D plans (v2)'
 Set-Response 1 "All done.`nTASK COMPLETE!`n"
 Invoke-Driver @($Plan, '0')
 Check 'exits 0' { $Rc -eq 0 }
 Check 'makes 1 copilot call' { (Get-Calls) -eq 1 }
 Check 'prompt names the full plan path' { (Get-CallArgs 1).Contains($Plan) }
+Check 'prompt names the decisions file next to the plan' { (Get-CallArgs 1).Contains($Plan + '.decisions.md') }
 Check 'writes the log next to the plan' { (Get-Log).Contains('Task complete after 1 run(s).') }
 
 New-Scenario 'Console code page' 'codepage'

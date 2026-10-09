@@ -21,9 +21,20 @@ tests/test-loop-copilot.sh .github/skills/handle-big-tasks/scripts/loop-copilot.
 
 ### Results
 
+The suite has 48 checks. The 11 added after review cover the default safety cap of 10, a pending decision whose response ends with `REVISED SCRIPT - Unique user response is required`, the decisions file named in the first prompt, and flags passed after `--`.
+
+| Driver | bash 5.2.37 (Git Bash) | bash 5.2.21 (Ubuntu 24.04.4, WSL) |
+| --- | --- | --- |
+| PR driver now (blob `b191d36`) | 48 of 48 | 48 of 48 |
+| PR driver before the cap and decisions changes ([13d0af5](https://github.com/jhauga/awesome-copilot/blob/13d0af59f4dceb72466eb54c1cbce2036df0a29f/skills/handle-big-tasks/scripts/loop-copilot.sh)) | 44 of 48 | 44 of 48 |
+
+13d0af5 fails the four checks for the cap of 10 and the decisions file. The WSL Ubuntu install now has bash 5.2.21, so the 48-check suite ran on bash 5.2 only.
+
+#### Earlier Results, 37-Check Suite
+
 | Driver | bash 5.2.26 (Git Bash) | bash 5.1.16 (Ubuntu 22.04.5, WSL) |
 | --- | --- | --- |
-| PR driver now ([d3c7fc2](https://github.com/jhauga/awesome-copilot/blob/d3c7fc2701d22e799418ff5c6f8bdccaedcaf019/skills/handle-big-tasks/scripts/loop-copilot.sh)) | 37 of 37 | 37 of 37 |
+| PR driver after the write-failure fixes ([d3c7fc2](https://github.com/jhauga/awesome-copilot/blob/d3c7fc2701d22e799418ff5c6f8bdccaedcaf019/skills/handle-big-tasks/scripts/loop-copilot.sh)) | 37 of 37 | 37 of 37 |
 | PR driver before the write-failure fixes ([3a84074](https://github.com/jhauga/awesome-copilot/blob/3a840744e91b0c5488343022540d5a2563a29313/skills/handle-big-tasks/scripts/loop-copilot.sh)) | 33 of 37 | 33 of 37 |
 | PR driver before the first review fixes ([7ec8a2c](https://github.com/github/awesome-copilot/blob/7ec8a2ca07a5258c1a88c8fd5f092512324b512b/skills/handle-big-tasks/scripts/loop-copilot.sh)) | 33 of 37 | 28 of 37 |
 | Prototype driver from the first test ([loop-copilot.sh](loop-copilot.sh.md)) | 8 of 37 | 8 of 37 |
@@ -48,7 +59,7 @@ Both bash versions print the same checks.
 
 ```text
 $ bash --version | head -1
-GNU bash, version 5.1.16(1)-release (x86_64-pc-linux-gnu)
+GNU bash, version 5.2.21(1)-release (x86_64-pc-linux-gnu)
 $ tests/test-loop-copilot.sh .github/skills/handle-big-tasks/scripts/loop-copilot.sh
 
 Three phases, markers on the last line
@@ -56,6 +67,7 @@ Three phases, markers on the last line
   pass  makes 3 copilot calls
   pass  run 1 sets a UUID with --session-id
   pass  run 1 prompt names the plan file and skill
+  pass  run 1 prompt names the decisions file
   pass  run 1 passes -s --no-color
   pass  runs 2-3 answer Y in the same session
   pass  no run uses --continue or --allow-all
@@ -95,6 +107,22 @@ Safety cap reached
   pass  stops after 2 calls
   pass  reports the cap
 
+Default safety cap
+  pass  exits 1
+  pass  stops after 10 calls
+  pass  reports the cap
+  pass  prints the resume command
+
+Decision pending, guard line last
+  pass  exits 1
+  pass  stops after 1 call
+  pass  reports the guard line
+  pass  prints the resume command
+
+Flags after -- keep their spaces
+  pass  exits 0
+  pass  the flag reaches both runs as one argument each
+
 Start errors
   pass  missing plan file exits 2
   pass  plan file not found exits 2
@@ -104,7 +132,7 @@ Start errors
   pass  LOOP_MAX_ITERATIONS=0 exits 2
   pass  copilot never called
 
-37 of 37 checks passed.
+48 of 48 checks passed.
 $ echo $?
 0
 ```
@@ -124,6 +152,7 @@ $ echo $?
 - a log that opens but rejects every write, through a byte-range lock that stands in for a full disk
 - a temporary file that cannot be written
 - interval and `LOOP_MAX_ITERATIONS` values that contain `;`, such as `5;` and `2;rem`
+- a quoted value with spaces in `LOOP_COPILOT_ARGS`, such as `--add-dir "C:\work\shared plans"`
 
 It runs in Windows PowerShell 5.1 and PowerShell 7.
 
@@ -142,10 +171,23 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests\test-loop-copilot.ps1 
 
 ### Results
 
+The suite has 73 checks. The 12 added after review cover the default safety cap of 10, a pending decision whose response ends with `REVISED SCRIPT - Unique user response is required`, the decisions file named in the first prompt, including for a plan path with `&`, and a quoted value with spaces in `LOOP_COPILOT_ARGS`.
+
+| Driver | Line endings | Windows PowerShell 5.1 |
+| --- | --- | --- |
+| PR driver now (blob `9ebf425`) | LF | 73 of 73 |
+| PR driver now | CRLF | 73 of 73 |
+| PR driver before the cap and decisions changes ([13d0af5](https://github.com/jhauga/awesome-copilot/blob/13d0af59f4dceb72466eb54c1cbce2036df0a29f/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 68 of 73 |
+| PR driver before the cap and decisions changes | CRLF | 68 of 73 |
+
+13d0af5 fails the five checks for the cap of 10 and the decisions file. PowerShell 7 was not available for these runs, so the 73-check suite ran in Windows PowerShell 5.1 only. The current driver in LF form also passes 73 of 73 when run from a folder named `R&D tools (v2)`.
+
+#### Earlier Results, 61-Check Suite
+
 | Driver | Line endings | PowerShell 7.6 | Windows PowerShell 5.1 |
 | --- | --- | --- | --- |
-| PR driver now ([5d7cc73](https://github.com/jhauga/awesome-copilot/blob/5d7cc733bebb77e4adbaedcc395e448811c48b5c/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 61 of 61 | 61 of 61 |
-| PR driver now | CRLF | 61 of 61 | 61 of 61 |
+| PR driver after the number-check fix ([5d7cc73](https://github.com/jhauga/awesome-copilot/blob/5d7cc733bebb77e4adbaedcc395e448811c48b5c/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 61 of 61 | 61 of 61 |
+| PR driver after the number-check fix | CRLF | 61 of 61 | 61 of 61 |
 | PR driver before the number-check fix ([d3c7fc2](https://github.com/jhauga/awesome-copilot/blob/d3c7fc2701d22e799418ff5c6f8bdccaedcaf019/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 58 of 61 | 58 of 61 |
 | PR driver before the number-check fix | CRLF | 58 of 61 | 58 of 61 |
 | PR driver with the LF fix ([3a84074](https://github.com/jhauga/awesome-copilot/blob/3a840744e91b0c5488343022540d5a2563a29313/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 51 of 61 | 51 of 61 |
@@ -153,7 +195,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests\test-loop-copilot.ps1 
 | PR driver before the LF fix ([bd80185](https://github.com/jhauga/awesome-copilot/blob/bd80185580215c2d4e8fe1feda0e103fadb9682e/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 43 of 61 | 43 of 61 |
 | PR driver before the LF fix | CRLF | 51 of 61 | 51 of 61 |
 
-The current driver in LF form also passes 61 of 61 when run from a folder named `R&D tools (v2)`.
+The driver at 5d7cc73 in LF form also passed 61 of 61 when run from a folder named `R&D tools (v2)`.
 
 ### Write Failures
 
@@ -182,7 +224,7 @@ The driver now checks itself before it uses any label. It writes a CRLF copy of 
 
 ### Output
 
-Current driver, LF form, PowerShell 7.6:
+Current driver, LF form, Windows PowerShell 5.1:
 
 ```text
 > powershell -NoProfile -ExecutionPolicy Bypass -File tests\test-loop-copilot.ps1 loop-copilot.bat
@@ -192,6 +234,7 @@ Three phases, markers on the last line
   pass  makes 3 copilot calls
   pass  run 1 sets a UUID with --session-id
   pass  run 1 prompt names the plan file and skill
+  pass  run 1 prompt names the decisions file
   pass  run 1 passes -s --no-color
   pass  runs 2-3 answer Y in the same session
   pass  no run uses --continue or --allow-all
@@ -250,10 +293,27 @@ Safety cap reached
   pass  reports the cap
   pass  removes its temp files
 
+Default safety cap
+  pass  exits 1
+  pass  stops after 10 calls
+  pass  reports the cap
+  pass  prints the resume command
+
+Decision pending, guard line last
+  pass  exits 1
+  pass  stops after 1 call
+  pass  reports the guard line
+  pass  prints the resume command
+
+Quoted value with spaces in LOOP_COPILOT_ARGS
+  pass  exits 0
+  pass  the quoted value reaches copilot intact
+
 Plan path with spaces, parentheses, and an ampersand
   pass  exits 0
   pass  makes 1 copilot call
   pass  prompt names the full plan path
+  pass  prompt names the decisions file next to the plan
   pass  writes the log next to the plan
 
 Console code page
@@ -274,7 +334,7 @@ Start errors
   pass  copilot not on PATH exits 2
   pass  copilot never called
 
-61 of 61 checks passed.
+73 of 73 checks passed.
 > echo %ERRORLEVEL%
 0
 ```

@@ -11,15 +11,21 @@
 # before each run.
 #
 # Usage:
-#   ./loop-copilot.sh <plan-file> [interval-minutes]
+#   ./loop-copilot.sh <plan-file> [interval-minutes] [-- copilot-flag...]
 #
 #   ./loop-copilot.sh docs/migration-plan.md       # 10 minutes between runs
 #   ./loop-copilot.sh docs/migration-plan.md 15    # 15 minutes between runs
+#   ./loop-copilot.sh docs/migration-plan.md 15 -- --add-dir "/work/shared plans"
+#
+# Flags after -- reach every copilot run exactly as given, one argument each,
+# so a flag value can contain spaces.
 #
 # Environment:
-#   LOOP_MAX_ITERATIONS  Safety cap on copilot runs (default 50).
-#   LOOP_COPILOT_ARGS    Extra copilot flags, separated by spaces, for example
-#                        "--allow-tool=write --model <model>".
+#   LOOP_MAX_ITERATIONS  Safety cap on copilot runs (default 10).
+#   LOOP_COPILOT_ARGS    Extra copilot flags, split on whitespace, for example
+#                        "--allow-tool=write --model <model>". Quotes inside it
+#                        are not interpreted, so pass a value with spaces
+#                        after -- instead.
 #
 # Exit codes:
 #   0  The last response ended with TASK COMPLETE!
@@ -45,13 +51,15 @@ _response_file=''
 
 usage() {
   cat <<EOF
-Usage: $_SCRIPT_NAME <plan-file> [interval-minutes]
+Usage: $_SCRIPT_NAME <plan-file> [interval-minutes] [-- copilot-flag...]
 
   plan-file          The plan to carry out, one phase per run.
   interval-minutes   Minutes to wait between runs (default 10).
+  copilot-flag       Flags for every copilot run, one argument each, so a
+                     value can contain spaces.
 
-Environment: LOOP_MAX_ITERATIONS (default 50), LOOP_COPILOT_ARGS
-Example: $_SCRIPT_NAME docs/migration-plan.md 15
+Environment: LOOP_MAX_ITERATIONS (default 10), LOOP_COPILOT_ARGS
+Example: $_SCRIPT_NAME docs/migration-plan.md 15 -- --add-dir "/work/shared plans"
 EOF
 }
 
@@ -109,8 +117,10 @@ response with a last line that is exactly the full marker '${_CONTINUE_MARKER}' 
 without the quotes. Once the whole plan is done, end with a last line that is \
 exactly '${_DONE_MARKER}' without the quotes. A script reads that last line and \
 answers Y after each phase, so never shorten or format the marker. If a phase \
-is blocked on something only a person can resolve, explain the blocker and end \
-without either marker."
+needs a choice only a person can make, write it to ${_plan_file}.decisions.md \
+as the skill describes and keep working on phases that do not depend on it. If \
+nothing can proceed without a person, explain why and end without either \
+marker."
 
   printf '\n----- %s | %s loop started -----\n' "$(timestamp)" "$_CLI"
   printf 'Plan file: %s\n' "$_plan_file"
@@ -174,16 +184,29 @@ main() {
     '') start_error 'missing plan file.' ;;
     -h | --help) usage; exit 0 ;;
   esac
-  (( $# <= 2 )) || start_error 'too many arguments.'
 
   _plan_file=$1
+  shift
+  _interval=10
+  if (( $# > 0 )) && [[ $1 != -- ]]; then
+    _interval=${1:-10}
+    shift
+  fi
+  if (( $# > 0 )); then
+    [[ $1 == -- ]] || start_error 'too many arguments.'
+    shift
+  fi
+
   [[ -e $_plan_file ]] || start_error "plan file not found: $_plan_file"
   [[ -f $_plan_file && -r $_plan_file ]] || start_error "plan file is not a readable file: $_plan_file"
-  _interval=$(to_count "${2:-10}") ||
+  _interval=$(to_count "$_interval") ||
     start_error 'interval-minutes must be a whole number from 0 to 99999.'
-  _max_runs=$(to_count "${LOOP_MAX_ITERATIONS:-50}") && (( _max_runs > 0 )) ||
+  _max_runs=$(to_count "${LOOP_MAX_ITERATIONS:-10}") && (( _max_runs > 0 )) ||
     start_error 'LOOP_MAX_ITERATIONS must be a whole number from 1 to 99999.'
+  # LOOP_COPILOT_ARGS splits on whitespace; flags after -- keep their
+  # boundaries, so they are the way to pass a value with spaces.
   read -r -a _extra_args <<< "${LOOP_COPILOT_ARGS:-}"
+  _extra_args+=("$@")
   command -v "$_CLI" > /dev/null || start_error "$_CLI was not found on PATH."
 
   _log_file=$_plan_file.loop.log

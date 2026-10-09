@@ -13,6 +13,9 @@
 # Exits 0 when every check passes, 1 when any check fails.
 
 set -uo pipefail
+# Scenarios set these when they need them, so the driver's defaults apply
+# otherwise.
+unset LOOP_MAX_ITERATIONS LOOP_COPILOT_ARGS
 
 [[ $# -eq 1 && -f $1 ]] || {
   printf 'Usage: %s <path-to-loop-copilot.sh>\n' "${0##*/}" >&2
@@ -124,6 +127,8 @@ check 'run 1 sets a UUID with --session-id' \
   '[[ $_sid =~ ^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$ ]]'
 check 'run 1 prompt names the plan file and skill' \
   'args_of 1 | sed -n 2p | grep -qF -- "$_plan" && args_of 1 | sed -n 2p | grep -qF handle-big-tasks'
+check 'run 1 prompt names the decisions file' \
+  'args_of 1 | sed -n 2p | grep -qF -- "$_plan.decisions.md"'
 check 'run 1 passes -s --no-color' 'has_arg 1 -s && has_arg 1 --no-color'
 check 'runs 2-3 answer Y in the same session' \
   'for i in 2 3; do args_of $i | sed -n 2p | grep -qx Y && has_arg $i "--resume=$_sid" || exit 1; done'
@@ -132,7 +137,7 @@ check 'no run uses --continue or --allow-all' \
 check 'LOOP_COPILOT_ARGS reach every run' \
   'for i in 1 2 3; do has_arg $i --allow-tool=write && has_arg $i --model && has_arg $i test-model || exit 1; done'
 check 'log has a separator for each run' \
-  '[[ $(grep -c "| run [0-9]* of 50 -----" "$_plan.loop.log") -eq 3 ]]'
+  '[[ $(grep -c "| run [0-9]* of 10 -----" "$_plan.loop.log") -eq 3 ]]'
 check 'log ends with the completion line' \
   'grep -qx "Task complete after 3 run(s)." "$_plan.loop.log"'
 check 'removes its temp file' tmp_is_empty
@@ -182,6 +187,34 @@ run_driver LOOP_MAX_ITERATIONS=2 "$_driver" "$_plan" 0
 check 'exits 1' '[[ $_rc -eq 1 ]]'
 check 'stops after 2 calls' '[[ $(calls) -eq 2 ]]'
 check 'reports the cap' 'grep -qF "safety cap of 2 runs" "$_stub/out.txt"'
+
+scenario 'Default safety cap' defaultcap
+printf 'Phase done.\nCONTINUE? Y or N\n' > "$_stub/response-default.txt"
+run_driver "$_driver" "$_plan" 0
+check 'exits 1' '[[ $_rc -eq 1 ]]'
+check 'stops after 10 calls' '[[ $(calls) -eq 10 ]]'
+check 'reports the cap' 'grep -qF "safety cap of 10 runs" "$_stub/out.txt"'
+check 'prints the resume command' \
+  'grep -qF "copilot --resume=$(session_of_first_call)" "$_stub/out.txt"'
+
+scenario 'Decision pending, guard line last' guard
+printf 'Phase 3 waits on D1 in plan.md.decisions.md.\n\nREVISED SCRIPT - Unique user response is required\n' \
+  > "$_stub/response-1.txt"
+run_driver "$_driver" "$_plan" 0
+check 'exits 1' '[[ $_rc -eq 1 ]]'
+check 'stops after 1 call' '[[ $(calls) -eq 1 ]]'
+check 'reports the guard line' \
+  'grep -qF "Last line: REVISED SCRIPT - Unique user response is required" "$_stub/out.txt"'
+check 'prints the resume command' \
+  'grep -qF "copilot --resume=$(session_of_first_call)" "$_stub/out.txt"'
+
+scenario 'Flags after -- keep their spaces' passthrough
+printf 'Phase 1 done.\nCONTINUE? Y or N\n' > "$_stub/response-1.txt"
+printf 'Phase 2 done.\nTASK COMPLETE!\n' > "$_stub/response-2.txt"
+run_driver "$_driver" "$_plan" 0 -- --add-dir '/work/shared plans'
+check 'exits 0' '[[ $_rc -eq 0 ]]'
+check 'the flag reaches both runs as one argument each' \
+  'for i in 1 2; do has_arg $i --add-dir && has_arg $i "/work/shared plans" || exit 1; done'
 
 scenario 'Start errors' starterr
 printf 'unused\n' > "$_stub/response-default.txt"
