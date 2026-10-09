@@ -123,6 +123,7 @@ $ echo $?
 - a log that turns read-only during the run
 - a log that opens but rejects every write, through a byte-range lock that stands in for a full disk
 - a temporary file that cannot be written
+- interval and `LOOP_MAX_ITERATIONS` values that contain `;`, such as `5;` and `2;rem`
 
 It runs in Windows PowerShell 5.1 and PowerShell 7.
 
@@ -143,20 +144,26 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests\test-loop-copilot.ps1 
 
 | Driver | Line endings | PowerShell 7.6 | Windows PowerShell 5.1 |
 | --- | --- | --- | --- |
-| PR driver now ([d3c7fc2](https://github.com/jhauga/awesome-copilot/blob/d3c7fc2701d22e799418ff5c6f8bdccaedcaf019/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 58 of 58 | 58 of 58 |
-| PR driver now | CRLF | 58 of 58 | 58 of 58 |
-| PR driver with the LF fix ([3a84074](https://github.com/jhauga/awesome-copilot/blob/3a840744e91b0c5488343022540d5a2563a29313/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 51 of 58 | 51 of 58 |
-| PR driver with the LF fix | CRLF | 51 of 58 | 51 of 58 |
-| PR driver before the LF fix ([bd80185](https://github.com/jhauga/awesome-copilot/blob/bd80185580215c2d4e8fe1feda0e103fadb9682e/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 43 of 58 | 43 of 58 |
-| PR driver before the LF fix | CRLF | 51 of 58 | 51 of 58 |
+| PR driver now ([5d7cc73](https://github.com/jhauga/awesome-copilot/blob/5d7cc733bebb77e4adbaedcc395e448811c48b5c/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 61 of 61 | 61 of 61 |
+| PR driver now | CRLF | 61 of 61 | 61 of 61 |
+| PR driver before the number-check fix ([d3c7fc2](https://github.com/jhauga/awesome-copilot/blob/d3c7fc2701d22e799418ff5c6f8bdccaedcaf019/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 58 of 61 | 58 of 61 |
+| PR driver before the number-check fix | CRLF | 58 of 61 | 58 of 61 |
+| PR driver with the LF fix ([3a84074](https://github.com/jhauga/awesome-copilot/blob/3a840744e91b0c5488343022540d5a2563a29313/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 51 of 61 | 51 of 61 |
+| PR driver with the LF fix | CRLF | 51 of 61 | 51 of 61 |
+| PR driver before the LF fix ([bd80185](https://github.com/jhauga/awesome-copilot/blob/bd80185580215c2d4e8fe1feda0e103fadb9682e/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 43 of 61 | 43 of 61 |
+| PR driver before the LF fix | CRLF | 51 of 61 | 51 of 61 |
 
-The current driver in LF form also passes 58 of 58 when run from a folder named `R&D tools (v2)`.
+The current driver in LF form also passes 61 of 61 when run from a folder named `R&D tools (v2)`.
 
 ### Write Failures
 
 Before d3c7fc2, the log appends were unchecked. When the log turned read-only during a run that ended with `TASK COMPLETE!`, the driver still reported the task complete and exited 0. When the log opened but every write failed, it ran copilot anyway and exited 0. ECHO reports success even when its write fails, so the driver's `:say` now checks that the log grew, and the response is appended with TYPE, which does report a failed write. The driver stops with exit 1 and an error as soon as a log write fails.
 
 CMD also leaves ERRORLEVEL at 0 when a redirect cannot open its file, and it leaves the old file in place. A run whose output could not be written would then be judged by the previous run's output. The driver now deletes the previous run's files first, checks that the new ones were written, and stops otherwise.
+
+### Number Checks
+
+Before 5d7cc73, the driver found non-digits with a FOR /F loop that used the digits as delimiters. FOR /F skips a line whose first character after its delimiters is `;`, so values such as `5;` and `2;rem` passed. The safety-cap check `if %_RUN% geq %_MAX_RUNS% goto :stop_cap` then read the `;` as a separator. With `LOOP_MAX_ITERATIONS=2;rem`, it ran `rem` in place of the `goto`: a stub that answered `CONTINUE? Y or N` five times ran six times against a cap of 2, and stopped only because it then answered `TASK COMPLETE!`. The driver now removes each digit with string substitution and rejects any value with anything left.
 
 ### LF Line Endings and the Fix
 
@@ -261,10 +268,13 @@ Start errors
   pass  third argument exits 2
   pass  non-integer interval exits 2
   pass  LOOP_MAX_ITERATIONS=0 exits 2
+  pass  interval ; exits 2
+  pass  interval 5; exits 2
+  pass  LOOP_MAX_ITERATIONS=2;rem exits 2
   pass  copilot not on PATH exits 2
   pass  copilot never called
 
-58 of 58 checks passed.
+61 of 61 checks passed.
 > echo %ERRORLEVEL%
 0
 ```
@@ -300,8 +310,11 @@ Safety cap reached
 Plan path with spaces, parentheses, and an ampersand
 Console code page
 Start errors
+  FAIL  interval 5; exits 2
+  FAIL  LOOP_MAX_ITERATIONS=2;rem exits 2
   FAIL  copilot not on PATH exits 2
-43 of 58 checks passed.
+  FAIL  copilot never called
+43 of 61 checks passed.
 > echo %ERRORLEVEL%
 1
 ```

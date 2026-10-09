@@ -323,6 +323,14 @@ Invoke-Driver @($Plan, '1.5')
 Check 'non-integer interval exits 2' { $Rc -eq 2 }
 Invoke-Driver @($Plan, '0') @{ LOOP_MAX_ITERATIONS = '0' }
 Check 'LOOP_MAX_ITERATIONS=0 exits 2' { $Rc -eq 2 }
+# FOR /F skips a line whose first character after its delimiters is ;, so
+# these test a digit check that does not rely on it.
+Invoke-Driver @($Plan, ';')
+Check 'interval ; exits 2' { $Rc -eq 2 }
+Invoke-Driver @($Plan, '5;')
+Check 'interval 5; exits 2' { $Rc -eq 2 }
+Invoke-Driver @($Plan, '0') @{ LOOP_MAX_ITERATIONS = '2;rem' }
+Check 'LOOP_MAX_ITERATIONS=2;rem exits 2' { $Rc -eq 2 }
 Invoke-Driver @($Plan, '0') @{ PATH = $Sys32 }
 Check 'copilot not on PATH exits 2' { $Rc -eq 2 }
 Check 'copilot never called' { (Get-Calls) -eq 0 }
