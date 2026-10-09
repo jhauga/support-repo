@@ -7,7 +7,7 @@ Stub tests for both drivers in the PR. Each test puts a fake `copilot` first on 
 
 ## Bash: loop-copilot.sh
 
-[tests/test-loop-copilot.sh](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/tests/test-loop-copilot.sh) runs the committed `loop-copilot.sh` against a stub `copilot` placed first on `PATH`. The stub records each call's arguments and prints scripted responses. The test checks the driver's exit codes, the copilot arguments it passes, its log file, and temp file cleanup. It uses no Copilot credits.
+[tests/test-loop-copilot.sh](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/tests/test-loop-copilot.sh) runs the committed `loop-copilot.sh` against a stub `copilot` placed first on `PATH`. The stub records each call's arguments and prints scripted responses, and a stub `tee` can fail its file write the way a full disk would. The test checks the driver's exit codes, the copilot arguments it passes, its log file, temp file cleanup, and what it does when the response file or the log cannot be written. It uses no Copilot credits.
 
 The driver under test, `.github/skills/handle-big-tasks/scripts/loop-copilot.sh`, is byte-for-byte the file in the PR (same git blob).
 
@@ -23,11 +23,16 @@ tests/test-loop-copilot.sh .github/skills/handle-big-tasks/scripts/loop-copilot.
 
 | Driver | bash 5.2.26 (Git Bash) | bash 5.1.16 (Ubuntu 22.04.5, WSL) |
 | --- | --- | --- |
-| PR driver, after the review fixes | 31 of 31 | 31 of 31 |
-| PR driver before the fixes ([7ec8a2c](https://github.com/github/awesome-copilot/blob/7ec8a2ca07a5258c1a88c8fd5f092512324b512b/skills/handle-big-tasks/scripts/loop-copilot.sh)) | 31 of 31 | 27 of 31 |
-| Prototype driver from the first test ([loop-copilot.sh](loop-copilot.sh.md)) | 7 of 31 | not run |
+| PR driver now ([d3c7fc2](https://github.com/jhauga/awesome-copilot/blob/d3c7fc2701d22e799418ff5c6f8bdccaedcaf019/skills/handle-big-tasks/scripts/loop-copilot.sh)) | 37 of 37 | 37 of 37 |
+| PR driver before the write-failure fixes ([3a84074](https://github.com/jhauga/awesome-copilot/blob/3a840744e91b0c5488343022540d5a2563a29313/skills/handle-big-tasks/scripts/loop-copilot.sh)) | 33 of 37 | 33 of 37 |
+| PR driver before the first review fixes ([7ec8a2c](https://github.com/github/awesome-copilot/blob/7ec8a2ca07a5258c1a88c8fd5f092512324b512b/skills/handle-big-tasks/scripts/loop-copilot.sh)) | 33 of 37 | 28 of 37 |
+| Prototype driver from the first test ([loop-copilot.sh](loop-copilot.sh.md)) | 8 of 37 | 8 of 37 |
 
-The four checks the earlier PR driver fails on bash 5.1 are the `exits 1` checks. It set its temp file's `EXIT` trap inside `run_loop`, which runs on the left of a pipe. Bash 5.1 lets that trap's own status replace the subshell's, so every early stop exited 0, the code for `TASK COMPLETE!`. The fix moves the temp file and trap into `main`.
+**Write failures.** Before d3c7fc2, the driver kept only copilot's status from `copilot | tee`, so a failed write to the response file went unnoticed, and the last line of a cut-short file decided what happened next. In the test, the file keeps `CONTINUE? Y or N` from a response that goes on to report a blocker, and the earlier drivers answer `Y`. The driver now stops when `tee` fails. A failed write to the log let the driver exit 0, and it now exits 1 with an error. A failed log write does not stop the bash loop early, because `tee` keeps passing output through, but the exit code reports it.
+
+The fix was also checked against real `No space left on device` errors in bash 5.1, with `/dev/full` in place of the log and then of the response file. The driver exited 1 both times, and in the response case it stopped after one run and removed its temp file.
+
+**bash 5.1 exit codes.** 7ec8a2c set its temp file's `EXIT` trap inside `run_loop`, which runs on the left of a pipe. Bash 5.1 lets that trap's own status replace the subshell's, so every early stop exited 0, the code for `TASK COMPLETE!`. The fix moved the temp file and trap into `main`.
 
 The prototype driver fails because it:
 
@@ -75,6 +80,16 @@ copilot fails on run 2
   pass  stops after 2 calls
   pass  reports the copilot status
 
+Response file write fails after the marker line
+  pass  exits 1
+  pass  stops after 1 call
+  pass  reports the failed save
+  pass  removes its temp file
+
+Log write fails on a run that completes
+  pass  exits 1
+  pass  reports the log failure
+
 Safety cap reached
   pass  exits 1
   pass  stops after 2 calls
@@ -89,7 +104,7 @@ Start errors
   pass  LOOP_MAX_ITERATIONS=0 exits 2
   pass  copilot never called
 
-31 of 31 checks passed.
+37 of 37 checks passed.
 $ echo $?
 0
 ```
@@ -105,6 +120,9 @@ $ echo $?
 - a trailing whitespace-only line after the marker
 - restoring the console code page the driver switches to UTF-8
 - the usage message naming the script itself
+- a log that turns read-only during the run
+- a log that opens but rejects every write, through a byte-range lock that stands in for a full disk
+- a temporary file that cannot be written
 
 It runs in Windows PowerShell 5.1 and PowerShell 7.
 
@@ -125,18 +143,26 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests\test-loop-copilot.ps1 
 
 | Driver | Line endings | PowerShell 7.6 | Windows PowerShell 5.1 |
 | --- | --- | --- | --- |
-| PR driver with the LF fix ([3a84074](https://github.com/jhauga/awesome-copilot/blob/3a840744e91b0c5488343022540d5a2563a29313/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 47 of 47 | 47 of 47 |
-| PR driver with the LF fix | CRLF | 47 of 47 | 47 of 47 |
-| PR driver before the fix ([bd80185](https://github.com/jhauga/awesome-copilot/blob/bd80185580215c2d4e8fe1feda0e103fadb9682e/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 39 of 47 | 39 of 47 |
-| PR driver before the fix | CRLF | 47 of 47 | 47 of 47 |
+| PR driver now ([d3c7fc2](https://github.com/jhauga/awesome-copilot/blob/d3c7fc2701d22e799418ff5c6f8bdccaedcaf019/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 58 of 58 | 58 of 58 |
+| PR driver now | CRLF | 58 of 58 | 58 of 58 |
+| PR driver with the LF fix ([3a84074](https://github.com/jhauga/awesome-copilot/blob/3a840744e91b0c5488343022540d5a2563a29313/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 51 of 58 | 51 of 58 |
+| PR driver with the LF fix | CRLF | 51 of 58 | 51 of 58 |
+| PR driver before the LF fix ([bd80185](https://github.com/jhauga/awesome-copilot/blob/bd80185580215c2d4e8fe1feda0e103fadb9682e/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 43 of 58 | 43 of 58 |
+| PR driver before the LF fix | CRLF | 51 of 58 | 51 of 58 |
 
-The fixed driver in LF form also passes 47 of 47 when run from a folder named `R&D tools (v2)`.
+The current driver in LF form also passes 58 of 58 when run from a folder named `R&D tools (v2)`.
+
+### Write Failures
+
+Before d3c7fc2, the log appends were unchecked. When the log turned read-only during a run that ended with `TASK COMPLETE!`, the driver still reported the task complete and exited 0. When the log opened but every write failed, it ran copilot anyway and exited 0. ECHO reports success even when its write fails, so the driver's `:say` now checks that the log grew, and the response is appended with TYPE, which does report a failed write. The driver stops with exit 1 and an error as soon as a log write fails.
+
+CMD also leaves ERRORLEVEL at 0 when a redirect cannot open its file, and it leaves the old file in place. A run whose output could not be written would then be judged by the previous run's output. The driver now deletes the previous run's files first, checks that the new ones were written, and stops otherwise.
 
 ### LF Line Endings and the Fix
 
-CMD finds `goto` and `call` labels by scanning the batch file, and the scan misfires when the file has LF-only line endings. Before the fix, a run that ended with `TASK COMPLETE!` still worked, but the paths that stop the loop early did not:
+CMD finds `goto` and `call` labels by scanning the batch file, and the scan misfires when the file has LF-only line endings. Before the LF fix, a run that ended with `TASK COMPLETE!` still worked, but the paths that stop the loop early did not:
 
-| Scenario | CRLF | LF, before the fix |
+| Scenario | CRLF | LF, before the LF fix |
 | --- | --- | --- |
 | `copilot` exits 7 on run 2 | Exit 1 | Prints the right message, then exits 0, the code for `TASK COMPLETE!` |
 | Safety cap reached | Exit 1 | Prints the right message, then exits 0 |
@@ -145,11 +171,11 @@ CMD finds `goto` and `call` labels by scanning the batch file, and the scan misf
 
 A script that checks for exit code 0 would have treated the first two LF cases as a finished task.
 
-The fixed driver checks itself before it uses any label. It writes a CRLF copy of itself to `%TEMP%` with `type | find /v ""`, and when the copy's size differs from its own, it runs the copy, passes on its exit code, and deletes it.
+The driver now checks itself before it uses any label. It writes a CRLF copy of itself to `%TEMP%` with `type | find /v ""`, and when the copy is exactly one byte per line larger than the original, it runs the copy, passes on its exit code, and deletes it. A copy of any other size, such as one cut short by a full disk, is not run.
 
 ### Output
 
-Fixed driver, LF form, PowerShell 7.6:
+Current driver, LF form, PowerShell 7.6:
 
 ```text
 > powershell -NoProfile -ExecutionPolicy Bypass -File tests\test-loop-copilot.ps1 loop-copilot.bat
@@ -194,6 +220,23 @@ copilot fails on run 2
   pass  stops after 2 calls
   pass  reports the copilot status
 
+Log turns read-only on run 2, which ends with TASK COMPLETE!
+  pass  exits 1
+  pass  stops after 2 calls
+  pass  does not report the task complete
+  pass  reports the log failure
+  pass  removes its temp files
+
+Log opens but every write fails
+  pass  exits 1
+  pass  stops before running copilot
+  pass  reports the log failure
+
+Temporary file cannot be written
+  pass  exits 1
+  pass  stops after 1 call
+  pass  reports the temporary file failure
+
 Safety cap reached
   pass  exits 1
   pass  stops after 2 calls
@@ -221,10 +264,12 @@ Start errors
   pass  copilot not on PATH exits 2
   pass  copilot never called
 
-47 of 47 checks passed.
+58 of 58 checks passed.
+> echo %ERRORLEVEL%
+0
 ```
 
-Driver before the fix, LF form, PowerShell 7.6, without the passing checks:
+PR driver before the LF fix (bd80185), LF form, PowerShell 7.6, without the passing checks:
 
 ```text
 > powershell -NoProfile -ExecutionPolicy Bypass -File tests\test-loop-copilot.ps1 loop-copilot.bat
@@ -240,11 +285,23 @@ Blocker line with CMD special characters
 Marker wrapped in markdown
 copilot fails on run 2
   FAIL  exits 1
+Log turns read-only on run 2, which ends with TASK COMPLETE!
+  FAIL  exits 1
+  FAIL  does not report the task complete
+  FAIL  reports the log failure
+Log opens but every write fails
+  FAIL  exits 1
+  FAIL  stops before running copilot
+  FAIL  reports the log failure
+Temporary file cannot be written
+  FAIL  reports the temporary file failure
 Safety cap reached
   FAIL  exits 1
 Plan path with spaces, parentheses, and an ampersand
 Console code page
 Start errors
   FAIL  copilot not on PATH exits 2
-39 of 47 checks passed.
+43 of 58 checks passed.
+> echo %ERRORLEVEL%
+1
 ```

@@ -1,6 +1,6 @@
 # Live Run Log
 
-Real GitHub Copilot CLI runs of the PR's `loop-copilot.sh`, driven through [live-run-plan.md](live-run-plan.md). The driver is byte-for-byte the file in the PR (same git blob).
+Real GitHub Copilot CLI runs of the PR's `loop-copilot.sh`, driven through [live-run-plan.md](live-run-plan.md). The runs used the PR's `loop-copilot.sh` as of [bd80185](https://github.com/jhauga/awesome-copilot/blob/bd80185580215c2d4e8fe1feda0e103fadb9682e/skills/handle-big-tasks/scripts/loop-copilot.sh). Later commits add checks for failed writes to the response file and the log, which a run without write errors never reaches. See [Driver Tests](driver-tests.md#bash-loop-copilotsh).
 
 ## Command
 

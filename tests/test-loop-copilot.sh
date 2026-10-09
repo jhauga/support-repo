@@ -40,6 +40,27 @@ exit "$(cat "$STUB_DIR/status-$_n" 2> /dev/null || echo 0)"
 STUB
 chmod +x "$_work/bin/copilot"
 
+_real_tee=$(command -v tee)
+cat > "$_work/bin/tee" <<'STUB'
+#!/usr/bin/env bash
+# Stub tee: runs the real tee unless STUB_TEE_FAIL names this call. Then it
+# passes the input through but fails the file write the way a full disk
+# would: "response" keeps only the first two lines of the response file, and
+# "log" writes nothing to the log.
+if [[ ${STUB_TEE_FAIL:-} == response && $1 != -a ]]; then
+  _data=$(cat; printf x)
+  printf '%s' "${_data%x}"
+  printf '%s' "${_data%x}" | head -n 2 > "$1"
+  exit 1
+fi
+if [[ ${STUB_TEE_FAIL:-} == log && $1 == -a ]]; then
+  cat
+  exit 1
+fi
+exec "$REAL_TEE" "$@"
+STUB
+chmod +x "$_work/bin/tee"
+
 # Runs check $2 in a subshell, so an exit inside it fails only that check.
 check() {
   _checks=$((_checks + 1))
@@ -77,8 +98,8 @@ scenario() {
 # assignments go first.
 run_driver() {
   mkdir -p "$_stub/tmp"
-  env PATH="$_work/bin:$PATH" STUB_DIR="$_stub" TMPDIR="$_stub/tmp" "$@" \
-    > "$_stub/out.txt" 2>&1
+  env PATH="$_work/bin:$PATH" STUB_DIR="$_stub" TMPDIR="$_stub/tmp" \
+    REAL_TEE="$_real_tee" "$@" > "$_stub/out.txt" 2>&1
   _rc=$?
 }
 
@@ -140,6 +161,20 @@ run_driver "$_driver" "$_plan" 0
 check 'exits 1' '[[ $_rc -eq 1 ]]'
 check 'stops after 2 calls' '[[ $(calls) -eq 2 ]]'
 check 'reports the copilot status' 'grep -qF "copilot exited with status 7." "$_stub/out.txt"'
+
+scenario 'Response file write fails after the marker line' teeresponse
+printf 'Phase 1 done.\nCONTINUE? Y or N\nBlocked: the API key is missing.\n' > "$_stub/response-default.txt"
+run_driver STUB_TEE_FAIL=response LOOP_MAX_ITERATIONS=3 "$_driver" "$_plan" 0
+check 'exits 1' '[[ $_rc -eq 1 ]]'
+check 'stops after 1 call' '[[ $(calls) -eq 1 ]]'
+check 'reports the failed save' 'grep -qF "Stopping: could not save the response" "$_stub/out.txt"'
+check 'removes its temp file' tmp_is_empty
+
+scenario 'Log write fails on a run that completes' teelog
+printf 'All done.\nTASK COMPLETE!\n' > "$_stub/response-default.txt"
+run_driver STUB_TEE_FAIL=log "$_driver" "$_plan" 0
+check 'exits 1' '[[ $_rc -eq 1 ]]'
+check 'reports the log failure' 'grep -qF "could not write all output to the log file" "$_stub/out.txt"'
 
 scenario 'Safety cap reached' cap
 printf 'Phase done.\nCONTINUE? Y or N\n' > "$_stub/response-default.txt"

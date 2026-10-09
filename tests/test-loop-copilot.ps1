@@ -47,12 +47,16 @@ Write-Cmd (Join-Path $Bin 'copilot.cmd') @(
   '@echo off'
   'rem Stub copilot: records each call''s arguments in args-<n>.txt, prints'
   'rem response-<n>.txt (or response-default.txt), exits with status-<n> (or 0).'
+  'rem On call STUB_READONLY_LOG_CALL it makes STUB_LOG read-only, and on call'
+  'rem STUB_BLOCK_LAST_CALL it puts a folder where the driver writes last.txt.'
   'setlocal DisableDelayedExpansion'
   'set "_N=0"'
   'if exist "%STUB_DIR%\count" set /p _N=<"%STUB_DIR%\count"'
   'set /a _N+=1'
   '>"%STUB_DIR%\count" echo %_N%'
   '>"%STUB_DIR%\args-%_N%.txt" echo(%*'
+  'if "%_N%"=="%STUB_READONLY_LOG_CALL%" attrib +r "%STUB_LOG%"'
+  'if "%_N%"=="%STUB_BLOCK_LAST_CALL%" for %%F in ("%TEMP%\loop-copilot-*.out.txt") do for %%G in ("%%~dpnF") do mkdir "%%~dpnG.last.txt"'
   'set "_F=%STUB_DIR%\response-%_N%.txt"'
   'if not exist "%_F%" set "_F=%STUB_DIR%\response-default.txt"'
   'type "%_F%"'
@@ -244,6 +248,42 @@ Invoke-Driver @($Plan, '0')
 Check 'exits 1' { $Rc -eq 1 }
 Check 'stops after 2 calls' { (Get-Calls) -eq 2 }
 Check 'reports the copilot status' { $Out.Contains('copilot exited with status 7.') }
+
+New-Scenario 'Log turns read-only on run 2, which ends with TASK COMPLETE!' 'logreadonly'
+Set-Response 1 "Phase 1 done.`nCONTINUE? Y or N`n"
+Set-Response 2 "All done.`nTASK COMPLETE!`n"
+Invoke-Driver @($Plan, '0') @{ STUB_READONLY_LOG_CALL = '2'; STUB_LOG = $Plan + '.loop.log' }
+Check 'exits 1' { $Rc -eq 1 }
+Check 'stops after 2 calls' { (Get-Calls) -eq 2 }
+Check 'does not report the task complete' { -not $Out.Contains('Task complete after') }
+Check 'reports the log failure' { $Out.Contains('Error: could not write the log file: ' + $Plan + '.loop.log') }
+Check 'removes its temp files' { Test-TmpEmpty }
+Set-ItemProperty -LiteralPath ($Plan + '.loop.log') -Name IsReadOnly -Value $false -ErrorAction SilentlyContinue
+
+New-Scenario 'Log opens but every write fails' 'loglocked'
+Set-Response 'default' "All done.`nTASK COMPLETE!`n"
+# A byte-range lock lets the log open but fails each write, as a full disk
+# would. ECHO still reports success, so this checks that the driver notices.
+$logPath = $Plan + '.loop.log'
+Write-Text $logPath ''
+$lockHandle = [IO.File]::Open($logPath, 'Open', 'Read', 'ReadWrite')
+$lockHandle.Lock(0, 1000000000)
+try {
+  Invoke-Driver @($Plan, '0')
+} finally {
+  $lockHandle.Unlock(0, 1000000000)
+  $lockHandle.Close()
+}
+Check 'exits 1' { $Rc -eq 1 }
+Check 'stops before running copilot' { (Get-Calls) -eq 0 }
+Check 'reports the log failure' { $Out.Contains('Error: could not write the log file: ' + $logPath) }
+
+New-Scenario 'Temporary file cannot be written' 'tempblocked'
+Set-Response 'default' "Phase 1 done.`nCONTINUE? Y or N`n"
+Invoke-Driver @($Plan, '0') @{ STUB_BLOCK_LAST_CALL = '1' }
+Check 'exits 1' { $Rc -eq 1 }
+Check 'stops after 1 call' { (Get-Calls) -eq 1 }
+Check 'reports the temporary file failure' { $Out.Contains('Stopping: could not write the temporary files') }
 
 New-Scenario 'Safety cap reached' 'cap'
 Set-Response 'default' "Phase done.`nCONTINUE? Y or N`n"
