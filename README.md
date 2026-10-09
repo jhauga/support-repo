@@ -23,55 +23,67 @@ Emits `CONTINUE? Y or N` as the final line of each completed phase and `TASK COM
 
 Full [test results](https://github.com/jhauga/support-repo/tree/skill-handle-big-tasks) (*ctrl + click*) at support repo.
 
+The `loop-copilot.sh` in this PR was tested two ways, and both can be rerun from the support repo:
+
+1. **Live run** ([live-run-log](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/live-run-log.md)): real Copilot CLI runs of the driver through a three-phase plan.
+2. **Stub tests** ([driver-tests](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/driver-tests.md)): `tests/test-loop-copilot.sh` runs the driver against a fake `copilot` and checks its exit codes, the arguments it passes, its log, and temp file cleanup.
+
+The support repo's copy of the skill is byte-for-byte the PR's (same git blobs).
+
 <details>
 
 <summary>Show Details</summary>
 
 | Field | Value |
 |---|---|
-| **Agent** | GitHub Copilot CLI - non-interactive (`-p`, `--continue`, `--allow-all`), driven by `loop-copilot.sh` |
-| **Model** | Claude Opus 5.5 |
-| **Reasoning Effort** | High |
-| **Number of Prompts** | 1 manual - all phase continues auto-answered by the driver |
+| **Agent** | GitHub Copilot CLI 1.0.94, non-interactive (`-p`, `--session-id` then `--resume`, `-s`), driven by the PR's `loop-copilot.sh` |
+| **Model** | Claude Sonnet 5.5, the CLI default |
+| **Shell** | bash 5.1.16, Ubuntu 22.04.5 on WSL |
+| **Number of Prompts** | 1, the driver's first prompt; each later run is the driver answering `Y` |
 | **Post Edits** | 0 |
-| **Context Consumed** | 1% ? 4% (3% across the full run) |
+| **AI Credits** | 13.06 for the completing run |
 | **Date** | 2026-10-08 |
 
 ### Test Task
 
-Multi-phase audit of a Windows batch-file library: `inventory → classify → header standardization → index → verify`. Each phase writes a file the next phase reads, so a dropped marker halts the run visibly rather than degrading quietly. The task prompt described the work without naming the skill.
+Three-phase pass over three small batch files in `data/live-run/fixture`: `inventory → commented copies → summary and check`. Each phase writes files the next phase reads, and phase 3 checks that each commented copy repeats its original exactly.
 
 </details>
 
 ### Evaluation Context
 
 - **Session Target**: Copilot Terminal
-- **Agent**: Copilot
-- **Model**: Opus 5.5
-  - **Thinking Effort**: high
+- **Agent**: Copilot CLI
+- **Model**: Sonnet 5.5 (CLI default)
 - **Number of Prompts**: 1
-- **Post Edits**: Changed data in `docs`; file names and stuff for clarity
+- **Post Edits**: 0
 
 ### Copilot Pro+ Plan Credit Usage
 
-- **Start Credits**: 1%
-- **End Credits**: 4%
+- **AI Credits**: 13.06 for the completing run, from the session's usage records
 
 ### Prompt
 
+Run from the support repo root:
+
 ```bash
-/handle-big-tasks/loop-copilot.sh prompt.md 5 20
+LOOP_COPILOT_ARGS="--allow-tool=write --allow-tool=shell(mkdir:*)" \
+  .github/skills/handle-big-tasks/scripts/loop-copilot.sh data/live-run-plan.md 0
 ```
 
 ### Results
 
-- **Pass**: The skill triggered on the task description alone. Both markers were emitted verbatim and in the correct positions - `CONTINUE? Y or N` closing each incomplete phase, `TASK COMPLETE!` closing the run. The marker contract held across every phase without re-priming, and the run finished unattended from a single prompt.
+- **Pass**: The skill loaded from the driver's first prompt. Phases 1 and 2 ended with `CONTINUE? Y or N` as the last line, the driver answered `Y` in the same session, and phase 3 ended with `TASK COMPLETE!`. The driver exited 0 after three runs with no manual input.
+- **Pass**: Two earlier loops with `--allow-tool=write` alone hit a real blocker: Copilot's file-create tool cannot make folders, and `mkdir` was denied. Each time the agent explained the blocker and ended without a marker, and the driver stopped and printed the `copilot --resume` command instead of answering `Y`. SKILL.md now notes that new folders need `--allow-tool=shell(mkdir:*)` or must exist before the loop starts.
+- **Pass**: Stub tests, 31 of 31 checks on bash 5.2 (Git Bash) and bash 5.1 (Ubuntu). They caught a bug, fixed in this PR, where the driver exited 0 after every early stop on bash 5.1.
+
+An earlier test used a prototype driver on a larger batch-file audit. It is kept in the support repo as [loop-copilot.sh](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/loop-copilot.sh.md) and [loop-log](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/loop-log.md), but it is not the driver in this PR.
 
 ### Notes
 
-- Marker placement is the contract. Both strings must be the final line of the response, unquoted and unwrapped, or a driver's string match will miss them.
-- The skill's own context cost is negligible. The 3% consumed is almost entirely the task's file reads, not the skill definition.
-- Driver scripts ship with the skill: `loop-copilot.sh` (Copilot CLI) and `loop-claude.sh` / `loop-claude.bat` (Claude Code). They are optional - the skill works unassisted with manual `Y` input.
+- Marker placement is the contract. Both strings must be the final line of the response, unquoted and unwrapped, or the driver stops instead of answering `Y`.
+- The skill's own context cost is negligible.
+- Driver scripts ship with the skill: `loop-copilot.sh` (bash) and `loop-copilot.bat` (Windows CMD). They are optional - the skill works unassisted with manual `Y` input.
 
 The skills' script is new, but since I've been using and improving upon this tool, I have not had an issue or a need to clarify, prompting like `No that didn't work, who is on first, that is on second, this needs to be there, etc..." in response to the model's edits.
 <!-- formatter_2 -->

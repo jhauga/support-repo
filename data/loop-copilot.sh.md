@@ -1,5 +1,8 @@
 # Loop Copilot Script
 
+> [!NOTE]
+> Prototype driver from the first test run. The PR ships a different `loop-copilot.sh`. See [Driver Tests](driver-tests.md) and [Live Run Log](live-run-log.md).
+
 For the test I dropped this script adjacent to the `SKILL.md` file.
 
 ```bash

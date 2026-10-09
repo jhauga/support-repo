@@ -1,5 +1,8 @@
 # Log FIle
 
+> [!NOTE]
+> Log from the first test run, which used the [prototype driver](loop-copilot.sh.md), not the PR's driver. See [Live Run Log](live-run-log.md) for runs of the PR's driver.
+
 Log kept for each phase of loop.
 
 ```text
