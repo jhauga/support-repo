@@ -36,12 +36,12 @@ The support repo's copy of the skill is byte-for-byte the PR's (same git blobs).
 
 | Field | Value |
 |---|---|
-| **Agent** | GitHub Copilot CLI 1.0.94, non-interactive (`-p`, `--session-id` then `--resume`, `-s`), driven by the PR's `loop-copilot.sh` |
-| **Model** | Claude Sonnet 5.5, the CLI default |
-| **Shell** | bash 5.1.16, Ubuntu 22.04.5 on WSL |
+| **Agent** | GitHub Copilot CLI, non-interactive (`-p`, `--session-id` then `--resume`, `-s`), driven by the PR's `loop-copilot.sh` (CLI 1.0.94) and `loop-copilot.bat` (CLI 1.0.80) |
+| **Model** | CLI defaults, Claude Sonnet 5.5 for bash and Claude Sonnet 5 for CMD |
+| **Shell** | bash 5.1.16 on Ubuntu 22.04.5 (WSL), and CMD on Windows 11 |
 | **Number of Prompts** | 1, the driver's first prompt; each later run is the driver answering `Y` |
 | **Post Edits** | 0 |
-| **AI Credits** | 13.06 for the completing run |
+| **AI Credits** | 13.06 for the completing bash run and 37.86 for the CMD run |
 | **Date** | 2026-10-08 |
 
 ### Test Task
@@ -54,7 +54,7 @@ Three-phase pass over three small batch files in `data/live-run/fixture`: `inven
 
 - **Session Target**: Copilot Terminal
 - **Agent**: Copilot CLI
-- **Model**: Sonnet 5.5 (CLI default)
+- **Model**: CLI defaults, Sonnet 5.5 for bash and Sonnet 5 for CMD
 - **Number of Prompts**: 1
 - **Post Edits**: 0
 
@@ -64,11 +64,18 @@ Three-phase pass over three small batch files in `data/live-run/fixture`: `inven
 
 ### Prompt
 
-Run from the support repo root:
+Run from the support repo root. In bash:
 
 ```bash
 LOOP_COPILOT_ARGS="--allow-tool=write --allow-tool=shell(mkdir:*)" \
   .github/skills/handle-big-tasks/scripts/loop-copilot.sh data/live-run-plan.md 0
+```
+
+In CMD, with the driver from an awesome-copilot checkout:
+
+```bat
+set "LOOP_COPILOT_ARGS=--allow-tool=write --allow-tool=shell(mkdir:*)"
+<awesome-copilot checkout>\skills\handle-big-tasks\scripts\loop-copilot.bat data\live-run-bat-plan.md 0
 ```
 
 ### Results
