@@ -104,10 +104,14 @@ $ echo $?
 - a plan path with spaces, parentheses, and `&`
 - a trailing whitespace-only line after the marker
 - restoring the console code page the driver switches to UTF-8
+- the usage message naming the script itself
 
 It runs in Windows PowerShell 5.1 and PowerShell 7.
 
-awesome-copilot stores `loop-copilot.bat` with LF line endings, and its `.gitattributes` (`*.bat text eol=crlf`) converts the file to CRLF on checkout. Both forms have the same content (`git hash-object` gives the PR's blob, `e11c468`), so the test ran on each.
+awesome-copilot stores `loop-copilot.bat` with LF line endings, and its `.gitattributes` (`*.bat text eol=crlf`) converts the file to CRLF on checkout. Both forms have the same content (`git hash-object` gives the same blob), so the test runs on each:
+
+- **CRLF**: `git clone` or checkout, GitHub ZIP download
+- **LF**: the skill page's per-file download, `raw.githubusercontent.com`, or any copy of the git blob, such as this repo's `.github/skills` copy
 
 ### Command
 
@@ -119,29 +123,33 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests\test-loop-copilot.ps1 
 
 ### Results
 
-| Copy of `loop-copilot.bat` | Where it comes from | PowerShell 7.6 | Windows PowerShell 5.1 |
+| Driver | Line endings | PowerShell 7.6 | Windows PowerShell 5.1 |
 | --- | --- | --- | --- |
-| CRLF | `git clone` or checkout, GitHub ZIP download | 45 of 45 | 45 of 45 |
-| LF | the skill page's per-file download, `raw.githubusercontent.com`, or any copy of the git blob | 37 of 45 | 37 of 45 |
+| PR driver with the LF fix ([3a84074](https://github.com/jhauga/awesome-copilot/blob/3a840744e91b0c5488343022540d5a2563a29313/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 47 of 47 | 47 of 47 |
+| PR driver with the LF fix | CRLF | 47 of 47 | 47 of 47 |
+| PR driver before the fix ([bd80185](https://github.com/jhauga/awesome-copilot/blob/bd80185580215c2d4e8fe1feda0e103fadb9682e/skills/handle-big-tasks/scripts/loop-copilot.bat)) | LF | 39 of 47 | 39 of 47 |
+| PR driver before the fix | CRLF | 47 of 47 | 47 of 47 |
 
-This repo's `.github/skills/handle-big-tasks/scripts/loop-copilot.bat` is the LF form, because it was written from the git blob, so the [CMD live run](live-run-bat-log.md) used the CRLF checkout instead.
+The fixed driver in LF form also passes 47 of 47 when run from a folder named `R&D tools (v2)`.
 
-### LF Line Endings Break the Stop Paths
+### LF Line Endings and the Fix
 
-CMD finds `goto` and `call` labels by scanning the batch file, and the scan misfires when the file has LF-only line endings. The run that ends with `TASK COMPLETE!` still works, but the paths that stop the loop early do not:
+CMD finds `goto` and `call` labels by scanning the batch file, and the scan misfires when the file has LF-only line endings. Before the fix, a run that ended with `TASK COMPLETE!` still worked, but the paths that stop the loop early did not:
 
-| Scenario | CRLF | LF |
+| Scenario | CRLF | LF, before the fix |
 | --- | --- | --- |
 | `copilot` exits 7 on run 2 | Exit 1 | Prints the right message, then exits 0, the code for `TASK COMPLETE!` |
 | Safety cap reached | Exit 1 | Prints the right message, then exits 0 |
 | Blocker on the last line | Exit 1, prints the last line and the resume command | `The system cannot find the batch label specified - stop_no_marker`, no resume command, and 3 temp files left in `%TEMP%` |
 | `copilot` not on `PATH` | Exit 2 with usage | `The system cannot find the batch label specified - start_error`, exit 1 |
 
-A script that checks for exit code 0 would treat the first two LF cases as a finished task.
+A script that checks for exit code 0 would have treated the first two LF cases as a finished task.
+
+The fixed driver checks itself before it uses any label. It writes a CRLF copy of itself to `%TEMP%` with `type | find /v ""`, and when the copy's size differs from its own, it runs the copy, passes on its exit code, and deletes it.
 
 ### Output
 
-CRLF copy, PowerShell 7.6:
+Fixed driver, LF form, PowerShell 7.6:
 
 ```text
 > powershell -NoProfile -ExecutionPolicy Bypass -File tests\test-loop-copilot.ps1 loop-copilot.bat
@@ -190,6 +198,7 @@ Safety cap reached
   pass  exits 1
   pass  stops after 2 calls
   pass  reports the cap
+  pass  removes its temp files
 
 Plan path with spaces, parentheses, and an ampersand
   pass  exits 0
@@ -202,6 +211,7 @@ Console code page
 
 Start errors
   pass  --help exits 0
+  pass  --help names the script itself
   pass  missing plan file exits 2
   pass  plan file not found exits 2
   pass  folder as plan file exits 2
@@ -211,15 +221,13 @@ Start errors
   pass  copilot not on PATH exits 2
   pass  copilot never called
 
-45 of 45 checks passed.
-> echo %ERRORLEVEL%
-0
+47 of 47 checks passed.
 ```
 
-LF copy, PowerShell 7.6, failing checks only:
+Driver before the fix, LF form, PowerShell 7.6, without the passing checks:
 
 ```text
-> powershell -NoProfile -ExecutionPolicy Bypass -File tests\test-loop-copilot.ps1 .github\skills\handle-big-tasks\scripts\loop-copilot.bat
+> powershell -NoProfile -ExecutionPolicy Bypass -File tests\test-loop-copilot.ps1 loop-copilot.bat
 Three phases, markers on the last line
 Whitespace-only line after the marker
 Marker quoted mid-response, blocker on the last line
@@ -238,7 +246,5 @@ Plan path with spaces, parentheses, and an ampersand
 Console code page
 Start errors
   FAIL  copilot not on PATH exits 2
-37 of 45 checks passed.
-> echo %ERRORLEVEL%
-1
+39 of 47 checks passed.
 ```

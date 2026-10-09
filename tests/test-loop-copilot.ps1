@@ -251,6 +251,7 @@ Invoke-Driver @($Plan, '0') @{ LOOP_MAX_ITERATIONS = '2' }
 Check 'exits 1' { $Rc -eq 1 }
 Check 'stops after 2 calls' { (Get-Calls) -eq 2 }
 Check 'reports the cap' { $Out.Contains('safety cap of 2 runs') }
+Check 'removes its temp files' { Test-TmpEmpty }
 
 New-Scenario 'Plan path with spaces, parentheses, and an ampersand' 'oddpath' 'R&D plans (v2)'
 Set-Response 1 "All done.`nTASK COMPLETE!`n"
@@ -269,6 +270,7 @@ New-Scenario 'Start errors' 'starterr'
 Set-Response 'default' "unused`n"
 Invoke-Driver @('--help')
 Check '--help exits 0' { $Rc -eq 0 }
+Check '--help names the script itself' { $Out.Contains('Usage: ' + [IO.Path]::GetFileName($Driver) + ' ') }
 Invoke-Driver @()
 Check 'missing plan file exits 2' { $Rc -eq 2 }
 Invoke-Driver @((Join-Path $Stub 'no-such-plan.md'))

@@ -2,7 +2,7 @@
 
 A real GitHub Copilot CLI run of the PR's `loop-copilot.bat` in Windows CMD, driven through [live-run-bat-plan.md](live-run-bat-plan.md). It is the same three-phase plan as the [bash live run](live-run-log.md), writing to its own results folder.
 
-The driver ran from an awesome-copilot checkout of the PR branch, so it had the CRLF line endings that the repo's `.gitattributes` gives `.bat` files on checkout. Its content is the PR's blob (`git hash-object` gives `e11c468`). See [Driver Tests](driver-tests.md#cmd-loop-copilotbat) for why line endings matter for this file. Copilot loaded the skill from this repo's `.github/skills/handle-big-tasks`, which is byte-for-byte the PR's.
+The driver ran from an awesome-copilot checkout of the PR branch at [bd80185](https://github.com/jhauga/awesome-copilot/blob/bd80185580215c2d4e8fe1feda0e103fadb9682e/skills/handle-big-tasks/scripts/loop-copilot.bat), so it had the CRLF line endings that the repo's `.gitattributes` gives `.bat` files on checkout (`git hash-object` gives that commit's blob, `e11c468`). The PR has since added a startup step for copies with LF line endings ([3a84074](https://github.com/jhauga/awesome-copilot/blob/3a840744e91b0c5488343022540d5a2563a29313/skills/handle-big-tasks/scripts/loop-copilot.bat)). A CRLF file like the one used here finds its CRLF copy the same size and carries on without it. See [Driver Tests](driver-tests.md#cmd-loop-copilotbat) for both forms. Copilot loaded the skill from this repo's `.github/skills/handle-big-tasks`, whose `SKILL.md` matches the PR's.
 
 ## Command
 
