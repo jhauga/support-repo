@@ -3,12 +3,8 @@
 <!-- Constants -->
 Support branch of repository for:
 <!-- Link to PR -->
-- [awesome-copilot pull request](https://github.com/) <!-- github.com/<owner>/<repo>/pull/<[0-9]+> -->
+- [awesome-copilot pull request 4744](https://github.com/github/awesome-copilot/pull/4744)
 - `Ctrl + click` View illustration [index.html](https://jhauga.github.io/support-repo/)
-<!-- git commit -m "undeploy: use htmlpreview for index.html" -->
-<!--
-- `Ctrl + click` Navigate new pages [index.html](https://jhauga.github.io/htmlpreview.github.com/?https://raw.githubusercontent.com/jhauga/support-repo/refs/heads/skill-handle-big-tasks/index.html)
--->
 
 <!-- NOTE - leave formatter_1 and formatter_2 for semi-automated task -->
 <!--
@@ -25,7 +21,7 @@ Emits `CONTINUE? Y or N` as the final line of each completed phase and `TASK COM
 > [!NOTE]
 > Apart from test conditions, I have been using this tool several weeks now; improving on it bit by bit, and will say it produces better results than just completing one long complex prompt in one response.
 
-Full [test results](https://github.com/jhauga/support-repo/tree/BRANCH_NAME) (*ctrl + click*) at support repo.
+Full [test results](https://github.com/jhauga/support-repo/tree/skill-handle-big-tasks) (*ctrl + click*) at support repo.
 
 <details>
 
@@ -33,10 +29,10 @@ Full [test results](https://github.com/jhauga/support-repo/tree/BRANCH_NAME) (*c
 
 | Field | Value |
 |---|---|
-| **Agent** | GitHub Copilot CLI — non-interactive (`-p`, `--continue`, `--allow-all`), driven by `loop-copilot.sh` |
+| **Agent** | GitHub Copilot CLI - non-interactive (`-p`, `--continue`, `--allow-all`), driven by `loop-copilot.sh` |
 | **Model** | Claude Opus 5.5 |
 | **Reasoning Effort** | High |
-| **Number of Prompts** | 1 manual — all phase continues auto-answered by the driver |
+| **Number of Prompts** | 1 manual - all phase continues auto-answered by the driver |
 | **Post Edits** | 0 |
 | **Context Consumed** | 1% ? 4% (3% across the full run) |
 | **Date** | 2026-10-08 |
@@ -75,7 +71,7 @@ Multi-phase audit of a Windows batch-file library: `inventory → classify → h
 
 - Marker placement is the contract. Both strings must be the final line of the response, unquoted and unwrapped, or a driver's string match will miss them.
 - The skill's own context cost is negligible. The 3% consumed is almost entirely the task's file reads, not the skill definition.
-- Driver scripts ship with the skill: `loop-copilot.sh` (Copilot CLI) and `loop-claude.sh` / `loop-claude.bat` (Claude Code). They are optional — the skill works unassisted with manual `Y` input.
+- Driver scripts ship with the skill: `loop-copilot.sh` (Copilot CLI) and `loop-claude.sh` / `loop-claude.bat` (Claude Code). They are optional - the skill works unassisted with manual `Y` input.
 
 The skills' script is new, but since I've been using and improving upon this tool, I have not had an issue or a need to clarify, prompting like `No that didn't work, who is on first, that is on second, this needs to be there, etc..." in response to the model's edits.
 <!-- formatter_2 -->
