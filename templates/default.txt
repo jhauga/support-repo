@@ -1,8 +1,0 @@
-<!--
-Test Results:
-
-![demo.gif](/demo.gif)
- -->
-SHORT_DESCRIPTION
-
-AS_NEEDED
