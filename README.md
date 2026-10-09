@@ -23,10 +23,10 @@ Emits `CONTINUE? Y or N` as the final line of each completed phase and `TASK COM
 
 Full [test results](https://github.com/jhauga/support-repo/tree/skill-handle-big-tasks) (*ctrl + click*) at support repo.
 
-The `loop-copilot.sh` in this PR was tested two ways, and both can be rerun from the support repo:
+Both drivers in this PR, `loop-copilot.sh` and `loop-copilot.bat`, were tested two ways, and both can be rerun from the support repo:
 
-1. **Live run** ([live-run-log](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/live-run-log.md)): real Copilot CLI runs of the driver through a three-phase plan.
-2. **Stub tests** ([driver-tests](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/driver-tests.md)): `tests/test-loop-copilot.sh` runs the driver against a fake `copilot` and checks its exit codes, the arguments it passes, its log, and temp file cleanup.
+1. **Live runs**: real Copilot CLI runs of each driver through the same three-phase plan, [bash](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/live-run-log.md) on Ubuntu (WSL) and [CMD](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/live-run-bat-log.md) on Windows.
+2. **Stub tests** ([driver-tests](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/driver-tests.md)): `tests/test-loop-copilot.sh` and `tests/test-loop-copilot.ps1` run each driver against a fake `copilot` and check its exit codes, the arguments it passes, its log, and temp file cleanup.
 
 The support repo's copy of the skill is byte-for-byte the PR's (same git blobs).
 
@@ -60,7 +60,7 @@ Three-phase pass over three small batch files in `data/live-run/fixture`: `inven
 
 ### Copilot Pro+ Plan Credit Usage
 
-- **AI Credits**: 13.06 for the completing run, from the session's usage records
+- **AI Credits**: 13.06 for the completing bash run and 37.86 for the CMD run, from the sessions' usage records
 
 ### Prompt
 
@@ -76,6 +76,8 @@ LOOP_COPILOT_ARGS="--allow-tool=write --allow-tool=shell(mkdir:*)" \
 - **Pass**: The skill loaded from the driver's first prompt. Phases 1 and 2 ended with `CONTINUE? Y or N` as the last line, the driver answered `Y` in the same session, and phase 3 ended with `TASK COMPLETE!`. The driver exited 0 after three runs with no manual input.
 - **Pass**: Two earlier loops with `--allow-tool=write` alone hit a real blocker: Copilot's file-create tool cannot make folders, and `mkdir` was denied. Each time the agent explained the blocker and ended without a marker, and the driver stopped and printed the `copilot --resume` command instead of answering `Y`. SKILL.md now notes that new folders need `--allow-tool=shell(mkdir:*)` or must exist before the loop starts.
 - **Pass**: Stub tests, 31 of 31 checks on bash 5.2 (Git Bash) and bash 5.1 (Ubuntu). They caught a bug, fixed in this PR, where the driver exited 0 after every early stop on bash 5.1.
+- **Pass**: The CMD driver, run in Windows CMD with Copilot CLI 1.0.80 (default model `claude-sonnet-5`), finished the same plan in three runs with `CONTINUE? Y or N`, `CONTINUE? Y or N`, `TASK COMPLETE!`, and exit 0. Its stub tests pass 45 of 45 on the CRLF copy that a git checkout or ZIP download gives.
+- **Open issue**: The repo stores `loop-copilot.bat` with LF line endings, and that is what the skill page's per-file download and `raw.githubusercontent.com` serve. With LF endings, CMD's label lookups misfire: the driver exits 0 when copilot fails or the safety cap is reached, and cannot find its labels on other stop paths (37 of 45 stub checks pass). See [driver-tests](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/driver-tests.md#cmd-loop-copilotbat).
 
 An earlier test used a prototype driver on a larger batch-file audit. It is kept in the support repo as [loop-copilot.sh](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/loop-copilot.sh.md) and [loop-log](https://github.com/jhauga/support-repo/blob/skill-handle-big-tasks/data/loop-log.md), but it is not the driver in this PR.
 
