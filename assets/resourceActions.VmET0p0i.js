@@ -1,0 +1,1 @@
+function e(e){if(e)try{let t=new URL(e);return t.protocol===`http:`||t.protocol===`https:`?e:void 0}catch{return}}async function t(e,t){let n=await fetch(e);if(!n.ok)throw Error(`Failed to download ${e}: ${n.status}`);let r=URL.createObjectURL(await n.blob()),i=document.createElement(`a`);i.href=r,i.download=t,i.click(),URL.revokeObjectURL(r)}export{e as n,t};

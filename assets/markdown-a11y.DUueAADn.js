@@ -1,0 +1,1 @@
+function e(e){if(!e)return e;let t=e;return t=t.replace(/<pre(?![^>]*\btabindex=)/g,`<pre tabindex="0"`),t=t.replace(/<table(?![^>]*\btabindex=)/g,`<table tabindex="0"`),t=t.replace(/<input\b([^>]*\btype="checkbox"[^>]*)>/g,(e,t)=>/\baria-label=/.test(t)?e:`<input${t} aria-label="${/\bchecked\b/.test(t)?`Completed task`:`Incomplete task`}">`),t}export{e as enhanceMarkdownA11y};
