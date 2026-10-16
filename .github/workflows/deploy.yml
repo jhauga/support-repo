@@ -74,10 +74,12 @@ jobs:
           # Skip values that are already prefixed (idempotent) so re-runs are safe.
           guard = r"(?!/)(?!" + seg + r"(?:/|[\"'#?]))"
 
-          # Single-URL attributes that take a root-relative path.
+          # Single-URL attributes that take a root-relative path. The last
+          # three are Astro island attributes that load the hydration scripts.
           ATTRS = (
               "href|src|action|formaction|poster|data|cite|manifest|"
-              "background|ping|longdesc|profile|xlink:href"
+              "background|ping|longdesc|profile|xlink:href|"
+              "component-url|renderer-url|before-hydration-url"
           )
           attr_re = re.compile(
               r'((?:' + ATTRS + r')\s*=\s*["\'])/' + guard, re.IGNORECASE)
@@ -93,6 +95,22 @@ jobs:
           # <meta http-equiv="refresh" content="0; url=/path">
           meta_re = re.compile(
               r'(content\s*=\s*["\'][^"\']*?url=)/' + guard, re.IGNORECASE)
+
+          # Astro island props are HTML-escaped JSON. Their "href" values are
+          # finished links the page renders as-is (search results, Learning
+          # Hub cards), unlike keys such as "detailUrl" that the page passes
+          # through its base path helper and must be left alone.
+          props_href_re = re.compile(r'(&quot;href&quot;:\[0,&quot;)/' + guard)
+
+          # Bundled JS from a build made for the site root (Astro, Vite) holds
+          # the base path as a bare "/" and builds links and chunk URLs from it
+          # in the browser, so point that "/" at the base path instead:
+          #   BASE_URL constants:   Fa=`/`,                   -> Fa=`/<repo>/`,
+          #   Vite preload helper:  function(e){return`/`+e}  -> return`/<repo>/`+e
+          # Path strings in the bundles are left alone; they get the base path
+          # from these constants when the page uses them.
+          js_base_re = re.compile(r'(?<![\w$.])([A-Za-z_$][\w$]*=)([`"\'])/\2(?=[,;)])')
+          js_preload_re = re.compile(r'(function\((\w+)\)\{return)([`"\'])/\3\+\2\}')
 
           def fix_srcset(m):
               pre, quote, value = m.group(1), m.group(2), m.group(3)
@@ -118,10 +136,34 @@ jobs:
               new = srcset_re.sub(fix_srcset, new)
               new = css_re.sub(r'url(\g<1>' + base + '/', new)
               new = meta_re.sub(r'\g<1>' + base + '/', new)
+              new = props_href_re.sub(r'\g<1>' + base + '/', new)
               if new != text:
                   path.write_text(new, encoding="utf-8")
                   changed += 1
                   print(f"rewrote {path}")
+
+          # Stylesheets load fonts and images with url(/...).
+          for path in root.rglob("*.css"):
+              if any(part in (".git", "node_modules") for part in path.parts):
+                  continue
+              text = path.read_text(encoding="utf-8")
+              new = css_re.sub(r'url(\g<1>' + base + '/', text)
+              if new != text:
+                  path.write_text(new, encoding="utf-8")
+                  changed += 1
+                  print(f"rewrote {path}")
+
+          for path in root.rglob("*.js"):
+              if any(part in (".git", "node_modules") for part in path.parts):
+                  continue
+              text = path.read_text(encoding="utf-8")
+              new, n_base = js_base_re.subn(r'\g<1>\g<2>' + base + r'/\g<2>', text)
+              new, n_preload = js_preload_re.subn(
+                  r'\g<1>\g<3>' + base + r'/\g<3>+\g<2>}', new)
+              if new != text:
+                  path.write_text(new, encoding="utf-8")
+                  changed += 1
+                  print(f"rewrote {path} ({n_base} base, {n_preload} preload)")
           print(f"Done. Rewrote {changed} file(s) with base path '{base}'.")
           PY
 
