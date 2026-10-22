@@ -21,7 +21,8 @@ Adds a "Resource page size" menu next to "Sort by" on the Agents, Extensions, In
 
 - New `CatalogResourceSizeControl` reuses the sort menu's markup and classes, so the two menus match on every page. A 1px rule separates them and is hidden below 48rem.
 - The trigger's accessible name includes the current size (for example "Resource page size: 6 (Skills per page)").
-- The menu follows the menu button keyboard pattern: opening moves focus to the selected size, arrow keys and Home/End move between sizes, Escape closes it and returns focus to the trigger, and Tab or a click outside closes it.
+- The menu follows the menu button keyboard pattern: Enter or Space opens it with focus on the selected size, arrow keys and Home/End move between sizes, Escape closes it and returns focus to the trigger, and Tab or a click outside closes it.
+- Choosing a size closes the menu and lets go of focus, so the trigger no longer looks active and Enter, Space, and the arrow keys go back to the page. The next Tab still moves on from the menu.
 - The fixed page sizes in the six components are replaced by state.
 - On the Learning Hub, the sort and page size menus are grouped in the Articles header. On phones that page keeps its existing design, where the Filters button replaces the menus.
 
@@ -29,5 +30,5 @@ Adds a "Resource page size" menu next to "Sort by" on the Agents, Extensions, In
 
 - `npm run --prefix website build` passes (1,546 pages).
 - `npm run --prefix website a11y`: 24 routes, dark and light, 0 violations.
-- Playwright checks on all six pages (163 of 163, on the build and on the demo below): default size, card and page counts for each size, return to page 1, size kept across sort and filter changes, the size menu's keyboard and dismiss behavior, unchanged toolbar and header heights, and phone layouts.
+- Playwright checks on all six pages (169 of 169, on the build and on the demo below): default size, card and page counts for each size, return to page 1, size kept across sort and filter changes, the size menu's keyboard and dismiss behavior, unchanged toolbar and header heights, and phone layouts.
 - `tsc --noEmit` shows no new errors (the 29 existing ones are unchanged).

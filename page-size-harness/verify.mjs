@@ -426,6 +426,17 @@ async function checkKeyboard(browser, baseUrl) {
   try {
     await openCatalog(page, baseUrl, skills.route, "dark");
     const trigger = sizeTrigger(page, skills);
+    // "Looks active" is the :focus-visible fill and border on the trigger.
+    const triggerLook = () =>
+      trigger.evaluate((el) => {
+        const style = getComputedStyle(el);
+        return {
+          focused: el.matches(":focus"),
+          background: style.backgroundColor,
+          border: style.borderColor,
+        };
+      });
+    const idleLook = await triggerLook();
     check(
       "Skills keyboard: trigger has aria-haspopup=menu",
       (await trigger.getAttribute("aria-haspopup")) === "menu",
@@ -463,24 +474,72 @@ async function checkKeyboard(browser, baseUrl) {
       `open=${await isOpen()}, focus ${at.tag}`,
     );
 
-    await page.keyboard.press("ArrowDown");
-    at = await waitFor(focused, (el) => el.role === "menuitemradio");
+    at = await press("ArrowDown");
     check(
-      "Skills keyboard: ArrowDown on the closed trigger opens on the selected size",
-      (await isOpen()) && at.text === "6",
-      `${at.role} "${at.text}"`,
+      "Skills keyboard: ArrowDown on the closed trigger leaves the menu closed",
+      !(await isOpen()) && at.tag === "SUMMARY",
+      `open=${await isOpen()}, focus ${at.tag}`,
     );
+
+    // A choice lets go of focus: the trigger looks idle again and Enter, Space,
+    // and the arrow keys go back to the page instead of reopening the menu.
+    await page.keyboard.press("Enter");
+    await waitFor(focused, (el) => el.role === "menuitemradio");
     await page.keyboard.press("ArrowDown");
     await page.keyboard.press("Enter");
     const picked = await waitFor(() => readState(page, skills), (state) => state.triggerText === "20");
     at = await focused();
     check(
-      "Skills keyboard: Enter picks 20, closes, and focuses the trigger",
-      picked.triggerText === "20" && !picked.open && at.tag === "SUMMARY",
+      "Skills keyboard: Enter picks 20, closes, and lets go of focus",
+      picked.triggerText === "20" && !picked.open && at.tag === "BODY",
       `${picked.triggerText}, open=${picked.open}, focus ${at.tag}`,
     );
+    const look = await triggerLook();
+    check(
+      "Skills keyboard: after a choice the trigger looks idle",
+      !look.focused && look.background === idleLook.background && look.border === idleLook.border,
+      `focused=${look.focused}, ${look.background} / ${look.border}`,
+    );
 
-    await page.keyboard.press("ArrowDown");
+    const scrollY = () => page.evaluate(() => window.scrollY);
+    const before = await scrollY();
+    at = await press("ArrowDown");
+    const after = await waitFor(scrollY, (y) => y > before, 2000);
+    check(
+      "Skills keyboard: after a choice, ArrowDown scrolls the page and the menu stays closed",
+      !(await isOpen()) && at.tag === "BODY" && after > before,
+      `scrollY ${before} -> ${after}, open=${await isOpen()}, focus ${at.tag}`,
+    );
+    for (const key of ["Enter", "Space"]) {
+      at = await press(key);
+      await page.waitForTimeout(150);
+      check(
+        `Skills keyboard: after a choice, ${key} leaves the menu closed`,
+        !(await isOpen()) && at.tag === "BODY",
+        `open=${await isOpen()}, focus ${at.tag}`,
+      );
+    }
+
+    // Without focus, Tab should still carry on from the menu, not restart at the top.
+    at = await press("Tab");
+    const afterMenu = await page.evaluate(() => {
+      const trigger = document.querySelector('summary[aria-label$="(Skills per page)"]');
+      const el = document.activeElement;
+      return Boolean(
+        el &&
+          el !== document.body &&
+          !trigger.closest("details").contains(el) &&
+          trigger.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING,
+      );
+    });
+    check(
+      "Skills keyboard: after a choice, Tab moves on to the next control after the menu",
+      afterMenu,
+      `${at.tag} "${at.text.slice(0, 40)}"`,
+    );
+
+    await trigger.focus();
+    await page.keyboard.press("Enter");
     await waitFor(focused, (el) => el.role === "menuitemradio");
     at = await press("Tab");
     check(
@@ -495,6 +554,16 @@ async function checkKeyboard(browser, baseUrl) {
     await page.getByText("Resource page size:", { exact: true }).click();
     const closed = await waitFor(isOpen, (open) => !open);
     check("Skills keyboard: a click outside closes the menu", closed === false);
+
+    const clicked = await chooseSize(page, skills, "50");
+    const clickedLook = await triggerLook();
+    at = await focused();
+    check(
+      "Skills mouse: clicking 50 closes the menu and the trigger looks idle",
+      clicked.triggerText === "50" && !clicked.open && at.tag !== "SUMMARY" && !clickedLook.focused &&
+        clickedLook.background === idleLook.background,
+      `${clicked.triggerText}, open=${clicked.open}, focus ${at.tag}, ${clickedLook.background}`,
+    );
   } catch (error) {
     check("Skills keyboard: flow finished without errors", false, error.message.split("\n")[0]);
   } finally {
