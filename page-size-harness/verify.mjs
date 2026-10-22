@@ -36,7 +36,7 @@ const CATALOGS = [
     header: { height: 119, right: 1172 },
   },
 ];
-const SIZES = ["6", "25", "50", "100"];
+const SIZES = ["6", "20", "50", "100"];
 const DESKTOP = { width: 1349, height: 887 };
 const PHONE = { width: 390, height: 844 };
 const DIVIDER_COLOR = { dark: "rgb(164, 174, 166)", light: "rgb(88, 99, 91)" };
@@ -146,7 +146,7 @@ async function openCatalog(page, baseUrl, route, colorScheme) {
 
 function readState(page, catalog) {
   return page.evaluate(({ type, segment }) => {
-    const trigger = document.querySelector(`summary[aria-label^="${type} per page"]`);
+    const trigger = document.querySelector(`summary[aria-label$="(${type} per page)"]`);
     if (!trigger) return null;
     const details = trigger.closest("details");
     const control = details.parentElement;
@@ -215,7 +215,11 @@ function readState(page, catalog) {
   }, { type: catalog.type, segment: catalog.segment });
 }
 
-const sizeTrigger = (page, catalog) => page.locator(`summary[aria-label^="${catalog.type} per page"]`);
+const sizeTrigger = (page, catalog) =>
+  page.locator(`summary[aria-label$="(${catalog.type} per page)"]`);
+
+// The trigger's accessible name, e.g. "Resource page size: 6 (Skills per page)".
+const triggerName = (catalog, size) => `Resource page size: ${size} (${catalog.type} per page)`;
 
 async function chooseSize(page, catalog, size) {
   const trigger = sizeTrigger(page, catalog);
@@ -272,12 +276,12 @@ async function checkCatalog(browser, baseUrl, catalog) {
 
     check(`${name}: trigger reads 6 on load`, start.triggerText === "6", start.triggerText);
     check(
-      `${name}: trigger is named "${name} per page: 6"`,
-      start.triggerName === `${name} per page: 6`,
+      `${name}: trigger is named "${triggerName(catalog, 6)}"`,
+      start.triggerName === triggerName(catalog, 6),
       start.triggerName,
     );
     check(
-      `${name}: options read 6, 25, 50, 100`,
+      `${name}: options read 6, 20, 50, 100`,
       start.optionTexts.join(",") === SIZES.join(","),
       start.optionTexts.join(","),
     );
@@ -330,28 +334,28 @@ async function checkCatalog(browser, baseUrl, catalog) {
       start.dividerColor,
     );
 
-    const at25 = await chooseSize(page, catalog, "25");
-    check(`${name}: choosing 25 closes the menu`, at25.open === false);
-    check(`${name}: trigger reads 25`, at25.triggerText === "25", at25.triggerText);
+    const at20 = await chooseSize(page, catalog, "20");
+    check(`${name}: choosing 20 closes the menu`, at20.open === false);
+    check(`${name}: trigger reads 20`, at20.triggerText === "20", at20.triggerText);
     check(
-      `${name}: name updates to "${name} per page: 25"`,
-      at25.triggerName === `${name} per page: 25`,
-      at25.triggerName,
+      `${name}: name updates to "${triggerName(catalog, 20)}"`,
+      at20.triggerName === triggerName(catalog, 20),
+      at20.triggerName,
     );
-    check(`${name}: only 25 is checked`, at25.checked.join(",") === "25", at25.checked.join(","));
-    check(`${name}: shows min(25, ${total}) cards`, at25.cards === Math.min(25, total), `${at25.cards}`);
+    check(`${name}: only 20 is checked`, at20.checked.join(",") === "20", at20.checked.join(","));
+    check(`${name}: shows min(20, ${total}) cards`, at20.cards === Math.min(20, total), `${at20.cards}`);
     check(
-      `${name}: highest page at 25 is ceil(${total} / 25)`,
-      at25.maxPage === Math.ceil(total / 25),
-      `${at25.maxPage}`,
+      `${name}: highest page at 20 is ceil(${total} / 20)`,
+      at20.maxPage === Math.ceil(total / 20),
+      `${at20.maxPage}`,
     );
 
-    if (at25.maxPage >= 2) {
+    if (at20.maxPage >= 2) {
       await goToPage(page, 2);
       const onPage2 = await waitFor(() => readState(page, catalog), (state) => state.currentPage === 2);
-      check(`${name}: page 2 opens at size 25`, onPage2.currentPage === 2, `page ${onPage2.currentPage}`);
+      check(`${name}: page 2 opens at size 20`, onPage2.currentPage === 2, `page ${onPage2.currentPage}`);
     } else {
-      check(`${name}: page 2 exists at size 25`, false, `only ${at25.maxPage} page(s)`);
+      check(`${name}: page 2 exists at size 20`, false, `only ${at20.maxPage} page(s)`);
     }
 
     const at50 = await chooseSize(page, catalog, "50");
@@ -392,6 +396,107 @@ async function checkCatalog(browser, baseUrl, catalog) {
     );
   } catch (error) {
     check(`${name}: flow finished without errors`, false, error.message.split("\n")[0]);
+  } finally {
+    await context.close();
+  }
+}
+
+// The size menu's menu button keyboard pattern: open on Enter or an arrow key with
+// focus on the selected size, arrows/Home/End move and wrap, Enter picks, Escape
+// closes back to the trigger, and Tab or a click outside closes it.
+async function checkKeyboard(browser, baseUrl) {
+  const skills = CATALOGS.find((catalog) => catalog.type === "Skills");
+  const context = await browser.newContext({ viewport: DESKTOP, deviceScaleFactor: 1 });
+  const page = await context.newPage();
+  const focused = () =>
+    page.evaluate(() => {
+      const el = document.activeElement;
+      return {
+        role: el?.getAttribute("role") ?? null,
+        text: el?.textContent.trim() ?? "",
+        tag: el?.tagName ?? null,
+        name: el?.getAttribute("aria-label") ?? null,
+      };
+    });
+  const press = async (key) => {
+    await page.keyboard.press(key);
+    return focused();
+  };
+  const isOpen = async () => (await readState(page, skills)).open;
+  try {
+    await openCatalog(page, baseUrl, skills.route, "dark");
+    const trigger = sizeTrigger(page, skills);
+    check(
+      "Skills keyboard: trigger has aria-haspopup=menu",
+      (await trigger.getAttribute("aria-haspopup")) === "menu",
+    );
+    const menuName = await page
+      .locator("details")
+      .filter({ has: trigger })
+      .locator('[role="menu"]')
+      .getAttribute("aria-label");
+    check("Skills keyboard: menu is named \"Skills per page\"", menuName === "Skills per page", menuName);
+
+    await trigger.focus();
+    await page.keyboard.press("Enter");
+    let at = await waitFor(focused, (el) => el.role === "menuitemradio");
+    check(
+      "Skills keyboard: Enter opens the menu on the selected size",
+      (await isOpen()) && at.text === "6",
+      `${at.role} "${at.text}"`,
+    );
+    at = await press("ArrowDown");
+    check("Skills keyboard: ArrowDown moves to 20", at.text === "20", at.text);
+    at = await press("End");
+    check("Skills keyboard: End moves to 100", at.text === "100", at.text);
+    at = await press("ArrowDown");
+    check("Skills keyboard: ArrowDown wraps to 6", at.text === "6", at.text);
+    at = await press("ArrowUp");
+    check("Skills keyboard: ArrowUp wraps to 100", at.text === "100", at.text);
+    at = await press("Home");
+    check("Skills keyboard: Home moves to 6", at.text === "6", at.text);
+
+    at = await press("Escape");
+    check(
+      "Skills keyboard: Escape closes the menu and focuses the trigger",
+      !(await isOpen()) && at.tag === "SUMMARY" && at.name === triggerName(skills, 6),
+      `open=${await isOpen()}, focus ${at.tag}`,
+    );
+
+    await page.keyboard.press("ArrowDown");
+    at = await waitFor(focused, (el) => el.role === "menuitemradio");
+    check(
+      "Skills keyboard: ArrowDown on the closed trigger opens on the selected size",
+      (await isOpen()) && at.text === "6",
+      `${at.role} "${at.text}"`,
+    );
+    await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("Enter");
+    const picked = await waitFor(() => readState(page, skills), (state) => state.triggerText === "20");
+    at = await focused();
+    check(
+      "Skills keyboard: Enter picks 20, closes, and focuses the trigger",
+      picked.triggerText === "20" && !picked.open && at.tag === "SUMMARY",
+      `${picked.triggerText}, open=${picked.open}, focus ${at.tag}`,
+    );
+
+    await page.keyboard.press("ArrowDown");
+    await waitFor(focused, (el) => el.role === "menuitemradio");
+    at = await press("Tab");
+    check(
+      "Skills keyboard: Tab closes the menu and moves on",
+      !(await isOpen()) && at.role !== "menuitemradio",
+      `open=${await isOpen()}, focus ${at.tag} ${at.role ?? ""}`.trim(),
+    );
+
+    await trigger.click();
+    await waitFor(isOpen, (open) => open);
+    // The static label beside the menu is outside the <details> and is not a link.
+    await page.getByText("Resource page size:", { exact: true }).click();
+    const closed = await waitFor(isOpen, (open) => !open);
+    check("Skills keyboard: a click outside closes the menu", closed === false);
+  } catch (error) {
+    check("Skills keyboard: flow finished without errors", false, error.message.split("\n")[0]);
   } finally {
     await context.close();
   }
@@ -456,10 +561,10 @@ async function screenshots(browser, baseUrl) {
       .locator("details")
       .filter({ has: sizeTrigger(page, skills) })
       .locator('[role="menuitemradio"]')
-      .filter({ hasText: /^25$/ })
+      .filter({ hasText: /^20$/ })
       .click();
-    const at25 = await waitFor(() => readState(page, skills), (state) => state.triggerText === "25");
-    check("Skills phone: choosing 25 shows 25 cards", at25.cards === 25, `${at25.cards}`);
+    const at20 = await waitFor(() => readState(page, skills), (state) => state.triggerText === "20");
+    check("Skills phone: choosing 20 shows 20 cards", at20.cards === 20, `${at20.cards}`);
   } catch (error) {
     check("Skills phone: flow finished without errors", false, error.message.split("\n")[0]);
   } finally {
@@ -529,6 +634,7 @@ async function main() {
     for (const catalog of CATALOGS) {
       await checkCatalog(browser, baseUrl, catalog);
     }
+    await checkKeyboard(browser, baseUrl);
     await screenshots(browser, baseUrl);
   } finally {
     await browser.close();
