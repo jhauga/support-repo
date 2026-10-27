@@ -1,1 +1,0 @@
-function e(){return window.matchMedia(`(prefers-reduced-motion: reduce)`).matches?`auto`:`smooth`}function t(){window.requestAnimationFrame(()=>{let t=document.getElementById(`catalog`);t&&(t.scrollIntoView({behavior:e(),block:`start`}),t.focus({preventScroll:!0}))})}export{t as n,e as t};

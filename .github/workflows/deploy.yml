@@ -3,7 +3,7 @@ name: Deploy GitHub Pages
 on:
   push:
     branches:
-      - website-add-page-size
+      - website-resize-col-width
   workflow_dispatch:
 
 permissions:
@@ -248,7 +248,7 @@ jobs:
           path: _site
 
   deploy:
-    if: github.ref == 'refs/heads/website-add-page-size'
+    if: github.ref == 'refs/heads/website-resize-col-width'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

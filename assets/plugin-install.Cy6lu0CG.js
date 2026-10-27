@@ -1,0 +1,1 @@
+function e(e){if(!e.trim()||/[@\u0000-\u001f\u007f]/.test(e))throw Error(`Invalid marketplace plugin name: ${e}`);return`vscode://chat-plugin/install?${new URLSearchParams({source:`github/awesome-copilot`,plugin:e})}`}export{e as t};
