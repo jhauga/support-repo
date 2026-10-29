@@ -1,7 +1,7 @@
 // Checks the split catalog grid on the six filter-rail pages and saves
 // screenshots. Serve website/dist first, then:
 //   node .support/resize-col-harness/verify.mjs [baseUrl]   (D1=full for the full-width option)
-// The split is by count: 14 cards beside the filters (see cardsBeside below).
+// The split is by page size: 8 cards beside the filters at 20 and 50, 10 at 100.
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
@@ -22,17 +22,18 @@ const PAGES = [
   ["/learning-hub/", "Articles", "learning-hub", null],
 ];
 
-// The split rule from useCatalogSplit.ts: 14 cards beside, or the nearest even
-// count that leaves whole rows of six below; 14 or fewer cards never split.
-const cardsBeside = (total) => {
-  if (total <= 14) return total;
-  let best = null;
-  for (let count = 2; count < total; count += 2) {
-    if ((total - count) % 6 !== 0) continue;
-    if (best === null || Math.abs(count - 14) < Math.abs(best - 14)) best = count;
+// The split rule from useCatalogSplit.ts: 4 rows (8 cards) beside at 20 and 50
+// per page, 5 rows (10) at 100, none at 6; a shorter list moves the cut by at
+// most one row to leave whole rows of six below.
+const CUT = { 6: 0, 20: 8, 50: 8, 100: 10 };
+const cardsBeside = (total, size) => {
+  const cut = CUT[size];
+  if (cut === 0 || total <= cut) return total;
+  for (const count of [cut, cut + 2, cut - 2]) {
+    if (count >= total) return total;
+    if ((total - count) % 6 === 0) return count;
   }
-  if (best !== null) return best;
-  return total - 14 >= 6 ? 14 : total;
+  return total - cut >= 6 ? cut : total;
 };
 
 let pass = 0;
@@ -75,10 +76,10 @@ const state = (kind) =>
     };
   }, kind);
 
-const invariants = async (label, kind, expected) => {
+const invariants = async (label, kind, expected, size) => {
   const s = await state(kind);
   check(s.side + s.wide === expected, `${label}: ${s.side}+${s.wide} cards, expected ${expected}`);
-  const want = s.stacked ? expected : cardsBeside(expected);
+  const want = s.stacked ? expected : cardsBeside(expected, size);
   check(s.side === want, `${label}: ${s.side} cards beside, expected ${want}`);
   if ((expected - want) % 6 === 0 && s.wide > 0) {
     check(s.wide % s.wideCols === 0, `${label}: wide grid ends short (${s.wide} cards in ${s.wideCols} columns)`);
@@ -123,14 +124,14 @@ for (const [route, type, kind, count] of PAGES) {
     all = (await state(kind)).hrefs.length;
     await pickSize(type, 6);
   }
-  const at6 = await invariants(`${route} 6`, kind, Math.min(6, all));
+  const at6 = await invariants(`${route} 6`, kind, Math.min(6, all), 6);
   await pickSize(type, 50);
   const expected = Math.min(50, all);
-  const at50 = await invariants(`${route} 50 @1848`, kind, expected);
+  const at50 = await invariants(`${route} 50 @1848`, kind, expected, 50);
   const cols = {};
   for (const w of [2560, 1919, 1440, 1280, 1100, 1024, 1000, 1848]) {
     await resize(w);
-    const s = await invariants(`${route} 50 @${w}`, kind, expected);
+    const s = await invariants(`${route} 50 @${w}`, kind, expected, 50);
     cols[w] = s.wide ? s.wideCols : 0;
     if (w === 1000) {
       check(s.stacked, `${route}: rail not stacked at 1000px`);
@@ -141,27 +142,33 @@ for (const [route, type, kind, count] of PAGES) {
   if (await more.count()) {
     await more.click();
     await page.waitForTimeout(250);
-    const s = await invariants(`${route} show more`, kind, expected);
+    const s = await invariants(`${route} show more`, kind, expected, 50);
     check(s.side >= at50.side, `${route}: show more moved cards out of the side grid`);
     await page.locator("#catalog aside button", { hasText: /^Show less$/ }).first().click();
     await page.waitForTimeout(250);
-    const back = await invariants(`${route} show less`, kind, expected);
+    const back = await invariants(`${route} show less`, kind, expected, 50);
     check(back.side === at50.side, `${route}: show less gave ${back.side}, expected ${at50.side}`);
   }
   await page.locator("#catalog aside label").first().click();
   await page.waitForTimeout(250);
   const filtered = await state(kind);
-  await invariants(`${route} filtered`, kind, filtered.side + filtered.wide);
+  await invariants(`${route} filtered`, kind, filtered.side + filtered.wide, 50);
   await page.locator("#catalog aside button", { hasText: /^Clear all/ }).click();
   await page.waitForTimeout(250);
-  await invariants(`${route} cleared`, kind, expected);
+  await invariants(`${route} cleared`, kind, expected, 50);
   const page2 = page.getByRole("link", { name: "Page 2" });
   if (all > 50 && (await page2.count())) {
     await page2.click();
     await page.waitForTimeout(400);
-    await invariants(`${route} page 2`, kind, Math.min(50, all - 50));
+    await invariants(`${route} page 2`, kind, Math.min(50, all - 50), 50);
   }
-  summary.push(`${route} ${all} items: at 6 ${at6.side}+${at6.wide}, at 50 ${at50.side}+${at50.wide}, wide frame ${JSON.stringify(at50.frameEdges)}, columns ${JSON.stringify(cols)}`);
+  const bySize = {};
+  for (const size of [20, 100]) {
+    await pickSize(type, size);
+    const s = await invariants(`${route} ${size}`, kind, Math.min(size, all), size);
+    bySize[size] = `${s.side}+${s.wide}`;
+  }
+  summary.push(`${route} ${all} items: at 6 ${at6.side}+${at6.wide}, at 20 ${bySize[20]}, at 50 ${at50.side}+${at50.wide}, at 100 ${bySize[100]}, wide frame ${JSON.stringify(at50.frameEdges)}, columns ${JSON.stringify(cols)}`);
 }
 
 // Screenshots to compare by eye with the goal GIF.
