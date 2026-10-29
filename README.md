@@ -17,19 +17,18 @@ IMPORTANT - mind description, and change first line for 1 to sentence descriptio
 -->
 ## Widen catalog grids below the filter sidebar
 
-On the Agents, Extensions, Instructions, Plugins, and Skills catalogs and the Learning Hub's Articles list, cards no longer stay in two columns all the way down the page. Rows that start beside the filter sidebar keep their two columns. Once a row would start below the end of the filter list, the remaining cards continue in a grid that spans the whole catalog frame, rail included: three columns in the 1280px frame, and two below a 1408px window. The order stays A-Z across each row. Phones and tablets are unchanged, because the sidebar stacks above the cards there.
+On the Agents, Extensions, Instructions, Plugins, and Skills catalogs and the Learning Hub's Articles list, a page of more than 14 cards no longer stays in two columns all the way down. The first seven rows (14 cards) keep their two columns beside the filter sidebar, and the rest continue in a grid that spans the whole catalog frame, rail included: three columns in the 1280px frame, and two below a 1408px window. When 14 would leave the wide grid's last row short, the cut moves to the nearest even count that fills every wide row (16 for 100 per page), so full pages of 20, 50, and 100 end on full rows. The default 6 per page is unchanged. The order stays A-Z across each row. Phones and tablets are unchanged, because the sidebar stacks above the cards there.
 
-- A new `useCatalogSplit` hook measures where the filter list ends and splits the page's cards into those beside it and those below. It measures in a layout effect after every render (page, page size, sort, filter, and Show more changes) and on a `ResizeObserver` for viewport and font changes, so the split settles before paint.
+- A new `useCatalogSplit` hook works out the split from the number of cards and a `matchMedia` check for the stacked layout (the stylesheets' own `63.25rem` query). It needs no layout measuring, and the server render, with every card beside the filters, matches the default page.
 - Each page's card markup moves, unchanged, into a local render function that both grids use, so `git diff -w --color-moved` shows it as a move.
-- The wide grid reuses `.gridFrame`, so its top gridline and the dark-mode Install menu fix carry over, and it lines up with the header, hero, and CTA at every width. Its cells draw the lines between columns and rows, and its frame draws the right edge beside a last row that is not full.
+- The wide grid renders inside `<section id="catalog">`, after the filters and the side grid, so pagination focus and the Section's 1280px cap cover it. It reuses `.gridFrame` for its top gridline and the dark-mode Install menu hook, takes `.catalog`'s gutter inset below 120rem, and draws its right edge beside a last row that is not full.
 - `page-width-regression.mjs` now lists the wide frame in its frame selector, so the 1280px frame rule covers it.
-- At the default 6 per page, Extensions and Skills already split, because their filter lists are shorter than three rows of cards. The server renders all six beside the filters, and two move down right after hydration.
 
 ### Testing
 
-- `npm run --prefix website build` passes (1,564 pages).
+- `npm run --prefix website build` passes (1,572 pages).
 - `npm run --prefix website a11y`: 24 routes, dark and light, 0 violations.
 - The website regression scripts in `website/scripts` pass: `page-width` (now including the wide frame), `plugin-install`, `reading-catalog`, `resource-card-layout`, and `site-refinement`.
-- Playwright checks on all six pages (614 of 614, on the build, on the demo served locally, on a rehearsal of its Pages build, and on the live demo): cards beside and below the filters at 6 and 50 per page, column counts and frame edges from 1000 to 2560px, the wide frame starting on the catalog's bottom edge with one gridline there, no horizontal overflow, the stacked layout at 1000px with the same card order, Show more and Show less, a filter and Clear all, page 2, and no console errors.
+- Playwright checks on all six pages (513 of 513, on the build, on the demo served locally, on a rehearsal of its Pages build, and on the live demo): no split at 6 per page, the 14-card split at 50 per page, after a filter and Clear all, and on page 2, full wide rows whenever the count allows, frame edges from 1000 to 2560px, the wide frame starting on the catalog's bottom edge with one gridline there, no horizontal overflow, the stacked layout at 1000px with the same card order, Show more and Show less, and no console errors.
+- A second pass at 20 and 100 per page on all six pages, at 1280, 1472, and 1848px: every wide grid ends on a full row, except the Learning Hub's 31 articles, an odd count that cannot fill rows of two and three at once.
 - `tsc --noEmit` shows no new errors (the same 30 as `main`).
-- Page heights at 50 per page at 1848px, before and after: Agents 9,646 to 7,807px, Extensions 17,665 to 13,251px, Instructions 9,437 to 7,362px, Plugins 10,719 to 9,066px, Skills 9,551 to 7,446px, and Learning Hub 6,719 to 5,631px.

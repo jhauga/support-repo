@@ -1,6 +1,7 @@
 // Checks the split catalog grid on the six filter-rail pages and saves
 // screenshots. Serve website/dist first, then:
 //   node .support/resize-col-harness/verify.mjs [baseUrl]   (D1=full for the full-width option)
+// The split is by count: 14 cards beside the filters (see cardsBeside below).
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
@@ -21,6 +22,19 @@ const PAGES = [
   ["/learning-hub/", "Articles", "learning-hub", null],
 ];
 
+// The split rule from useCatalogSplit.ts: 14 cards beside, or the nearest even
+// count that leaves whole rows of six below; 14 or fewer cards never split.
+const cardsBeside = (total) => {
+  if (total <= 14) return total;
+  let best = null;
+  for (let count = 2; count < total; count += 2) {
+    if ((total - count) % 6 !== 0) continue;
+    if (best === null || Math.abs(count - 14) < Math.abs(best - 14)) best = count;
+  }
+  if (best !== null) return best;
+  return total - 14 >= 6 ? 14 : total;
+};
+
 let pass = 0;
 const failures = [];
 const check = (ok, label) => (ok ? pass++ : failures.push(label));
@@ -37,8 +51,6 @@ const state = (kind) =>
     const rect = (el) => el.getBoundingClientRect();
     const aside = document.querySelector("#catalog aside");
     const catalog = aside.parentElement;
-    const list = aside.lastElementChild.lastElementChild ?? aside;
-    const navEnd = rect(list).bottom + parseFloat(getComputedStyle(aside).paddingBlockEnd);
     const side = document.querySelector('[class*="_threeUp_"]');
     const wide = document.querySelector('[class*="_wideGrid_"]');
     const frame = wide?.parentElement;
@@ -48,12 +60,9 @@ const state = (kind) =>
       .map((a) => new URL(a.href).pathname)
       .filter((p, i, all) => p.includes(`/${kind}`) && all.indexOf(p) === i);
     return {
-      navEnd,
       side: sideCells.length,
       wide: wideCells.length,
       stacked: rect(aside).right > rect(side).left + 1,
-      sideTopsOk: sideCells.every((r) => r.top < navEnd + 0.5),
-      lastSideBottom: sideCells.at(-1)?.bottom ?? null,
       wideCols: wideCells.filter((r) => r.top === wideCells[0].top).length,
       frameEdges: frame ? [Math.round(rect(frame).left), Math.round(rect(frame).right)] : null,
       catalogEdges: [Math.round(rect(catalog).left), Math.round(rect(catalog).right)],
@@ -69,15 +78,17 @@ const state = (kind) =>
 const invariants = async (label, kind, expected) => {
   const s = await state(kind);
   check(s.side + s.wide === expected, `${label}: ${s.side}+${s.wide} cards, expected ${expected}`);
-  check(s.stacked || s.sideTopsOk, `${label}: a side row starts below the filters' end`);
-  check(!s.stacked || s.wide === 0, `${label}: stacked layout still split`);
+  const want = s.stacked ? expected : cardsBeside(expected);
+  check(s.side === want, `${label}: ${s.side} cards beside, expected ${want}`);
+  if ((expected - want) % 6 === 0 && s.wide > 0) {
+    check(s.wide % s.wideCols === 0, `${label}: wide grid ends short (${s.wide} cards in ${s.wideCols} columns)`);
+  }
   if (s.wide > 0) {
-    check(s.lastSideBottom >= s.navEnd - 0.5, `${label}: side grid ends above the filters' end with cards left over`);
     check(Math.abs(s.frameTopGap) < 1, `${label}: wide frame starts ${s.frameTopGap}px from the catalog`);
     check(s.frameTopBorder === "1px" && s.sideBottomBorder === "0px", `${label}: junction borders ${s.sideBottomBorder}/${s.frameTopBorder}`);
     const left = Math.round(Math.max(24, (s.clientWidth - 1920) / 2));
-    const want = fullWidth ? [left, s.clientWidth - left] : s.catalogEdges;
-    check(s.frameEdges.every((v, i) => Math.abs(v - want[i]) <= 1), `${label}: wide frame ${s.frameEdges}, expected ${want}`);
+    const edges = fullWidth ? [left, s.clientWidth - left] : s.catalogEdges;
+    check(s.frameEdges.every((v, i) => Math.abs(v - edges[i]) <= 1), `${label}: wide frame ${s.frameEdges}, expected ${edges}`);
   }
   check(s.overflowX <= 0, `${label}: horizontal overflow ${s.overflowX}px`);
   return s;
