@@ -177,6 +177,35 @@ for (const [route, type, kind, count] of PAGES) {
   summary.push(`${route} ${all} items: at 6 ${at6.side}+${at6.wide}, at 20 ${bySize[20]}, at 50 ${at50.side}+${at50.wide}, at 100 ${bySize[100]}, wide frame ${JSON.stringify(at50.frameEdges)}, columns ${JSON.stringify(cols)}`);
 }
 
+// A resize or zoom that moves a focused card to the other grid keeps focus on
+// the same control. The last case is a card that does not move.
+const focused = () =>
+  page.evaluate(() => {
+    const a = document.activeElement;
+    return {
+      control: a?.getAttribute("aria-label") ?? a?.textContent?.trim(),
+      grid: a?.closest('[class*="_wideGrid_"]') ? "wide" : a?.closest('[class*="_threeUp_"]') ? "side" : "none",
+    };
+  });
+for (const [route, type, from, to, cell, control, moves] of [
+  ["/instructions/", "Instructions", 1848, 1000, '[class*="_wideGrid_"] > *', "a", true],
+  ["/agents/", "Agents", 1848, 1000, '[class*="_wideGrid_"] > *', 'button[aria-label^="Download"]', true],
+  ["/instructions/", "Instructions", 1848, 1100, '[class*="_threeUp_"] > :last-child', "a", true],
+  ["/instructions/", "Instructions", 1000, 1848, '[class*="_threeUp_"] > :nth-child(20)', "a", true],
+  ["/instructions/", "Instructions", 1848, 1100, '[class*="_threeUp_"] > :first-child', "a", false],
+]) {
+  await resize(from);
+  await open(route);
+  await pickSize(type, 50);
+  await page.locator(cell).first().locator(control).first().focus();
+  const before = await focused();
+  await resize(to);
+  const after = await focused();
+  const label = `${route} focus on ${before.grid} "${before.control}" ${from} to ${to}px`;
+  check(after.grid !== "none" && after.control === before.control, `${label}: focus now on ${after.grid} "${after.control}"`);
+  check(moves === (after.grid !== before.grid), `${label}: card ${moves ? "stayed in" : "moved from"} the ${before.grid} grid`);
+}
+
 // Screenshots to compare by eye with the goal GIF.
 const shoot = async (name, y) => {
   await page.evaluate((y) => window.scrollTo(0, y), y);
