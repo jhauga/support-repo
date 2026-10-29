@@ -1,7 +1,8 @@
 // Checks the split catalog grid on the six filter-rail pages and saves
 // screenshots. Serve website/dist first, then:
 //   node .support/resize-col-harness/verify.mjs [baseUrl]   (D1=full for the full-width option)
-// The split is by page size: 8 cards beside the filters at 20 and 50, 10 at 100.
+// Rows stay beside the filters while they start above the filter list's end;
+// 6 per page never splits. A short last wide row is centered, except on the last page.
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
@@ -22,21 +23,8 @@ const PAGES = [
   ["/learning-hub/", "Articles", "learning-hub", null],
 ];
 
-// The split rule from useCatalogSplit.ts: 4 rows (8 cards) beside at 20 and 50
-// per page, 5 rows (10) at 100, none at 6; a shorter list moves the cut by at
-// most one row to leave whole rows of six below.
-const CUT = { 6: 0, 20: 8, 50: 8, 100: 10 };
-const cardsBeside = (total, size) => {
-  const cut = CUT[size];
-  if (cut === 0 || total <= cut) return total;
-  for (const count of [cut, cut + 2, cut - 2]) {
-    if (count >= total) return total;
-    if ((total - count) % 6 === 0) return count;
-  }
-  return total - cut >= 6 ? cut : total;
-};
-
 let pass = 0;
+const centered = new Set();
 const failures = [];
 const check = (ok, label) => (ok ? pass++ : failures.push(label));
 
@@ -55,14 +43,27 @@ const state = (kind) =>
     const side = document.querySelector('[class*="_threeUp_"]');
     const wide = document.querySelector('[class*="_wideGrid_"]');
     const frame = wide?.parentElement;
+    const list = aside.lastElementChild.lastElementChild ?? aside;
+    const navEnd = rect(list).bottom + parseFloat(getComputedStyle(aside).paddingBlockEnd);
     const sideCells = [...side.children].map(rect);
     const wideCells = wide ? [...wide.children].map(rect) : [];
+    const lastTop = Math.max(...wideCells.map((r) => r.top));
+    const lastRow = wideCells.filter((r) => r.top === lastTop);
+    const pages = [...document.querySelectorAll('[aria-label="Pagination"] a')]
+      .map((a) => Number(a.textContent)).filter(Number.isFinite);
+    const current = Number(document.querySelector('[aria-label="Pagination"] [aria-current="page"]')?.textContent ?? 1);
     const hrefs = [...document.querySelectorAll('[class*="_threeUp_"] a[href], [class*="_wideGrid_"] a[href]')]
       .map((a) => new URL(a.href).pathname)
       .filter((p, i, all) => p.includes(`/${kind}`) && all.indexOf(p) === i);
     return {
       side: sideCells.length,
       wide: wideCells.length,
+      sideTopsOk: sideCells.every((r) => r.top < navEnd + 0.5),
+      lastSideBottom: sideCells.at(-1)?.bottom ?? null,
+      navEnd,
+      lastRow: lastRow.length,
+      lastRowGaps: wide && lastRow.length ? [lastRow[0].left - rect(wide).left, rect(wide).right - lastRow.at(-1).right] : null,
+      lastPage: current >= Math.max(1, ...pages),
       stacked: rect(aside).right > rect(side).left + 1,
       wideCols: wideCells.filter((r) => r.top === wideCells[0].top).length,
       frameEdges: frame ? [Math.round(rect(frame).left), Math.round(rect(frame).right)] : null,
@@ -79,12 +80,17 @@ const state = (kind) =>
 const invariants = async (label, kind, expected, size) => {
   const s = await state(kind);
   check(s.side + s.wide === expected, `${label}: ${s.side}+${s.wide} cards, expected ${expected}`);
-  const want = s.stacked ? expected : cardsBeside(expected, size);
-  check(s.side === want, `${label}: ${s.side} cards beside, expected ${want}`);
-  if ((expected - want) % 6 === 0 && s.wide > 0) {
-    check(s.wide % s.wideCols === 0, `${label}: wide grid ends short (${s.wide} cards in ${s.wideCols} columns)`);
-  }
+  if (size === 6) check(s.wide === 0, `${label}: 6 per page split ${s.side}+${s.wide}`);
+  check(size === 6 || s.stacked || s.sideTopsOk, `${label}: a side row starts below the filters' end`);
+  check(!s.stacked || s.wide === 0, `${label}: stacked layout still split`);
   if (s.wide > 0) {
+    check(s.lastSideBottom >= s.navEnd - 0.5, `${label}: side grid ends above the filters' end with cards left over`);
+    if (s.lastRow < s.wideCols) {
+      const [left, right] = s.lastRowGaps;
+      const ok = s.lastPage ? Math.abs(left) <= 1 : Math.abs(left - right) <= 1;
+      check(ok, `${label}: short last row (${s.lastRow} of ${s.wideCols}) gaps ${Math.round(left)}/${Math.round(right)}, ${s.lastPage ? "last page, expected left-aligned" : "expected centered"}`);
+      if (!s.lastPage) centered.add(`${s.lastRow}/${s.wideCols}`);
+    }
     check(Math.abs(s.frameTopGap) < 1, `${label}: wide frame starts ${s.frameTopGap}px from the catalog`);
     check(s.frameTopBorder === "1px" && s.sideBottomBorder === "0px", `${label}: junction borders ${s.sideBottomBorder}/${s.frameTopBorder}`);
     const left = Math.round(Math.max(24, (s.clientWidth - 1920) / 2));
@@ -194,6 +200,12 @@ for (const scheme of ["dark", "light"]) {
   if (scheme === "dark") await shoot("shot-instructions-end", y.pagination - 600);
 }
 await page.emulateMedia({ colorScheme: "dark" });
+for (const [route, type, name] of [["/plugins/", "Plugins", "shot-plugins-end"], ["/agents/", "Agents", "shot-agents-end"]]) {
+  await resize(1848);
+  await open(route);
+  await pickSize(type, 50);
+  await shoot(name, (await edges()).pagination - 600);
+}
 await open("/skills/");
 await shoot("shot-skills-6", (await edges()).junction - 600);
 await resize(390, 844);
@@ -206,6 +218,7 @@ await shoot("shot-instructions-phone", (await edges()).catalog);
 check(errors.length === 0, `console errors: ${errors.slice(0, 3).join(" | ")}`);
 await browser.close();
 console.log(summary.join("\n"));
+console.log(`centered short rows seen: ${[...centered].sort().join(", ") || "none"}`);
 console.log(`${pass} passed, ${failures.length} failed`);
 for (const f of failures) console.log("FAIL", f);
 process.exit(failures.length ? 1 : 0);
