@@ -21,6 +21,19 @@ if "%_branchName%"=="" (
  exit /b 1
 )
 
+:: Stop on tracked changes, which would block the checkout or carry into the new branch
+set "_dirtyTree="
+FOR /F "tokens=*" %%A in ('git status --porcelain --untracked-files^=no 2^>nul') DO set "_dirtyTree=1"
+if defined _dirtyTree (
+ echo Error: commit or stash tracked changes before creating a branch:
+ git status --short --untracked-files=no
+ exit /b 1
+)
+:: Untracked files carry over, and a later "git add ." would commit them
+FOR /F "tokens=1*" %%A in ('git status --porcelain --untracked-files^=normal 2^>nul') DO (
+ if "%%A"=="??" echo Warning: untracked file carries over to the new branch: %%B
+)
+
 :: Get current branch name
 FOR /F "tokens=*" %%A in ('git rev-parse --abbrev-ref HEAD 2^>nul') DO set "_currentBranch=%%A"
 
@@ -45,55 +58,71 @@ if NOT "%_currentBranch%"=="%_branchName%" (
  exit /b 1
 )
 
-:: update branch name
-sed "s;BRANCH_NAME;%_branchName%;g" README.md > README.md.tmp
-rem move to resovlve sed tmp file bug
-move /Y README.md.tmp README.md >nul 2>nul
-
 :: Update README.md with repo name if provided
 if NOT "%_repoName%"=="" (
  sed "s;REPO_NAME;%_repoName%;g" README.md > README.md.tmp
  rem move to resovlve sed tmp file bug
  move /Y README.md.tmp README.md >nul 2>nul
  if EXIST "templates\%_repoName%.txt" (
-  call makeTemplate.bat "%_repoName%"
+  call "%~dp0makeTemplate.bat" "%_repoName%"
   if "%_repoName%"=="awesome-copilot" (
    set "_toolName=%_branchName:*-=%%"
    call set "_newWhat=%%_branchName:-!_toolName!=%%"
   )
  ) else (
-  call makeTemplate.bat "default"
+  call "%~dp0makeTemplate.bat" "default"
  )
 ) else (
- call makeTemplate.bat "default"
+ call "%~dp0makeTemplate.bat" "default"
+)
+
+:: Escape the description for a sed replacement: & and the | delimiter
+:: (delayed expansion is on, so a ! in the description is dropped)
+set "_descSed="
+if defined _description (
+ set "_descSed=!_description:&=\&!"
+ set "_descSed=!_descSed:|=\|!"
 )
 
 :: Update README.md with description if provided
+:: awesome-copilot keeps the "Support branch for new ..." line, which awesomePr
+:: turns into the test-results link, and puts the description above it
 if "%_repoName%"=="awesome-copilot" (
- sed "s/SHORT_DESCRIPTION/Support branch for new %_newWhat% %_toolName%./g" README.md  > README.md.tmp
+ if NOT "%_description%"=="" (
+  sed "s|SHORT_DESCRIPTION|!_descSed!\n\nSupport branch for new %_newWhat% %_toolName%.|g" README.md > README.md.tmp
+ ) else (
+  sed "s|SHORT_DESCRIPTION|Support branch for new %_newWhat% %_toolName%.|g" README.md > README.md.tmp
+ )
  rem move to resovlve sed tmp file bug
  move /Y README.md.tmp README.md >nul 2>nul
 ) else (
  if NOT "%_description%"=="" (
-  sed "s/SHORT_DESCRIPTION/%_description%/g" README.md > README.md.tmp
+  sed "s|SHORT_DESCRIPTION|!_descSed!|g" README.md > README.md.tmp
   rem move to resovlve sed tmp file bug
   move /Y README.md.tmp README.md >nul 2>nul
  )
 )
+
+:: update branch name - after the template is appended, since the template uses BRANCH_NAME too
+sed "s;BRANCH_NAME;%_branchName%;g" README.md > README.md.tmp
+rem move to resovlve sed tmp file bug
+move /Y README.md.tmp README.md >nul 2>nul
+
 :: Extension branches for awesome-copilot deploy from main instead of the new branch
 set "_isExtension="
 if "%_branchName:~0,9%"=="extension" if "%_repoName%"=="awesome-copilot" set "_isExtension=1"
 
 :: Update workflow action - only ONE branch name per line
+:: sed -b keeps the file's LF endings (the Windows sed build writes CRLF otherwise)
 if defined _isExtension (
- sed "s/__main__/main/" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
+ sed -b "s/__main__/main/" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
 ) else (
- sed "s/__main__/%_branchName%/" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
+ sed -b "s/__main__/%_branchName%/" .gitHub\workflows\deploy.yml > .gitHub\workflows\deploy.yml.tmp
 )
 move /Y .gitHub\workflows\deploy.yml.tmp .gitHub\workflows\deploy.yml >nul 2>nul
 
 :: Clean out repo files
-del /Q TODO.md makeTemplate.bat >nul >nul
+del /Q TODO.md makeTemplate.bat >nul 2>nul
 rmdir /S/Q templates >nul 2>nul
 if "%_repoName%"=="awesome-copilot" (
  rem keep a copy of the demo for extension branches before cleanup
@@ -113,7 +142,8 @@ del /Q newBranch.bat >nul 2>nul & exit /b 0 >nul 2>nul
  echo Options:
  echo   -h, --help, /?
  echo   repo-name - The name of the repo for PR, and used for templates
- echo               NOTE - 3rd parameter will not be used if "awesome-copilot" is repo-name
+ echo               NOTE - with "awesome-copilot" the 3rd parameter goes above the
+ echo                      "Support branch for new ..." line that awesomePr links
  echo:
  echo Templates:
  echo  awesome-copilot
