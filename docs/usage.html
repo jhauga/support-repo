@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Usage - Grid Rhythm</title>
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html">Grid Rhythm</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="index.html">Overview</a>
+        <a href="install.html">Install</a>
+        <a href="usage.html" aria-current="page">Usage</a>
+        <a href="changelog.html">Changelog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Usage</h1>
+    <p class="lede">Grid Rhythm asks three questions in order. Nothing is drawn until the last step.</p>
+
+    <h2>Step 1: Size the grid</h2>
+    <ol class="steps">
+      <li>Open an Illustrator 2026 document, or leave none open. If none is open, Grid Rhythm creates a new one.</li>
+      <li>Choose <strong>Window &gt; Extensions &gt; Grid Rhythm</strong>.</li>
+      <li>Enter rows from 1 to 20 and columns from 1 to 10.</li>
+      <li>Click <strong>Next</strong>. The panel moves on only when both values are valid.</li>
+    </ol>
+
+    <h2>Step 2: Choose the pattern mode</h2>
+    <ol class="steps">
+      <li><strong>One row pattern</strong>: every row repeats the same shape sequence. The grid reads as columns of identical rhythm.</li>
+      <li><strong>Alternating rows</strong>: the first row uses the sequence in order, and every second row (the 2nd, 4th, and so on) reads it backwards. The grid zig-zags.</li>
+      <li>Click <strong>Next</strong> to reach the design controls, or <strong>Back</strong> to change the size.</li>
+    </ol>
+
+    <h2>Step 3: Shape the rhythm</h2>
+    <p>The live preview shows the first four rows as you change the controls. The preview is an approximation: Illustrator's final artwork uses the same plan.</p>
+    <table>
+      <thead><tr><th>Control</th><th>What it changes</th><th>Why it is there</th></tr></thead>
+      <tbody>
+        <tr><td>Shapes</td><td>Square, circle, rectangle, ellipse, and asset. Shapes are placed in that fixed order, so ticking a shape adds it to the sequence.</td><td>The shape list is the beat. Mixing round and square forms gives the eye a contrast to follow.</td></tr>
+        <tr><td>Fill</td><td>Step through a four-colour palette, or mirror it across the columns</td><td>Stepping gives a steady cadence, and mirror makes the grid symmetrical from the centre out.</td></tr>
+        <tr><td>Rotate</td><td>Adds a fixed turn for each cell (0, 15, 30, 45, or 90 degrees)</td><td>A small turn per cell breaks the grid into motion without changing the shape count.</td></tr>
+        <tr><td>Stroke weight</td><td>Base weight, which cycles through base, double, and triple by row</td><td>Changing weight by row creates a second rhythm down the page.</td></tr>
+        <tr><td>Dashes</td><td>Dashed stroke on every second row (the 2nd, 4th, and so on)</td><td>Dashes give a visual off-beat that matches the alternating pattern.</td></tr>
+        <tr><td>Linked asset</td><td>Places the bundled accent as a linked file in its cell</td><td>A linked asset keeps the file small and lets you swap the artwork later.</td></tr>
+      </tbody>
+    </table>
+    <p>Click <strong>Back</strong> to change rows, columns, or pattern mode. Click <strong>Draw</strong> to build the grid.</p>
+
+    <h2>What Draw creates</h2>
+    <ul>
+      <li>A layer named <strong>Grid Rhythm</strong> in the active document, or in a new document if none is open.</li>
+      <li>One shape per cell, fitted to the active artboard with even gutters on all sides.</li>
+      <li>Linked <code>.ai</code> placements for the asset cells. The file is linked, not embedded.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Validation.</strong> The panel checks the values before it sends them, and the host script checks them again. If something is wrong, the panel shows a message and nothing is drawn.
+    </div>
+
+    <h2>Example configurations</h2>
+    <p>These images were exported from Illustrator with the panel's settings. Each one is an artboard export to PNG.</p>
+
+    <figure>
+      <img src="images/config-1-4x6-row.png" alt="4 by 6 grid with one row pattern of squares, circles, rectangles, and ellipses.">
+      <figcaption>4 x 6, one row pattern, shapes square, circle, rectangle, and ellipse, step fill, dashes on every second row.</figcaption>
+    </figure>
+
+    <figure>
+      <img src="images/config-2-20x10-alternating.png" alt="20 by 10 grid with alternating rows and mirrored fills, rotated 30 degrees per cell.">
+      <figcaption>20 x 10, alternating rows, mirror fill, 30 degree rotation step, dashes on every second row.</figcaption>
+    </figure>
+
+    <figure>
+      <img src="images/config-3-8x8-linked-assets.png" alt="8 by 8 grid with squares, circles, and linked star assets rotated 45 degrees per cell.">
+      <figcaption>8 x 8, one row pattern, shapes square, asset, and circle, step fill, 45 degree rotation step. The asset cells are linked .ai files.</figcaption>
+    </figure>
+
+    <h2>Panel screenshots</h2>
+    <figure>
+      <img src="images/panel-step1.png" alt="Grid Rhythm panel showing the rows and columns step in Illustrator 2026.">
+      <figcaption>Step 1 in Illustrator 2026: rows and columns, validated before Next is enabled.</figcaption>
+    </figure>
+    <figure>
+      <img src="images/panel-step3.png" alt="Grid Rhythm panel showing the design controls and live preview.">
+      <figcaption>Step 3 in Illustrator 2026: shape sequence, fill, rotation, stroke, and the live preview.</figcaption>
+    </figure>
+
+    <h2>Undo and cleanup</h2>
+        <p>Each Draw creates a new layer named <strong>Grid Rhythm</strong>, so drawing twice gives you two layers with the same name. To start over, delete the layers you do not need, or use Undo right after drawing.</p>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      Grid Rhythm is a sample extension by Acme Corp. Contact <a href="mailto:jane.doe@example.com">Jane Doe</a>.
+    </div>
+  </footer>
+</body>
+</html>

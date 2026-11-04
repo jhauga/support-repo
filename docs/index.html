@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grid Rhythm - Adobe Illustrator extension</title>
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html">Grid Rhythm</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="index.html" aria-current="page">Overview</a>
+        <a href="install.html">Install</a>
+        <a href="usage.html">Usage</a>
+        <a href="changelog.html">Changelog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Grid Rhythm</h1>
+    <p class="lede">Grid Rhythm is a panel extension for Adobe Illustrator 2026 that draws a rows-by-columns grid of shapes with a visible design rhythm. Choose a size, pick a shape sequence and fill pattern, and it builds the grid on a new layer that fits your active artboard.</p>
+
+    <figure>
+      <img src="images/demo.gif" alt="Animated demo cycling through three exported Grid Rhythm layouts: 4 x 6 with one row pattern, 20 x 10 with alternating rows, and 8 x 8 with linked assets.">
+      <figcaption>Three configurations drawn by Grid Rhythm: 4 x 6 with one row pattern, 20 x 10 with alternating rows, and 8 x 8 with linked assets.</figcaption>
+    </figure>
+
+    <h2>What it does</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Sized grids</h3>
+        <p>Enter 1 to 20 rows and 1 to 10 columns. The panel will not move on until both values are valid.</p>
+      </div>
+      <div class="card">
+        <h3>Row rhythm</h3>
+        <p>Use one row pattern so every row repeats the same sequence, or alternating rows so odd and even rows differ.</p>
+      </div>
+      <div class="card">
+        <h3>Shape sequence</h3>
+        <p>Mix squares, circles, rectangles, ellipses, and a linked accent asset. Fills step or mirror through a small palette, and each cell can turn by a fixed step.</p>
+      </div>
+    </div>
+
+    <h2>Why it is built this way</h2>
+    <p>Every cell is drawn from one shared plan, so the live preview in the panel and the artwork in Illustrator follow the same rules. The shape order sets the beat, the fill mode sets the colour cadence, the rotation step turns each cell, and the stroke weight cycles by row. Dashes appear on every second row so the eye has an off-beat to follow.</p>
+
+    <h2>Requirements</h2>
+    <ul>
+      <li>Adobe Illustrator 2026 (host ILST, version 29.0 or later)</li>
+      <li>Windows or macOS, as supported by Illustrator 2026</li>
+      <li>A development install needs the debug flag described on the <a href="install.html">install page</a></li>
+    </ul>
+
+    <div class="note">
+      <strong>Linked asset note.</strong> Illustrator's scripting API rejects SVG files for linked placement. The accent asset ships as a linked <code>.ai</code> copy of the bundled SVG, so it is placed as a link, not embedded.
+    </div>
+
+    <h2>Get started</h2>
+    <p>Follow the <a href="install.html">install guide</a> to load the extension, then read the <a href="usage.html">step-by-step usage guide</a>. Release notes are in the <a href="changelog.html">changelog</a>.</p>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      Grid Rhythm is a sample extension by Acme Corp. Contact <a href="mailto:jane.doe@example.com">Jane Doe</a>. Sample project only.
+    </div>
+  </footer>
+</body>
+</html>

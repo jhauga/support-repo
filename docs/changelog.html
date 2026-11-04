@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Changelog - Grid Rhythm</title>
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html">Grid Rhythm</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="index.html">Overview</a>
+        <a href="install.html">Install</a>
+        <a href="usage.html">Usage</a>
+        <a href="changelog.html" aria-current="page">Changelog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Changelog</h1>
+    <p class="lede">Notable changes to Grid Rhythm, newest first.</p>
+
+    <h2>0.1.0 - initial development build</h2>
+    <ul>
+      <li>Three-step CEP panel: size (1 to 20 rows, 1 to 10 columns), pattern mode (one row pattern or alternating rows), and design controls.</li>
+      <li>Shape sequence from square, circle, rectangle, ellipse, and a linked accent asset.</li>
+      <li>Fill step or mirror through a four-colour palette, with rotation steps of 0, 15, 30, 45, or 90 degrees.</li>
+      <li>Stroke weight that cycles by row, with dashes on every second row.</li>
+      <li>Live preview of the first four rows.</li>
+      <li>Host script draws on a new layer named Grid Rhythm, fitted to the active artboard with even gutters. A new document is created when none is open.</li>
+      <li>Linked asset placement uses a bundled <code>.ai</code> copy of the accent SVG. Illustrator's scripting API rejects SVG for <code>PlacedItem.file</code>.</li>
+      <li>Validation in the panel and in the host script. Invalid input returns a message and draws nothing.</li>
+      <li>Development install with PlayerDebugMode, and a documented ZXP packaging path.</li>
+    </ul>
+
+    <h2>Known limitations</h2>
+    <ul>
+      <li>Each Draw creates a new layer, so repeated draws leave several layers named Grid Rhythm.</li>
+      <li>The linked asset is an <code>.ai</code> copy, not the SVG, because of the scripting limit above.</li>
+      <li>Tested on Illustrator 2026 (30.1.0) only.</li>
+    </ul>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      Grid Rhythm is a sample extension by Acme Corp. Contact <a href="mailto:jane.doe@example.com">Jane Doe</a>.
+    </div>
+  </footer>
+</body>
+</html>

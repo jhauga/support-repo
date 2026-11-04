@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Install - Grid Rhythm</title>
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html">Grid Rhythm</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="index.html">Overview</a>
+        <a href="install.html" aria-current="page">Install</a>
+        <a href="usage.html">Usage</a>
+        <a href="changelog.html">Changelog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Install</h1>
+    <p class="lede">Grid Rhythm is a CEP panel. There are two ways to install it: a development install from the source folder, and a signed ZXP package for end users.</p>
+
+    <h2>Requirements</h2>
+    <ul>
+      <li>Adobe Illustrator 2026 (host ILST)</li>
+      <li>The source folder <code>grid-rhythm/</code> from the project repository</li>
+      <li>Administrator access is not needed for the development install</li>
+    </ul>
+
+    <h2>Development install (unsigned)</h2>
+    <p>Unsigned extensions only load when CEP's debug mode is on. You turn it on once per machine, then copy the extension folder into the CEP extensions directory.</p>
+
+    <h3>1. Enable PlayerDebugMode on Windows</h3>
+    <p>Set the <code>PlayerDebugMode</code> value for CSXS 12 to <code>1</code> in the registry. Run this in PowerShell as your user:</p>
+<pre><code>New-ItemProperty -Path "HKCU:\Software\Adobe\CSXS.12" -Name PlayerDebugMode -Value "1" -PropertyType String -Force</code></pre>
+
+    <h3>2. Enable PlayerDebugMode on macOS</h3>
+<pre><code>defaults write com.adobe.CSXS.12 PlayerDebugMode 1</code></pre>
+
+    <h3>3. Copy the extension into the CEP folder</h3>
+    <p>The extension folder name must match the bundle ID in <code>CSXS/manifest.xml</code>, which is <code>com.example.gridrhythm</code>.</p>
+    <table>
+      <thead><tr><th>Platform</th><th>Target folder</th></tr></thead>
+      <tbody>
+        <tr><td>Windows</td><td><code>%APPDATA%\Adobe\CEP\extensions\com.example.gridrhythm</code></td></tr>
+        <tr><td>macOS</td><td><code>~/Library/Application Support/Adobe/CEP/extensions/com.example.gridrhythm</code></td></tr>
+      </tbody>
+    </table>
+<pre><code># Windows (PowerShell)
+Copy-Item -Recurse -Force ".\grid-rhythm\*" "$env:APPDATA\Adobe\CEP\extensions\com.example.gridrhythm"
+
+# macOS (Terminal)
+cp -R ./grid-rhythm/. "$HOME/Library/Application Support/Adobe/CEP/extensions/com.example.gridrhythm"</code></pre>
+
+    <h3>4. Restart Illustrator and open the panel</h3>
+    <p>Quit and reopen Illustrator 2026, then choose <strong>Window &gt; Extensions &gt; Grid Rhythm</strong>.</p>
+
+    <div class="note">
+      <strong>Re-copy after each edit.</strong> Illustrator loads the files when the panel opens. After changing anything in <code>js/</code>, <code>jsx/</code>, or <code>css/</code>, copy the folder again and close and reopen the panel.
+    </div>
+
+    <h3>Debug port</h3>
+    <p>The <code>.debug</code> file in the source folder opens Chrome DevTools on port 8088 for the Illustrator panel host. Use it to inspect the panel's JavaScript console and DOM. Open <code>http://localhost:8088</code> in Chrome while Illustrator is running with the panel open.</p>
+
+    <h2>Signed ZXP install (for release)</h2>
+    <p>A ZXP is a signed, compressed CEP package. End users install it with a ZXP-capable installer tool, without enabling debug mode.</p>
+    <ol class="steps">
+      <li>Remove the <code>.debug</code> file from the package folder so the extension does not open a debug port.</li>
+      <li>Create a signing certificate with <code>ZXPSignCmd -selfSignedCert</code>, or use a certificate from a trusted authority.</li>
+      <li>Sign the folder with <code>ZXPSignCmd -sign</code> to produce <code>grid-rhythm.zxp</code>.</li>
+      <li>Verify the package with <code>ZXPSignCmd -verify</code> before publishing.</li>
+    </ol>
+<pre><code>ZXPSignCmd -selfSignedCert US Illinois "Acme Corp" "Jane Doe" grid-rhythm-cert.p12 "change-me-password"
+ZXPSignCmd -sign ./grid-rhythm ./dist/grid-rhythm.zxp grid-rhythm-cert.p12 "change-me-password"
+ZXPSignCmd -verify ./dist/grid-rhythm.zxp</code></pre>
+    <p>Keep the certificate and its password out of the repository. Self-signed certificates are fine for internal testing; public distribution needs a certificate that you control and that Adobe's tooling accepts.</p>
+
+    <h2>Remove the development install</h2>
+    <p>Delete the <code>com.example.gridrhythm</code> folder from the CEP extensions directory above, then restart Illustrator.</p>
+
+    <h2>Troubleshooting</h2>
+    <table>
+      <thead><tr><th>Symptom</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td>Grid Rhythm is missing from the Extensions menu</td><td>Check that the folder name matches the bundle ID and that PlayerDebugMode is <code>1</code>. Restart Illustrator.</td></tr>
+        <tr><td>Panel is blank</td><td>Open the debug port at <code>http://localhost:8088</code> and check the console for missing files.</td></tr>
+        <tr><td>Linked asset fails to place</td><td>Confirm that <code>assets/accent.ai</code> exists in the installed folder. Reinstall the extension if it is missing.</td></tr>
+      </tbody>
+    </table>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      Grid Rhythm is a sample extension by Acme Corp. Contact <a href="mailto:jane.doe@example.com">Jane Doe</a>.
+    </div>
+  </footer>
+</body>
+</html>
