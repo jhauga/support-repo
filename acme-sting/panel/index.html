@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Acme Sting</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Acme Sting</h1>
+
+  <label>Preset
+    <select id="preset">
+      <option>Classic</option>
+      <option>Shine</option>
+      <option>Bounce</option>
+    </select>
+  </label>
+
+  <fieldset>
+    <legend>Text</legend>
+    <label>Word <input id="word" type="text" value="ACME"></label>
+    <label>Tagline <input id="tagline" type="text" value="Quality you can count on"></label>
+    <label>End card <input id="endCard" type="text" value="example.com"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Colors</legend>
+    <label>Mark <input id="c-mark" type="color" value="#d7261e"></label>
+    <label>Letter <input id="c-letter" type="color" value="#ffffff"></label>
+    <label>Word <input id="c-word" type="color" value="#ffffff"></label>
+    <label>Tagline <input id="c-tagline" type="color" value="#d0d0d0"></label>
+    <label>Background <input id="c-background" type="color" value="#0a0a1a"></label>
+    <label>Background alt <input id="c-backgroundAlt" type="color" value="#3a0a10"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Effects</legend>
+    <div class="fx" data-fx="scale">
+      <label><input type="checkbox" checked> Scale bounce</label>
+      <label>Overshoot % <input type="number" data-key="overshoot" value="10" min="0" max="50"></label>
+    </div>
+    <div class="fx" data-fx="fade">
+      <label><input type="checkbox" checked> Fade in</label>
+      <label>Seconds <input type="number" data-key="duration" value="0.5" step="0.1" min="0.1"></label>
+    </div>
+    <div class="fx" data-fx="spin">
+      <label><input type="checkbox"> Spin in</label>
+      <label>Degrees <input type="number" data-key="degrees" value="540" step="90"></label>
+    </div>
+    <div class="fx" data-fx="trim">
+      <label><input type="checkbox" checked> Outline trim</label>
+      <label>Seconds <input type="number" data-key="duration" value="1.0" step="0.1" min="0.1"></label>
+    </div>
+    <div class="fx" data-fx="sweep">
+      <label><input type="checkbox" checked> Light sweep</label>
+      <label>Seconds <input type="number" data-key="duration" value="1.0" step="0.1" min="0.1"></label>
+    </div>
+    <div class="fx" data-fx="glow">
+      <label><input type="checkbox" checked> Glow</label>
+      <label>Intensity <input type="number" data-key="intensity" value="1.2" step="0.1" min="0"></label>
+    </div>
+    <div class="fx" data-fx="shadow">
+      <label><input type="checkbox" checked> Drop shadow</label>
+      <label>Opacity % <input type="number" data-key="opacity" value="60" min="0" max="100"></label>
+      <label>Distance <input type="number" data-key="distance" value="12" min="0"></label>
+    </div>
+    <div class="fx" data-fx="type">
+      <label><input type="checkbox" checked> Type on word</label>
+      <label>Seconds <input type="number" data-key="duration" value="0.7" step="0.1" min="0.1"></label>
+    </div>
+    <div class="fx" data-fx="tagline">
+      <label><input type="checkbox" checked> Tagline slide</label>
+      <label>Distance <input type="number" data-key="distance" value="60" min="0"></label>
+    </div>
+    <div class="fx" data-fx="flare">
+      <label><input type="checkbox" checked> Flare or burst</label>
+      <label>Style
+        <select data-key="style">
+          <option value="flare" selected>flare</option>
+          <option value="burst">burst</option>
+        </select>
+      </label>
+    </div>
+    <div class="fx" data-fx="drift">
+      <label><input type="checkbox" checked> Drifting background</label>
+      <label>Speed <input type="number" data-key="speed" value="0.25" step="0.05" min="0"></label>
+    </div>
+    <div class="fx" data-fx="endCard">
+      <label><input type="checkbox" checked> End card (last second)</label>
+    </div>
+  </fieldset>
+
+  <label class="inline"><input id="render" type="checkbox" checked> Render MP4 through the render queue</label>
+
+  <div class="buttons">
+    <button id="build">Build</button>
+    <button id="renderBtn">Render</button>
+  </div>
+
+  <pre id="status">Ready.</pre>
+
+  <script src="main.js"></script>
+</body>
+</html>

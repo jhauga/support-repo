@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Usage - Acme Sting</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="index.html">Acme Sting</a>
+    <a href="install.html">Install</a>
+    <a href="usage.html">Usage</a>
+    <a href="changelog.html">Changelog</a>
+  </nav>
+</header>
+<main>
+<h1>Usage</h1>
+
+<h2>From the panel</h2>
+<ol>
+  <li>Open <strong>Window &gt; Extensions &gt; Acme Sting</strong>.</li>
+  <li>Pick a preset. The form fills with its values.</li>
+  <li>Change the word, tagline, end card, colors, or any effect. Each effect has a checkbox and its values.</li>
+  <li>Click <strong>Build</strong> to create or replace the <code>Acme Sting</code> composition in <code>acme-sting.aep</code>.</li>
+  <li>Click <strong>Render</strong> to build and render to MP4 through the render queue. Untick <em>Render MP4 through the render queue</em> to build without rendering.</li>
+</ol>
+<figure>
+  <img src="images/panel.png" alt="The Acme Sting panel showing presets, text fields, colors and effects">
+  <figcaption>The Acme Sting panel, with the Classic preset loaded.</figcaption>
+</figure>
+
+<h2>Presets</h2>
+<table>
+  <tr><th>Preset</th><th>What changes from the defaults</th></tr>
+  <tr><td>Classic</td><td>The default reveal: scale bounce, fade, outline trim, light sweep, glow, shadow, typed word, tagline slide, drifting background, end card.</td></tr>
+  <tr><td>Shine</td><td>A full spin (360 degrees), stronger glow (2.0), lighter shadow, longer light sweep (1.2 s), and a lens flare.</td></tr>
+  <tr><td>Bounce</td><td>Bigger overshoot (25%), no outline trim, glow, or light sweep, a particle burst, a longer tagline slide (120), and no drifting background.</td></tr>
+</table>
+<p>A settings object overrides any preset value. Pass it as <code>-OverridesJson</code> to <code>run-sting.ps1</code>, or in the <code>overrides</code> field of the job.</p>
+
+<h2>Effects</h2>
+<table>
+  <tr><th>Effect</th><th>Default</th><th>Values</th><th>Notes</th></tr>
+  <tr><td>Scale bounce</td><td>On</td><td>Overshoot % (10)</td><td>Written as an expression, not hand-placed keyframes.</td></tr>
+  <tr><td>Fade in</td><td>On</td><td>Seconds (0.5)</td><td></td></tr>
+  <tr><td>Spin in</td><td>Off</td><td>Degrees (540)</td><td>The mark spins into place.</td></tr>
+  <tr><td>Outline trim</td><td>On</td><td>Seconds (1.0)</td><td>Trim Paths draws the mark's outline on.</td></tr>
+  <tr><td>Light sweep</td><td>On</td><td>Seconds (1.0)</td><td>CC Light Sweep across the logo.</td></tr>
+  <tr><td>Glow</td><td>On</td><td>Intensity (1.2)</td><td></td></tr>
+  <tr><td>Drop shadow</td><td>On</td><td>Opacity % (60), distance (12)</td><td></td></tr>
+  <tr><td>Type on word</td><td>On</td><td>Seconds (0.7)</td><td>ACME types on.</td></tr>
+  <tr><td>Tagline slide</td><td>On</td><td>Distance (60)</td><td>The tagline slides up.</td></tr>
+  <tr><td>Flare or burst</td><td>On</td><td>Style: flare or burst</td><td>A lens flare or a particle burst at the reveal.</td></tr>
+  <tr><td>Drifting background</td><td>On</td><td>Speed (0.25)</td><td>Gradient background that drifts slowly.</td></tr>
+  <tr><td>End card</td><td>On</td><td>End card text</td><td>Shows <code>example.com</code> for the last second.</td></tr>
+</table>
+<p>If an effect is missing from After Effects, the script skips it and reports it in the result.</p>
+
+<h2>Command line</h2>
+<p>Run the launcher from the repository folder. It writes a job file to the temp folder, runs <code>AfterFX.exe -s</code>, waits for the result, and writes a GIF to <code>docs\images</code>.</p>
+<pre>.\acme-sting\run-sting.ps1 -Preset Shine -Name shine
+.\acme-sting\run-sting.ps1 -Preset Classic -OverridesJson '{"effects":{"spin":{"on":true,"degrees":720}}}' -Name custom
+.\acme-sting\run-sting.ps1 -Preset Bounce -NoRender</pre>
+<p>Logs, result files, and MP4s go to the system temp folder under <code>acme-sting</code>, not the repository.</p>
+<p>Under the hood, each run sends a job to After Effects, for example:</p>
+<pre>"C:\Program Files\Adobe\Adobe After Effects 2026\Support Files\AfterFX.exe" -s "var stingJob = { preset: 'Shine', render: true, result: 'C:/Users/Jane Doe/AppData/Local/Temp/acme-sting/result.json' }; $.evalFile('C:/path/to/acme-sting/jsx/acme-sting.jsx');"</pre>
+<p>The job sets <code>render</code> to <code>false</code> to build without rendering. The result file records what was done, or the error and its line.</p>
+
+<h2>Render with aerender</h2>
+<p>After a build, you can render again from the saved project without After Effects' interface:</p>
+<pre>"C:\Program Files\Adobe\Adobe After Effects 2026\Support Files\aerender.exe" -project C:\path\to\acme-sting\acme-sting.aep -comp "Acme Sting" -OMtemplate "H.264 - Match Render Settings - 15 Mbps" -output %TEMP%\acme-sting\aerender-Classic.mp4</pre>
+<p>Run <code>aerender</code> only on a project that is not open in After Effects.</p>
+</main>
+<footer>Acme Sting is sample software for Acme Corp. Placeholder data only.</footer>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Install - Acme Sting</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <nav>
+    <a href="index.html">Acme Sting</a>
+    <a href="install.html">Install</a>
+    <a href="usage.html">Usage</a>
+    <a href="changelog.html">Changelog</a>
+  </nav>
+</header>
+<main>
+<h1>Install</h1>
+
+<h2>Requirements</h2>
+<ul>
+  <li>Adobe After Effects 2026 (version 26.x) on Windows.</li>
+  <li>PowerShell 5.1 or later, for <code>run-sting.ps1</code>.</li>
+  <li>ffmpeg on the PATH or at a known path, only if you want GIFs.</li>
+</ul>
+
+<h2>Development install (unsigned)</h2>
+<p>After Effects loads unsigned panels only when PlayerDebugMode is set for the CEP version. After Effects 2026 uses CEP 12, so the key is <code>CSXS.12</code>.</p>
+<ol>
+  <li>Enable debug mode for the current user. Run this in Command Prompt and sign out or restart:
+<pre>reg add "HKCU\Software\Adobe\CSXS.12" /v PlayerDebugMode /t REG_SZ /d 1 /f</pre>
+  </li>
+  <li>Link the panel folder into the CEP extensions folder. Use a junction so edits show up after a reload:
+<pre>mklink /J "%APPDATA%\Adobe\CEP\extensions\acme-sting" "C:\path\to\acme-sting\panel"</pre>
+  </li>
+  <li>Restart After Effects, then open <strong>Window &gt; Extensions &gt; Acme Sting</strong>.</li>
+</ol>
+<p>The <code>.debug</code> file in the panel folder names the host (<code>AEFT</code>) and a Chrome DevTools port (8088). To debug the panel, open <code>http://localhost:8088</code> in Chrome.</p>
+
+<h3>Remove the development install</h3>
+<pre>rmdir "%APPDATA%\Adobe\CEP\extensions\acme-sting"
+reg delete "HKCU\Software\Adobe\CSXS.12" /v PlayerDebugMode /f</pre>
+<p>Running <code>rmdir</code> on the junction removes only the link. The panel files stay in the repository.</p>
+
+<h2>Install the script only</h2>
+<p>The panel and the command line both run <code>jsx\acme-sting.jsx</code> from the repository. Nothing else needs to be installed.</p>
+
+<h2>Signed ZXP (later)</h2>
+<p>For distribution, sign the panel into a <code>.zxp</code> with a timestamp, then install it with Adobe's Unified Plugin Installer Agent (UPIA). The panel has not been signed or packaged yet.</p>
+<ol>
+  <li>Create a self-signed certificate with <code>ZXPSignCmd -selfSignedCert</code>.</li>
+  <li>Sign the folder with <code>ZXPSignCmd -sign</code>, using a timestamp server.</li>
+  <li>Install the ZXP with UPIA, or with a double-click.</li>
+</ol>
+<p><code>ExManCmd</code> no longer works with Creative Cloud 2022 and later apps.</p>
+</main>
+<footer>Acme Sting is sample software for Acme Corp. Placeholder data only.</footer>
+</body>
+</html>
