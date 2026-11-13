@@ -176,11 +176,12 @@ function setXY(prop, x, y) {
 }
 
 /* setValue throws on a keyframed property, and on Position once its
-   dimensions are separated, so the helpers leave those layers alone. */
+   dimensions are separated; a parented layer's Position is in its parent's
+   space. The helpers leave all of these layers alone. */
 function canSetTransform(layer) {
     var transform = layer.property("ADBE Transform Group");
     var position = transform.property("ADBE Position");
-    return transform.property("ADBE Anchor Point").numKeys === 0 &&
+    return !layer.parent && transform.property("ADBE Anchor Point").numKeys === 0 &&
         position.numKeys === 0 && !position.dimensionsSeparated;
 }
 
@@ -200,10 +201,13 @@ function centerLayer(comp, layer) {
 }
 
 /* Top-right corner, `margin` pixels in, at the layer's current scale.
-   Math.abs keeps a flipped (negative-scale) layer inside the margin. */
+   Math.abs keeps a flipped (negative-scale) layer inside the margin. It
+   declines 3D layers (away from z 0 the camera's perspective moves them off
+   the margin) and rotated layers (their corners stick out). */
 function alignTopRight(comp, layer, margin) {
-    if (!canSetTransform(layer)) { return false; }
+    if (!canSetTransform(layer) || layer.threeDLayer) { return false; }
     var transform = layer.property("ADBE Transform Group");
+    if (transform.property("ADBE Rotate Z").value !== 0) { return false; }
     var rect = layer.sourceRectAtTime(0, false);
     var scale = transform.property("ADBE Scale").value;
     var w = rect.width * Math.abs(scale[0]) / 100;
@@ -392,7 +396,7 @@ folder and from `Run Script File`:
                     }
                 }
                 if (skipped) {
-                    writeLn("Acme: skipped " + skipped + " camera, light, or animated layer(s).");
+                    writeLn("Acme: skipped " + skipped + " camera, light, parented, or animated layer(s).");
                 }
             } finally {
                 app.endUndoGroup();
@@ -413,9 +417,10 @@ folder and from `Run Script File`:
 Pass `this` in from the top level: inside a function, `this` is not the panel.
 `centerLayer` is the helper from [Center or align a layer](#center-or-align-a-layer).
 It calls `sourceRectAtTime`, which camera and light layers lack, and returns
-`false` without changing anything when a layer's Anchor Point or Position is
-keyframed or has separated dimensions. Without these checks, the first such
-layer in the selection throws and the rest of the selection is never reached.
+`false` without changing anything when a layer is parented or its Anchor Point
+or Position is keyframed or has separated dimensions. Without these checks, a
+camera, light, or animated layer in the selection throws and the rest of the
+selection is never reached, and a parented layer moves in its parent's space.
 `writeLn` reports the skipped layers in the Info panel.
 
 ## Expressions
@@ -464,7 +469,8 @@ layer in the selection throws and the rest of the selection is never reached.
 - [ ] Code that walks selected layers skips cameras and lights before it
       calls `sourceRectAtTime`.
 - [ ] Anchor Point and Position are set without dropping z on 3D layers, and
-      keyframed or separated transforms are skipped or keyed, not `setValue`d.
+      keyframed, separated, or parented transforms are skipped or keyed, not
+      `setValue`d.
 - [ ] Properties are reached by match name.
 - [ ] Every reference into an effect group is fetched again after
       `addProperty`.
